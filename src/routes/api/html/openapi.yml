@@ -1,0 +1,445 @@
+openapi: 3.1.0
+info:
+  title: My API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local
+paths:
+  /entries:
+    get:
+      description: Returns data on all entries from Argus
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: steps
+                            data: {}
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                            subtype:
+                              type: "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - createdAt
+                            - updatedAt
+                            - subtype
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: activity
+                            subtype:
+                              type: string
+                              const: workout
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                type:
+                                  type: string
+                                  const: activity
+                                created:
+                                  type: number
+                                user_id:
+                                  type: number
+                                timestamp:
+                                  type: number
+                                subtype:
+                                  type: string
+                                  const: workout
+                                activeDuration:
+                                  type: number
+                                duration:
+                                  type: number
+                                calories:
+                                  type: number
+                                TotalExercisesInWorkout:
+                                  type: number
+                                end:
+                                  type: number
+                                start:
+                                  type: number
+                                exercises:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      exercise_id:
+                                        type: string
+                                      exercise_name:
+                                        type: string
+                                      exercise_type:
+                                        type: string
+                                      sets:
+                                        type: array
+                                        items:
+                                          type: object
+                                          properties:
+                                            draft:
+                                              type: boolean
+                                            reps:
+                                              type: number
+                                            weight:
+                                              type: number
+                                          required:
+                                            - draft
+                                            - reps
+                                            - weight
+                                    required:
+                                      - exercise_id
+                                      - exercise_name
+                                      - exercise_type
+                                      - sets
+                              required:
+                                - id
+                                - type
+                                - created
+                                - user_id
+                                - timestamp
+                                - subtype
+                                - activeDuration
+                                - duration
+                                - calories
+                                - TotalExercisesInWorkout
+                                - end
+                                - start
+                                - exercises
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - data
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: weather
+                            subtype:
+                              type: "null"
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                type:
+                                  type: string
+                                  const: weather
+                                created:
+                                  type: number
+                                user_id:
+                                  type: number
+                                timestamp:
+                                  type: number
+                                temperature_current:
+                                  type: number
+                                temperature_high:
+                                  type: number
+                                temperature_low:
+                                  type: number
+                              required:
+                                - id
+                                - type
+                                - created
+                                - user_id
+                                - timestamp
+                                - temperature_current
+                                - temperature_high
+                                - temperature_low
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - data
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: activity
+                            subtype:
+                              type: string
+                              const: weightlifting
+                            data: {}
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: weight
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: activity
+                            subtype:
+                              type: string
+                              const: walking
+                            data: {}
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                required:
+                  - items
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - cannotCreateDeposit
+                          - invalidPassword
+                          - invalidTotpCode
+                          - totpNotEnabled
+                          - totpAlreadyEnabled
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+components:
+  securitySchemes:
+    bearerHttpAuthentication:
+      type: apiKey
+      scheme: bearer
+      bearerFormat: jwt
+      name: authorization
+      in: header
+    cookieClientAuthentication:
+      type: apiKey
+      bearerFormat: jwt
+      name: authtoken
+      in: cookie
+    cookieUserAuthentication:
+      type: apiKey
+      bearerFormat: jwt
+      name: adminauthtoken
+      in: cookie

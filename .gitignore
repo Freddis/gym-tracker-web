@@ -1,0 +1,9 @@
+.vscode
+node_modules
+build
+.vinxi
+.output
+.DS_Store
+.drizzle
+scripts/seed/temp
+scripts/seed/available/real.json
