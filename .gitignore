@@ -7,3 +7,4 @@ build
 .drizzle
 scripts/seed/temp
 scripts/seed/available/real.json
+.env

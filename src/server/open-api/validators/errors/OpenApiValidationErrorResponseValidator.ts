@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {OpenApiErrorCode} from '../../types';
+import {OpenApiErrorCode} from '../../enums/OpenApiErrorCode';
 
 
 // export interface OpenApiFieldError {

@@ -8,26 +8,22 @@ import {argusResponseValidator} from './validators/ArgusResponse';
 
 
 const logger = new Logger('Download');
-
+const reDownloadCheckins = process.argv[2];
 const authtoken = EnvHelper.getString('AUTH_TOKEN');
 const scriptPath = join(realpathSync('.'), '/scripts/seed');
 const tempPath = join(scriptPath, 'temp');
-// logger.info('Cleaning up');
-// const files = readdirSync(path);
-// for (const file of files) {
-//   const filePath = join(path, file);
-//   unlinkSync(filePath);
-// }
 
-logger.info('Loading checkings ids');
+logger.info('Loading checking ids');
 const name = 'checkins';
 const checkinsPath = join(tempPath, `${name}.json`);
+
 const checkinsValidator = argusResponseValidator.extend({
   checkins: z.object({
     id: z.string(),
   }).array(),
 });
-if (!existsSync(checkinsPath)) {
+if (!existsSync(checkinsPath) || reDownloadCheckins) {
+  logger.info('Downloading checkins from Azumio');
   const url = 'http://azumio.com/v2/checkins.csv?_fields=id&limit=1000000';
   const response = await fetch(url, {
     method: 'GET',
@@ -46,18 +42,19 @@ if (!existsSync(checkinsPath)) {
   logger.info('Writing file: ', {checkinsPath});
   writeFileSync(checkinsPath, JSON.stringify(data));
 } else {
-  logger.info('Checkins bukk file exists');
+  logger.info('Checkins bulk file exists');
 }
 const checkinsFile = readFileSync(checkinsPath);
 const data = JSON.parse(checkinsFile.toString());
 const checkinsReponse = checkinsValidator.parse(data);
 let i = 0;
+const count = checkinsReponse.checkins.length;
 const checkins: ArgusCheckin[] = [];
 for (const row of checkinsReponse.checkins) {
   i++;
   const id = row.id;
-  logger.info(`Loading checkin id: ${id}`);
-  const checkinPath = join(tempPath, `${i}_${id}.json`);
+  logger.info(`Loading checkin id: ${id}, ${i}/${count}`);
+  const checkinPath = join(tempPath, `${id}.json`);
   let data: unknown = null;
   if (existsSync(checkinPath)) {
     logger.info(`Checkin id ${id}, already exists`);

@@ -1,8 +1,9 @@
 import {join} from 'path';
 import {Logger} from '../../src/utls/Logger/Logger';
 import {readFileSync, realpathSync} from 'fs';
-import {db, dbSchema, pgClient} from '../../src/server/drizzle/db';
+import {dbSchema, pgClient} from '../../src/server/drizzle/db';
 import {argusResponseValidator} from './validators/ArgusResponse';
+import {DrizzleService} from '../../src/server/services/DrizzleService/DrizzleService';
 
 const logger = new Logger('Seeds');
 logger.info('Starting seeds');
@@ -33,8 +34,8 @@ for (const checkin of validatedData.data.checkins) {
   };
   entries.push(entry);
 }
-
-
+const drizzleService = new DrizzleService();
+const db = await drizzleService.getDb();
 logger.info('Cleaning up db');
 await db.delete(dbSchema.entries);
 

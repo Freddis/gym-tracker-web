@@ -16,7 +16,7 @@ export const workoutEntryValidator = createSelectSchema(dbSchema.entries).extend
     duration: z.number(),
     calories: z.number(),
     created: z.number(),
-    TotalExercisesInWorkout: z.number(),
+    TotalExercisesInWorkout: z.number().optional(),
     end: z.number(),
     start: z.number(),
     exercises: z.array(z.object({

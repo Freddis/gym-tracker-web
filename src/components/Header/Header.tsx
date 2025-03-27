@@ -25,5 +25,6 @@ export function Header() {
   };
   return <div style={style}>
     <Link to="/" style={aStyle}>Home</Link>
+    <Link to="/exercises" style={aStyle}>Exercise Library</Link>
   </div>;
 }

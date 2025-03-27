@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'zod-openapi/extend';
 import fs from 'fs';
 import {stringify} from 'yaml';
@@ -13,6 +12,7 @@ import {
   ZodString,
   ZodTypeAny,
   ZodUnion,
+  ZodUnionOptions,
 } from 'zod';
 import {
   createDocument,
@@ -21,33 +21,32 @@ import {
   ZodOpenApiParameters,
   ZodOpenApiPathsObject,
 } from 'zod-openapi';
-import {
-  Admin,
-  Client,
-  ClientRoute,
-  OpenApiActionError,
-  OpenApiError,
-  OpenApiErrorCode,
-  OpenApiErrorResponse,
-  OpenApiFieldError,
-  OpenApiMethods,
-  OpenApiPatchRoute,
-  OpenApiPermissionError,
-  OpenApiPostRoute,
-  OpenApiPutRoute,
-  OpenApiRequestContext,
-  OpenApiRoute,
-  OpenApiValidationError,
-  PermissionKey,
-  PublicRoute,
-  RequestServices,
-  UserRoute,
-  ValidationLocations,
-} from './types';
 import {openApiActionErrorResponseValidator} from './validators/errors/OpenApiActionErrorResponseValidator';
-import {openApiValidationErrorResponseValidator} from './validators/errors/OpenApiValidationErrorResponseValidator';
+import {
+  OpenApiFieldError,
+  openApiValidationErrorResponseValidator,
+} from './validators/errors/OpenApiValidationErrorResponseValidator';
 import {Logger} from '../../utls/Logger/Logger';
 import {EntryService} from '../services/EntryService/EntryService';
+import {DrizzleService} from '../services/DrizzleService/DrizzleService';
+import {OpenApiErrorCode} from './enums/OpenApiErrorCode';
+import {OpenApiMethods} from './enums/OpenApiMethods';
+import {ValidationLocations} from './enums/ValidationLocations';
+import {Admin} from './types/Admin';
+import {OpenApiActionError} from './types/errors/OpenApiActionError';
+import {OpenApiError} from './types/errors/OpenApiError';
+import {OpenApiPermissionError} from './types/errors/OpenApiPermissionError';
+import {OpenApiValidationError} from './types/errors/OpenApiValidationError';
+import {OpenApiRequestContext} from './types/OpenApiRequestContext';
+import {OpenApiErrorResponse} from './types/responses/OpenApiErrorResponse';
+import {ClientRoute} from './types/routes/ClientRoute';
+import {OpenApiRoute} from './types/routes/OpenApiRoute';
+import {PublicRoute} from './types/routes/PublicRoute';
+import {UserRoute} from './types/routes/UserRoute';
+import {Permission} from './types/Permission';
+import {Client} from './types/Client';
+import {NonEmptyArray} from './types/NonEmptyArray';
+import {RequestServices} from './types/RequestServices';
 
 export class OpenApiService {
   protected routes: OpenApiRoute[] = [];
@@ -64,7 +63,7 @@ export class OpenApiService {
         })
         .extend(filter)
         .openapi({description: 'Pagination parameters'}),
-    paginatedResponse: <T extends ZodObject<any>>(arr: T) =>
+    paginatedResponse: <T extends ZodObject<ZodRawShape>| ZodUnion<ZodUnionOptions>>(arr: T) =>
       z.object({
         items: z.array(arr).openapi({description: 'Page or items'}),
         info: z
@@ -76,18 +75,6 @@ export class OpenApiService {
           .openapi({description: 'Pagination details'}),
       }),
     objects: {
-      // user: openApiUserValidator,
-      // callLog: openApiCallLogValidator,
-      // client: openApiClientValidator,
-      // deposit: openApiDepositValidator,
-      // role: openApiRoleValidator,
-      // references: {
-      //   user: openApiReferencedUserValidator,
-      //   client: openApiReferencedClientValidator,
-      //   account: openApiReferencedAccountValidator,
-      //   callLog: openApiReferencedCallLogValidator,
-      // },
-      // clientMarketingDetails: openApiCampaignValidator,
     },
   };
 
@@ -95,12 +82,12 @@ export class OpenApiService {
     this.logger = new Logger('OpenAPI');
   }
 
-  createClientRoute<
+  createClientwRoute<
     ResponseValidator extends ZodFirstPartySchemaTypes,
-    PathValidator extends ZodObject<any> | undefined = undefined,
-    QueryValidator extends ZodObject<any> | undefined = undefined,
-    BodyValidator extends ZodObject<any> | undefined = undefined
-  >(params: ClientRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>): OpenApiRoute {
+    PathValidator extends ZodObject<ZodRawShape> | undefined = undefined,
+    QueryValidator extends ZodObject<ZodRawShape> | undefined = undefined,
+    BodyValidator extends ZodObject<ZodRawShape> | undefined = undefined
+  >(params: ClientRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>): OpenApiRoute<Client> {
     if (params.method === OpenApiMethods.get) {
       return {
         type: 'Client',
@@ -111,7 +98,7 @@ export class OpenApiService {
         pathValidator: params.validators.path ?? z.object({}),
         responseValidator: params.validators.response,
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
     if (params.method === OpenApiMethods.patch || params.method === OpenApiMethods.put) {
@@ -125,7 +112,7 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
     if (params.method === OpenApiMethods.delete) {
@@ -139,7 +126,7 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
 
@@ -153,16 +140,18 @@ export class OpenApiService {
       responseValidator: params.validators.response,
       bodyValidator: params.validators.body ?? z.object({}),
       path: params.path,
-      handler: params.handler as any,
+      handler: params.handler,
     };
   }
 
   createPublicRoute<
     ResponseValidator extends ZodFirstPartySchemaTypes,
-    PathValidator extends ZodObject<any> | undefined = undefined,
-    QueryValidator extends ZodObject<any> | undefined = undefined,
-    BodyValidator extends ZodObject<any> | undefined = undefined
-  >(params: PublicRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>): OpenApiRoute {
+    PathValidator extends ZodObject<ZodRawShape> | undefined = undefined,
+    QueryValidator extends ZodObject<ZodRawShape> | undefined = undefined,
+    BodyValidator extends ZodObject<ZodRawShape> | undefined = undefined
+  >(
+    params: PublicRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>
+  ): OpenApiRoute<undefined> {
     if (params.method === OpenApiMethods.get) {
       return {
         type: 'Unauthorized',
@@ -173,7 +162,7 @@ export class OpenApiService {
         pathValidator: params.validators.path ?? z.object({}),
         responseValidator: params.validators.response,
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
 
@@ -188,7 +177,7 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
     if (params.method === OpenApiMethods.delete) {
@@ -202,7 +191,7 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
 
@@ -216,7 +205,7 @@ export class OpenApiService {
       responseValidator: params.validators.response,
       bodyValidator: params.validators.body ?? z.object({}),
       path: params.path,
-      handler: params.handler as any,
+      handler: params.handler,
     };
   }
 
@@ -225,9 +214,9 @@ export class OpenApiService {
     PathValidator extends ZodObject<ZodRawShape> | undefined = undefined,
     QueryValidator extends ZodObject<ZodRawShape> | undefined = undefined,
     BodyValidator extends ZodObject<ZodRawShape> | undefined = undefined
-  >(params: UserRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>): OpenApiRoute {
+  >(params: UserRoute<ResponseValidator, PathValidator, QueryValidator, BodyValidator>): OpenApiRoute<Admin> {
     if (params.method === OpenApiMethods.get) {
-      return {
+      const route: OpenApiRoute<Admin> = {
         type: 'User',
         method: params.method,
         description: params.description,
@@ -236,11 +225,12 @@ export class OpenApiService {
         pathValidator: params.validators.path ?? z.object({}),
         responseValidator: params.validators.response,
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
+      return route;
     }
     if (params.method === OpenApiMethods.patch || params.method === OpenApiMethods.put) {
-      const route: OpenApiPatchRoute | OpenApiPutRoute = {
+      const route: OpenApiRoute<Admin> = {
         method: params.method,
         type: 'User',
         permissions: [],
@@ -250,8 +240,9 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
+
       return route;
     }
     if (params.method === OpenApiMethods.delete) {
@@ -265,11 +256,10 @@ export class OpenApiService {
         responseValidator: params.validators.response,
         bodyValidator: params.validators.body ?? z.object({}),
         path: params.path,
-        handler: params.handler as any,
+        handler: params.handler,
       };
     }
-
-    const route: OpenApiPostRoute = {
+    const route: OpenApiRoute<Admin> = {
       method: OpenApiMethods.post,
       type: 'User',
       description: params.description,
@@ -279,17 +269,18 @@ export class OpenApiService {
       responseValidator: params.validators.response,
       bodyValidator: params.validators.body ?? z.object({}),
       path: params.path,
-      handler: params.handler as any,
+      handler: params.handler,
     };
     return route;
   }
 
-  public addRoutes(path: string, routes: OpenApiRoute[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public addRoutes(path: string, routes: (OpenApiRoute<any>)[]) {
     const newRoutes = routes.map((x) => ({...x, path: path + x.path}));
     this.routes.push(...newRoutes);
   }
 
-  protected checkRouteDescriptions(route: OpenApiRoute) {
+  protected checkRouteDescriptions(route: OpenApiRoute<unknown>) {
     const minimalLength = 10;
     if (!route.description || route.description.length < minimalLength) {
       throw new Error(`Description for ${route.path} is missing or too small`);
@@ -317,7 +308,7 @@ export class OpenApiService {
     }
     // console.log(validator._def.typeName)
     if (validator._def.typeName === 'ZodArray') {
-      const arr = validator as ZodArray<any>;
+      const arr = validator as ZodArray<ZodObject<ZodRawShape>>;
       const nonPrimitiveArray = arr.element.shape !== undefined;
       if (nonPrimitiveArray) {
         this.checkShapeDescription(route, validatorName, arr.element.shape);
@@ -328,14 +319,14 @@ export class OpenApiService {
       throw new Error(msg);
     }
     if (validator._def.typeName === 'ZodObject') {
-      const obj = validator as ZodObject<any>;
+      const obj = validator as ZodObject<ZodRawShape>;
       this.checkShapeDescription(route, validatorName, obj.shape);
     }
   }
 
   protected checkShapeDescription(route: OpenApiRoute, validatorName: string, shape: ZodRawShape) {
     for (const field of Object.keys(shape)) {
-      const value = shape[field] as ZodObject<any>;
+      const value = shape[field] as ZodObject<ZodRawShape>;
       this.checkValidatorDescriptions(route, validatorName, field, value);
     }
   }
@@ -349,8 +340,9 @@ export class OpenApiService {
     return null;
   }
 
-  async processRootRoute(basePath: string, originalReq: Request
-
+  async processRootRoute(
+    basePath: string,
+    originalReq: Request
   ): Promise<{status: number; body: OpenApiErrorResponse}| {status: undefined}> {
     try {
       const url = new URL(originalReq.url);
@@ -358,7 +350,7 @@ export class OpenApiService {
       const req = {
         path: urlPath,
         method: originalReq.method,
-        params: Object.fromEntries(url.searchParams.entries()),
+        params: {},
         query: Object.fromEntries(url.searchParams.entries()),
         body: originalReq.body,
       };
@@ -416,9 +408,6 @@ export class OpenApiService {
       this.logger.error('Error during request openAPI route handling', e);
       const response = this.getErrorResponse(e);
       return response;
-      // res.status(response.status);
-      // res.json(response.body);
-
     }
   }
 
@@ -436,34 +425,71 @@ export class OpenApiService {
       Client | Admin | undefined
     >
   > {
-    let viewer: Client | Admin | undefined;
+    // let viewer: Client | Admin | undefined;
     // const authService = await authServiceFactory.get();
-    let permission: PermissionKey | undefined;
-    // if (route.type === 'Client') {
-    //   viewer = (await authService.getClientFromRequest(req)) ?? undefined;
-    // }
-    // if (route.type === 'User') {
-    //   viewer = (await authService.getUserFromRequest(req)) ?? undefined;
-    //   if (viewer && isNonEmptyArray(route.permissions)) {
-    //     const adminService = await adminServiceFactory.get();
-    //     const foundPermission = await adminService.hasAtLeastOnePermission(
-    //       viewer,
-    //       [...route.permissions].reverse(),
-    //     );
-    //     if (!foundPermission) {
-    //       throw new OpenApiPermissionError(route.permissions);
-    //     }
-    //     permission = foundPermission;
-    //   }
-    // }
-    // if (route.type !== 'Unauthorized' && !viewer) {
-    //   throw new OpenApiError(OpenApiErrorCode.unauthorized);
-    // }
+    let permission: Permission | undefined;
     const services: RequestServices = {
       models: {
-        entry: new EntryService(),
+        entry: new EntryService(new DrizzleService()),
       },
     };
+    if (route.type === 'Client') {
+      // viewer = (await authService.getClientFromRequest(req)) ?? undefined;
+      const client: Client = {
+        id: 2,
+        type: 'client',
+      };
+      if (!client) {
+        throw new OpenApiError(OpenApiErrorCode.unauthorized);
+      }
+      return {
+        params: {
+          path: path,
+          query: query,
+          body: body ?? {},
+        },
+        permission: permission as Permission | never,
+        services: services,
+        viewer: client,
+      };
+    }
+    function isNonEmptyArray<T>(arr: T[]): arr is NonEmptyArray<T> {
+      return arr.length > 0;
+    }
+
+    if (route.type === 'User') {
+      // viewer = (await authService.getUserFromRequest(req)) ?? undefined;
+      if (!isNonEmptyArray(route.permissions)) {
+        throw new Error("User route doesn't have permissions specified");
+      }
+      const user: Admin = {
+        id: 1,
+        type: 'admin',
+      };
+      if (!user) {
+        throw new OpenApiError(OpenApiErrorCode.unauthorized);
+      }
+        // const adminService = await adminServiceFactory.get();
+        // const foundPermission = await adminService.hasAtLeastOnePermission(
+        //   viewer,
+        //   [...route.permissions].reverse(),
+        // );
+      const foundPermission: Permission | null = null;
+      if (!foundPermission) {
+        throw new OpenApiPermissionError(route.permissions);
+      }
+      permission = foundPermission;
+      return {
+        params: {
+          path: path,
+          query: query,
+          body: body ?? {},
+        },
+        permission: permission,
+        services: services,
+        viewer: user,
+      };
+    }
 
     return {
       params: {
@@ -471,9 +497,9 @@ export class OpenApiService {
         query: query,
         body: body ?? {},
       },
-      permission: permission as PermissionKey | never,
       services: services,
-      viewer: viewer as any, // todo: fix ASAP,
+      viewer: undefined as never,
+      permission: undefined as never,
     };
   }
 
@@ -556,20 +582,20 @@ export class OpenApiService {
   }
 
   protected convertStringsAndSafeParse(
-    finalValidator: z.ZodObject<any>,
-    data: any,
+    finalValidator: z.ZodObject<ZodRawShape>,
+    data: unknown,
     paramSourceName: ValidationLocations,
-  ): z.SafeParseReturnType<any, any> {
+  ): z.SafeParseReturnType<unknown, object> {
     const initialValidatorShape: {
       [key: string]:
         | ZodArray<ZodString>
         | ZodString
         | ZodOptional<ZodString | ZodArray<ZodString>>
         | ZodDefault<ZodString>
-        | ZodUnion<any>
-        | ZodOptional<ZodUnion<any>>
+        | ZodUnion<ZodUnionOptions>
+        | ZodOptional<ZodUnion<ZodUnionOptions>>
     } = {};
-    const finalShape = (finalValidator as ZodObject<any>).shape;
+    const finalShape = (finalValidator as ZodObject<ZodRawShape>).shape;
     for (const key of Object.keys(finalShape)) {
       let def = finalShape[key]._def;
       if (def.typeName === 'ZodDefault') {
@@ -596,7 +622,7 @@ export class OpenApiService {
     if (!initialResult.success) {
       throw new OpenApiValidationError(initialResult.error, paramSourceName);
     }
-    const transformedParams: any = {};
+    const transformedParams: Record<string, unknown> = {};
     for (const field of Object.keys(initialResult.data)) {
       let type = finalShape[field]._def.typeName;
       let def = finalShape[field]._def;
@@ -622,7 +648,7 @@ export class OpenApiService {
 
       if (type === 'ZodArray') {
         const subtype = def.type._def.typeName;
-        const values: any[] = [];
+        const values: unknown[] = [];
         for (const value of initialValue) {
           const val = this.convertValue(subtype, value, field, paramSourceName, def.type);
           values.push(val);
@@ -630,7 +656,7 @@ export class OpenApiService {
         transformedParams[field] = values;
         continue;
       }
-      const value: any = this.convertValue(type, initialValue, field, paramSourceName, validator);
+      const value: unknown = this.convertValue(type, initialValue, field, paramSourceName, validator);
       transformedParams[field] = value;
     }
 
@@ -639,13 +665,13 @@ export class OpenApiService {
   }
 
   protected convertValue(
-    type: any,
-    initialValue: any,
+    type: string,
+    initialValue: string,
     field: string,
     paramSourceName: string,
-    validator: ZodObject<any>,
+    validator: ZodTypeAny,
   ) {
-    let value: any = null;
+    let value: string | number| Date | boolean | object = '';
     let typeName = 'Unknown';
     switch (type) {
       case 'ZodNumber':
@@ -674,7 +700,7 @@ export class OpenApiService {
       default:
         throw new Error(`Couldn't parse ${field} from ${paramSourceName}, type '${type}' cannot be used`);
     }
-    const stringValue = typeName === 'date' ? value.toISOString() : value.toString();
+    const stringValue = typeName === 'date' ? (value as Date).toISOString() : value.toString();
     if (stringValue !== initialValue) {
       throw new Error(`Couldn't parse ${field} is not a valid ${typeName}: ${stringValue} != ${initialValue}`);
     }
@@ -792,7 +818,6 @@ export class OpenApiService {
         },
       };
       operation.responses['422'] = {
-
         description:
           'Validation Error on Response. Always server-side problem. Introduced for debugging purposes, disabled in prod.',
         content: {
@@ -827,7 +852,7 @@ export class OpenApiService {
                       .literal(OpenApiErrorCode.missingPermission)
                       .openapi({description: 'Code to handle on the frontend'}),
                     permissions: z
-                      .array(z.nativeEnum(PermissionKey))
+                      .array(z.nativeEnum(Permission))
                       .openapi({description: 'List of possible permissions to allow access'}),
                   })
                   .openapi({description: 'Error response'}),

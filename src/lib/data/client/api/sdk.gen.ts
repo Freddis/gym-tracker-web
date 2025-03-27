@@ -4,13 +4,16 @@ import type {
   Options as ClientOptions,
   TDataShape,
   Client,
-} from '@hey-api/client-axios';
+} from "@hey-api/client-axios";
 import type {
   GetEntriesData,
   GetEntriesResponse,
   GetEntriesError,
-} from './types.gen';
-import {client as _heyApiClient} from './client.gen';
+  GetEntryTypesData,
+  GetEntryTypesResponse,
+  GetEntryTypesError,
+} from "./types.gen";
+import { client as _heyApiClient } from "./client.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -21,13 +24,13 @@ export type Options<
    * individual options. This might be also useful if you want to implement a
    * custom client.
    */
-  client?: Client
+  client?: Client;
   /**
    * You can pass arbitrary values through the `meta` object. This can be
    * used to access values that aren't defined as part of the SDK function.
    */
-  meta?: Record<string, unknown>
-}
+  meta?: Record<string, unknown>;
+};
 
 /**
  * Returns data on all entries from Argus
@@ -40,7 +43,23 @@ export const getEntries = <ThrowOnError extends boolean = false>(
     GetEntriesError,
     ThrowOnError
   >({
-    url: '/entries',
+    url: "/entries",
+    ...options,
+  });
+};
+
+/**
+ * Returns possible entry types for Argus
+ */
+export const getEntryTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntryTypesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntryTypesResponse,
+    GetEntryTypesError,
+    ThrowOnError
+  >({
+    url: "/entryTypes",
     ...options,
   });
 };

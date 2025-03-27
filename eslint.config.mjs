@@ -185,6 +185,7 @@ export default tseslint.config(
     'output/**',
     '.drizzle/**',
     'app/server/drizzle/schema/schema.ts',
+    'src/lib/data/client/api/**',
     'app/server/drizzle/schema/relations.ts',
   ],
   languageOptions: {

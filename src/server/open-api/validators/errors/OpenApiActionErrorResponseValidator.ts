@@ -1,5 +1,6 @@
 import {z} from 'zod';
-import {OpenApiActionErrorCode, OpenApiErrorCode} from '../../types';
+import {OpenApiActionErrorCode} from '../../enums/OpenApiActionErrorCode';
+import {OpenApiErrorCode} from '../../enums/OpenApiErrorCode';
 
 export const openApiActionErrorResponseValidator = z.object({
   code: z.literal(OpenApiErrorCode.actionError).openapi({description: 'Code to handle on the frontend.'}),

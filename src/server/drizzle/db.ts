@@ -5,8 +5,10 @@ import {QueryLogger} from '../../utls/QueryLogger/QueryLogger';
 import * as schema from './schema/schema';
 import * as relations from './schema/relations';
 
-export const pgClient = new pg.Client(serverConfig.database);
-await pgClient.connect();
+export const pgClient = new pg.Client({
+  ...serverConfig.database,
+  connectionTimeoutMillis: 2000,
+});
 export const db = pgDrizzle(pgClient, {
   logger: new QueryLogger(false, true, 'postgres'),
   schema: {...schema, ...relations},

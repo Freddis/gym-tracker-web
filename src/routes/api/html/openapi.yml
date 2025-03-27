@@ -9,6 +9,31 @@ paths:
   /entries:
     get:
       description: Returns data on all entries from Argus
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            default: 1
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum:
+              - steps
+              - weather
+              - calories
+              - food
+              - activity
+              - weight
+              - consumedcalories
+              - drink
+              - heartrate
+              - status
+              - bodymetrics
+              - workout_log
+              - sleepreport
+              - fitnesstest
       responses:
         "200":
           description: Good Response
@@ -132,7 +157,6 @@ paths:
                                 - activeDuration
                                 - duration
                                 - calories
-                                - TotalExercisesInWorkout
                                 - end
                                 - start
                                 - exercises
@@ -247,7 +271,29 @@ paths:
                               const: weight
                             subtype:
                               type: "null"
-                            data: {}
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                type:
+                                  type: string
+                                  const: weight
+                                created:
+                                  type: number
+                                user_id:
+                                  type: number
+                                timestamp:
+                                  type: number
+                                value:
+                                  type: number
+                              required:
+                                - id
+                                - type
+                                - created
+                                - user_id
+                                - timestamp
+                                - value
                             createdAt:
                               type: string
                             updatedAt:
@@ -259,6 +305,7 @@ paths:
                             - externalId
                             - type
                             - subtype
+                            - data
                             - createdAt
                             - updatedAt
                         - type: object
@@ -289,6 +336,218 @@ paths:
                             - subtype
                             - createdAt
                             - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: calories
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                    description: Page or items
+                  info:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                        description: Total number of items
+                      page:
+                        type: number
+                        description: Current page
+                      pageSize:
+                        type: number
+                        description: Number of items per page
+                    required:
+                      - count
+                      - page
+                      - pageSize
+                    description: Pagination details
+                required:
+                  - items
+                  - info
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - cannotCreateDeposit
+                          - invalidPassword
+                          - invalidTotpCode
+                          - totpNotEnabled
+                          - totpAlreadyEnabled
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /entryTypes:
+    get:
+      description: Returns possible entry types for Argus
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - steps
+                        - weather
+                        - calories
+                        - food
+                        - activity
+                        - weight
+                        - consumedcalories
+                        - drink
+                        - heartrate
+                        - status
+                        - bodymetrics
+                        - workout_log
+                        - sleepreport
+                        - fitnesstest
                 required:
                   - items
         "400":
