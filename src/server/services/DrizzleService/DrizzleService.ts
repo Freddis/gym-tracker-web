@@ -1,5 +1,4 @@
-import {db, pgClient} from 'src/server/drizzle/db';
-
+import {db, dbSchema, pgClient} from 'src/server/drizzle/db';
 export class DrizzleService {
   protected static connected = false;
   async getDb(): Promise<typeof db> {
@@ -8,6 +7,10 @@ export class DrizzleService {
       await pgClient.connect();
     }
     return db;
+  }
+
+  getSchema() {
+    return dbSchema;
   }
 
   async end() {

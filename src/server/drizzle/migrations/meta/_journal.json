@@ -15,6 +15,13 @@
       "when": 1741781871250,
       "tag": "0001_entry_subtype",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743194918669,
+      "tag": "0002_exercises_and_users",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,7 @@
 import {relations} from 'drizzle-orm/relations';
-import {exercise, users} from './schema';
+import {exercises, users} from './schema';
 
 
-export const exerciseRelations = relations(exercise, (relations) => ({
+export const exerciseRelations = relations(exercises, (relations) => ({
   user: relations.one(users),
 }));

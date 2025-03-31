@@ -45,15 +45,6 @@ export class Logger {
     const now = new Date();
     const timePart = Logger.showTime ? now.toISOString() : '';
     const msg = `${timePart}[${level}][${this.invoker}]: ${message}`;
-    // const dataPart: string | null = null;
-    // if (data) {
-    //   dataPart = JSON.stringify(data, (key, value) => {
-    //     if (typeof value === 'bigint') {
-    //       return `bigint(${value.toString()})`;
-    //     }
-    //     return value;
-    //   }, 2);
-    // }
     if (Logger.inlineObjects) {
       if (data) {
         console.log(msg, this.transformData(data));

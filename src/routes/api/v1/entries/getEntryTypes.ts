@@ -1,0 +1,21 @@
+import {z} from 'zod';
+import {openApiInstance} from '../../../../openApiInstance';
+import {EntryType} from 'src/server/model/Entry/types/EntryType';
+import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
+import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
+
+export const getEntryTypes = openApiInstance.factory.createRoute({
+  method: OpenApiMethods.get,
+  type: AppOpenApiRouteTypes.User,
+  description: 'Returns possible entry types for Argus',
+  path: '/types',
+  validators: {
+    response: z.object({
+      items: z.nativeEnum(EntryType).array(),
+    }),
+  },
+  handler: async (ctx) => {
+    const values = ctx.services.models.entry.getCategories();
+    return {items: values};
+  },
+});

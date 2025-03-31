@@ -1,6 +1,6 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["./scripts"],
+  "include": ["**/*.ts", "**/*.tsx", "src/routes/api/v1/entries/getEntries.ts"],
+  // "exclude": ["./scripts"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

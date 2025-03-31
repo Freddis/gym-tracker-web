@@ -12,11 +12,17 @@ export const entries = gymTracker.table('entries', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
 
-export const exercise = gymTracker.table('exercises', {
+export const exercises = gymTracker.table('exercises', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar().notNull(),
   description: text(),
+  difficulty: integer(),
+  equipmentId: integer().notNull(),
+  images: varchar().array().notNull(),
+  params: integer().array().notNull(),
   userId: integer(),
+  copiedFromId: integer(),
+  parentExerciseId: integer(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 });

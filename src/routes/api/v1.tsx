@@ -1,12 +1,8 @@
 import {createAPIFileRoute} from '@tanstack/react-start/api';
-import {openApiInstance} from '../../server/open-api/openApiInstance';
-import {json} from '@tanstack/react-start';
+import {openApiInstance} from '../../openApiInstance';
+import {
+  OpenApiTanstackStartWrapper,
+} from 'src/server/services/OpenApiService/services/OpenApiTanstackStartWrapper/OpenApiTanstackStartWrapper';
 
-export const APIRoute = createAPIFileRoute('/api/v1')({
-  GET: async (ctx) => {
-    const response = await openApiInstance.processRootRoute('/api/v1', ctx.request);
-    return json(response, {
-      status: response.status ?? 200,
-    });
-  },
-});
+const x = new OpenApiTanstackStartWrapper(openApiInstance);
+export const APIRoute = x.createOpenApiRootRoute('/api/v1', createAPIFileRoute);

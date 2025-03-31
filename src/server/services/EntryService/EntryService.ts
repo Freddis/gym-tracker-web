@@ -1,7 +1,7 @@
 import {Entry} from 'src/server/model/Entry/Entry';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {EntryType} from 'src/server/model/Entry/types/EntryType';
-import {PaginatedResult} from 'src/server/open-api/validators/convenience/PaginatedResponse';
+import {PaginatedResult} from 'src/server/services/OpenApiService/validators/convenience/PaginatedResponse';
 import {dbSchema} from 'src/server/drizzle/db';
 import {eq, count} from 'drizzle-orm';
 

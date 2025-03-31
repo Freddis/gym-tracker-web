@@ -1,12 +1,7 @@
-import {entries} from '../../src/routes/api/v1/entries';
-import {types} from '../../src/routes/api/v1/types';
 import {pgClient} from '../../src/server/drizzle/db';
-import {openApiInstance} from '../../src/server/open-api/openApiInstance';
+import {openApiInstance} from '../../src/openApiInstance';
+import {openApiRoutes} from 'src/openApiRoutes';
 
-openApiInstance.addRoutes('', [
-  entries,
-  types,
-]);
-
+openApiInstance.addRoutesByMap(openApiRoutes);
 openApiInstance.saveYaml('./src/routes/api/html/openapi.yml');
 await pgClient.end();

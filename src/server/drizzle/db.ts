@@ -1,9 +1,10 @@
 import pg from 'pg';
-import {serverConfig} from '../../utls/ServerConfig/config';
+
 import {drizzle as pgDrizzle} from 'drizzle-orm/node-postgres';
-import {QueryLogger} from '../../utls/QueryLogger/QueryLogger';
 import * as schema from './schema/schema';
 import * as relations from './schema/relations';
+import {QueryLogger} from '../utils/QueryLogger/QueryLogger';
+import {serverConfig} from '../utils/ServerConfig/config';
 
 export const pgClient = new pg.Client({
   ...serverConfig.database,

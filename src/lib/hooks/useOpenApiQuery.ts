@@ -7,14 +7,18 @@ TDShape extends TDataShape,
 TQueryFnData = unknown,
 TError = DefaultError,
 TData = TQueryFnData,
-TQueryKey extends QueryKey = QueryKey
+TQueryKey extends QueryKey = readonly unknown[]
  >(
   queryOptionsFunc: (options?: Options<TDShape>) => UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-  options?: Options<TDShape>,
+  options: Options<TDShape> & {queryKey?: TQueryKey},
 ): UseQueryResult<TData, TError> {
   const opts = queryOptionsFunc(options);
     // place to add some global overrides for queries
   opts.placeholderData = keepPreviousData;
+  if (options?.queryKey) {
+    opts.queryKey = options.queryKey;
+  }
+
   const result = useQuery(opts);
   return result;
 }

@@ -6,12 +6,33 @@ import type {
   Client,
 } from "@hey-api/client-axios";
 import type {
+  PostAuthRegisterData,
+  PostAuthRegisterResponse,
+  PostAuthRegisterError,
+  PostAuthLoginData,
+  PostAuthLoginResponse,
+  PostAuthLoginError,
+  GetExercisesData,
+  GetExercisesResponse,
+  GetExercisesError,
+  PostExercisesData,
+  PostExercisesResponse,
+  PostExercisesError,
+  DeleteExercisesByIdData,
+  DeleteExercisesByIdResponse,
+  DeleteExercisesByIdError,
+  GetExercisesByIdData,
+  GetExercisesByIdResponse,
+  GetExercisesByIdError,
+  PatchExercisesByIdData,
+  PatchExercisesByIdResponse,
+  PatchExercisesByIdError,
   GetEntriesData,
   GetEntriesResponse,
   GetEntriesError,
-  GetEntryTypesData,
-  GetEntryTypesResponse,
-  GetEntryTypesError,
+  GetEntriesTypesData,
+  GetEntriesTypesResponse,
+  GetEntriesTypesError,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 
@@ -33,6 +54,164 @@ export type Options<
 };
 
 /**
+ * Registers a user
+ */
+export const postAuthRegister = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthRegisterData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthRegisterResponse,
+    PostAuthRegisterError,
+    ThrowOnError
+  >({
+    url: "/auth/register",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Logins a user
+ */
+export const postAuthLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthLoginData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthLoginResponse,
+    PostAuthLoginError,
+    ThrowOnError
+  >({
+    url: "/auth/login",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercises = <ThrowOnError extends boolean = false>(
+  options?: Options<GetExercisesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetExercisesResponse,
+    GetExercisesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/exercises/",
+    ...options,
+  });
+};
+
+/**
+ * Adds new exercise to the user personal library
+ */
+export const postExercises = <ThrowOnError extends boolean = false>(
+  options?: Options<PostExercisesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostExercisesResponse,
+    PostExercisesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/exercises/",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Deletes exercise to the user personal library
+ */
+export const deleteExercisesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteExercisesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteExercisesByIdResponse,
+    DeleteExercisesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/exercises/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetExercisesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetExercisesByIdResponse,
+    GetExercisesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/exercises/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Adds new exercise to the user personal library
+ */
+export const patchExercisesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchExercisesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchExercisesByIdResponse,
+    PatchExercisesByIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/exercises/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Returns data on all entries from Argus
  */
 export const getEntries = <ThrowOnError extends boolean = false>(
@@ -43,7 +222,7 @@ export const getEntries = <ThrowOnError extends boolean = false>(
     GetEntriesError,
     ThrowOnError
   >({
-    url: "/entries",
+    url: "/entries/",
     ...options,
   });
 };
@@ -51,15 +230,21 @@ export const getEntries = <ThrowOnError extends boolean = false>(
 /**
  * Returns possible entry types for Argus
  */
-export const getEntryTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntryTypesData, ThrowOnError>,
+export const getEntriesTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesTypesData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetEntryTypesResponse,
-    GetEntryTypesError,
+    GetEntriesTypesResponse,
+    GetEntriesTypesError,
     ThrowOnError
   >({
-    url: "/entryTypes",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/entries/types",
     ...options,
   });
 };

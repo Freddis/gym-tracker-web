@@ -2,7 +2,7 @@ import {join} from 'path';
 import {Logger} from '../../src/utls/Logger/Logger';
 import {readFileSync, realpathSync} from 'fs';
 import {dbSchema, pgClient} from '../../src/server/drizzle/db';
-import {argusResponseValidator} from './validators/ArgusResponse';
+import {argusResponseValidator} from '../argus/validators/ArgusResponse';
 import {DrizzleService} from '../../src/server/services/DrizzleService/DrizzleService';
 
 const logger = new Logger('Seeds');
@@ -44,4 +44,4 @@ for (const entry of entries) {
   await db.insert(dbSchema.entries).values(entry);
 }
 await pgClient.end();
-console.log(`Done, added ${entries.length} entries`);
+logger.info(`Done, added ${entries.length} entries`);

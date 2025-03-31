@@ -6,7 +6,1539 @@ servers:
   - url: http://localhost:3000/api/v1
     description: Local
 paths:
-  /entries:
+  /auth/register:
+    post:
+      description: Registers a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 5
+                passwordConfirmation:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+                - passwordConfirmation
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  jwt:
+                    type: string
+                required:
+                  - id
+                  - email
+                  - name
+                  - jwt
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /auth/login:
+    post:
+      description: Logins a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 5
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  name:
+                    type: string
+                  jwt:
+                    type: string
+                required:
+                  - id
+                  - email
+                  - name
+                  - jwt
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /exercises/:
+    post:
+      description: Adds new exercise to the user personal library
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    get:
+      description: Returns data on exercises available to the user
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            default: 1
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum:
+              - steps
+              - weather
+              - calories
+              - food
+              - activity
+              - weight
+              - consumedcalories
+              - drink
+              - heartrate
+              - status
+              - bodymetrics
+              - workout_log
+              - sleepreport
+              - fitnesstest
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        name:
+                          type: string
+                        description:
+                          type:
+                            - string
+                            - "null"
+                        difficulty:
+                          type:
+                            - integer
+                            - "null"
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        equipmentId:
+                          type: integer
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        images:
+                          type: array
+                          items:
+                            type: string
+                        params:
+                          type: array
+                          items:
+                            type: integer
+                            minimum: -2147483648
+                            maximum: 2147483647
+                        userId:
+                          type:
+                            - integer
+                            - "null"
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        copiedFromId:
+                          type:
+                            - integer
+                            - "null"
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        parentExerciseId:
+                          type:
+                            - integer
+                            - "null"
+                          minimum: -2147483648
+                          maximum: 2147483647
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type:
+                            - string
+                            - "null"
+                      required:
+                        - id
+                        - name
+                        - description
+                        - difficulty
+                        - equipmentId
+                        - images
+                        - params
+                        - userId
+                        - copiedFromId
+                        - parentExerciseId
+                        - createdAt
+                        - updatedAt
+                required:
+                  - items
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /exercises/{id}:
+    get:
+      description: Returns data on exercises available to the user
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      name:
+                        type: string
+                      description:
+                        type:
+                          - string
+                          - "null"
+                      difficulty:
+                        type:
+                          - integer
+                          - "null"
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      equipmentId:
+                        type: integer
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      images:
+                        type: array
+                        items:
+                          type: string
+                      params:
+                        type: array
+                        items:
+                          type: integer
+                          minimum: -2147483648
+                          maximum: 2147483647
+                      userId:
+                        type:
+                          - integer
+                          - "null"
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      copiedFromId:
+                        type:
+                          - integer
+                          - "null"
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      parentExerciseId:
+                        type:
+                          - integer
+                          - "null"
+                        minimum: -2147483648
+                        maximum: 2147483647
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type:
+                          - string
+                          - "null"
+                    required:
+                      - id
+                      - name
+                      - description
+                      - difficulty
+                      - equipmentId
+                      - images
+                      - params
+                      - userId
+                      - copiedFromId
+                      - parentExerciseId
+                      - createdAt
+                      - updatedAt
+                required:
+                  - item
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    patch:
+      description: Adds new exercise to the user personal library
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    delete:
+      description: Deletes exercise to the user personal library
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /entries/:
     get:
       description: Returns data on all entries from Argus
       parameters:
@@ -399,11 +1931,8 @@ paths:
                       actionErrorCode:
                         type: string
                         enum:
-                          - cannotCreateDeposit
                           - invalidPassword
-                          - invalidTotpCode
-                          - totpNotEnabled
-                          - totpAlreadyEnabled
+                          - emailAlreadyExists
                         description: Subcategory of error.
                       humanReadable:
                         type: string
@@ -518,9 +2047,12 @@ paths:
                     description: Error response
                 required:
                   - error
-  /entryTypes:
+  /entries/types:
     get:
       description: Returns possible entry types for Argus
+      security:
+        - bearerHttpAuthentication: []
+          cookieUserAuthentication: []
       responses:
         "200":
           description: Good Response
@@ -565,11 +2097,8 @@ paths:
                       actionErrorCode:
                         type: string
                         enum:
-                          - cannotCreateDeposit
                           - invalidPassword
-                          - invalidTotpCode
-                          - totpNotEnabled
-                          - totpAlreadyEnabled
+                          - emailAlreadyExists
                         description: Subcategory of error.
                       humanReadable:
                         type: string
@@ -619,6 +2148,54 @@ paths:
                     required:
                       - code
                     description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
         "422":
           description: Validation Error on Response. Always server-side problem.
             Introduced for debugging purposes, disabled in prod.
