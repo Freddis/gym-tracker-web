@@ -1,9 +1,9 @@
-import {entryValidator} from 'src/server/model/Entry/Entry';
-import {EntryType} from 'src/server/model/Entry/types/EntryType';
-import {openApiInstance} from 'src/openApiInstance';
+import {entryValidator} from 'src/backend/model/Entry/Entry';
+import {EntryType} from 'src/backend/model/Entry/types/EntryType';
+import {openApiInstance} from 'src/backend/utils/openApiInstance';
 import {z} from 'zod';
-import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
+import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
+import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
 
 export const getEntries = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,

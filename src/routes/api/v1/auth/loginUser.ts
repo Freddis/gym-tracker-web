@@ -1,7 +1,7 @@
 import {z} from 'zod';
-import {openApiInstance} from '../../../../openApiInstance';
-import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
+import {openApiInstance} from '../../../../backend/utils/openApiInstance';
+import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
+import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
 
 export const loginUser = openApiInstance.factory.createRoute({
   method: OpenApiMethods.post,

@@ -1,9 +1,9 @@
 import {join} from 'path';
-import {Logger} from '../../src/utls/Logger/Logger';
+import {Logger} from '../../src/common/utils/Logger/Logger';
 import {readFileSync, realpathSync} from 'fs';
-import {dbSchema, pgClient} from '../../src/server/drizzle/db';
+import {dbSchema, pgClient} from '../../src/backend/drizzle/db';
 import {argusResponseValidator} from '../argus/validators/ArgusResponse';
-import {DrizzleService} from '../../src/server/services/DrizzleService/DrizzleService';
+import {DrizzleService} from '../../src/backend/services/DrizzleService/DrizzleService';
 
 const logger = new Logger('Seeds');
 logger.info('Starting seeds');

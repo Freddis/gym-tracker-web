@@ -3,15 +3,28 @@ import dns from 'node:dns';
 dns.setDefaultResultOrder('ipv4first');
 
 export default defineConfig({
-//   '@hey-api/client-axios',
   input: {
     path: './src/routes/api/html/openapi.yml',
   },
   output: {
     format: 'prettier',
     lint: 'eslint',
-    path: './src/lib/data/client/api',
+    path: './src/frontend/openapi-client',
   },
-//   debug: false,
-  plugins: ['@hey-api/client-axios', '@tanstack/react-query'],
+  plugins: [
+    '@hey-api/client-axios',
+    '@tanstack/react-query',
+    {
+      name: '@hey-api/transformers',
+      dates: true,
+    },
+    {
+      name: '@hey-api/sdk',
+      transformer: true,
+    },
+    {
+      name: '@hey-api/typescript',
+      enums: 'javascript',
+    },
+  ],
 });

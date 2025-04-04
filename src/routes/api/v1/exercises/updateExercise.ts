@@ -1,15 +1,14 @@
 import {z} from 'zod';
-import {openApiInstance} from '../../../../openApiInstance';
-import {dbSchema} from 'src/server/drizzle/db';
-import {DrizzleService} from 'src/server/services/DrizzleService/DrizzleService';
-import {and, eq} from 'drizzle-orm';
-import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
+import {openApiInstance} from '../../../../backend/utils/openApiInstance';
+import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
+import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
+import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
 
 export const updateExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.patch,
   type: AppOpenApiRouteTypes.User,
-  description: 'Adds new exercise to the user personal library',
+  description: 'Updates exercise in users personal library',
   path: '/{id}',
   validators: {
     path: z.object({
@@ -24,19 +23,10 @@ export const updateExercise = openApiInstance.factory.createRoute({
     }),
   },
   handler: async (ctx) => {
-    const service = new DrizzleService();
-    const db = await service.getDb();
-    await db.update(dbSchema.exercises)
-      .set({
-        name: ctx.params.body.name,
-        description: ctx.params.body.description,
-        updatedAt: new Date(),
-      }).where(
-          and(
-            eq(dbSchema.exercises.id, ctx.params.path.id),
-            eq(dbSchema.exercises.userId, ctx.viewer.id)
-          )
-      );
+    if (!ctx.services.models.exercise.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
+      throw new OpenApiError(OpenApiErrorCode.unauthorized);
+    }
+    await ctx.services.models.exercise.update(ctx.params.path.id, ctx.params.body);
     return {success: true};
   },
 });

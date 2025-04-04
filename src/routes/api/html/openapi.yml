@@ -357,7 +357,6 @@ paths:
       description: Adds new exercise to the user personal library
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
       requestBody:
         content:
           application/json:
@@ -563,7 +562,6 @@ paths:
       description: Returns data on exercises available to the user
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
       parameters:
         - in: query
           name: page
@@ -600,75 +598,7 @@ paths:
                   items:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        name:
-                          type: string
-                        description:
-                          type:
-                            - string
-                            - "null"
-                        difficulty:
-                          type:
-                            - integer
-                            - "null"
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        equipmentId:
-                          type: integer
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        images:
-                          type: array
-                          items:
-                            type: string
-                        params:
-                          type: array
-                          items:
-                            type: integer
-                            minimum: -2147483648
-                            maximum: 2147483647
-                        userId:
-                          type:
-                            - integer
-                            - "null"
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        copiedFromId:
-                          type:
-                            - integer
-                            - "null"
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        parentExerciseId:
-                          type:
-                            - integer
-                            - "null"
-                          minimum: -2147483648
-                          maximum: 2147483647
-                        createdAt:
-                          type: string
-                        updatedAt:
-                          type:
-                            - string
-                            - "null"
-                      required:
-                        - id
-                        - name
-                        - description
-                        - difficulty
-                        - equipmentId
-                        - images
-                        - params
-                        - userId
-                        - copiedFromId
-                        - parentExerciseId
-                        - createdAt
-                        - updatedAt
+                      $ref: "#/components/schemas/Exercise"
                 required:
                   - items
         "400":
@@ -852,10 +782,9 @@ paths:
                   - error
   /exercises/{id}:
     get:
-      description: Returns data on exercises available to the user
+      description: Returns data on an exercise available to the user
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
       parameters:
         - in: path
           name: id
@@ -871,75 +800,7 @@ paths:
                 type: object
                 properties:
                   item:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      name:
-                        type: string
-                      description:
-                        type:
-                          - string
-                          - "null"
-                      difficulty:
-                        type:
-                          - integer
-                          - "null"
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      equipmentId:
-                        type: integer
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      images:
-                        type: array
-                        items:
-                          type: string
-                      params:
-                        type: array
-                        items:
-                          type: integer
-                          minimum: -2147483648
-                          maximum: 2147483647
-                      userId:
-                        type:
-                          - integer
-                          - "null"
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      copiedFromId:
-                        type:
-                          - integer
-                          - "null"
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      parentExerciseId:
-                        type:
-                          - integer
-                          - "null"
-                        minimum: -2147483648
-                        maximum: 2147483647
-                      createdAt:
-                        type: string
-                      updatedAt:
-                        type:
-                          - string
-                          - "null"
-                    required:
-                      - id
-                      - name
-                      - description
-                      - difficulty
-                      - equipmentId
-                      - images
-                      - params
-                      - userId
-                      - copiedFromId
-                      - parentExerciseId
-                      - createdAt
-                      - updatedAt
+                    $ref: "#/components/schemas/Exercise"
                 required:
                   - item
         "400":
@@ -1122,10 +983,9 @@ paths:
                 required:
                   - error
     patch:
-      description: Adds new exercise to the user personal library
+      description: Updates exercise in users personal library
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
       parameters:
         - in: path
           name: id
@@ -1337,10 +1197,1063 @@ paths:
                 required:
                   - error
     delete:
-      description: Deletes exercise to the user personal library
+      description: Deletes exercise from users personal library
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /workouts/:
+    post:
+      description: Adds new workout for the user
+      security:
+        - bearerHttpAuthentication: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                required:
+                  - id
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    get:
+      description: Returns list of users workouts
+      security:
+        - bearerHttpAuthentication: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            default: 1
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Workout"
+                required:
+                  - items
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+  /workouts/{id}:
+    get:
+      description: Returns data on user workout
+      security:
+        - bearerHttpAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    $ref: "#/components/schemas/Workout"
+                required:
+                  - item
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    patch:
+      description: Updates workout of current user
+      security:
+        - bearerHttpAuthentication: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: number
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+                calories:
+                  type: number
+                sets:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      exerciseId:
+                        type: number
+                      end:
+                        type: string
+                        format: date-time
+                      weight:
+                        type:
+                          - number
+                          - "null"
+                      reps:
+                        type:
+                          - number
+                          - "null"
+                      start:
+                        type: string
+                        format: date-time
+                    required:
+                      - exerciseId
+                      - end
+                      - weight
+                      - reps
+                      - start
+              required:
+                - start
+                - end
+                - calories
+                - sets
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: actionError
+                        description: Code to handle on the frontend.
+                      actionErrorCode:
+                        type: string
+                        enum:
+                          - invalidPassword
+                          - emailAlreadyExists
+                        description: Subcategory of error.
+                      humanReadable:
+                        type: string
+                        description: Description of the error. Can be safely displayed.
+                    required:
+                      - code
+                      - actionErrorCode
+                      - humanReadable
+                    description: Action Error
+                  - type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    const: validationFailed
+                    description: Code to handle on the frontend.
+                  fieldErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: Name of the field
+                        message:
+                          type: string
+                          description: Error message
+                        fieldErrors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              field:
+                                type: string
+                                description: Name of the field
+                              message:
+                                type: string
+                                description: Error message
+                            required:
+                              - field
+                              - message
+                            description: Field error
+                      required:
+                        - field
+                        - message
+                        - fieldErrors
+                      description: Field error
+                required:
+                  - code
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+    delete:
+      description: Deletes workout from user
+      security:
+        - bearerHttpAuthentication: []
       parameters:
         - in: path
           name: id
@@ -1577,7 +2490,7 @@ paths:
                   items:
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - type: object
                           properties:
                             id:
@@ -1592,10 +2505,12 @@ paths:
                             data: {}
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                             subtype:
                               type: "null"
                           required:
@@ -1670,10 +2585,6 @@ paths:
                                               type: number
                                             weight:
                                               type: number
-                                          required:
-                                            - draft
-                                            - reps
-                                            - weight
                                     required:
                                       - exercise_id
                                       - exercise_name
@@ -1686,18 +2597,17 @@ paths:
                                 - user_id
                                 - timestamp
                                 - subtype
-                                - activeDuration
                                 - duration
-                                - calories
                                 - end
                                 - start
-                                - exercises
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -1750,10 +2660,12 @@ paths:
                                 - temperature_low
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -1779,10 +2691,12 @@ paths:
                             data: {}
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -1828,10 +2742,12 @@ paths:
                                 - value
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -1857,10 +2773,12 @@ paths:
                             data: {}
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -1881,13 +2799,307 @@ paths:
                               const: calories
                             subtype:
                               type: "null"
-                            data: {}
+                            data:
+                              type: object
+                              properties:
+                                calories:
+                                  type: number
+                              required:
+                                - calories
+                              additionalProperties: true
                             createdAt:
                               type: string
+                              format: date-time
                             updatedAt:
                               type:
                                 - string
                                 - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - data
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: consumedcalories
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: drink
+                            subtype:
+                              type: string
+                              enum:
+                                - coffee
+                                - water
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: workout_log
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: fitnesstest
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: sleepreport
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: bodymetrics
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: status
+                            subtype:
+                              type: "null"
+                            data:
+                              type: object
+                              properties:
+                                note:
+                                  type: string
+                                photos:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      href:
+                                        type: string
+                                    required:
+                                      - id
+                                      - href
+                              required:
+                                - note
+                              additionalProperties: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - data
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: heartrate
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
+                          required:
+                            - id
+                            - externalId
+                            - type
+                            - subtype
+                            - createdAt
+                            - updatedAt
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              minimum: -2147483648
+                              maximum: 2147483647
+                            externalId:
+                              type: string
+                            type:
+                              type: string
+                              const: food
+                            subtype:
+                              type: "null"
+                            data: {}
+                            createdAt:
+                              type: string
+                              format: date-time
+                            updatedAt:
+                              type:
+                                - string
+                                - "null"
+                              format: date-time
                           required:
                             - id
                             - externalId
@@ -2052,7 +3264,6 @@ paths:
       description: Returns possible entry types for Argus
       security:
         - bearerHttpAuthentication: []
-          cookieUserAuthentication: []
       responses:
         "200":
           description: Good Response
@@ -2269,13 +3480,181 @@ components:
       bearerFormat: jwt
       name: authorization
       in: header
-    cookieClientAuthentication:
-      type: apiKey
-      bearerFormat: jwt
-      name: authtoken
-      in: cookie
-    cookieUserAuthentication:
-      type: apiKey
-      bearerFormat: jwt
-      name: adminauthtoken
-      in: cookie
+  schemas:
+    Exercise:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - "null"
+        difficulty:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        equipmentId:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        images:
+          type: array
+          items:
+            type: string
+        params:
+          type: array
+          items:
+            type: integer
+            minimum: -2147483648
+            maximum: 2147483647
+        userId:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        copiedFromId:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        parentExerciseId:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+      required:
+        - id
+        - name
+        - description
+        - difficulty
+        - equipmentId
+        - images
+        - params
+        - userId
+        - copiedFromId
+        - parentExerciseId
+        - createdAt
+        - updatedAt
+    Workout:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        typeId:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        userId:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        calories:
+          type: number
+          minimum: -8388608
+          maximum: 8388607
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+        sets:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExerciseSet"
+      required:
+        - id
+        - typeId
+        - userId
+        - calories
+        - start
+        - end
+        - createdAt
+        - updatedAt
+        - sets
+    ExerciseSet:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        exerciseId:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        workoutId:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        weight:
+          type:
+            - number
+            - "null"
+          minimum: -8388608
+          maximum: 8388607
+        reps:
+          type:
+            - integer
+            - "null"
+          minimum: -2147483648
+          maximum: 2147483647
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+        exercise:
+          $ref: "#/components/schemas/Exercise"
+      required:
+        - id
+        - exerciseId
+        - workoutId
+        - start
+        - end
+        - weight
+        - reps
+        - createdAt
+        - updatedAt
+        - exercise

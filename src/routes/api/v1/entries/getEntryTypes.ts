@@ -1,8 +1,8 @@
 import {z} from 'zod';
-import {openApiInstance} from '../../../../openApiInstance';
-import {EntryType} from 'src/server/model/Entry/types/EntryType';
-import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
-import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
+import {openApiInstance} from '../../../../backend/utils/openApiInstance';
+import {EntryType} from 'src/backend/model/Entry/types/EntryType';
+import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
 
 export const getEntryTypes = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,

@@ -1,11 +1,9 @@
 import {z} from 'zod';
-import {openApiInstance} from '../../../../openApiInstance';
-import {EntryType} from 'src/server/model/Entry/types/EntryType';
-import {dbSchema} from 'src/server/drizzle/db';
-import {DrizzleService} from 'src/server/services/DrizzleService/DrizzleService';
-import {createSelectSchema} from 'drizzle-zod';
-import {OpenApiMethods} from 'src/server/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/types/AppOpenApiRouteTypes';
+import {openApiInstance} from '../../../../backend/utils/openApiInstance';
+import {EntryType} from 'src/backend/model/Entry/types/EntryType';
+import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
+import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {exerciseValidator} from 'src/backend/model/Exercise/Exercise';
 
 export const getExerciseList = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,
@@ -18,22 +16,11 @@ export const getExerciseList = openApiInstance.factory.createRoute({
       type: z.nativeEnum(EntryType).optional(),
     }),
     response: z.object({
-      items: createSelectSchema(dbSchema.exercises).array(),
+      items: exerciseValidator.array(),
     }),
   },
   handler: async (ctx) => {
-    const service = new DrizzleService();
-    const db = await service.getDb();
-    const result = await db.query.exercises.findMany({
-      where: (table, op) => op.and(
-                              op.not(op.eq(table.equipmentId, 13)),
-                              op.or(
-                                op.isNull(table.userId),
-                                op.eq(table.userId, ctx.viewer.id)
-                              )
-                            ),
-      orderBy: (table, {asc}) => asc(table.name),
-    });
+    const result = await ctx.services.models.exercise.getAll(ctx.viewer.id);
     return {
       items: result,
     };

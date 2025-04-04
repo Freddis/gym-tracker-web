@@ -11,25 +11,33 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as FeedImport } from './routes/feed'
 import { Route as IndexImport } from './routes/index'
+import { Route as WorkoutsIndexImport } from './routes/workouts/index'
+import { Route as FeedIndexImport } from './routes/feed/index'
 import { Route as ExercisesIndexImport } from './routes/exercises/index'
 import { Route as ExercisesCreateImport } from './routes/exercises/create'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as WorkoutsUpdateWorkoutIdImport } from './routes/workouts/update/$workoutId'
 import { Route as ExercisesUpdateExerciseIdImport } from './routes/exercises/update/$exerciseId'
 
 // Create/Update Routes
 
-const FeedRoute = FeedImport.update({
-  id: '/feed',
-  path: '/feed',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const WorkoutsIndexRoute = WorkoutsIndexImport.update({
+  id: '/workouts/',
+  path: '/workouts/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FeedIndexRoute = FeedIndexImport.update({
+  id: '/feed/',
+  path: '/feed/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -57,6 +65,12 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const WorkoutsUpdateWorkoutIdRoute = WorkoutsUpdateWorkoutIdImport.update({
+  id: '/workouts/update/$workoutId',
+  path: '/workouts/update/$workoutId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ExercisesUpdateExerciseIdRoute = ExercisesUpdateExerciseIdImport.update({
   id: '/exercises/update/$exerciseId',
   path: '/exercises/update/$exerciseId',
@@ -72,13 +86,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/feed': {
-      id: '/feed'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedImport
       parentRoute: typeof rootRoute
     }
     '/auth/login': {
@@ -109,11 +116,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesIndexImport
       parentRoute: typeof rootRoute
     }
+    '/feed/': {
+      id: '/feed/'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/workouts/': {
+      id: '/workouts/'
+      path: '/workouts'
+      fullPath: '/workouts'
+      preLoaderRoute: typeof WorkoutsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/exercises/update/$exerciseId': {
       id: '/exercises/update/$exerciseId'
       path: '/exercises/update/$exerciseId'
       fullPath: '/exercises/update/$exerciseId'
       preLoaderRoute: typeof ExercisesUpdateExerciseIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/workouts/update/$workoutId': {
+      id: '/workouts/update/$workoutId'
+      path: '/workouts/update/$workoutId'
+      fullPath: '/workouts/update/$workoutId'
+      preLoaderRoute: typeof WorkoutsUpdateWorkoutIdImport
       parentRoute: typeof rootRoute
     }
   }
@@ -123,84 +151,100 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/feed': typeof FeedRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/exercises': typeof ExercisesIndexRoute
+  '/feed': typeof FeedIndexRoute
+  '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/feed': typeof FeedRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/exercises': typeof ExercisesIndexRoute
+  '/feed': typeof FeedIndexRoute
+  '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/feed': typeof FeedRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/exercises/': typeof ExercisesIndexRoute
+  '/feed/': typeof FeedIndexRoute
+  '/workouts/': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/feed'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
     | '/exercises'
+    | '/feed'
+    | '/workouts'
     | '/exercises/update/$exerciseId'
+    | '/workouts/update/$workoutId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/feed'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
     | '/exercises'
+    | '/feed'
+    | '/workouts'
     | '/exercises/update/$exerciseId'
+    | '/workouts/update/$workoutId'
   id:
     | '__root__'
     | '/'
-    | '/feed'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
     | '/exercises/'
+    | '/feed/'
+    | '/workouts/'
     | '/exercises/update/$exerciseId'
+    | '/workouts/update/$workoutId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FeedRoute: typeof FeedRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
+  FeedIndexRoute: typeof FeedIndexRoute
+  WorkoutsIndexRoute: typeof WorkoutsIndexRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
+  WorkoutsUpdateWorkoutIdRoute: typeof WorkoutsUpdateWorkoutIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FeedRoute: FeedRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
+  FeedIndexRoute: FeedIndexRoute,
+  WorkoutsIndexRoute: WorkoutsIndexRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
+  WorkoutsUpdateWorkoutIdRoute: WorkoutsUpdateWorkoutIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -214,19 +258,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/feed",
         "/auth/login",
         "/auth/register",
         "/exercises/create",
         "/exercises/",
-        "/exercises/update/$exerciseId"
+        "/feed/",
+        "/workouts/",
+        "/exercises/update/$exerciseId",
+        "/workouts/update/$workoutId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/feed": {
-      "filePath": "feed.tsx"
     },
     "/auth/login": {
       "filePath": "auth/login.tsx"
@@ -240,8 +283,17 @@ export const routeTree = rootRoute
     "/exercises/": {
       "filePath": "exercises/index.tsx"
     },
+    "/feed/": {
+      "filePath": "feed/index.tsx"
+    },
+    "/workouts/": {
+      "filePath": "workouts/index.tsx"
+    },
     "/exercises/update/$exerciseId": {
       "filePath": "exercises/update/$exerciseId.tsx"
+    },
+    "/workouts/update/$workoutId": {
+      "filePath": "workouts/update/$workoutId.tsx"
     }
   }
 }

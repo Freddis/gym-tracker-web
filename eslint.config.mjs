@@ -184,9 +184,10 @@ export default tseslint.config(
     // the next one doesn't work properly, still checks files and throw errors if they contain eslint rules
     'output/**',
     '.drizzle/**',
-    'app/server/drizzle/schema/schema.ts',
-    'src/lib/data/client/api/**',
-    'app/server/drizzle/schema/relations.ts',
+    'scripts/argus/data/**',
+    'app/backend/drizzle/schema/schema.ts',
+    'app/backend/drizzle/schema/relations.ts',
+    'src/frontend/openapi-client/**',
   ],
   languageOptions: {
     parser: tsParser,

@@ -1,16 +1,16 @@
 import {join} from 'path';
-import {Logger} from '../../src/utls/Logger/Logger';
+import {Logger} from '../../src/common/utils/Logger/Logger';
 import {existsSync, readFileSync, realpathSync, writeFileSync} from 'fs';
 import {z} from 'zod';
 import {ArgusCheckin, argusCheckinValidator} from './validators/ArgusCheckin';
 import {argusResponseValidator} from './validators/ArgusResponse';
-import {EnvHelper} from 'src/server/utils/EnvHelper/EnvHelper';
+import {EnvHelper} from 'src/backend/utils/EnvHelper/EnvHelper';
 
 const logger = new Logger('Download');
 const reDownloadCheckins = process.argv[2];
 const authtoken = EnvHelper.getString('AUTH_TOKEN');
-const scriptPath = join(realpathSync('.'), '/scripts/argus');
-const tempPath = join(scriptPath, 'temp');
+const scriptPath = join(realpathSync('.'), '/scripts');
+const tempPath = join(scriptPath, '/argus/temp');
 
 logger.info('Loading checking ids');
 const name = 'checkins';
@@ -80,7 +80,7 @@ for (const row of checkinsReponse.checkins) {
   writeFileSync(checkinPath, JSON.stringify(data));
   checkins.push(validated.data);
 }
-const seedPath = join(scriptPath, '/available/real.json');
+const seedPath = join(scriptPath, '/seed/available/real.json');
 logger.info('Wrtings seed file to: ', {seedPath});
 checkinsReponse.checkins = checkins;
 writeFileSync(seedPath, JSON.stringify(checkinsReponse));

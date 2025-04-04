@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import {defineConfig} from 'drizzle-kit';
-import {serverConfig} from 'src/server/utils/ServerConfig/config';
+import {serverConfig} from 'src/backend/utils/ServerConfig/config';
 
 export default defineConfig({
-  out: './src/server/drizzle/migrations',
-  schema: './src/server/drizzle/schema/schema.ts',
+  out: './src/backend/drizzle/migrations',
+  schema: './src/backend/drizzle/schema/schema.ts',
   dialect: 'postgresql',
   strict: true,
   migrations: {
