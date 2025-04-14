@@ -32,14 +32,25 @@ export const getExercisesByIdResponseTransformer = async (
   return data;
 };
 
-const exerciseSetSchemaResponseTransformer = (data: any) => {
-  data.start = new Date(data.start);
-  data.end = new Date(data.end);
+const workoutExerciseSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
-  data.exercise = exerciseSchemaResponseTransformer(data.exercise);
+  return data;
+};
+
+const workoutExerciseSetSchemaResponseTransformer = (data: any) => {
+  if (data.start) {
+    data.start = new Date(data.start);
+  }
+  if (data.end) {
+    data.end = new Date(data.end);
+  }
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
   return data;
 };
 
@@ -50,8 +61,12 @@ const workoutSchemaResponseTransformer = (data: any) => {
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
-  data.sets = data.sets.map((item: any) => {
-    return exerciseSetSchemaResponseTransformer(item);
+  data.exercises = data.exercises.map((item: any) => {
+    return workoutExerciseSchemaResponseTransformer(item);
+    item.exercise = exerciseSchemaResponseTransformer(item.exercise);
+    item.sets = item.sets.map((item: any) => {
+      return workoutExerciseSetSchemaResponseTransformer(item);
+    });
   });
   return data;
 };

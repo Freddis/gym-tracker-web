@@ -86,7 +86,7 @@ export class AuthService implements OpenApiAuthService {
     if (existing) {
       throw new OpenApiActionError(OpenApiActionErrorCode.emailAlreadyExists);
     }
-    const hashedPassword = await hash(params.password, this.config.hashSalt);
+    const hashedPassword = await this.hashString(params.password);
     const entity: typeof schema.users.$inferInsert = {
       name: params.name,
       email: params.email,
@@ -103,7 +103,9 @@ export class AuthService implements OpenApiAuthService {
     const token = this.createToken(user);
     return {...user, jwt: token};
   }
-
+  async hashString(str: string): Promise<string> {
+    return await hash(str, this.config.hashSalt);
+  }
   protected createToken(user: Client): string {
     const token = jwt.sign(
       {

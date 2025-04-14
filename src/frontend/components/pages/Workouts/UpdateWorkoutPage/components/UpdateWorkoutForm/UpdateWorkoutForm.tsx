@@ -3,9 +3,9 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import {FC, useState, CSSProperties, useContext} from 'react';
-import {Exercise, ExerciseSet, Workout} from 'src/frontend/openapi-client';
+import {Exercise, PatchWorkoutsByIdData, Workout, WorkoutExercise, WorkoutExerciseSet} from 'src/frontend/openapi-client';
 import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
-import {ExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
+import {WorkoutExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
 import {Button, Input, SxProps} from '@mui/material';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
@@ -22,22 +22,6 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   });
   const popupContext = useContext(PopupContext);
   const [item, setItem] = useState(props.item);
-  const convertSets = (workout: Workout) : ExerciseWithSets[] => {
-    const map = new Map<number, ExerciseWithSets>();
-    for (const set of workout.sets) {
-      const exercise: ExerciseWithSets = map.get(set.exercise.id) ?? {exercise: set.exercise, sets: []};
-      exercise.sets.push(set);
-      map.set(exercise.exercise.id, exercise);
-    }
-    const exercises = Array.from(map.values());
-    return exercises;
-  };
-  const convertExercises = (items: ExerciseWithSets[]): ExerciseSet[] => {
-    const emptySets: ExerciseSet[] = [];
-    const sets = items.reduce((acc, cur) => [...acc, ...cur.sets], emptySets);
-    return sets;
-  };
-  const [exercises, setExercises] = useState(convertSets(item));
 
   const setStart = (start: Date) => {
     setItem({
@@ -52,9 +36,8 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     });
   };
   const save = async () => {
-    const newItem: Workout = {
+    const newItem: Exclude<PatchWorkoutsByIdData['body'], undefined> = {
       ...item,
-      sets: convertExercises(exercises),
     };
     const result = await updateMutation.mutateAsync({
       path: {
@@ -99,18 +82,24 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     props.item.calories = value;
     setItem({...props.item});
   };
-  const deleteExercise = (row: ExerciseWithSets) => {
-    const remainder = item.sets.filter((set) => set.exerciseId !== row.exercise.id);
-    item.sets = remainder;
+  const deleteExercise = (row: WorkoutExerciseWithSets) => {
+    item.exercises = item.exercises.filter((x) => x.id !== row.id);
     setItem({...item});
-    setExercises(convertSets(item));
   };
   const showAddExercisePopup = () => {
     popupContext.setContent(<ExerciseSelectionPopup onSelect={addExercise}/>);
   };
   const addExercise = (exercise: Exercise) => {
-    const set: ExerciseSet = {
-      id: -1,
+    const workoutExercise: WorkoutExercise = {
+      id: Math.random(),
+      workoutId: item.id,
+      userId: item.userId,
+      exerciseId: exercise.id,
+      createdAt: new Date(),
+      updatedAt: null,
+    };
+    const set: WorkoutExerciseSet = {
+      id: Math.random(),
       exerciseId: exercise.id,
       workoutId: item.id,
       start: new Date(),
@@ -119,11 +108,11 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
       reps: 1,
       createdAt: new Date(),
       updatedAt: null,
-      exercise: exercise,
+      userId: item.userId,
+      workoutExerciseId: workoutExercise.id,
     };
-    item.sets.push(set);
+    item.exercises.push({...workoutExercise, sets: [set], exercise: exercise});
     setItem({...item});
-    setExercises(convertSets(item));
     popupContext.setContent(null);
   };
 
@@ -184,7 +173,9 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
         <h3>Exercises:</h3>
       </div>
       <div style={{marginTop: 10}}>
-        {exercises.map((exercise, i) => <UpdateWorkoutExerciseForm key={i} item={exercise} onDelete={deleteExercise} />)}
+        {item.exercises.map((exercise) =>
+           <UpdateWorkoutExerciseForm key={exercise.id} item={exercise} onDelete={deleteExercise} />
+        )}
         <div>
           <Button onClick={showAddExercisePopup}>Add Exercise</Button>
         </div>

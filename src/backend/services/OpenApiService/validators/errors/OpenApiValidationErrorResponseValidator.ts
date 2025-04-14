@@ -16,8 +16,10 @@ export type OpenApiFieldError = z.TypeOf<typeof openApiBaseFieldErrorValidator>
 
 
 export const openApiValidationErrorResponseValidator = z.object({
-  code: z.literal(OpenApiErrorCode.validationFailed).openapi({description: 'Code to handle on the frontend.'}),
-  fieldErrors: z.array(openApiFieldErrorValidator).optional(),
+  error: z.object({
+    code: z.literal(OpenApiErrorCode.validationFailed).openapi({description: 'Code to handle on the frontend.'}),
+    fieldErrors: z.array(openApiFieldErrorValidator).optional(),
+  }),
 }).openapi({description: 'Validation Error Response'});
 
 export type OpenApiValidationErrorResponseValidator = typeof openApiValidationErrorResponseValidator

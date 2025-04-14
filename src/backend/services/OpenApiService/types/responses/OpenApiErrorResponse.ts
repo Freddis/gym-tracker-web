@@ -4,9 +4,12 @@ import {OpenApiPermissionErrorResponse} from './OpenApiPermissionErrorResponse';
 import {OpenApiUnknownMethodResponse} from './OpenApiUnknownMethodResponse';
 import {OpenApiValidationErrorResponse} from './OpenApiValidationErrorResponse';
 
-export type OpenApiErrorResponse =
+export interface OpenApiErrorResponse {
+  error:
   | OpenApiActionErrorResponse
   | OpenApiValidationErrorResponse
   | OpenApiPermissionErrorResponse
   | OpenApiUnknownMethodResponse
   | OpenApiBaseErrorResponse
+}
+

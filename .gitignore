@@ -5,6 +5,5 @@ build
 .output
 .DS_Store
 .drizzle
-scripts/argus/temp
-scripts/seed/available/real.json
+temp
 .env

@@ -12,8 +12,18 @@ import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService
 import {ExerciseService} from 'src/backend/services/ExerciseService/ExerciseService';
 
 export class GlobalServiceFactory {
+  protected allocatedDestroyables = {drizzle: false};
+
+  async cleanup() {
+    if (this.allocatedDestroyables.drizzle) {
+      const service = await this.drizzle();
+      await service.end();
+    }
+
+  }
 
   async drizzle(): Promise<DrizzleService> {
+    this.allocatedDestroyables.drizzle = true;
     return new DrizzleService();
   }
 

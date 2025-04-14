@@ -67,11 +67,13 @@ export function EntriesListPage() {
               return <Weight key={item.id} item={item}/>;
             case EntryType.Status:
               return <Status key={item.id} item={item}/>;
-            default: switch (item.subtype) {
-              case EntrySubtype.Workout:
-                return <Workout key={item.id} item={item}/>;
-              default: return <Entry key={item.id} item={item}/>;
-            }
+            default:
+              switch (item.subtype) {
+                case EntrySubtype.Workout:
+                  return <Workout key={item.id} item={item}/>;
+                default:
+                  return <Entry key={item.id} item={item}/>;
+              }
           }
         })}
       </div>

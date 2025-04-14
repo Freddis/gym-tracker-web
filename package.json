@@ -10,9 +10,9 @@
     "db:pull": "drizzle-kit pull",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:wipe": "docker-compose rm -s -v -f db && docker volume prune -f && docker-compose up -d db && sleep 10 && npm run db:up",
-    "db:seed": "tsx ./scripts/seed/seed.ts",
-    "argus:exercises": "tsx ./scripts/argus/createExerciseLibrary.ts",
+    "db:clean": "docker-compose rm -s -v -f db && docker volume prune -f && docker-compose up -d db && sleep 10 && npm run db:migrate",
+    "db:seed": "tsx ./scripts/argus/seed.ts",
+    "db:wipe": "npm run db:clean && npm run db:seed",
     "lint": "eslint . --fix --ignore-pattern '.output/**'",
     "openapi:generate": "tsx ./scripts/openapi/generateSchema.ts && npm run openapi:ts",
     "openapi:ts": "openapi-ts"

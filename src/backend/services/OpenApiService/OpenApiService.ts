@@ -179,12 +179,13 @@ export class OpenApiService<
   async processRootRoute(
     basePath: string,
     originalReq: Request
-  ): Promise<{status: number; body: OpenApiErrorResponse}| {status: undefined}> {
+  ): Promise<{status: number; body: OpenApiErrorResponse}| {status: 200, body: unknown}> {
     try {
       const url = new URL(originalReq.url);
       const urlPath = url.pathname.replace(basePath, '');
       const route = this.getRouteForPath(urlPath, originalReq.method);
       if (!route) {
+        this.logger.info(`Route for ${originalReq.method}:${urlPath} no found`);
         throw new OpenApiError(OpenApiErrorCode.notFound);
       }
 
@@ -294,11 +295,13 @@ export class OpenApiService<
         throw new OpenApiValidationError(validated.error, ValidationLocations.response);
       }
       this.logger.info('Response: 200', validated.data);
-      return validated.data;
+      return {status: 200, body: validated.data};
     } catch (e) {
-      this.logger.error('Error during request openAPI route handling', e);
       const response = this.getErrorResponse(e);
-      return response;
+      const result = {status: response.status, body: {error: response.body}};
+      this.logger.info(`Response: ${result.status}`, result.body);
+      this.logger.error('Error during request openAPI route handling', e);
+      return result;
     }
   }
 
@@ -320,6 +323,9 @@ export class OpenApiService<
       }
       throw new Error(`Can't convert ${original._def.typeName} validator`);
     }
+    if (original._def.typeName && original._def.typeName === 'ZodNullable') {
+      return this.swapValidators(original._def.innerType, searchType, substitute).nullable();
+    }
 
     if (original.shape) {
       const result: ZodRawShape = {};
@@ -337,7 +343,7 @@ export class OpenApiService<
 
   }
 
-  protected getErrorResponse(e: unknown): {status: number; body: OpenApiErrorResponse} {
+  protected getErrorResponse(e: unknown): {status: number; body: OpenApiErrorResponse['error']} {
     if (e instanceof OpenApiError) {
       const code = e.getOpenApiCode();
       if (code === OpenApiErrorCode.notFound) {
@@ -590,13 +596,9 @@ export class OpenApiService<
             content: {
               'application/json': {
                 schema: z.object({
-                  error: z
-                    .object({
-                      code: z
-                        .literal(OpenApiErrorCode.unknownError)
-                        .openapi({description: 'Code to handle on the frontend'}),
-                    })
-                    .openapi({description: 'Error response'}),
+                  error: z.object({
+                    code: z.literal(OpenApiErrorCode.unknownError).openapi({description: 'Code to handle on the frontend'}),
+                  }).openapi({description: 'Error response'}),
                 }),
               },
             },

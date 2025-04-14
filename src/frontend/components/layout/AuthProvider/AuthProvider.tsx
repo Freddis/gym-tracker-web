@@ -4,6 +4,7 @@ import {authUserValidator, AuthUser} from './types/AuthUser';
 import {client} from 'src/frontend/openapi-client/client.gen';
 import {ClientOptions, Config} from '@hey-api/client-axios';
 
+
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
   const storedUser = useMemo(() => {
     if (typeof window === 'undefined') {
@@ -29,7 +30,6 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
-      // baseURL: '/api/v1',
       responseType: 'json',
       headers: {
         Authorization: authHeader,

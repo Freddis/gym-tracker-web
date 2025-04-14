@@ -1,6 +1,4 @@
-import {Exercise, ExerciseSet} from '../openapi-client';
+import {ArrayElement} from 'src/common/types/ArrayElement';
+import {GetWorkoutsByIdResponse} from '../openapi-client';
 
-export type ExerciseWithSets = {
-  exercise: Exercise,
-  sets: ExerciseSet[]
-}
+export type WorkoutExerciseWithSets = ArrayElement<GetWorkoutsByIdResponse['item']['exercises']>

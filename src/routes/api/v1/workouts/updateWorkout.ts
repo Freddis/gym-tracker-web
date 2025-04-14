@@ -16,14 +16,18 @@ export const updateWorkout = openApiInstance.factory.createRoute({
     }),
     body: z.object({
       start: z.date(),
-      end: z.date(),
+      end: z.date().nullable(),
       calories: z.number(),
-      sets: z.object({
+      exercises: z.object({
+        id: z.number().optional(),
         exerciseId: z.number(),
-        end: z.date(),
-        weight: z.number().nullable(),
-        reps: z.number().nullable(),
-        start: z.date(),
+        sets: z.object({
+          id: z.number().optional(),
+          end: z.date().nullable(),
+          weight: z.number().nullable(),
+          reps: z.number().nullable(),
+          start: z.date().nullable(),
+        }).array(),
       }).array(),
     }),
     response: z.object({

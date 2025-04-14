@@ -18,7 +18,7 @@ export class OpenApiTanstackStartWrapper<
   createOpenApiRootRoute<T extends string>(path: T, router: TanstackStartRoutingFunc<T>): TanStackApiRoute<T> {
     const processor = async (ctx: {request: Request}) => {
       const response = await this.service.processRootRoute(path, ctx.request);
-      const res = new Response(JSON.stringify(response), {
+      const res = new Response(JSON.stringify(response.body), {
         status: response.status ?? 200,
       });
       return res;

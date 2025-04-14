@@ -14,7 +14,7 @@ export const workoutEntryValidator = createSelectSchema(dbSchema.entries).extend
     subtype: z.literal(`${EntrySubtype.Workout}`),
     type: z.literal(`${EntryType.Activity}`),
     activeDuration: z.number().optional(),
-    duration: z.number(),
+    duration: z.number().optional(),
     calories: z.number().optional(),
     created: z.number(),
     TotalExercisesInWorkout: z.number().optional(),

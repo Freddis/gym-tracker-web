@@ -2,17 +2,18 @@ import {Button, Input, SxProps} from '@mui/material';
 import {FC, useContext, useState, CSSProperties, ChangeEvent} from 'react';
 import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
-import {Exercise, ExerciseSet} from 'src/frontend/openapi-client';
-import {ExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
+import {Exercise, WorkoutExerciseSet} from 'src/frontend/openapi-client';
+import {WorkoutExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
+import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormProps';
 
-export const UpdateWorkoutExerciseForm: FC<{item: ExerciseWithSets, onDelete: (item: ExerciseWithSets)=> void}> = (props) => {
+export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
   const [exercise, setExercise] = useState(props.item);
   const [setCounter, setSetCounter] = useState(-1);
   const finalizeExerciseSwap = (selected: Exercise) => {
-    const newExercise: ExerciseWithSets = {
+    const newExercise: WorkoutExerciseWithSets = {
       ...exercise,
-      ...selected,
+      exercise: selected,
     };
     popupContext.setContent(null);
     setExercise(newExercise);
@@ -28,11 +29,11 @@ export const UpdateWorkoutExerciseForm: FC<{item: ExerciseWithSets, onDelete: (i
   const swapExercise = () => {
     popupContext.setContent(popup);
   };
-  const deleteExercise = (exercise: ExerciseWithSets) => {
+  const deleteExercise = (exercise: WorkoutExerciseWithSets) => {
     props.onDelete(exercise);
   };
   const addSet = () => {
-    const set: ExerciseSet = {
+    const set: WorkoutExerciseSet = {
       id: setCounter,
       exerciseId: props.item.exercise.id,
       workoutId: 0,
@@ -42,7 +43,8 @@ export const UpdateWorkoutExerciseForm: FC<{item: ExerciseWithSets, onDelete: (i
       reps: null,
       createdAt: new Date(),
       updatedAt: null,
-      exercise: exercise.exercise,
+      userId: props.item.userId,
+      workoutExerciseId: 0,
     };
     props.item.sets.push(set);
     setExercise({...props.item});

@@ -22,7 +22,7 @@ export class EnvHelper {
       path: [envFile],
       debug: debug,
     });
-    // console.log(envFile, environment, conf); // uncomment to debug
+    // console.log(envFile, environment); // uncomment to debug
   })();
 
   static getEnumValue<TEnum extends EnumLike>(
