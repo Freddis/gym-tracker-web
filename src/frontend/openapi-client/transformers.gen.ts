@@ -56,7 +56,9 @@ const workoutExerciseSetSchemaResponseTransformer = (data: any) => {
 
 const workoutSchemaResponseTransformer = (data: any) => {
   data.start = new Date(data.start);
-  data.end = new Date(data.end);
+  if (data.end) {
+    data.end = new Date(data.end);
+  }
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);

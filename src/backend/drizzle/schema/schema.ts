@@ -54,7 +54,7 @@ export const workouts = gymTracker.table('workouts', {
   userId: integer().notNull(),
   calories: real().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
-  end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  end: timestamp({withTimezone: true, mode: 'date'}),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 },

@@ -101,7 +101,7 @@ export const exerciseData: ExerciseData = {
       display_name: '',
       unilateral: '',
       DNA_good: '',
-      trainingPrograms: ['5\/3\/1 Program'],
+      trainingPrograms: ['5/3/1 Program'],
       asn: '',
       pro: '1',
       difficulty: 'advanced',
@@ -1229,7 +1229,7 @@ export const exerciseData: ExerciseData = {
       trainingPrograms: [
         'Stronglifts',
         'Starting Strength',
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Jim Stoppani Shortcut to Size',
         'Arnold Blueprint',
         "Jay Cutler's Living Large",
@@ -1573,7 +1573,7 @@ export const exerciseData: ExerciseData = {
       DNA_good: '',
       trainingPrograms: [
         'Stronglifts',
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "Steve Cook's Big Man on Campus",
         'Arnold Blueprint',
         "Cory Gregory's Get Swole",
@@ -3174,7 +3174,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "James Grage's Rewired",
         'Jamie Eason Livefit',
         'P90X Shoulder and Arms',
@@ -4178,7 +4178,7 @@ export const exerciseData: ExerciseData = {
       trainingPrograms: [
         'Stronglifts',
         'Starting Strength',
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "Cory Gregory's Get Swole",
       ],
       asn: '',
@@ -6167,7 +6167,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '1',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Livefit',
         "Steve Cook's Big Man on Campus",
         'Arnold Blueprint',
@@ -7032,7 +7032,7 @@ export const exerciseData: ExerciseData = {
       display_name: '',
       unilateral: '',
       DNA_good: '1',
-      trainingPrograms: ['5\/3\/1 Program', 'Arnold Blueprint'],
+      trainingPrograms: ['5/3/1 Program', 'Arnold Blueprint'],
       asn: '',
       pro: '',
       difficulty: 'advanced',
@@ -11131,7 +11131,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "Steve Cook's Big Man on Campus",
         'Jim Stoppani Shortcut to Size',
       ],
@@ -15377,7 +15377,7 @@ export const exerciseData: ExerciseData = {
       trainingPrograms: [
         'Stronglifts',
         'Starting Strength',
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Jim Stoppani Shortcut to Size',
         'Arnold Blueprint',
         "Cory Gregory's Get Swole",
@@ -20496,7 +20496,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "James Grage's Rewired",
         'Labrada Lean Body',
         'Jim Stoppani Shortcut to Size',
@@ -45659,7 +45659,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         "Steve Cook's Big Man on Campus",
         "Jay Cutler's Living Large",
         "James Grage's Rewired",
@@ -50293,7 +50293,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Arnold Blueprint',
         "James Grage's Rewired",
       ],
@@ -51561,7 +51561,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '1',
       DNA_good: '1',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Jim Stoppani Shortcut to Size',
         'Livefit',
         "Steve Cook's Big Man on Campus",
@@ -64716,7 +64716,7 @@ export const exerciseData: ExerciseData = {
       display_name: '',
       unilateral: '',
       DNA_good: '1',
-      trainingPrograms: ['5\/3\/1 Program'],
+      trainingPrograms: ['5/3/1 Program'],
       asn: '',
       pro: '1',
       difficulty: 'beginner',
@@ -64816,7 +64816,7 @@ export const exerciseData: ExerciseData = {
       display_name: '',
       unilateral: '',
       DNA_good: '1',
-      trainingPrograms: ['5\/3\/1 Program'],
+      trainingPrograms: ['5/3/1 Program'],
       asn: '',
       pro: '1',
       difficulty: 'intermediate',
@@ -68085,7 +68085,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '1',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Jamie Eason Livefit',
         "Steve Cook's Big Man on Campus",
         "Jay Cutler's Living Large",
@@ -76276,7 +76276,7 @@ export const exerciseData: ExerciseData = {
       display_name: '',
       unilateral: '',
       DNA_good: '',
-      trainingPrograms: ['5\/3\/1 Program'],
+      trainingPrograms: ['5/3/1 Program'],
       asn: '',
       pro: '1',
       difficulty: 'advanced',
@@ -80352,7 +80352,7 @@ export const exerciseData: ExerciseData = {
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [
-        '5\/3\/1 Program',
+        '5/3/1 Program',
         'Arnold Blueprint',
         "James Grage's Rewired",
         'P90X Chest & Back',
@@ -111098,7 +111098,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111145,7 +111145,7 @@ export const exerciseData: ExerciseData = {
       params: ['(Unknown)'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111200,7 +111200,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111252,7 +111252,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111302,7 +111302,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Biceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111351,7 +111351,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111449,7 +111449,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111497,7 +111497,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111545,7 +111545,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111688,7 +111688,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111736,7 +111736,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111784,7 +111784,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Trapezius',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111834,7 +111834,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Trapezius',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111849,7 +111849,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'intermediate',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Shoulders',
       id: '2430',
       video: '',
@@ -111930,7 +111930,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -111979,7 +111979,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Trapezius',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112126,7 +112126,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112175,7 +112175,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Biceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112318,7 +112318,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112414,7 +112414,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112507,7 +112507,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112854,7 +112854,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -112869,7 +112869,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2451',
       video: '',
@@ -112916,7 +112916,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2452',
       video: '',
@@ -113050,7 +113050,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hip Flexors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113096,7 +113096,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Adductors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113242,7 +113242,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113337,7 +113337,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113384,7 +113384,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113431,7 +113431,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113525,7 +113525,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113723,7 +113723,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113775,7 +113775,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113824,7 +113824,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -113919,13 +113919,13 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
       stress_fracture_good: '',
       ACL_bad: '',
-      display_name: 'Deadlift with 1\/4 Lift',
+      display_name: 'Deadlift with 1/4 Lift',
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [],
@@ -113952,7 +113952,7 @@ export const exerciseData: ExerciseData = {
         'Start standing with your knees slightly bent with a dumbbell in each hand and your palms facing your legs',
         'Reach back with your hips as if you are trying to touch a wall with your glutes',
         'Once you reach back as far as you can, bend your knees and lean forward, keeping your glutes back',
-        'Lower the dumbbells as far as you can, lift 1\/4 upward while squeezing your glutes, and lower back down',
+        'Lower the dumbbells as far as you can, lift 1/4 upward while squeezing your glutes, and lower back down',
         'Lift up, driving your hips forward',
       ],
       main_exclude: '1',
@@ -113967,7 +113967,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114164,7 +114164,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114264,7 +114264,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114312,7 +114312,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Lateral Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114427,7 +114427,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2483',
       video: '',
@@ -114476,7 +114476,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2484',
       video: '',
@@ -114610,7 +114610,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114711,7 +114711,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114856,7 +114856,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -114905,7 +114905,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115002,7 +115002,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115156,7 +115156,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Lateral Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115207,7 +115207,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115256,7 +115256,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115305,7 +115305,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115354,7 +115354,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115403,7 +115403,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Lateral Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115452,7 +115452,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115599,7 +115599,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115614,7 +115614,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2507',
       video: '',
@@ -115763,7 +115763,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2510',
       video: '',
@@ -115851,7 +115851,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115953,7 +115953,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -115999,7 +115999,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116094,7 +116094,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116141,7 +116141,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116188,7 +116188,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116235,7 +116235,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116282,7 +116282,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116330,7 +116330,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116377,7 +116377,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Quadriceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116426,7 +116426,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Quadriceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116571,7 +116571,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116619,7 +116619,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116666,7 +116666,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Adductors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116816,7 +116816,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116869,7 +116869,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Quadriceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116917,7 +116917,7 @@ export const exerciseData: ExerciseData = {
       params: ['(Unknown)'],
       primaryMuscle: 'Hip Flexors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -116966,7 +116966,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Biceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117156,7 +117156,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hip Flexors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117250,7 +117250,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117349,7 +117349,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Adductors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117397,7 +117397,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Adductors',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117412,7 +117412,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2544',
       video: '',
@@ -117490,7 +117490,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117789,7 +117789,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -117885,7 +117885,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118078,7 +118078,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118132,7 +118132,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118234,7 +118234,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Lats',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118329,7 +118329,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118441,7 +118441,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2565',
       video: '',
@@ -118488,7 +118488,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2566',
       video: '',
@@ -118619,7 +118619,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -118861,7 +118861,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119007,7 +119007,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119102,7 +119102,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119151,7 +119151,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119199,7 +119199,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119248,7 +119248,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119296,7 +119296,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119344,7 +119344,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119443,7 +119443,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119493,7 +119493,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119543,7 +119543,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119590,7 +119590,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119690,7 +119690,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119738,7 +119738,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119837,7 +119837,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119883,7 +119883,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -119985,7 +119985,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120033,7 +120033,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120081,7 +120081,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120129,7 +120129,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120323,7 +120323,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120370,7 +120370,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120418,7 +120418,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120466,7 +120466,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120499,7 +120499,7 @@ export const exerciseData: ExerciseData = {
         'Start standing with your knees slightly bent with a dumbbell in each hand and your palms facing your legs',
         'Reach back with your hips as if you are trying to touch a wall with your glutes',
         'Once you reach back as far as you can, bend your knees and lean forward, keeping your glutes back',
-        'Lower the dumbbells as far as you can, lift 1\/4 upward, bringing the dumbbells slightly above your knees, squeeze your glutes, and lower back down',
+        'Lower the dumbbells as far as you can, lift 1/4 upward, bringing the dumbbells slightly above your knees, squeeze your glutes, and lower back down',
         'Lift up driving the hips forward',
       ],
       main_exclude: '1',
@@ -120514,7 +120514,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120609,7 +120609,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120852,7 +120852,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120899,7 +120899,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -120951,7 +120951,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121003,7 +121003,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121050,7 +121050,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121097,7 +121097,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121112,7 +121112,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2620',
       video: '',
@@ -121160,7 +121160,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Core',
       id: '2621',
       video: '',
@@ -121341,7 +121341,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121389,7 +121389,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121435,7 +121435,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121481,7 +121481,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121625,7 +121625,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121672,7 +121672,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Rear Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121721,7 +121721,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Lats',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121770,7 +121770,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Lats',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -121884,7 +121884,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2636',
       video: '',
@@ -121932,7 +121932,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2637',
       video: '',
@@ -122014,7 +122014,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122063,7 +122063,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122161,7 +122161,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122311,7 +122311,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122344,7 +122344,7 @@ export const exerciseData: ExerciseData = {
         'Start standing with your feet slightly wider than your hips',
         'Sit back onto your heels, bending your knees as you lower',
         'Keeping the chest lifted, lower to a 90 degree angle at the knees',
-        'Stand up 1\/4 of the way up',
+        'Stand up 1/4 of the way up',
         'Fully lower back down',
         'Fully stand back up',
         'Drive your knees away from each other during the motion',
@@ -122362,7 +122362,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122408,7 +122408,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122456,7 +122456,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122504,7 +122504,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122694,7 +122694,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122741,7 +122741,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Front Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122883,7 +122883,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122930,7 +122930,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -122976,7 +122976,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123024,7 +123024,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123073,7 +123073,7 @@ export const exerciseData: ExerciseData = {
       params: ['(Unknown)'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123172,7 +123172,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123318,7 +123318,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Lateral Deltoids',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123415,7 +123415,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123469,7 +123469,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123523,7 +123523,7 @@ export const exerciseData: ExerciseData = {
       params: ['weight', 'repetition'],
       primaryMuscle: 'Obliques',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123577,7 +123577,7 @@ export const exerciseData: ExerciseData = {
     {
       stress_fracture_good: '',
       ACL_bad: '',
-      display_name: 'Toe Touch With 1\/2 Lift',
+      display_name: 'Toe Touch With 1/2 Lift',
       unilateral: '',
       DNA_good: '',
       trainingPrograms: [],
@@ -123619,7 +123619,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123670,7 +123670,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Hamstrings',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123720,7 +123720,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Lats',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123817,7 +123817,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Triceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123865,7 +123865,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Triceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -123913,7 +123913,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Triceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -124011,7 +124011,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Triceps',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -124026,7 +124026,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2680',
       video: '',
@@ -124077,7 +124077,7 @@ export const exerciseData: ExerciseData = {
       difficulty: 'beginner',
       if_video_preload: '',
       workoutGoals: [],
-      wht_time_code: '#N\/A',
+      wht_time_code: '#N/A',
       primaryCategory: 'Lower Body',
       id: '2681',
       video: '',
@@ -124159,7 +124159,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -124206,7 +124206,7 @@ export const exerciseData: ExerciseData = {
       params: ['duration'],
       primaryMuscle: 'Abdominals',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -124255,7 +124255,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Pecs',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
     {
@@ -124304,7 +124304,7 @@ export const exerciseData: ExerciseData = {
       params: ['repetition'],
       primaryMuscle: 'Glutes',
       old_video: '',
-      asn_time_code: '#N\/A',
+      asn_time_code: '#N/A',
       exercise_pair: '',
     },
   ],

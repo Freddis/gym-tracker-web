@@ -1,6 +1,6 @@
-import {WorkoutExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
-
+import {WorkoutExerciseUpdateDto} from 'src/frontend/openapi-client';
+import {UpdateWorkoutExerciseFormExercrise} from './UpdateWorkoutExerciseFormExercrise';
 export interface UpdateWorkoutExerciseFormProps {
-  item: WorkoutExerciseWithSets,
-  onDelete: (item: WorkoutExerciseWithSets)=> void
+  item: UpdateWorkoutExerciseFormExercrise,
+  onDelete: (item: WorkoutExerciseUpdateDto)=> void
 }

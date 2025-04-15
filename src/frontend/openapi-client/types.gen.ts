@@ -22,7 +22,7 @@ export type Workout = {
   userId: number;
   calories: number;
   start: Date;
-  end: Date;
+  end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
   exercises: Array<
@@ -54,6 +54,29 @@ export type WorkoutExerciseSet = {
   reps: number | null;
   createdAt: Date;
   updatedAt: Date | null;
+};
+
+export type WorkoutUpdateDto = {
+  externalId: string | null;
+  typeId: number | null;
+  calories: number;
+  start: Date;
+  end: Date | null;
+  exercises: Array<WorkoutExerciseUpdateDto>;
+};
+
+export type WorkoutExerciseUpdateDto = {
+  id?: number;
+  exerciseId: number;
+  sets: Array<WorkoutExerciseSetUpdateDto>;
+};
+
+export type WorkoutExerciseSetUpdateDto = {
+  id?: number;
+  start: Date | null;
+  end: Date | null;
+  weight: number | null;
+  reps: number | null;
 };
 
 export type PostAuthRegisterData = {
@@ -1688,22 +1711,7 @@ export type GetWorkoutsByIdResponse =
   GetWorkoutsByIdResponses[keyof GetWorkoutsByIdResponses];
 
 export type PatchWorkoutsByIdData = {
-  body?: {
-    start: Date;
-    end: Date | null;
-    calories: number;
-    exercises: Array<{
-      id?: number;
-      exerciseId: number;
-      sets: Array<{
-        id?: number;
-        end: Date | null;
-        weight: number | null;
-        reps: number | null;
-        start: Date | null;
-      }>;
-    }>;
-  };
+  body?: WorkoutUpdateDto;
   path: {
     id: number;
   };

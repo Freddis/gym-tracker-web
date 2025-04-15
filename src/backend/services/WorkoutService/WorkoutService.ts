@@ -6,6 +6,7 @@ import {WorkoutExercise} from 'src/backend/model/WorkoutExercise/WorkoutExercise
 import {WorkoutExerciseSet} from 'src/backend/model/WorkoutExerciseSet/WorkoutExerciseSet';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
 import {NewModel} from 'src/common/types/NewModel';
+import {WorkoutUpdateDto} from 'src/backend/model/Workout/WorkoutUpdateDto';
 
 export class WorkoutService {
   protected db: DrizzleService;
@@ -20,7 +21,6 @@ export class WorkoutService {
       createdAt: new Date(),
       userId: userId,
       start: new Date(),
-      end: new Date(),
       calories: 0,
     };
     const result = await db.insert(this.table).values(entity).returning({id: this.table.id});
@@ -28,67 +28,56 @@ export class WorkoutService {
     return firstRow;
   }
 
-  async update(id: number, data: {
-    calories: number;
-    start: Date;
-    end: Date | null,
-    exercises: {
-      exerciseId: number,
-      sets: {
-        start: Date | null,
-        weight: number | null,
-        reps: number | null,
-        end: Date | null,
-      }[]
-    }[]
-  }): Promise<void> {
+  async update(id: number, data: WorkoutUpdateDto): Promise<void> {
     const db = await this.db.getDb();
-    const workout = await db.query.workouts.findFirst({
-      where: (t, op) => op.eq(t.id, id),
-    });
+    const workout = await this.get(id);
     if (!workout) {
       throw new Error('Workout not found');
     }
     await db.update(this.table)
       .set({
         ...data,
-        end: data.end ?? undefined,
         updatedAt: new Date(),
       }).where(
         eq(this.table.id, id)
       );
+    await db.delete(dbSchema.workoutExerciseSets).where(
+        eq(dbSchema.workoutExerciseSets.workoutId, id)
+      );
     await db.delete(dbSchema.workoutExercises).where(
       eq(dbSchema.workoutExercises.workoutId, id)
     );
-    await db.delete(dbSchema.workoutExerciseSets).where(
-      eq(dbSchema.workoutExerciseSets.workoutId, id)
-    );
     for (const exercise of data.exercises) {
+      const existing: Partial<WorkoutExercise> = workout.exercises.find((x) => x.id === exercise.id) ?? {};
       const newExercise: NewModel<WorkoutExercise> = {
         ...exercise,
         id: undefined,
         userId: workout.userId,
-        createdAt: workout.createdAt,
-        updatedAt: new Date(),
         workoutId: workout.id,
         exerciseId: exercise.exerciseId,
+        createdAt: existing.createdAt ?? new Date(),
+        updatedAt: existing.createdAt ? new Date() : null,
       };
       const inserted = await db.insert(dbSchema.workoutExercises)
         .values(newExercise)
         .returning({id: dbSchema.workoutExercises.id});
       const workoutExerciseid = inserted[0].id;
       for (const set of exercise.sets) {
+        const existing: Partial<WorkoutExerciseSet> = workout.exercises
+          .find(
+            (x) => x.id === exercise.id
+          )?.sets.find(
+            (x) => x.id === set.id
+        ) ?? {};
         const newSet: NewModel<WorkoutExerciseSet> = {
+          ...set,
+          id: undefined,
           userId: workout.userId,
-          start: set.start ?? null,
-          end: set.end ?? null,
-          createdAt: workout.createdAt,
-          updatedAt: new Date(),
           workoutId: workout.id,
           exerciseId: exercise.exerciseId,
           workoutExerciseId: workoutExerciseid,
-          weight: set.weight,
-          reps: set.reps,
+          createdAt: existing.createdAt ?? new Date(),
+          updatedAt: existing.createdAt ? new Date() : null,
         };
         await db.insert(dbSchema.workoutExerciseSets).values(newSet);
       }
@@ -125,23 +114,6 @@ export class WorkoutService {
 
   async getAll(userId: number): Promise<Workout[]> {
     const db = await this.db.getDb();
-    // const result = await db.query.workouts.findMany({
-    //   where: (table, op) => {
-    //     return op.and(
-    //       op.eq(table.userId, userId)
-    //     );
-    //   },
-    //   with: {
-    //     exercises: {
-    //       with: {
-    //         exercise: true,
-    //         sets: true,
-    //       },
-    //     },
-    //   },
-    //   orderBy: (table, op) => op.desc(table.createdAt),
-    // });
-
     const omitDrizzleFields = <T>(
       table: T
     ): Omit<T, '_'| 'getSQL' | 'shouldOmitSQLParens' | '$inferInsert' | '$inferSelect' | 'enableRLS'> => {

@@ -36,6 +36,13 @@
       "when": 1744667061581,
       "tag": "0004_workout_improvements",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1744718786880,
+      "tag": "0005_workout_end_nullable",
+      "breakpoints": true
     }
   ]
 }

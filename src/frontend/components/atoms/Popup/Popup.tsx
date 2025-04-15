@@ -9,7 +9,7 @@ export const Popup: FC<{
       setContent(content);
     });
     const backgroundStyle: CSSProperties = {
-      position: 'absolute',
+      position: 'fixed',
       background: 'rgba(0,0,0,0.5)',
       display: 'flex',
       alignItems: 'center',

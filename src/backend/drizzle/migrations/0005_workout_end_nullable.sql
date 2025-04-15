@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."workouts" ALTER COLUMN "end" DROP NOT NULL;

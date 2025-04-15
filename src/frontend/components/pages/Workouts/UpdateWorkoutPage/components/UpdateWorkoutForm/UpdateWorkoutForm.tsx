@@ -3,13 +3,13 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import {FC, useState, CSSProperties, useContext} from 'react';
-import {Exercise, PatchWorkoutsByIdData, Workout, WorkoutExercise, WorkoutExerciseSet} from 'src/frontend/openapi-client';
+import {Exercise, Workout, WorkoutExerciseUpdateDto, WorkoutUpdateDto} from 'src/frontend/openapi-client';
 import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
-import {WorkoutExerciseWithSets} from 'src/frontend/types/ExerciseWithSets';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
 import {Button, Input, SxProps} from '@mui/material';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {UpdateWorkoutExerciseFormExercrise} from '../UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
 
 export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const client = useQueryClient();
@@ -21,7 +21,16 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     ...deleteWorkoutsByIdMutation(),
   });
   const popupContext = useContext(PopupContext);
-  const [item, setItem] = useState(props.item);
+  const updateDTO: WorkoutUpdateDto = props.item;
+  const [item, setItem] = useState(updateDTO);
+  const [exercises, setExercises] = useState<UpdateWorkoutExerciseFormExercrise[]>(() => {
+    return props.item.exercises.map((x) => ({
+      exercise: x.exercise,
+      workoutExercise: {
+        ...x,
+      },
+    }));
+  });
 
   const setStart = (start: Date) => {
     setItem({
@@ -36,12 +45,13 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     });
   };
   const save = async () => {
-    const newItem: Exclude<PatchWorkoutsByIdData['body'], undefined> = {
+    const newItem: WorkoutUpdateDto = {
       ...item,
+      exercises: exercises.map((x) => x.workoutExercise),
     };
     const result = await updateMutation.mutateAsync({
       path: {
-        id: item.id,
+        id: props.item.id,
       },
       body: newItem,
     });
@@ -65,7 +75,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const deleteItem = async () => {
     const result = await deleteMutation.mutateAsync({
       path: {
-        id: item.id,
+        id: props.item.id,
       },
     });
     if (!result.success) {
@@ -82,37 +92,24 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     props.item.calories = value;
     setItem({...props.item});
   };
-  const deleteExercise = (row: WorkoutExerciseWithSets) => {
-    item.exercises = item.exercises.filter((x) => x.id !== row.id);
-    setItem({...item});
+  const deleteExercise = (row: WorkoutExerciseUpdateDto) => {
+    const filtered = exercises.filter((x) => x.workoutExercise !== row);
+    setExercises(filtered);
   };
   const showAddExercisePopup = () => {
     popupContext.setContent(<ExerciseSelectionPopup onSelect={addExercise}/>);
   };
   const addExercise = (exercise: Exercise) => {
-    const workoutExercise: WorkoutExercise = {
-      id: Math.random(),
-      workoutId: item.id,
-      userId: item.userId,
+    const workoutExercise: WorkoutExerciseUpdateDto = {
       exerciseId: exercise.id,
-      createdAt: new Date(),
-      updatedAt: null,
+      sets: [{
+        start: new Date(),
+        end: new Date(),
+        weight: 0,
+        reps: 1,
+      }],
     };
-    const set: WorkoutExerciseSet = {
-      id: Math.random(),
-      exerciseId: exercise.id,
-      workoutId: item.id,
-      start: new Date(),
-      end: new Date(),
-      weight: 0,
-      reps: 1,
-      createdAt: new Date(),
-      updatedAt: null,
-      userId: item.userId,
-      workoutExerciseId: workoutExercise.id,
-    };
-    item.exercises.push({...workoutExercise, sets: [set], exercise: exercise});
-    setItem({...item});
+    setExercises([...exercises, {workoutExercise, exercise}]);
     popupContext.setContent(null);
   };
 
@@ -173,17 +170,15 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
         <h3>Exercises:</h3>
       </div>
       <div style={{marginTop: 10}}>
-        {item.exercises.map((exercise) =>
-           <UpdateWorkoutExerciseForm key={exercise.id} item={exercise} onDelete={deleteExercise} />
-        )}
+        {exercises.map((row) => <UpdateWorkoutExerciseForm key={row.workoutExercise.id} item={row} onDelete={deleteExercise} />)}
         <div>
           <Button onClick={showAddExercisePopup}>Add Exercise</Button>
         </div>
       </div>
       <div style={{marginTop: 20}}>
         <Button onClick={back}>Back</Button>
-        {item.userId !== null && <Button onClick={save} style={{marginLeft: 20}}>Save</Button>}
-        {item.userId !== null && <Button onClick={deleteItem} color={'error'}>Delete</Button>}
+        <Button onClick={save} style={{marginLeft: 20}}>Save</Button>
+        <Button onClick={deleteItem} color={'error'}>Delete</Button>
       </div>
     </>
   );

@@ -48,7 +48,7 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
       }
       setSearch(trimmed);
     },
-    value: search,
+    value: search != null ? search : '',
     placeholder: 'Search here...',
     variant: 'standard',
     sx: searchSx,

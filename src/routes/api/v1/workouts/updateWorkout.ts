@@ -4,6 +4,7 @@ import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiM
 import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
 import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
 import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
+import {workoutUpdateDtoValidator} from 'src/backend/model/Workout/WorkoutUpdateDto';
 
 export const updateWorkout = openApiInstance.factory.createRoute({
   method: OpenApiMethods.patch,
@@ -14,22 +15,7 @@ export const updateWorkout = openApiInstance.factory.createRoute({
     path: z.object({
       id: z.number(),
     }),
-    body: z.object({
-      start: z.date(),
-      end: z.date().nullable(),
-      calories: z.number(),
-      exercises: z.object({
-        id: z.number().optional(),
-        exerciseId: z.number(),
-        sets: z.object({
-          id: z.number().optional(),
-          end: z.date().nullable(),
-          weight: z.number().nullable(),
-          reps: z.number().nullable(),
-          start: z.date().nullable(),
-        }).array(),
-      }).array(),
-    }),
+    body: workoutUpdateDtoValidator,
     response: z.object({
       success: z.boolean(),
     }),

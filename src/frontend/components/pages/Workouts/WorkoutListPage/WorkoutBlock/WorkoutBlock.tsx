@@ -11,7 +11,7 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
     borderRadius: 10,
     objectFit: 'cover',
   };
-  const duration = (new Date(props.item.end).getTime() - new Date(props.item.start).getTime()) / 1000;
+  const duration = props.item.end ? (new Date(props.item.end).getTime() - new Date(props.item.start).getTime()) / 1000 : 0;
   const hours = Math.floor(duration / (60 * 60));
   const hoursStr = hours.toLocaleString(undefined, {minimumIntegerDigits: 2});
   const minutes = Math.floor((duration - hours * 60 * 60) / 60);
