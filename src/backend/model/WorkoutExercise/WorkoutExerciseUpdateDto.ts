@@ -1,8 +1,8 @@
 import {z} from 'zod';
-import {workoutValidator} from '../Workout/Workout';
 import {workoutExerciseSetUpdateDtoValidator} from '../WorkoutExerciseSet/WorkoutExerciseSetUpdateDto';
+import {workoutExerciseDecoratedValidator} from './WorkoutExerciseDecoratedDto';
 
-export const workoutExerciseUpdateDtoValidator = workoutValidator.shape.exercises.element.omit({
+export const workoutExerciseUpdateDtoValidator = workoutExerciseDecoratedValidator.omit({
   // id: true,
   workoutId: true,
   userId: true,

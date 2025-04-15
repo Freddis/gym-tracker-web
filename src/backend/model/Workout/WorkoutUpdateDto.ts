@@ -8,7 +8,6 @@ export const workoutUpdateDtoValidator = workoutValidator.omit({
   createdAt: true,
   updatedAt: true,
 }).extend({
-  // id: z.number().optional(),
   exercises: workoutExerciseUpdateDtoValidator.array(),
 }).openapi({ref: 'WorkoutUpdateDTO'});
 

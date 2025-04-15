@@ -25,21 +25,18 @@ export type Workout = {
   end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
-  exercises: Array<
-    WorkoutExercise & {
-      exercise: Exercise;
-      sets: Array<WorkoutExerciseSet>;
-    }
-  >;
+  exercises: Array<WorkoutExerciseDecorated>;
 };
 
-export type WorkoutExercise = {
+export type WorkoutExerciseDecorated = {
   id: number;
   workoutId: number;
   userId: number;
   exerciseId: number;
   createdAt: Date;
   updatedAt: Date | null;
+  exercise: Exercise;
+  sets: Array<WorkoutExerciseSet>;
 };
 
 export type WorkoutExerciseSet = {

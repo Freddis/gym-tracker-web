@@ -3765,18 +3765,7 @@ components:
         exercises:
           type: array
           items:
-            allOf:
-              - $ref: "#/components/schemas/WorkoutExercise"
-            properties:
-              exercise:
-                $ref: "#/components/schemas/Exercise"
-              sets:
-                type: array
-                items:
-                  $ref: "#/components/schemas/WorkoutExerciseSet"
-            required:
-              - exercise
-              - sets
+            $ref: "#/components/schemas/WorkoutExerciseDecorated"
       required:
         - id
         - externalId
@@ -3788,7 +3777,7 @@ components:
         - createdAt
         - updatedAt
         - exercises
-    WorkoutExercise:
+    WorkoutExerciseDecorated:
       type: object
       properties:
         id:
@@ -3815,6 +3804,12 @@ components:
             - string
             - "null"
           format: date-time
+        exercise:
+          $ref: "#/components/schemas/Exercise"
+        sets:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkoutExerciseSet"
       required:
         - id
         - workoutId
@@ -3822,6 +3817,8 @@ components:
         - exerciseId
         - createdAt
         - updatedAt
+        - exercise
+        - sets
     WorkoutExerciseSet:
       type: object
       properties:
