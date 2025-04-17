@@ -13,6 +13,7 @@ export type Exercise = {
   parentExerciseId: number | null;
   createdAt: Date;
   updatedAt: Date | null;
+  deletedAt: Date | null;
 };
 
 export type ExerciseUpsertDto = {
@@ -26,6 +27,7 @@ export type ExerciseUpsertDto = {
   copiedFromId: number | null;
   createdAt: Date;
   updatedAt: Date | null;
+  deletedAt: Date | null;
 };
 
 export type Workout = {
@@ -37,6 +39,7 @@ export type Workout = {
   end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
+  deletedAt: Date | null;
   exercises: Array<WorkoutExercise>;
 };
 
@@ -73,6 +76,7 @@ export type WorkoutUpsertDto = {
   end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
+  deletedAt: Date | null;
   exercises: Array<{
     id?: number;
     exerciseId: number;
@@ -95,6 +99,7 @@ export type WorkoutUpdateDto = {
   calories: number;
   start: Date;
   end: Date | null;
+  deletedAt: Date | null;
   exercises: Array<{
     id?: number;
     exerciseId: number;
@@ -1726,6 +1731,7 @@ export type PutWorkoutsResponses = {
       end: Date | null;
       createdAt: Date;
       updatedAt: Date | null;
+      deletedAt: Date | null;
     }>;
   };
 };

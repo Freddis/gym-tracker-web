@@ -41,7 +41,12 @@ export class ExerciseService {
   async delete(exerciseId: number): Promise<void> {
     const db = await this.db.getDb();
     const dbSchema = this.db.getSchema();
-    await db.delete(dbSchema.exercises)
+    const now = new Date();
+    await db.update(dbSchema.exercises)
+      .set({
+        deletedAt: now,
+        updatedAt: now,
+      })
       .where(
         eq(dbSchema.exercises.id, exerciseId),
       );
@@ -75,6 +80,7 @@ export class ExerciseService {
           not(
             eq(table.equipmentId, 13)
           ),
+          isNull(table.deletedAt),
           or(
             isNull(table.userId),
             eq(table.userId, userId ?? 0)
@@ -90,7 +96,10 @@ export class ExerciseService {
     const db = await this.db.getDb();
     const result = await db.query.exercises.findMany({
       where: (table, op) => op.and(
-                              op.not(op.eq(table.equipmentId, 13)),
+                              op.not(
+                                op.eq(table.equipmentId, 13)
+                              ),
+                              op.isNull(table.deletedAt),
                               op.or(
                                 op.isNull(table.userId),
                                 op.eq(table.userId, userId)

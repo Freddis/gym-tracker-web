@@ -25,9 +25,11 @@ export const exercises = gymTracker.table('exercises', {
   parentExerciseId: integer(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 },
 (table) => [
   index().on(table.userId),
+  index().on(table.deletedAt),
 ]
 );
 
@@ -57,9 +59,11 @@ export const workouts = gymTracker.table('workouts', {
   end: timestamp({withTimezone: true, mode: 'date'}),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 },
 (table) => [
   index().on(table.userId),
+  index().on(table.deletedAt),
 ]
 );
 

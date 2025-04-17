@@ -15,6 +15,9 @@ const exerciseSchemaResponseTransformer = (data: any) => {
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
   return data;
 };
 
@@ -78,6 +81,9 @@ const workoutSchemaResponseTransformer = (data: any) => {
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
   data.exercises = data.exercises.map((item: any) => {
     return workoutExerciseSchemaResponseTransformer(item);
   });
@@ -104,6 +110,9 @@ export const putWorkoutsResponseTransformer = async (
     item.createdAt = new Date(item.createdAt);
     if (item.updatedAt) {
       item.updatedAt = new Date(item.updatedAt);
+    }
+    if (item.deletedAt) {
+      item.deletedAt = new Date(item.deletedAt);
     }
     return item;
   });

@@ -2204,6 +2204,11 @@ paths:
                             - string
                             - "null"
                           format: date-time
+                        deletedAt:
+                          type:
+                            - string
+                            - "null"
+                          format: date-time
                       required:
                         - id
                         - typeId
@@ -2213,6 +2218,7 @@ paths:
                         - end
                         - createdAt
                         - updatedAt
+                        - deletedAt
                 required:
                   - items
         "400":
@@ -4181,6 +4187,11 @@ components:
             - string
             - "null"
           format: date-time
+        deletedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
       required:
         - id
         - name
@@ -4194,6 +4205,7 @@ components:
         - parentExerciseId
         - createdAt
         - updatedAt
+        - deletedAt
     ExerciseUpsertDto:
       type: object
       properties:
@@ -4243,6 +4255,11 @@ components:
             - string
             - "null"
           format: date-time
+        deletedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
       required:
         - id
         - name
@@ -4254,6 +4271,7 @@ components:
         - copiedFromId
         - createdAt
         - updatedAt
+        - deletedAt
     Workout:
       type: object
       properties:
@@ -4291,6 +4309,11 @@ components:
             - string
             - "null"
           format: date-time
+        deletedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
         exercises:
           type: array
           items:
@@ -4304,6 +4327,7 @@ components:
         - end
         - createdAt
         - updatedAt
+        - deletedAt
         - exercises
     WorkoutExercise:
       type: object
@@ -4445,6 +4469,11 @@ components:
             - string
             - "null"
           format: date-time
+        deletedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
         exercises:
           type: array
           items:
@@ -4522,6 +4551,7 @@ components:
         - end
         - createdAt
         - updatedAt
+        - deletedAt
         - exercises
     WorkoutUpdateDto:
       type: object
@@ -4540,6 +4570,11 @@ components:
           type: string
           format: date-time
         end:
+          type:
+            - string
+            - "null"
+          format: date-time
+        deletedAt:
           type:
             - string
             - "null"
@@ -4567,6 +4602,7 @@ components:
         - calories
         - start
         - end
+        - deletedAt
         - exercises
     WorkoutExerciseSetUpdateDto:
       type: object
