@@ -9,7 +9,7 @@ export const workoutUpdateDtoValidator = workoutValidator.omit({
   updatedAt: true,
 }).extend({
   exercises: workoutExerciseUpdateDtoValidator.array(),
-}).openapi({ref: 'WorkoutUpdateDTO'});
+}).openapi({ref: 'WorkoutUpdateDto'});
 
 export type WorkoutUpdateDtoValidator = typeof workoutUpdateDtoValidator
 export type WorkoutUpdateDto = z.TypeOf<WorkoutUpdateDtoValidator>

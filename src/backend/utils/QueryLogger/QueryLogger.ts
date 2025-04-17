@@ -52,7 +52,7 @@ export class QueryLogger implements Logger {
              .replace(/\n/g, '') // line brakes
             //  .replace(/"/g, '`')
              .replace(
-              /(select|where|inner join|left join|join|from|order by|limit|values|returning|insert into)/g,
+              /(select|where|inner join|left join|join|from|order by|limit|values|returning|insert into|on conflict|delete)/g,
                `\n${cyan}$1${reset}`);
     // easier identification of specific queries if params are still displayed beneath.
     const paramString = `${cyan}sql params:${reset} [${parameters?.map((x) => {

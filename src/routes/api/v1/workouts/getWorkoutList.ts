@@ -11,14 +11,14 @@ export const getWorkoutList = openApiInstance.factory.createRoute({
   path: '/',
   validators: {
     query: z.object({
-      page: z.number().optional().default(1),
+      updatedAfter: z.date().optional(),
     }),
     response: z.object({
       items: workoutValidator.array(),
     }),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.workout.getAll(ctx.viewer.id);
+    const result = await ctx.services.models.workout.getAll(ctx.viewer.id, ctx.params.query);
     return {
       items: result,
     };

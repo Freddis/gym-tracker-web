@@ -43,6 +43,13 @@
       "when": 1744718786880,
       "tag": "0005_workout_end_nullable",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1744846246872,
+      "tag": "0006_upsertable_keys_for_synced_entities",
+      "breakpoints": true
     }
   ]
 }

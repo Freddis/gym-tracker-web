@@ -1,12 +1,15 @@
-import {eq, and, desc} from 'drizzle-orm';
+import {eq, and, desc, gte} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Workout} from 'src/backend/model/Workout/Workout';
 import {dbSchema} from 'src/backend/drizzle/db';
-import {WorkoutExercise} from 'src/backend/model/WorkoutExercise/WorkoutExercise';
+import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
 import {WorkoutExerciseSet} from 'src/backend/model/WorkoutExerciseSet/WorkoutExerciseSet';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
 import {NewModel} from 'src/common/types/NewModel';
 import {WorkoutUpdateDto} from 'src/backend/model/Workout/WorkoutUpdateDto';
+import {WorkoutUpsertDto} from 'src/backend/model/Workout/WorkoutUpsertDto';
+import {SemiPartial} from 'src/common/types/SemiPartial';
+import {WorkoutRow} from 'src/backend/model/Workout/WorkoutRow';
 
 export class WorkoutService {
   protected db: DrizzleService;
@@ -34,58 +37,135 @@ export class WorkoutService {
     if (!workout) {
       throw new Error('Workout not found');
     }
-    await db.update(this.table)
+    await db.transaction(async (db) => {
+      await db.update(this.table)
       .set({
         ...data,
         updatedAt: new Date(),
       }).where(
         eq(this.table.id, id)
       );
-    await db.delete(dbSchema.workoutExerciseSets).where(
+      await db.delete(dbSchema.workoutExerciseSets).where(
         eq(dbSchema.workoutExerciseSets.workoutId, id)
       );
-    await db.delete(dbSchema.workoutExercises).where(
+      await db.delete(dbSchema.workoutExercises).where(
       eq(dbSchema.workoutExercises.workoutId, id)
     );
-    for (const exercise of data.exercises) {
-      const existing: Partial<WorkoutExercise> = workout.exercises.find((x) => x.id === exercise.id) ?? {};
-      const newExercise: NewModel<WorkoutExercise> = {
-        ...exercise,
-        id: undefined,
-        userId: workout.userId,
-        workoutId: workout.id,
-        exerciseId: exercise.exerciseId,
-        createdAt: existing.createdAt ?? new Date(),
-        updatedAt: existing.createdAt ? new Date() : null,
-      };
-      const inserted = await db.insert(dbSchema.workoutExercises)
+      for (const exercise of data.exercises) {
+        const existing: Partial<WorkoutExerciseRow> = workout.exercises.find((x) => x.id === exercise.id) ?? {};
+        const newExercise: NewModel<WorkoutExerciseRow> = {
+          ...exercise,
+          id: undefined,
+          userId: workout.userId,
+          workoutId: workout.id,
+          exerciseId: exercise.exerciseId,
+          createdAt: existing.createdAt ?? new Date(),
+          updatedAt: existing.createdAt ? new Date() : null,
+        };
+        const inserted = await db.insert(dbSchema.workoutExercises)
         .values(newExercise)
         .returning({id: dbSchema.workoutExercises.id});
-      const workoutExerciseid = inserted[0].id;
-      for (const set of exercise.sets) {
-        const existing: Partial<WorkoutExerciseSet> = workout.exercises
+        const workoutExerciseid = inserted[0].id;
+        for (const set of exercise.sets) {
+          const existing: Partial<WorkoutExerciseSet> = workout.exercises
           .find(
             (x) => x.id === exercise.id
           )?.sets.find(
             (x) => x.id === set.id
         ) ?? {};
-        const newSet: NewModel<WorkoutExerciseSet> = {
-          ...set,
-          id: undefined,
-          userId: workout.userId,
-          workoutId: workout.id,
-          exerciseId: exercise.exerciseId,
-          workoutExerciseId: workoutExerciseid,
-          createdAt: existing.createdAt ?? new Date(),
-          updatedAt: existing.createdAt ? new Date() : null,
-        };
-        await db.insert(dbSchema.workoutExerciseSets).values(newSet);
+          const newSet: NewModel<WorkoutExerciseSet> = {
+            ...set,
+            id: undefined,
+            userId: workout.userId,
+            workoutId: workout.id,
+            exerciseId: exercise.exerciseId,
+            workoutExerciseId: workoutExerciseid,
+            createdAt: existing.createdAt ?? new Date(),
+            updatedAt: existing.createdAt ? new Date() : null,
+          };
+          await db.insert(dbSchema.workoutExerciseSets).values(newSet);
+        }
       }
-    }
+    });
   }
+  async upsert(userId: number, data: WorkoutUpsertDto[]): Promise<WorkoutRow[]> {
+    const db = await this.db.getDb();
+    const schema = this.db.getSchema();
+    if (data.length === 0) {
+      return [];
+    }
+    const result = await db.transaction(async (db) => {
+      const result: WorkoutRow[] = [];
+      for (const workout of data) {
+        const attachedToUser: SemiPartial<WorkoutRow, 'id'> = {
+          ...workout,
+          id: workout.id ?? undefined,
+          userId: userId,
+        };
+        const res = await db.insert(schema.workouts).values(attachedToUser).onConflictDoUpdate({
+          target: schema.exercises.id,
+          set: this.db.generateConflictUpdateSetAllColumns(schema.workouts),
+        }).returning();
+        result.push(...res);
+        const workoutId = result[0].id;
+        await db.delete(dbSchema.workoutExerciseSets).where(
+          eq(dbSchema.workoutExerciseSets.workoutId, workoutId)
+        );
+        await db.delete(dbSchema.workoutExercises).where(
+        eq(dbSchema.workoutExercises.workoutId, workoutId)
+        );
+        for (const exercise of workout.exercises) {
+          const row: SemiPartial<WorkoutExerciseRow, 'id'> = {
+            id: exercise.id ?? undefined,
+            userId,
+            workoutId,
+            createdAt: exercise.createdAt,
+            updatedAt: exercise.updatedAt,
+            exerciseId: exercise.exerciseId,
+          };
+          const res = await db.insert(dbSchema.workoutExercises).values(row).onConflictDoUpdate({
+            target: schema.workoutExercises.id,
+            set: this.db.generateConflictUpdateSetAllColumns(schema.workoutExercises),
+          }).returning();
+          const workoutExerciseId = res[0].id;
+
+          const sets: SemiPartial<WorkoutExerciseSet, 'id'>[] = exercise.sets.map((y) => ({
+            id: y.id ?? undefined,
+            userId,
+            workoutId,
+            exerciseId: exercise.exerciseId,
+            workoutExerciseId,
+            createdAt: y.createdAt,
+            updatedAt: y.updatedAt,
+            reps: y.reps,
+            weight: y.weight,
+            start: y.start,
+            end: y.end,
+          }));
+          await db.insert(dbSchema.workoutExerciseSets).values(sets);
+        }
+      }
+
+      return result;
+    });
+
+    // todo: should I go out of my way to insure ordering of result rows in returning()?
+    // going with the flow for now and relying on posgress returning() implementation, which for now preserves the order
+    return result;
+  }
+
 
   async delete(id: number): Promise<void> {
     const db = await this.db.getDb();
+    const schema = this.db.getSchema();
+    await db.delete(schema.workoutExerciseSets)
+      .where(
+        eq(schema.workoutExerciseSets.workoutId, id)
+      );
+    await db.delete(schema.workoutExercises)
+      .where(
+        eq(schema.workoutExercises.workoutId, id)
+    );
     await db.delete(this.table)
       .where(
         eq(this.table.id, id),
@@ -98,7 +178,7 @@ export class WorkoutService {
       where: (table, {eq, and}) =>
         and(
           eq(table.id, id),
-          eq(table.userId, userId ?? 0)
+          userId ? eq(table.userId, userId ?? 0) : undefined
         ),
       with: {
         exercises: {
@@ -112,7 +192,9 @@ export class WorkoutService {
     return result ?? null;
   }
 
-  async getAll(userId: number): Promise<Workout[]> {
+  async getAll(userId: number, params?: {
+    updatedAfter?: Date
+  }): Promise<Workout[]> {
     const db = await this.db.getDb();
     const omitDrizzleFields = <T>(
       table: T
@@ -142,7 +224,8 @@ export class WorkoutService {
       dbSchema.workouts
     ).where(
       and(
-        eq(dbSchema.workouts.userId, userId)
+        eq(dbSchema.workouts.userId, userId),
+        params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
       )
     ).leftJoin(
       dbSchema.workoutExercises,
@@ -157,8 +240,8 @@ export class WorkoutService {
     .orderBy(
       desc(dbSchema.workouts.createdAt)
     );
-    const workouts = new Map<number, Workout & {exercises: WorkoutExercise[]}>();
-    const exercises = new Map<number, WorkoutExercise & {exercise: Exercise, sets: WorkoutExerciseSet[]}>();
+    const workouts = new Map<number, Workout & {exercises: WorkoutExerciseRow[]}>();
+    const exercises = new Map<number, WorkoutExerciseRow & {exercise: Exercise, sets: WorkoutExerciseSet[]}>();
     for (const row of result2) {
       const workout = workouts.get(row.workout.id) ?? {...row.workout, exercises: []};
       workouts.set(workout.id, workout);

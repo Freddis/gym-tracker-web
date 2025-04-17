@@ -18,6 +18,9 @@ import type {
   PostExercisesData,
   PostExercisesResponse,
   PostExercisesError,
+  PutExercisesData,
+  PutExercisesResponse,
+  PutExercisesError,
   DeleteExercisesByIdData,
   DeleteExercisesByIdResponse,
   DeleteExercisesByIdError,
@@ -33,6 +36,9 @@ import type {
   PostWorkoutsData,
   PostWorkoutsResponse,
   PostWorkoutsError,
+  PutWorkoutsData,
+  PutWorkoutsResponse,
+  PutWorkoutsError,
   DeleteWorkoutsByIdData,
   DeleteWorkoutsByIdResponse,
   DeleteWorkoutsByIdError,
@@ -52,8 +58,10 @@ import type {
 import { client as _heyApiClient } from "./client.gen";
 import {
   getExercisesResponseTransformer,
+  putExercisesResponseTransformer,
   getExercisesByIdResponseTransformer,
   getWorkoutsResponseTransformer,
+  putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
   getEntriesResponseTransformer,
 } from "./transformers.gen";
@@ -155,6 +163,33 @@ export const postExercises = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
+    url: "/exercises/",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Updates or inserts exercise in users personal library
+ */
+export const putExercises = <ThrowOnError extends boolean = false>(
+  options?: Options<PutExercisesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    PutExercisesResponse,
+    PutExercisesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: putExercisesResponseTransformer,
     url: "/exercises/",
     ...options,
     headers: {
@@ -275,6 +310,33 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
+    url: "/workouts/",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Updates or inserts workout for user
+ */
+export const putWorkouts = <ThrowOnError extends boolean = false>(
+  options?: Options<PutWorkoutsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    PutWorkoutsResponse,
+    PutWorkoutsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: putWorkoutsResponseTransformer,
     url: "/workouts/",
     ...options,
     headers: {

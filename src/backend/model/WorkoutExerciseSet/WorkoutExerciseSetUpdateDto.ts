@@ -2,7 +2,6 @@ import {z} from 'zod';
 import {workoutExercisSetValidator} from './WorkoutExerciseSet';
 
 export const workoutExerciseSetUpdateDtoValidator = workoutExercisSetValidator.omit({
-  // id: true,
   userId: true,
   workoutId: true,
   workoutExerciseId: true,

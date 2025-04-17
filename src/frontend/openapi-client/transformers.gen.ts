@@ -2,8 +2,10 @@
 
 import type {
   GetExercisesResponse,
+  PutExercisesResponse,
   GetExercisesByIdResponse,
   GetWorkoutsResponse,
+  PutWorkoutsResponse,
   GetWorkoutsByIdResponse,
   GetEntriesResponse,
 } from "./types.gen";
@@ -19,6 +21,15 @@ const exerciseSchemaResponseTransformer = (data: any) => {
 export const getExercisesResponseTransformer = async (
   data: any,
 ): Promise<GetExercisesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return exerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const putExercisesResponseTransformer = async (
+  data: any,
+): Promise<PutExercisesResponse> => {
   data.items = data.items.map((item: any) => {
     return exerciseSchemaResponseTransformer(item);
   });
@@ -46,7 +57,7 @@ const workoutExerciseSetSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
-const workoutExerciseDecoratedSchemaResponseTransformer = (data: any) => {
+const workoutExerciseSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
@@ -68,7 +79,7 @@ const workoutSchemaResponseTransformer = (data: any) => {
     data.updatedAt = new Date(data.updatedAt);
   }
   data.exercises = data.exercises.map((item: any) => {
-    return workoutExerciseDecoratedSchemaResponseTransformer(item);
+    return workoutExerciseSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -78,6 +89,23 @@ export const getWorkoutsResponseTransformer = async (
 ): Promise<GetWorkoutsResponse> => {
   data.items = data.items.map((item: any) => {
     return workoutSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const putWorkoutsResponseTransformer = async (
+  data: any,
+): Promise<PutWorkoutsResponse> => {
+  data.items = data.items.map((item: any) => {
+    item.start = new Date(item.start);
+    if (item.end) {
+      item.end = new Date(item.end);
+    }
+    item.createdAt = new Date(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = new Date(item.updatedAt);
+    }
+    return item;
   });
   return data;
 };

@@ -13,6 +13,8 @@ import {getWorkout} from '../../routes/api/v1/workouts/getWorkout';
 import {createWorkout} from '../../routes/api/v1/workouts/createWorkout';
 import {deleteWorkout} from '../../routes/api/v1/workouts/deleteWorkout';
 import {updateWorkout} from '../../routes/api/v1/workouts/updateWorkout';
+import {upsertExercises} from 'src/routes/api/v1/exercises/upsertExercises';
+import {upsertWorkouts} from 'src/routes/api/v1/workouts/upsertWorkouts';
 
 export const openApiRoutes: OpenApiRouteMap = [
   {
@@ -29,6 +31,7 @@ export const openApiRoutes: OpenApiRouteMap = [
       getExercise,
       getExerciseList,
       updateExercise,
+      upsertExercises,
       deleteExercise,
     ],
   },
@@ -39,6 +42,7 @@ export const openApiRoutes: OpenApiRouteMap = [
       getWorkout,
       getWorkoutList,
       updateWorkout,
+      upsertWorkouts,
       deleteWorkout,
     ],
   },

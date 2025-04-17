@@ -6,11 +6,13 @@ import {
   postAuthLogin,
   getExercises,
   postExercises,
+  putExercises,
   deleteExercisesById,
   getExercisesById,
   patchExercisesById,
   getWorkouts,
   postWorkouts,
+  putWorkouts,
   deleteWorkoutsById,
   getWorkoutsById,
   patchWorkoutsById,
@@ -31,11 +33,12 @@ import type {
   PostAuthLoginError,
   PostAuthLoginResponse,
   GetExercisesData,
-  GetExercisesError,
-  GetExercisesResponse,
   PostExercisesData,
   PostExercisesError,
   PostExercisesResponse,
+  PutExercisesData,
+  PutExercisesError,
+  PutExercisesResponse,
   DeleteExercisesByIdData,
   DeleteExercisesByIdError,
   DeleteExercisesByIdResponse,
@@ -44,11 +47,12 @@ import type {
   PatchExercisesByIdError,
   PatchExercisesByIdResponse,
   GetWorkoutsData,
-  GetWorkoutsError,
-  GetWorkoutsResponse,
   PostWorkoutsData,
   PostWorkoutsError,
   PostWorkoutsResponse,
+  PutWorkoutsData,
+  PutWorkoutsError,
+  PutWorkoutsResponse,
   DeleteWorkoutsByIdData,
   DeleteWorkoutsByIdError,
   DeleteWorkoutsByIdResponse,
@@ -195,88 +199,6 @@ export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
   });
 };
 
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K,
-) => {
-  const params = queryKey[0];
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
-};
-
-export const getExercisesInfiniteQueryKey = (
-  options?: Options<GetExercisesData>,
-): QueryKey<Options<GetExercisesData>> =>
-  createQueryKey("getExercises", options, true);
-
-export const getExercisesInfiniteOptions = (
-  options?: Options<GetExercisesData>,
-) => {
-  return infiniteQueryOptions<
-    GetExercisesResponse,
-    AxiosError<GetExercisesError>,
-    InfiniteData<GetExercisesResponse>,
-    QueryKey<Options<GetExercisesData>>,
-    | number
-    | Pick<
-        QueryKey<Options<GetExercisesData>>[0],
-        "body" | "headers" | "path" | "query"
-      >
-  >(
-    // @ts-ignore
-    {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
-        // @ts-ignore
-        const page: Pick<
-          QueryKey<Options<GetExercisesData>>[0],
-          "body" | "headers" | "path" | "query"
-        > =
-          typeof pageParam === "object"
-            ? pageParam
-            : {
-                query: {
-                  page: pageParam,
-                },
-              };
-        const params = createInfiniteParams(queryKey, page);
-        const { data } = await getExercises({
-          ...options,
-          ...params,
-          signal,
-          throwOnError: true,
-        });
-        return data;
-      },
-      queryKey: getExercisesInfiniteQueryKey(options),
-    },
-  );
-};
-
 export const postExercisesQueryKey = (options?: Options<PostExercisesData>) =>
   createQueryKey("postExercises", options);
 
@@ -305,6 +227,26 @@ export const postExercisesMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postExercises({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const putExercisesMutation = (
+  options?: Partial<Options<PutExercisesData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    PutExercisesResponse,
+    AxiosError<PutExercisesError>,
+    Options<PutExercisesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putExercises({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -394,54 +336,6 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   });
 };
 
-export const getWorkoutsInfiniteQueryKey = (
-  options?: Options<GetWorkoutsData>,
-): QueryKey<Options<GetWorkoutsData>> =>
-  createQueryKey("getWorkouts", options, true);
-
-export const getWorkoutsInfiniteOptions = (
-  options?: Options<GetWorkoutsData>,
-) => {
-  return infiniteQueryOptions<
-    GetWorkoutsResponse,
-    AxiosError<GetWorkoutsError>,
-    InfiniteData<GetWorkoutsResponse>,
-    QueryKey<Options<GetWorkoutsData>>,
-    | number
-    | Pick<
-        QueryKey<Options<GetWorkoutsData>>[0],
-        "body" | "headers" | "path" | "query"
-      >
-  >(
-    // @ts-ignore
-    {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
-        // @ts-ignore
-        const page: Pick<
-          QueryKey<Options<GetWorkoutsData>>[0],
-          "body" | "headers" | "path" | "query"
-        > =
-          typeof pageParam === "object"
-            ? pageParam
-            : {
-                query: {
-                  page: pageParam,
-                },
-              };
-        const params = createInfiniteParams(queryKey, page);
-        const { data } = await getWorkouts({
-          ...options,
-          ...params,
-          signal,
-          throwOnError: true,
-        });
-        return data;
-      },
-      queryKey: getWorkoutsInfiniteQueryKey(options),
-    },
-  );
-};
-
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
   createQueryKey("postWorkouts", options);
 
@@ -470,6 +364,26 @@ export const postWorkoutsMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postWorkouts({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const putWorkoutsMutation = (
+  options?: Partial<Options<PutWorkoutsData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    PutWorkoutsResponse,
+    AxiosError<PutWorkoutsError>,
+    Options<PutWorkoutsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putWorkouts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -557,6 +471,40 @@ export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
     },
     queryKey: getEntriesQueryKey(options),
   });
+};
+
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K,
+) => {
+  const params = queryKey[0];
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
 };
 
 export const getEntriesInfiniteQueryKey = (

@@ -6,7 +6,7 @@ import {Logger} from 'src/common/utils/Logger/Logger';
 import {exerciseData} from './data/argusExercisesJson';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
 import {workoutEntryValidator} from 'src/backend/model/Entry/validators/WorkoutEntry';
-import {WorkoutExercise} from 'src/backend/model/WorkoutExercise/WorkoutExercise';
+import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
 import {existsSync, readFileSync, realpathSync, writeFileSync} from 'fs';
 import {z} from 'zod';
 import {argusResponseValidator} from './validators/ArgusResponse';
@@ -222,7 +222,7 @@ export class ArgusService {
           }
           exerciseId = id;
         }
-        const workoutExercise: NewModel<WorkoutExercise> = {
+        const workoutExercise: NewModel<WorkoutExerciseRow> = {
           createdAt: new Date(),
           updatedAt: null,
           userId: user.id,

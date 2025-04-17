@@ -1,10 +1,9 @@
-import {createSelectSchema} from 'drizzle-zod';
-import {dbSchema} from 'src/backend/drizzle/db';
 import {z} from 'zod';
-import {workoutExerciseDecoratedValidator} from '../WorkoutExercise/WorkoutExerciseDecoratedDto';
+import {workoutExerciseValidator} from '../WorkoutExercise/WorkoutExercise';
+import {workoutRowValidator} from './WorkoutRow';
 
-export const workoutValidator = createSelectSchema(dbSchema.workouts).extend({
-  exercises: workoutExerciseDecoratedValidator.array(),
+export const workoutValidator = workoutRowValidator.extend({
+  exercises: workoutExerciseValidator.array(),
 }).openapi({ref: 'Workout'});
 export type WorkoutValidator = typeof workoutValidator
 export type Workout = z.TypeOf<WorkoutValidator>

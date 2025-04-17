@@ -15,9 +15,21 @@ export type Exercise = {
   updatedAt: Date | null;
 };
 
+export type ExerciseUpsertDto = {
+  id: number | null;
+  name: string;
+  description: string | null;
+  difficulty: number | null;
+  equipmentId: number;
+  images: Array<string>;
+  params: Array<number>;
+  copiedFromId: number | null;
+  createdAt: Date;
+  updatedAt: Date | null;
+};
+
 export type Workout = {
   id: number;
-  externalId: string | null;
   typeId: number | null;
   userId: number;
   calories: number;
@@ -25,10 +37,10 @@ export type Workout = {
   end: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
-  exercises: Array<WorkoutExerciseDecorated>;
+  exercises: Array<WorkoutExercise>;
 };
 
-export type WorkoutExerciseDecorated = {
+export type WorkoutExercise = {
   id: number;
   workoutId: number;
   userId: number;
@@ -53,19 +65,41 @@ export type WorkoutExerciseSet = {
   updatedAt: Date | null;
 };
 
-export type WorkoutUpdateDto = {
-  externalId: string | null;
+export type WorkoutUpsertDto = {
+  id?: number;
   typeId: number | null;
   calories: number;
   start: Date;
   end: Date | null;
-  exercises: Array<WorkoutExerciseUpdateDto>;
+  createdAt: Date;
+  updatedAt: Date | null;
+  exercises: Array<{
+    id?: number;
+    exerciseId: number;
+    createdAt: Date;
+    updatedAt: Date | null;
+    sets: Array<{
+      id?: number;
+      start: Date | null;
+      end: Date | null;
+      weight: number | null;
+      reps: number | null;
+      createdAt: Date;
+      updatedAt: Date | null;
+    }>;
+  }>;
 };
 
-export type WorkoutExerciseUpdateDto = {
-  id?: number;
-  exerciseId: number;
-  sets: Array<WorkoutExerciseSetUpdateDto>;
+export type WorkoutUpdateDto = {
+  typeId: number | null;
+  calories: number;
+  start: Date;
+  end: Date | null;
+  exercises: Array<{
+    id?: number;
+    exerciseId: number;
+    sets: Array<WorkoutExerciseSetUpdateDto>;
+  }>;
 };
 
 export type WorkoutExerciseSetUpdateDto = {
@@ -329,22 +363,7 @@ export type GetExercisesData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    type?:
-      | "steps"
-      | "weather"
-      | "calories"
-      | "food"
-      | "activity"
-      | "weight"
-      | "consumedcalories"
-      | "drink"
-      | "heartrate"
-      | "status"
-      | "bodymetrics"
-      | "workout_log"
-      | "sleepreport"
-      | "fitnesstest";
+    updatedAfter?: Date;
   };
   url: "/exercises/";
 };
@@ -641,6 +660,157 @@ export type PostExercisesResponses = {
 
 export type PostExercisesResponse =
   PostExercisesResponses[keyof PostExercisesResponses];
+
+export type PutExercisesData = {
+  body?: {
+    items: Array<ExerciseUpsertDto>;
+  };
+  path?: never;
+  query?: never;
+  url: "/exercises/";
+};
+
+export type PutExercisesErrors = {
+  /**
+   * Action Error or Validation Error
+   */
+  400:
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "actionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "validationFailed";
+          fieldErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unauthorized" | "userNotFound";
+    };
+  };
+  /**
+   * Permission Error
+   */
+  403: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "missingPermission";
+      /**
+       * List of possible permissions to allow access
+       */
+      permissions: Array<"clientRead">;
+    };
+  };
+  /**
+   * Validation Error Response
+   */
+  422: {
+    error: {
+      /**
+       * Code to handle on the frontend.
+       */
+      code: "validationFailed";
+      fieldErrors?: Array<{
+        /**
+         * Name of the field
+         */
+        field: string;
+        /**
+         * Error message
+         */
+        message: string;
+        fieldErrors: Array<{
+          /**
+           * Name of the field
+           */
+          field: string;
+          /**
+           * Error message
+           */
+          message: string;
+        }>;
+      }>;
+    };
+  };
+  /**
+   * Unhandled Error
+   */
+  500: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unknownError";
+    };
+  };
+};
+
+export type PutExercisesError = PutExercisesErrors[keyof PutExercisesErrors];
+
+export type PutExercisesResponses = {
+  /**
+   * Good Response
+   */
+  200: {
+    items: Array<Exercise>;
+  };
+};
+
+export type PutExercisesResponse =
+  PutExercisesResponses[keyof PutExercisesResponses];
 
 export type DeleteExercisesByIdData = {
   body?: never;
@@ -1105,7 +1275,7 @@ export type GetWorkoutsData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
+    updatedAfter?: Date;
   };
   url: "/workouts/";
 };
@@ -1402,6 +1572,166 @@ export type PostWorkoutsResponses = {
 
 export type PostWorkoutsResponse =
   PostWorkoutsResponses[keyof PostWorkoutsResponses];
+
+export type PutWorkoutsData = {
+  body?: {
+    items: Array<WorkoutUpsertDto>;
+  };
+  path?: never;
+  query?: never;
+  url: "/workouts/";
+};
+
+export type PutWorkoutsErrors = {
+  /**
+   * Action Error or Validation Error
+   */
+  400:
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "actionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "validationFailed";
+          fieldErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unauthorized" | "userNotFound";
+    };
+  };
+  /**
+   * Permission Error
+   */
+  403: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "missingPermission";
+      /**
+       * List of possible permissions to allow access
+       */
+      permissions: Array<"clientRead">;
+    };
+  };
+  /**
+   * Validation Error Response
+   */
+  422: {
+    error: {
+      /**
+       * Code to handle on the frontend.
+       */
+      code: "validationFailed";
+      fieldErrors?: Array<{
+        /**
+         * Name of the field
+         */
+        field: string;
+        /**
+         * Error message
+         */
+        message: string;
+        fieldErrors: Array<{
+          /**
+           * Name of the field
+           */
+          field: string;
+          /**
+           * Error message
+           */
+          message: string;
+        }>;
+      }>;
+    };
+  };
+  /**
+   * Unhandled Error
+   */
+  500: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unknownError";
+    };
+  };
+};
+
+export type PutWorkoutsError = PutWorkoutsErrors[keyof PutWorkoutsErrors];
+
+export type PutWorkoutsResponses = {
+  /**
+   * Good Response
+   */
+  200: {
+    items: Array<{
+      id: number;
+      typeId: number | null;
+      userId: number;
+      calories: number;
+      start: Date;
+      end: Date | null;
+      createdAt: Date;
+      updatedAt: Date | null;
+    }>;
+  };
+};
+
+export type PutWorkoutsResponse =
+  PutWorkoutsResponses[keyof PutWorkoutsResponses];
 
 export type DeleteWorkoutsByIdData = {
   body?: never;

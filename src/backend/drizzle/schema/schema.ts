@@ -13,7 +13,7 @@ export const entries = gymTracker.table('entries', {
 });
 
 export const exercises = gymTracker.table('exercises', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar().notNull(),
   description: text(),
   difficulty: integer(),
@@ -48,7 +48,7 @@ export const users = gymTracker.table('users', {
 // });
 
 export const workouts = gymTracker.table('workouts', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   externalId: varchar(),
   typeId: integer(),
   userId: integer().notNull(),
@@ -64,7 +64,7 @@ export const workouts = gymTracker.table('workouts', {
 );
 
 export const workoutExercises = gymTracker.table('workout_exercises', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   workoutId: integer().notNull().references(() => workouts.id),
   userId: integer().notNull().references(() => users.id),
   exerciseId: integer().notNull().references(() => exercises.id),
@@ -77,7 +77,7 @@ export const workoutExercises = gymTracker.table('workout_exercises', {
 ]);
 
 export const workoutExerciseSets = gymTracker.table('workout_exercise_sets', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   exerciseId: integer().notNull().references(() => exercises.id),
   workoutId: integer().notNull().references(() => workouts.id),
   userId: integer().notNull().references(() => users.id),
