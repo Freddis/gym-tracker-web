@@ -180,8 +180,15 @@ export class WorkoutService {
         exercises: {
           with: {
             exercise: true,
-            sets: true,
+            sets: {
+              orderBy: (t, op) => [
+                op.asc(t.createdAt),
+              ],
+            },
           },
+          orderBy: (t, op) => [
+            op.asc(t.createdAt),
+          ],
         },
       },
     });
@@ -256,6 +263,12 @@ export class WorkoutService {
       exercise.sets.push(row.set);
     }
     const result = Array.from(workouts.values());
+    for (const row of result) {
+      row.exercises.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
+      for (const exercise of row.exercises) {
+        exercise.sets.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
+      }
+    }
     return result;
   }
 
