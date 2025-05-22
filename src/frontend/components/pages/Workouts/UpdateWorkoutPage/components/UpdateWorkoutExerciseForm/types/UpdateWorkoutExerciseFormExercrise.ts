@@ -1,6 +1,6 @@
-import {Exercise, WorkoutExerciseUpdateDto} from 'src/frontend/openapi-client';
+import {Exercise, WorkoutUpsertDto} from 'src/frontend/openapi-client';
 
 export interface UpdateWorkoutExerciseFormExercrise {
   exercise: Exercise,
-  workoutExercise: WorkoutExerciseUpdateDto
+  workoutExercise: WorkoutUpsertDto['exercises'][0]
 }

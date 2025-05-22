@@ -12,8 +12,13 @@ export default defineConfig({
     path: './src/frontend/openapi-client',
   },
   plugins: [
-    '@hey-api/client-axios',
-    '@tanstack/react-query',
+    {
+      name: '@hey-api/client-axios',
+      throwOnError: false,
+    },
+    {
+      name: '@tanstack/react-query',
+    },
     {
       name: '@hey-api/transformers',
       dates: true,

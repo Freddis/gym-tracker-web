@@ -21,10 +21,10 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const aStyle: CSSProperties = {
     display: 'inline-block',
     textDecoration: 'none',
-    color: 'white',
+    // color: 'white',
   };
   return (
-    <div style={{borderRadius: 10, padding: 20, marginTop: 20, marginBottom: 40, background: '#222'}}>
+    <div style={{borderRadius: 10, padding: 20, marginTop: 20, marginBottom: 40, background: '#eee'}}>
       <div style={{display: 'block'}}>
         <div>
           <Link to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}} style={aStyle}>

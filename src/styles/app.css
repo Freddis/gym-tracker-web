@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "./colors.gen.css";
+
+@theme  inline {
+
+}

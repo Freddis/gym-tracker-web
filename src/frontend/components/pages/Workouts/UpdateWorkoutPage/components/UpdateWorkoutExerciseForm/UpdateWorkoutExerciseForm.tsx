@@ -2,7 +2,7 @@ import {Button, Input, SxProps} from '@mui/material';
 import {FC, useContext, useState, CSSProperties, ChangeEvent} from 'react';
 import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
-import {Exercise, WorkoutExerciseSetUpdateDto, WorkoutExerciseUpdateDto} from 'src/frontend/openapi-client';
+import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
 import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormProps';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
@@ -26,15 +26,22 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
   const swapExercise = () => {
     popupContext.setContent(popup);
   };
-  const deleteExercise = (exercise: WorkoutExerciseUpdateDto) => {
+  const deleteExercise = (exercise: WorkoutUpsertDto['exercises'][0]) => {
     props.onDelete(exercise);
   };
   const addSet = () => {
-    const set: WorkoutExerciseSetUpdateDto = {
+    const set: WorkoutExerciseSet = {
       start: new Date(),
       end: new Date(),
       weight: null,
       reps: null,
+      id: 0,
+      exerciseId: 0,
+      workoutId: 0,
+      userId: 0,
+      workoutExerciseId: 0,
+      createdAt: new Date(),
+      updatedAt: null,
     };
     props.item.workoutExercise.sets.push(set);
     setWorkoutExercise({...props.item.workoutExercise});

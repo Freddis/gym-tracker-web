@@ -106,6 +106,7 @@ export class ArgusService {
         userId: null,
         copiedFromId: null,
         parentExerciseId: null,
+        deletedAt: null,
       };
       exercises.push(row);
       const parent = map.get(baseName);

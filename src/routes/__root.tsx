@@ -1,6 +1,7 @@
 import {createRootRoute} from '@tanstack/react-router';
 import {Layout} from '../frontend/components/layout/Layout/Layout';
 import {NotFoundPage} from '../frontend/components/pages/NotFound/NotFoundPage';
+import appCss from '../styles/app.css?url';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -13,8 +14,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Gym Tracker',
+        title: 'Discipline',
       },
+    ],
+    links: [
+      {rel: 'stylesheet', href: appCss},
     ],
   }),
   component: Layout,

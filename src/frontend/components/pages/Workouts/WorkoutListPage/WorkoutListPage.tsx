@@ -5,6 +5,7 @@ import {Link, useNavigate} from '@tanstack/react-router';
 import {CSSProperties, MouseEventHandler} from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {WorkoutBlock} from './WorkoutBlock/WorkoutBlock';
+import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
 
 export function WorkoutListPage() {
   const response = useOpenApiQuery(getWorkoutsOptions, {});
@@ -33,8 +34,9 @@ export function WorkoutListPage() {
   const aStyle: CSSProperties = {color: 'white', textDecoration: 'none', cursor: 'pointer'};
   return (
     <PageContainer>
-      <h2>Recent Workouts</h2>
-      <Link to="/workouts" onClick={createWorkout} style={aStyle}>Add Workout</Link>
+      <Link to="/workouts" onClick={createWorkout} style={aStyle}>
+      <AppButton>Add Workout</AppButton>
+      </Link>
       <div>{items.map((item) => <WorkoutBlock key={item.id} item={item}/>)}</div>
     </PageContainer>
   );

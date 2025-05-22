@@ -125,7 +125,11 @@ export const postAuthRegisterOptions = (
 
 export const postAuthRegisterMutation = (
   options?: Partial<Options<PostAuthRegisterData>>,
-) => {
+): UseMutationOptions<
+  PostAuthRegisterResponse,
+  AxiosError<PostAuthRegisterError>,
+  Options<PostAuthRegisterData>
+> => {
   const mutationOptions: UseMutationOptions<
     PostAuthRegisterResponse,
     AxiosError<PostAuthRegisterError>,
@@ -163,7 +167,11 @@ export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
 
 export const postAuthLoginMutation = (
   options?: Partial<Options<PostAuthLoginData>>,
-) => {
+): UseMutationOptions<
+  PostAuthLoginResponse,
+  AxiosError<PostAuthLoginError>,
+  Options<PostAuthLoginData>
+> => {
   const mutationOptions: UseMutationOptions<
     PostAuthLoginResponse,
     AxiosError<PostAuthLoginError>,
@@ -219,7 +227,11 @@ export const postExercisesOptions = (options?: Options<PostExercisesData>) => {
 
 export const postExercisesMutation = (
   options?: Partial<Options<PostExercisesData>>,
-) => {
+): UseMutationOptions<
+  PostExercisesResponse,
+  AxiosError<PostExercisesError>,
+  Options<PostExercisesData>
+> => {
   const mutationOptions: UseMutationOptions<
     PostExercisesResponse,
     AxiosError<PostExercisesError>,
@@ -239,7 +251,11 @@ export const postExercisesMutation = (
 
 export const putExercisesMutation = (
   options?: Partial<Options<PutExercisesData>>,
-) => {
+): UseMutationOptions<
+  PutExercisesResponse,
+  AxiosError<PutExercisesError>,
+  Options<PutExercisesData>
+> => {
   const mutationOptions: UseMutationOptions<
     PutExercisesResponse,
     AxiosError<PutExercisesError>,
@@ -259,7 +275,11 @@ export const putExercisesMutation = (
 
 export const deleteExercisesByIdMutation = (
   options?: Partial<Options<DeleteExercisesByIdData>>,
-) => {
+): UseMutationOptions<
+  DeleteExercisesByIdResponse,
+  AxiosError<DeleteExercisesByIdError>,
+  Options<DeleteExercisesByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteExercisesByIdResponse,
     AxiosError<DeleteExercisesByIdError>,
@@ -300,7 +320,11 @@ export const getExercisesByIdOptions = (
 
 export const patchExercisesByIdMutation = (
   options?: Partial<Options<PatchExercisesByIdData>>,
-) => {
+): UseMutationOptions<
+  PatchExercisesByIdResponse,
+  AxiosError<PatchExercisesByIdError>,
+  Options<PatchExercisesByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     PatchExercisesByIdResponse,
     AxiosError<PatchExercisesByIdError>,
@@ -356,7 +380,11 @@ export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
 
 export const postWorkoutsMutation = (
   options?: Partial<Options<PostWorkoutsData>>,
-) => {
+): UseMutationOptions<
+  PostWorkoutsResponse,
+  AxiosError<PostWorkoutsError>,
+  Options<PostWorkoutsData>
+> => {
   const mutationOptions: UseMutationOptions<
     PostWorkoutsResponse,
     AxiosError<PostWorkoutsError>,
@@ -376,7 +404,11 @@ export const postWorkoutsMutation = (
 
 export const putWorkoutsMutation = (
   options?: Partial<Options<PutWorkoutsData>>,
-) => {
+): UseMutationOptions<
+  PutWorkoutsResponse,
+  AxiosError<PutWorkoutsError>,
+  Options<PutWorkoutsData>
+> => {
   const mutationOptions: UseMutationOptions<
     PutWorkoutsResponse,
     AxiosError<PutWorkoutsError>,
@@ -396,7 +428,11 @@ export const putWorkoutsMutation = (
 
 export const deleteWorkoutsByIdMutation = (
   options?: Partial<Options<DeleteWorkoutsByIdData>>,
-) => {
+): UseMutationOptions<
+  DeleteWorkoutsByIdResponse,
+  AxiosError<DeleteWorkoutsByIdError>,
+  Options<DeleteWorkoutsByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     DeleteWorkoutsByIdResponse,
     AxiosError<DeleteWorkoutsByIdError>,
@@ -437,7 +473,11 @@ export const getWorkoutsByIdOptions = (
 
 export const patchWorkoutsByIdMutation = (
   options?: Partial<Options<PatchWorkoutsByIdData>>,
-) => {
+): UseMutationOptions<
+  PatchWorkoutsByIdResponse,
+  AxiosError<PatchWorkoutsByIdError>,
+  Options<PatchWorkoutsByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     PatchWorkoutsByIdResponse,
     AxiosError<PatchWorkoutsByIdError>,

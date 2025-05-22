@@ -31,6 +31,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
       responseType: 'json',
+      throwOnError: false,
       headers: {
         Authorization: authHeader,
       },

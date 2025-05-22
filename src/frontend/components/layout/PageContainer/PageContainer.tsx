@@ -1,12 +1,7 @@
 import {ReactNode} from '@tanstack/react-router';
-import {CSSProperties} from 'react';
+import {twMerge} from 'tailwind-merge';
 
-export function PageContainer(props: {children: ReactNode | ReactNode[]}) {
-
-  const style: CSSProperties = {
-    padding: '20px',
-    margin: '62.5px auto 0px',
-    width: '1024px',
-  };
-  return <div style={style}>{props.children}</div>;
+export function PageContainer(props: {children: ReactNode | ReactNode[], className?: string}) {
+  const className = twMerge('max-w-5-xl flex flex-col items-center p-10 min-h-full', props.className);
+  return <div className={className}>{props.children}</div>;
 }

@@ -7,3 +7,4 @@ build
 .drizzle
 temp
 .env
+*storybook.log

@@ -1,40 +1,70 @@
-import {useMutation} from '@tanstack/react-query';
-import {Link, useNavigate} from '@tanstack/react-router';
+import {useNavigate} from '@tanstack/react-router';
 import {FC, useContext, useState} from 'react';
+import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
+import {AppLabel} from 'src/frontend/components/atoms/AppLabel/AppLabel';
+import {AppLink} from 'src/frontend/components/atoms/AppLink/AppLink';
+import {AppTextInput} from 'src/frontend/components/atoms/AppTextInput/AppTextInput';
 import {AuthContext} from 'src/frontend/components/layout/AuthProvider/AuthContext';
 import {PageContainer} from 'src/frontend/components/layout/PageContainer/PageContainer';
-import {postAuthLoginMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
+import {useAppPartialTranslation} from 'src/frontend/i18n/useAppPartialTranslation';
+import {postAuthLogin, PostAuthLoginError} from 'src/frontend/openapi-client';
+import {useResponseErrors} from 'src/frontend/hooks/useResponseErrors';
+import {AppInputError} from 'src/frontend/components/atoms/AppInputError/AppInputError';
 
 export const LoginPage: FC = () => {
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-  const mutation = useMutation({...postAuthLoginMutation()});
+  const [errorMessage, setErrors] = useResponseErrors();
   const login = async () => {
-    const result = await mutation.mutateAsync({
+    const result = await postAuthLogin({
       body: {
         email,
         password,
       },
     });
-    auth.login(result);
-    navigate({to: '/feed'});
+    if (!result.error) {
+      auth.login(result.data);
+      navigate({to: '/feed'});
+      return;
+    }
+    const err: PostAuthLoginError = result.error;
+    if (err.error.code === 'validationFailed') {
+      setErrors(err.error.fieldErrors ?? []);
+    } else if (err.error.code === 'actionError') {
+      // eslint-disable-next-line no-alert
+      alert(err.error.humanReadable);
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('Something went wrong:');
+    }
+
   };
   return (
-    <PageContainer>
-      <div>
-        <label>Email:</label>
-        <div>
-          <input type="text" onChange={(e) => setEmail(e.target.value)} value={email}/>
-        </div>
-        <label>Password:</label>
-        <div>
-          <input type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
-        </div>
-        <div style={{marginTop: 20}}>
-          <button onClick={login}>Login</button>
-          <Link to="/auth/register" style={{marginLeft: 20}}>Register</Link>
+    <PageContainer className="justify-center bg-neutral">
+      <div className="flex flex-col">
+        <div className=" bg-neutral-surface text-on-neutral-surface p-10 min-w-xl rounded-sm">
+          <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
+          <div className="flex flex-col gap-3">
+            <AppLabel>{t(i18n.form.labels.email)}:</AppLabel>
+            <AppTextInput onChange={(e) => setEmail(e.target.value)} value={email} />
+            <AppInputError error={errorMessage('email')} />
+            <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
+            <AppTextInput type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
+            <AppInputError error={errorMessage('password')} />
+          </div>
+          <div className="mt-3 flex flex-row gap-10 justify-center">
+            <AppLink to="/auth/register" className="text-accent ml-3">{t(i18n.form.buttons.forgotPassword)}</AppLink>
+          </div>
+          <div className="mt-10 flex flex-row gap-10 items-center justify-center">
+            <AppButton className="w-30" onClick={login}>{t(i18n.form.buttons.signIn)}</AppButton>
+          </div>
+          <div className="grow mt-10 flex justify-center">
+            <span>{t(i18n.registerCta)}</span>
+            <AppLink to="/auth/register" className="text-accent ml-3">{t(i18n.form.buttons.register)}</AppLink>
+          </div>
         </div>
       </div>
     </PageContainer>

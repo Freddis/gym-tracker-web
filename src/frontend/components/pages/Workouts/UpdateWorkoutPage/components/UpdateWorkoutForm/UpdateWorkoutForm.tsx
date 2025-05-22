@@ -3,7 +3,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import {FC, useState, CSSProperties, useContext} from 'react';
-import {Exercise, Workout, WorkoutExerciseUpdateDto, WorkoutUpdateDto} from 'src/frontend/openapi-client';
+import {Exercise, Workout, WorkoutUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
 import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
 import {Button, Input, SxProps} from '@mui/material';
@@ -92,7 +92,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     props.item.calories = value;
     setItem({...props.item});
   };
-  const deleteExercise = (row: WorkoutExerciseUpdateDto) => {
+  const deleteExercise = (row: WorkoutUpsertDto['exercises'][0]) => {
     const filtered = exercises.filter((x) => x.workoutExercise !== row);
     setExercises(filtered);
   };
@@ -100,14 +100,18 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     popupContext.setContent(<ExerciseSelectionPopup onSelect={addExercise}/>);
   };
   const addExercise = (exercise: Exercise) => {
-    const workoutExercise: WorkoutExerciseUpdateDto = {
+    const workoutExercise: WorkoutUpsertDto['exercises'][0] = {
       exerciseId: exercise.id,
       sets: [{
         start: new Date(),
         end: new Date(),
         weight: 0,
         reps: 1,
+        createdAt: new Date(),
+        updatedAt: null,
       }],
+      createdAt: new Date(),
+      updatedAt: null,
     };
     setExercises([...exercises, {workoutExercise, exercise}]);
     popupContext.setContent(null);
