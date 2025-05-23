@@ -8,6 +8,8 @@ import {EditThemeContext} from '../ThemeProvider/context/EditThemeContext';
 import {Theme} from '../ThemeProvider/enums/Theme';
 import {ThemeContext} from '../ThemeProvider/context/ThemeContext';
 import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
+import {Switch} from '../../atoms/Switch/Switch';
+import {DarkModeSwitch} from '../../composite/DarkModeSwitch/DarkModeSwitch';
 
 export const Conditional: FC<{condition: boolean, children: ReactNode}> = (props) => {
   return props.condition ? props.children : null;
@@ -65,7 +67,7 @@ export const Header: FC = () => {
           <Conditional condition={!auth.user}>
             <HeaderLink to="/auth/login">{t(i18n.menu.signIn)}</HeaderLink>
           </Conditional>
-          <HeaderLink onClick={toggleTheme}>{theme}</HeaderLink>
+          <DarkModeSwitch onClick={toggleTheme} checked={theme === Theme.Dark} />
         </div>
         <Conditional condition={!!auth.user}>
           <div className="flex items-center ml-20">

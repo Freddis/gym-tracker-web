@@ -1,6 +1,8 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "./colors.gen.css";
 @import "./storybook.css";
+@import "./shadcn.css";
 
 @theme  inline {
 
