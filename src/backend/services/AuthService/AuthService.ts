@@ -76,7 +76,7 @@ export class AuthService implements OpenApiAuthService {
   ): Promise<Client & {jwt: string}> {
     const service = new DrizzleService();
     const db = await service.getDb();
-    const schema = await service.getSchema();
+    const schema = service.getSchema();
     if (params.password !== params.passwordConfirmation) {
       throw new OpenApiActionError(OpenApiActionErrorCode.invalidPassword);
     }

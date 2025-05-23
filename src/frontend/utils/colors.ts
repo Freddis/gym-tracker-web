@@ -3,5 +3,4 @@ import {ColorSet} from '../types/ColorSet';
 
 export const colors: ColorSet = {
   [Color.Accent]: '#ea3031',
-  [Color.Danger]: 'red',
 };
