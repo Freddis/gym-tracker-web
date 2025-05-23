@@ -1,0 +1,19 @@
+#storybook-root {
+  width: 100%;
+  padding: 0px!important;
+} 
+
+.sbdocs {
+  &.sbdocs-content {
+    max-width: 100%;
+  }
+  .docs-story > div {
+    padding: 0!important;
+    > div {
+      width: 100%;
+    }
+    .innerZoomElementWrapper > div {
+      border: none!important;
+    }
+  }
+}

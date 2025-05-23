@@ -3,12 +3,11 @@ import {FC, MouseEventHandler, ReactNode, useContext} from 'react';
 import {AuthContext} from '../AuthProvider/AuthContext';
 import {AppLink} from '../../atoms/AppLink/AppLink';
 import {HeaderLink} from './components/HeaderLink';
-import {useAppPartialTranslation} from 'src/frontend/i18n/useAppPartialTranslation';
 import {AppLogo} from '../../atoms/AppLogo/AppLogo';
 import {EditThemeContext} from '../ThemeProvider/context/EditThemeContext';
 import {Theme} from '../ThemeProvider/enums/Theme';
 import {ThemeContext} from '../ThemeProvider/context/ThemeContext';
-
+import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 
 export const Conditional: FC<{condition: boolean, children: ReactNode}> = (props) => {
   return props.condition ? props.children : null;
@@ -30,7 +29,7 @@ export const Header: FC = () => {
     themeContext.setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark);
   };
   return (
-    <div className="bg-lightest text-on-lightest p-2 text-2xl  border-b-2 border-b-accent flex justify-center">
+    <div className="bg-lightest text-on-lightest p-2 text-2xl  border-b-2 border-b-accent flex justify-center w-full">
       <div className="min-w-5xl flex items-center m-auto">
         <Link to="/" className="flex items-center justify-center mr-20">
           <AppLogo />

@@ -1,10 +1,11 @@
 import {Link, useNavigate} from '@tanstack/react-router';
 import {FC, useState} from 'react';
-import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
-import {AppLabel} from 'src/frontend/components/atoms/AppLabel/AppLabel';
-import {AppTextInput} from 'src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {PageContainer} from 'src/frontend/components/layout/PageContainer/PageContainer';
-import {useAppPartialTranslation} from 'src/frontend/i18n/useAppPartialTranslation';
+import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
+import {AppButton} from '../../../atoms/AppButton/AppButton';
+import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
+import {PageContainer} from '../../../layout/PageContainer/PageContainer';
+
 
 export const RegistrationPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);

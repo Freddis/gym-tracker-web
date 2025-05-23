@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {StoryBookDisplay} from '../frontend/components/atoms/StoryBookDisplay/StoryBookDisplay';
-import {AppLink} from '../frontend/components/atoms/AppLink/AppLink';
+import {StoryBookDisplay} from '../../frontend/components/atoms/StoryBookDisplay/StoryBookDisplay';
+import {AppLink} from '../../frontend/components/atoms/AppLink/AppLink';
 
 const meta = {
   title: 'Components/Link',

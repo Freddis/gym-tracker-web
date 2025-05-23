@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./colors.gen.css";
+@import "./storybook.css";
 
 @theme  inline {
 

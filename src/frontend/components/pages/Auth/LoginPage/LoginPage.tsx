@@ -1,15 +1,16 @@
 import {useNavigate} from '@tanstack/react-router';
 import {FC, useContext, useState} from 'react';
-import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
-import {AppLabel} from 'src/frontend/components/atoms/AppLabel/AppLabel';
-import {AppLink} from 'src/frontend/components/atoms/AppLink/AppLink';
-import {AppTextInput} from 'src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {AuthContext} from 'src/frontend/components/layout/AuthProvider/AuthContext';
-import {PageContainer} from 'src/frontend/components/layout/PageContainer/PageContainer';
-import {useAppPartialTranslation} from 'src/frontend/i18n/useAppPartialTranslation';
-import {postAuthLogin, PostAuthLoginError} from 'src/frontend/openapi-client';
-import {useResponseErrors} from 'src/frontend/hooks/useResponseErrors';
-import {AppInputError} from 'src/frontend/components/atoms/AppInputError/AppInputError';
+import {useResponseErrors} from '../../../../hooks/useResponseErrors';
+import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
+import {postAuthLogin, PostAuthLoginError} from '../../../../openapi-client';
+import {AppButton} from '../../../atoms/AppButton/AppButton';
+import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
+import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
+import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
+import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
+import {PageContainer} from '../../../layout/PageContainer/PageContainer';
+
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -40,7 +41,6 @@ export const LoginPage: FC = () => {
       // eslint-disable-next-line no-alert
       alert('Something went wrong:');
     }
-
   };
   return (
     <PageContainer className="justify-center bg-neutral">
@@ -49,21 +49,34 @@ export const LoginPage: FC = () => {
           <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
           <div className="flex flex-col gap-3">
             <AppLabel>{t(i18n.form.labels.email)}:</AppLabel>
-            <AppTextInput onChange={(e) => setEmail(e.target.value)} value={email} />
+            <AppTextInput
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
             <AppInputError error={errorMessage('email')} />
             <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
-            <AppTextInput type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
+            <AppTextInput
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
             <AppInputError error={errorMessage('password')} />
           </div>
           <div className="mt-3 flex flex-row gap-10 justify-center">
-            <AppLink to="/auth/register" className="text-accent ml-3">{t(i18n.form.buttons.forgotPassword)}</AppLink>
+            <AppLink to="/auth/register" className="text-accent ml-3">
+              {t(i18n.form.buttons.forgotPassword)}
+            </AppLink>
           </div>
           <div className="mt-10 flex flex-row gap-10 items-center justify-center">
-            <AppButton className="w-30" onClick={login}>{t(i18n.form.buttons.signIn)}</AppButton>
+            <AppButton className="w-30" onClick={login}>
+              {t(i18n.form.buttons.signIn)}
+            </AppButton>
           </div>
           <div className="grow mt-10 flex justify-center">
             <span>{t(i18n.registerCta)}</span>
-            <AppLink to="/auth/register" className="text-accent ml-3">{t(i18n.form.buttons.register)}</AppLink>
+            <AppLink to="/auth/register" className="text-accent ml-3">
+              {t(i18n.form.buttons.register)}
+            </AppLink>
           </div>
         </div>
       </div>

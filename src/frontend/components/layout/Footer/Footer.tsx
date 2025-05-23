@@ -4,7 +4,7 @@ import {IoIosMail} from 'react-icons/io';
 import {LiaAddressCard} from 'react-icons/lia';
 export const Footer: FC = () => {
   return (
-    <div>
+    <div className="w-full">
       <div className="bg-darkest text-on-darkest flex justify-center">
         <div className=" max-w-6xl p-10 grid grid-cols-3 gap-6">
           <div>
