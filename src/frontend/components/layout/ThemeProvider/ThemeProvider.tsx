@@ -1,32 +1,42 @@
-import {FC, ReactNode, useMemo, useState} from 'react';
+import {FC, ReactNode, useEffect, useState} from 'react';
 import {EditThemeContext} from './context/EditThemeContext';
 import {Theme} from './enums/Theme';
 import {ThemeContext} from './context/ThemeContext';
 import {z} from 'zod';
+import {Cookie} from '../../../../common/utils/Cookie/Cookie';
 
 export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
-  const initialTheme = useMemo(() => {
-    if (typeof window === 'undefined') {
-      return Theme.Light;
-    }
-    const storedTheme = localStorage.getItem('theme');
+  const themeCookieName = 'theme';
+  const cookie = new Cookie();
+  const detectCurrentTheme = () => {
+    const storedTheme = cookie.get(themeCookieName);
     const validatedTheme = z.nativeEnum(Theme).safeParse(storedTheme);
-    const darkSchemePreferred = window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ?? false;
-    const defaultTheme = darkSchemePreferred ? Theme.Dark : Theme.Dark;
-    const initialTheme = validatedTheme.success ? validatedTheme.data : defaultTheme;
+    const initialTheme = validatedTheme.success ? validatedTheme.data : Theme.Light;
     return initialTheme;
-  }, []);
-
-  const [theme, setThemeState] = useState<Theme>(initialTheme);
+  };
+  const checkIfDarkThemeIsDefault = () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const darkSchemePreferred = window.matchMedia?.('(prefers-color-scheme:dark)')?.matches ?? false;
+    const hasThemeSet = !!cookie.get(themeCookieName);
+    if (!hasThemeSet && darkSchemePreferred) {
+      setTheme(Theme.Dark);
+    }
+  };
+  useEffect(checkIfDarkThemeIsDefault);
+  const [theme, setThemeState] = useState<Theme>(detectCurrentTheme());
   const setTheme = (theme: Theme) => {
-    localStorage.setItem('theme', theme);
+    // console.log('set', theme);;
+    cookie.set(themeCookieName, theme);
     setThemeState(theme);
   };
   const themeStr = theme === Theme.Light ? 'theme-light' : 'theme-dark';
+  // console.log(theme, themeStr);
   return (
   <ThemeContext.Provider value={theme}>
     <EditThemeContext.Provider value={{setTheme}}>
-      <body className={`bg-background text-on-background h-screen font-light ${themeStr}`}>
+      <body className={`bg-background text-on-background h-screen font-extralight ${themeStr}`}>
         {props.children}
       </body>
     </EditThemeContext.Provider>

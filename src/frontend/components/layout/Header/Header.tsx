@@ -8,7 +8,6 @@ import {EditThemeContext} from '../ThemeProvider/context/EditThemeContext';
 import {Theme} from '../ThemeProvider/enums/Theme';
 import {ThemeContext} from '../ThemeProvider/context/ThemeContext';
 import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
-import {Switch} from '../../atoms/Switch/Switch';
 import {DarkModeSwitch} from '../../composite/DarkModeSwitch/DarkModeSwitch';
 
 export const Conditional: FC<{condition: boolean, children: ReactNode}> = (props) => {
