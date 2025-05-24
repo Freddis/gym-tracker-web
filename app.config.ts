@@ -7,13 +7,14 @@ export default defineConfig({
   tsr: {
     appDirectory: 'src',
   },
-  vite: {
-    optimizeDeps: {
-      esbuildOptions: {
+  server: {
+    esbuild: {
+      options: {
         target: 'esnext',
       },
-
     },
+  },
+  vite: {
     plugins: [
       tsConfigPaths({
         projects: ['./tsconfig.json'],
