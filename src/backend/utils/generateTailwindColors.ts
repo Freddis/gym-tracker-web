@@ -18,7 +18,7 @@ export const generateTailwindColors = (palettes: PaletteSet, type: 'light' | 'da
   return result;
 };
 
-export async function generateTailwindColorsOnUpdate() {
+export const generateTailwindColorsOnUpdate = async () => {
   const dark = generateTailwindColors(palettes, 'dark');
   const light = generateTailwindColors(palettes, 'light');
   const lines = [
@@ -38,4 +38,4 @@ export async function generateTailwindColorsOnUpdate() {
   ];
   const content = lines.join('\n');
   writeFileSync('./src/styles/colors.gen.css', content);
-}
+};

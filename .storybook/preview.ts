@@ -4,6 +4,11 @@ import {themes} from '@storybook/theming';
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ['Colors', 'Icons', 'Components', 'Pages'],
+      },
+    },
     docs: {
       theme: themes.dark,
     },
