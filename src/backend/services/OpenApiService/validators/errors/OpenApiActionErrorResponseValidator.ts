@@ -1,6 +1,8 @@
 import {z} from 'zod';
 import {OpenApiActionErrorCode} from '../../enums/OpenApiActionErrorCode';
 import {OpenApiErrorCode} from '../../enums/OpenApiErrorCode';
+import {extendZodWithOpenApi} from 'zod-openapi';
+extendZodWithOpenApi(z);
 
 export const openApiActionErrorResponseValidator = z.object({
   error: z.object({

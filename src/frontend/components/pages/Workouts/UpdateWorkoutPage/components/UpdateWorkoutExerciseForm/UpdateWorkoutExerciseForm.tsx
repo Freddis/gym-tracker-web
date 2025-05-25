@@ -1,9 +1,10 @@
-import {Button, Input, SxProps} from '@mui/material';
 import {FC, useContext, useState, CSSProperties, ChangeEvent} from 'react';
 import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
 import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
 import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormProps';
+import {AppButton} from '../../../../../atoms/AppButton/AppButton';
+import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
@@ -75,36 +76,27 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
     targetSet.reps = value;
     setWorkoutExercise({...workoutExercise});
   };
-  const inputSx: SxProps = {
-    input: {
-      color: 'white',
-      background: '#222',
-      padding: '5px 10px',
-      width: '30px',
-      borderRadius: '5px',
-      textAlign: 'center',
-    },
-  };
+
   return (
     <div style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
     <img style={imageStyle} key={exercise.images[0]} src={exercise.images[0]}/>
     <div style={{paddingLeft: 20}}>
       <div>
         <b>{exercise.name}</b>
-        <Button onClick={swapExercise}>Swap Exercise</Button>
-        <Button onClick={() => deleteExercise(props.item.workoutExercise)} color={'error'}>Delete</Button>
+        <AppButton onClick={swapExercise}>Swap Exercise</AppButton>
+        <AppButton onClick={() => deleteExercise(props.item.workoutExercise)} color={'error'}>Delete</AppButton>
       </div>
       <div style={{marginTop: 10}}>
         {workoutExercise.sets.map((set, i) => (
           <div key={i} style={{marginBottom: 5}}>
             <span style={{marginRight: 5}}>{i + 1}:</span>
-            <Input sx={inputSx} onChange={(e) => updateSetWeight(set, e)} value={(set.weight ?? 0).toString()} />
+            <AppTextInput onChange={(e) => updateSetWeight(set, e)} value={(set.weight ?? 0).toString()} />
             <span style={{margin: '0px 5px'}}> x </span>
-            <Input sx={inputSx} onChange={(e) => updateSetReps(set, e)} value={(set.reps ?? 0).toString()} />
-            <Button onClick={() => deleteSet(set)} color={'error'}>Delete</Button>
+            <AppTextInput onChange={(e) => updateSetReps(set, e)} value={(set.reps ?? 0).toString()} />
+            <AppButton onClick={() => deleteSet(set)} color={'error'}>Delete</AppButton>
           </div>
         ))}
-        <Button onClick={addSet}>Add Set</Button>
+        <AppButton onClick={addSet}>Add Set</AppButton>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import {defineConfig} from '@tanstack/react-start/config';
 import tsConfigPaths from 'vite-tsconfig-paths';
 import {execSync} from 'child_process';
+import {isoImport} from 'vite-plugin-iso-import';
 
 let generationSkip = false;
 export default defineConfig({
@@ -16,6 +17,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [
+      isoImport(),
       tsConfigPaths({
         projects: ['./tsconfig.json'],
       }),

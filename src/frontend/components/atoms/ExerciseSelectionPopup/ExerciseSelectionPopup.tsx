@@ -1,10 +1,11 @@
-import {Checkbox, FormControlLabel, SxProps, TextField, TextFieldProps} from '@mui/material';
-import {FC, CSSProperties, useState, useContext} from 'react';
+
+import {FC, CSSProperties, useState, useContext, InputHTMLAttributes} from 'react';
 import {useOpenApiQuery} from 'src/frontend/hooks/useOpenApiQuery';
 import {Exercise} from 'src/frontend/openapi-client';
 import {getExercisesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {ExerciseRow} from './components/ExerciseRow';
 import {AuthContext} from '../../layout/AuthProvider/AuthContext';
+import {AppTextInput} from '../AppTextInput/AppTextInput';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
   const query = useOpenApiQuery(getExercisesOptions, {});
@@ -30,16 +31,16 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
     padding: 10,
     flex: 1,
   };
-  const searchSx: SxProps = {
-    color: 'white',
-    input: {
-      color: 'white',
-      background: 'black',
-      padding: '10px',
-      borderRadius: '5px',
-    },
-  };
-  const textFieldProps: TextFieldProps = {
+  // const searchSx: SxProps = {
+  //   color: 'white',
+  //   input: {
+  //     color: 'white',
+  //     background: 'black',
+  //     padding: '10px',
+  //     borderRadius: '5px',
+  //   },
+  // };
+  const textFieldProps: InputHTMLAttributes<HTMLInputElement> = {
     onChange: (e) => {
       const trimmed = e.target.value.trim();
       if (trimmed.length < 3) {
@@ -50,8 +51,6 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
     },
     value: search != null ? search : '',
     placeholder: 'Search here...',
-    variant: 'standard',
-    sx: searchSx,
   };
 
   const searchFilter = (exercise: Exercise) => {
@@ -67,11 +66,11 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
   return (
     <div style={containerStyle}>
     <h2>Select Exercise</h2>
-    <TextField {...textFieldProps} />
+    <AppTextInput {...textFieldProps} />
     <div>
-    <FormControlLabel control={
+    {/* <FormControlLabel control={
       <Checkbox onChange={(e) => setOwnLibrary(e.target.checked)} color={'error'} sx={{color: 'white'}}></Checkbox>
-    } label={'Own Library'} />
+    } label={'Own Library'} /> */}
     </div>
     {query.isLoading && (
       <div style={{marginTop: 20}}>Loading exercises...</div>

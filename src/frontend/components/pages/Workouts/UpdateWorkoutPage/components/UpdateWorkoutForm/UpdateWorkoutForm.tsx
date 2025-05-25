@@ -1,15 +1,14 @@
-import {DateTimePicker} from '@mui/x-date-pickers';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
-import dayjs from 'dayjs';
 import {FC, useState, CSSProperties, useContext} from 'react';
 import {Exercise, Workout, WorkoutUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
 import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
-import {Button, Input, SxProps} from '@mui/material';
 import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {UpdateWorkoutExerciseFormExercrise} from '../UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
+import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
+import {AppButton} from '../../../../../atoms/AppButton/AppButton';
 
 export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const client = useQueryClient();
@@ -121,34 +120,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     width: 100,
     display: 'inline-block',
   };
-  const dateSx: SxProps = {
-    '.MuiInputBase-input': {
-      color: 'white',
-      borderRadius: '5px',
-      borderWidth: '1px',
-      borderColor: 'none',
-      border: 'none',
-      backgroundColor: '#222',
-      height: 10,
-    },
-    '.MuiIconButton-sizeMedium': {
-      color: 'white',
-    },
-    'icon': {
-      color: 'white',
-    },
-  };
-  const inputSx: SxProps = {
-    input: {
-      color: 'white',
-      background: '#222',
-      padding: '16.5px 14px',
-      borderRadius: '5px',
-      height: 43,
-      width: 181,
-      boxSizing: 'border-box',
-    },
-  };
+
   const rowStyle: CSSProperties = {
     marginBottom: 10,
     display: 'flex',
@@ -160,15 +132,15 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
       <h2>Update Workout</h2>
       <div style={rowStyle}>
         <label style={labelStyle}>Started</label>
-        <DateTimePicker sx={dateSx} onChange={(e) => setStart(e?.toDate() ?? new Date())} value={dayjs(item.start)}/>
+        <AppTextInput onChange={(e) => setStart(new Date(e.target.value))} value={item.start.toISOString()}/>
       </div>
       <div style={rowStyle}>
         <label style={labelStyle}>Ended</label>
-        <DateTimePicker sx={dateSx} onChange={(e) => setEnd(e?.toDate() ?? new Date())} value={dayjs(item.end)}/>
+        <AppTextInput onChange={(e) => setEnd(new Date(e.target.value))} value={item.end?.toISOString()}/>
       </div>
       <div style={rowStyle}>
         <label style={labelStyle}>Calories</label>
-        <Input sx={inputSx} onChange={(e) => setCaloriesFromString(e.target.value)} value={item.calories} />
+        <AppTextInput onChange={(e) => setCaloriesFromString(e.target.value)} value={item.calories} />
       </div>
       <div>
         <h3>Exercises:</h3>
@@ -176,13 +148,13 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
       <div style={{marginTop: 10}}>
         {exercises.map((row) => <UpdateWorkoutExerciseForm key={row.workoutExercise.id} item={row} onDelete={deleteExercise} />)}
         <div>
-          <Button onClick={showAddExercisePopup}>Add Exercise</Button>
+          <AppButton onClick={showAddExercisePopup}>Add Exercise</AppButton>
         </div>
       </div>
       <div style={{marginTop: 20}}>
-        <Button onClick={back}>Back</Button>
-        <Button onClick={save} style={{marginLeft: 20}}>Save</Button>
-        <Button onClick={deleteItem} color={'error'}>Delete</Button>
+        <AppButton onClick={back}>Back</AppButton>
+        <AppButton onClick={save} style={{marginLeft: 20}}>Save</AppButton>
+        <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
       </div>
     </>
   );

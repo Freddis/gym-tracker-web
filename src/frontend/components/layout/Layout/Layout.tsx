@@ -1,6 +1,4 @@
 import {HeadContent, Outlet, Scripts} from '@tanstack/react-router';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {Header} from '../Header/Header';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AuthProvider} from '../AuthProvider/AuthProvider';
@@ -19,19 +17,17 @@ export function Layout() {
       <StrictMode>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <AuthProvider>
-                  <PopupProvider>
-                    <div className="flex flex-col h-screen">
-                      <Header/>
-                      <div className="grow">
-                      <Outlet />
-                      </div>
-                      <Footer />
+            <AuthProvider>
+                <PopupProvider>
+                  <div className="flex flex-col h-screen">
+                    <Header/>
+                    <div className="grow">
+                    <Outlet />
                     </div>
-                  </PopupProvider>
-              </AuthProvider>
-            </LocalizationProvider>
+                    <Footer />
+                  </div>
+                </PopupProvider>
+            </AuthProvider>
             <Scripts />
           </ThemeProvider>
         </QueryClientProvider>
