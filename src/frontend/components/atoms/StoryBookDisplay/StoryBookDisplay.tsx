@@ -15,12 +15,16 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
   const InternalDisplay: FC = () => {
     const baseClasses = `p-10 bg-${pallete} text-on-${pallete} flex items-center justify-center`;
     return (
-      <div className={`flex ${flexDiraction} h-full w-full justify-center`}>
-        <div className={twMerge(baseClasses, 'theme-light', props.className)}>
-          <props.story />
+      <div className={`flex ${flexDiraction} h-full w-full justify-center font-extralight`}>
+        <div className={twMerge(baseClasses, 'theme-light')}>
+          <div className={props.className}>
+            <props.story />
+          </div>
         </div>
-        <div className={twMerge(baseClasses, 'theme-dark', props.className)}>
-          <props.story />
+        <div className={twMerge(baseClasses, 'theme-dark')}>
+          <div className={props.className}>
+            <props.story />
+          </div>
         </div>
       </div>
     );

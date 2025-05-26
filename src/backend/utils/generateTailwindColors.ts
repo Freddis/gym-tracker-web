@@ -9,11 +9,14 @@ export const generateTailwindColors = (palettes: PaletteSet, type: 'light' | 'da
   for (const [name, palette] of Object.entries(palettes)) {
     result[`${name.toLowerCase()}`] = palette[type].color;
     result[`on-${name.toLowerCase()}`] = palette[type].text;
-    if (!palette[type].surface) {
-      continue;
+    if (palette[type].surface) {
+      result[`${name.toLowerCase()}-surface`] = palette[type].surface.color;
+      result[`on-${name.toLowerCase()}-surface`] = palette[type].surface.text;
     }
-    result[`${name.toLowerCase()}-surface`] = palette[type].surface.color;
-    result[`on-${name.toLowerCase()}-surface`] = palette[type].surface.text;
+    if (palette[type].cavity) {
+      result[`${name.toLowerCase()}-cavity`] = palette[type].cavity.color;
+      result[`on-${name.toLowerCase()}-cavity`] = palette[type].cavity.text;
+    }
   }
   return result;
 };

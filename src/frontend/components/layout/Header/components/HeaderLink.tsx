@@ -4,6 +4,6 @@ import {AppLink} from '../../../atoms/AppLink/AppLink';
 
 export const HeaderLink: FC<LinkComponentProps> = (props) => {
   return (
-    <AppLink {...props} className={'uppercase text-base '}>{props.children}</AppLink>
+    <AppLink {...props} className={'uppercase text-base text-on-lightest'}>{props.children}</AppLink>
   );
 };

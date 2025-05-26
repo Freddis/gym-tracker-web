@@ -10,9 +10,13 @@ import {ThemeContext} from '../ThemeProvider/context/ThemeContext';
 import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 import {DarkModeSwitch} from '../../composite/DarkModeSwitch/DarkModeSwitch';
 
-export const Conditional: FC<{condition: boolean, children: ReactNode}> = (props) => {
+function exists<T>(x: T| null | undefined): x is T {
+  return !!x;
+}
+export const Conditional: FC<{condition: boolean, children: ReactNode}> & {exists: typeof exists} = (props) => {
   return props.condition ? props.children : null;
 };
+Conditional.exists = exists;
 
 export const Header: FC = () => {
   const auth = useContext(AuthContext);
@@ -34,7 +38,6 @@ export const Header: FC = () => {
       <div className="min-w-5xl flex items-center m-auto">
         <Link to="/" className="flex items-center justify-center mr-20">
           <AppLogo />
-          <span className=" uppercase font-bold text-xl -ml-2">Discipline</span>
         </Link>
         <div className="space-x-5 flex items-center grow gap-3">
           <HeaderLink to="/">Home</HeaderLink>

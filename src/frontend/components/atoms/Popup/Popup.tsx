@@ -1,4 +1,4 @@
-import {FC, ReactNode, useState, CSSProperties, MouseEventHandler} from 'react';
+import {FC, ReactNode, useState, MouseEventHandler} from 'react';
 
 export const Popup: FC<{
   contentProvider: (callback: (node: ReactNode| null) => void) => void,
@@ -8,26 +8,7 @@ export const Popup: FC<{
     props.contentProvider((content) => {
       setContent(content);
     });
-    const backgroundStyle: CSSProperties = {
-      position: 'fixed',
-      background: 'rgba(0,0,0,0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-      zIndex: 10,
-    };
-    const containerStyle: CSSProperties = {
-      padding: 10,
-      background: '#0f1214',
-      borderRadius: 5,
-      margin: '0 auto',
-      color: 'white',
-      display: 'inline-block',
-    };
+
     const close = () => {
       setContent(null);
       if (props.onClose) {
@@ -41,8 +22,8 @@ export const Popup: FC<{
       return null;
     }
     return (
-    <div style={backgroundStyle} onClick={close}>
-      <div style={containerStyle} onClick={stopPropagation}>{content}</div>
+    <div className="fixed flex items-center justify-center w-full h-full z-10 bg-black/50" onClick={close}>
+      <div className="rounded-sm bg-neutral text-on-neutral p-5" onClick={stopPropagation}>{content}</div>
     </div>
     );
   };

@@ -24,6 +24,7 @@ export function useAppPartialTranslation<T extends FreeFormTranslationKeysObject
 
     // strings
   const t = (key: TranslationKey, variables?: Record<string, string | number>): string => {
+    // return `--${key}---`; // uncomment for checks
     let translationString = findTranslationString(key);
     if (!variables) {
       return translationString;

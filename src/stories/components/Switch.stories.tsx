@@ -23,3 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Accent: Story = {
 };
+
+export const WithLabel: Story = {
+  render: () => <Switch label="Click on label and switch will go off"/>,
+};

@@ -3,6 +3,8 @@
 --color-on-neutral: var(--color-on-neutral);
 --color-neutral-surface: var(--color-neutral-surface);
 --color-on-neutral-surface: var(--color-on-neutral-surface);
+--color-neutral-cavity: var(--color-neutral-cavity);
+--color-on-neutral-cavity: var(--color-on-neutral-cavity);
 --color-lightest: var(--color-lightest);
 --color-on-lightest: var(--color-on-lightest);
 --color-lightest-surface: var(--color-lightest-surface);
@@ -26,6 +28,8 @@
 --color-on-neutral: white;
 --color-neutral-surface: #333;
 --color-on-neutral-surface: white;
+--color-neutral-cavity: black;
+--color-on-neutral-cavity: white;
 --color-lightest: #333;
 --color-on-lightest: white;
 --color-lightest-surface: #111;
@@ -48,6 +52,8 @@
 --color-on-neutral: #666;
 --color-neutral-surface: white;
 --color-on-neutral-surface: #333;
+--color-neutral-cavity: #eee;
+--color-on-neutral-cavity: #666;
 --color-lightest: white;
 --color-on-lightest: #333;
 --color-lightest-surface: white;

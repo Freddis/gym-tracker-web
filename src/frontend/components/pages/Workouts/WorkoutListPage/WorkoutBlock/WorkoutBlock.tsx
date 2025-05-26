@@ -1,16 +1,12 @@
-import {Link} from '@tanstack/react-router';
-import {FC, CSSProperties} from 'react';
-import {Workout} from 'src/frontend/openapi-client';
+import {FC} from 'react';
+import {AppLink} from '../../../../atoms/AppLink/AppLink';
+import {Workout} from '../../../../../openapi-client';
+import {useAppPartialTranslation} from '../../../../../i18n/useAppPartialTranslation';
 
 export const WorkoutBlock: FC<{item: Workout}> = (props) => {
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
   const item = props.item;
   const date = new Date(item.createdAt);
-  const imageStyle: CSSProperties = {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    objectFit: 'cover',
-  };
   const duration = props.item.end ? (new Date(props.item.end).getTime() - new Date(props.item.start).getTime()) / 1000 : 0;
   const hours = Math.floor(duration / (60 * 60));
   const hoursStr = hours.toLocaleString(undefined, {minimumIntegerDigits: 2});
@@ -18,26 +14,21 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const minutesStr = minutes.toLocaleString(undefined, {minimumIntegerDigits: 2});
   const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
-  const aStyle: CSSProperties = {
-    display: 'inline-block',
-    textDecoration: 'none',
-    // color: 'white',
-  };
   return (
-    <div style={{borderRadius: 10, padding: 20, marginTop: 20, marginBottom: 40, background: '#eee'}}>
+    <div className="bg-neutral-surface text-on-neutral-surface p-5 mb-10 rounded-md w-full" >
       <div style={{display: 'block'}}>
         <div>
-          <Link to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}} style={aStyle}>
-            <b>Workout: {item.id}</b>
-          </Link>
+          <AppLink to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}}>
+            <b>{t(i18n.type)}: {item.id}</b>
+          </AppLink>
           <div style={{float: 'right'}}>{date.toDateString()}, {date.toLocaleTimeString()}</div>
         </div>
-        <div style={{marginTop: 10}}>Duration: {time}</div>
-        <div>Calories: {item.calories}</div>
+        <div style={{marginTop: 10}}>{t(i18n.duration)}: {time}</div>
+        <div>{t(i18n.calories)}: {item.calories}</div>
         <div style={{marginTop: 10}}>
           {item.exercises.map((exercise, i) => (
             <div key={i} style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
-            <img style={imageStyle} src={exercise.exercise.images[0]}/>
+            <img className="object-cover rounded-md w-20 h-20" src={exercise.exercise.images[0]}/>
             <div style={{paddingLeft: 20}}>
               <b>{exercise.exercise.name}</b>
               <div style={{marginTop: 10}}>

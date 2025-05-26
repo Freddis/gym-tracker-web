@@ -10,6 +10,10 @@ export const palettes: PaletteSet = {
         color: '#333',
         text: 'white',
       },
+      cavity: {
+        color: 'black',
+        text: 'white',
+      },
     },
     light: {
       color: '#f8f8f8',
@@ -17,6 +21,10 @@ export const palettes: PaletteSet = {
       surface: {
         color: 'white',
         text: '#333',
+      },
+      cavity: {
+        color: '#eee',
+        text: '#666',
       },
     },
   },

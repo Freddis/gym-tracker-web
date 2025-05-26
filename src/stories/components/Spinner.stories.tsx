@@ -1,33 +1,27 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../frontend/components/atoms/StoryBookDisplay/StoryBookDisplay';
 import {PaletteName} from '../../frontend/enums/PaletteName';
-import {AppLogo} from '../../frontend/components/atoms/AppLogo/AppLogo'; ;
+import {AppSpinner} from '../../frontend/components/atoms/AppSpinner/AppSpinner';
 
-const meta: Meta<typeof AppLogo> = {
-  title: 'Components/Logo',
-  component: AppLogo,
+const meta = {
+  title: 'Components/Spinner',
+  component: AppSpinner,
   tags: ['autodocs'],
+  args: {},
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Basic text link for redirects',
+        component: 'Loading Spinner',
       },
     },
   },
-  args: {withText: true},
   decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Lightest} />],
-};
+} satisfies Meta<typeof AppSpinner>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Icon: Story = {
-  args: {
-    withText: false,
-  },
-
+export const Accent: Story = {
 };
 
-export const IconAndText: Story = {
-};
