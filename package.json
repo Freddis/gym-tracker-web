@@ -17,8 +17,7 @@
     "lint": "eslint . --fix --ignore-pattern '.output/**'",
     "openapi:generate": "tsx ./scripts/openapi/generateSchema.ts && npm run openapi:ts",
     "openapi:ts": "openapi-ts",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "storybook": "storybook dev -c storybook  -p 6006 --no-open"
   },
   "author": "Alex Sarychev",
   "license": "ISC",

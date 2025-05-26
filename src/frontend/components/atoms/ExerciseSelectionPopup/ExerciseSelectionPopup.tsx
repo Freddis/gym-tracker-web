@@ -7,7 +7,7 @@ import {ExerciseRow} from './components/ExerciseRow';
 import {AuthContext} from '../../layout/AuthProvider/AuthContext';
 import {AppTextInput} from '../AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
-import {Switch} from '../Switch/Switch';
+import {AppSwitch} from '../AppSwitch/AppSwitch';
 import {AppSpinner} from '../AppSpinner/AppSpinner';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
@@ -31,7 +31,7 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
       <h2 className="mb-10 text-center text-xl">{t(i18n.heading)}</h2>
       <AppTextInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t(i18n.labels.searchPlaceholder)}/>
       <div className="mt-5">
-        <Switch onCheckedChange={(e) => setOwnLibrary(e)} label={t(i18n.labels.ownLibrary)} />
+        <AppSwitch onCheckedChange={(e) => setOwnLibrary(e)} label={t(i18n.labels.ownLibrary)} />
       </div>
       {query.isLoading && <AppSpinner />}
       {query.isSuccess && (
