@@ -23,8 +23,6 @@
   "author": "Alex Sarychev",
   "license": "ISC",
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
     "@hey-api/client-axios": "^0.6.2",
     "@hey-api/client-fetch": "^0.10.0",
     "@radix-ui/react-switch": "^1.2.5",
