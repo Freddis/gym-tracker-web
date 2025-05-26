@@ -1,7 +1,13 @@
 import frontendCookie from 'js-cookie';
-import {getCookie, setCookie} from '@tanstack/react-start/server?server';
+import {getCookie, setCookie, deleteCookie} from '@tanstack/react-start/server?server';
 
 export class Cookie {
+  delete(name: string) {
+    if (import.meta.env.SSR) {
+      return deleteCookie(name);
+    }
+    frontendCookie.remove(name);
+  }
 
   set(name: string, value:string) {
     if (import.meta.env.SSR) {

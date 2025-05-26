@@ -3,14 +3,13 @@ import {AuthContext} from './AuthContext';
 import {authUserValidator, AuthUser} from './types/AuthUser';
 import {client} from 'src/frontend/openapi-client/client.gen';
 import {ClientOptions, Config} from '@hey-api/client-axios';
-
+import {Cookie} from '../../../../common/utils/Cookie/Cookie';
+import {CookieName} from '../../../../common/enums/CookieName';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
+  const cookies = new Cookie();
   const storedUser = useMemo(() => {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-    const user = localStorage.getItem('user');
+    const user = cookies.get(CookieName.User);
     if (user === null) {
       return null;
     }
@@ -43,12 +42,12 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   });
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    cookies.delete(CookieName.User);
     client.setConfig(getClientConfig(null));
   };
   const login = (user: AuthUser) => {
     setUser(user);
-    localStorage.setItem('user', JSON.stringify(user));
+    cookies.set(CookieName.User, JSON.stringify(user));
   };
 
   return (
