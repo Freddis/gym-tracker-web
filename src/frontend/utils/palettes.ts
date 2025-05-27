@@ -4,10 +4,10 @@ import {PaletteSet} from '../types/PaletteSet';
 export const palettes: PaletteSet = {
   [PaletteName.Neutral]: {
     dark: {
-      color: '#111',
+      color: 'var(--color-neutral-800)',
       text: 'white',
       surface: {
-        color: '#333',
+        color: 'var(--color-neutral-900)',
         text: 'white',
       },
       cavity: {
@@ -30,10 +30,10 @@ export const palettes: PaletteSet = {
   },
   [PaletteName.Lightest]: {
     dark: {
-      color: '#333',
+      color: 'var(--color-neutral-800)',
       text: 'white',
       surface: {
-        color: '#111',
+        color: 'var(--color-neutral-800)',
         text: 'white',
       },
     },

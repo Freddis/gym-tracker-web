@@ -2,6 +2,7 @@ import {FC} from 'react';
 import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {Workout} from '../../../../../openapi-client';
 import {useAppPartialTranslation} from '../../../../../i18n/useAppPartialTranslation';
+import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 
 export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
@@ -15,32 +16,30 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
   return (
-    <div className="bg-neutral-surface text-on-neutral-surface p-5 mb-10 rounded-md w-full" >
-      <div style={{display: 'block'}}>
-        <div>
-          <AppLink to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}}>
-            <b>{t(i18n.type)}: {item.id}</b>
-          </AppLink>
-          <div style={{float: 'right'}}>{date.toDateString()}, {date.toLocaleTimeString()}</div>
-        </div>
-        <div style={{marginTop: 10}}>{t(i18n.duration)}: {time}</div>
-        <div>{t(i18n.calories)}: {item.calories}</div>
-        <div style={{marginTop: 10}}>
-          {item.exercises.map((exercise, i) => (
-            <div key={i} style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
-            <img className="object-cover rounded-md w-20 h-20" src={exercise.exercise.images[0]}/>
-            <div style={{paddingLeft: 20}}>
-              <b>{exercise.exercise.name}</b>
-              <div style={{marginTop: 10}}>
-                {exercise.sets.map((set, i) => (
-                  <div key={i}>{i + 1}:{set.weight} x {set.reps}</div>
-                ))}
-              </div>
+    <AppBlock>
+      <div>
+        <AppLink to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}}>
+          <b>{t(i18n.type)}: {item.id}</b>
+        </AppLink>
+        <div style={{float: 'right'}}>{date.toDateString()}, {date.toLocaleTimeString()}</div>
+      </div>
+      <div style={{marginTop: 10}}>{t(i18n.duration)}: {time}</div>
+      <div>{t(i18n.calories)}: {item.calories}</div>
+      <div style={{marginTop: 10}}>
+        {item.exercises.map((exercise, i) => (
+          <div key={i} style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
+          <img className="object-cover rounded-md w-20 h-20" src={exercise.exercise.images[0]}/>
+          <div style={{paddingLeft: 20}}>
+            <b>{exercise.exercise.name}</b>
+            <div style={{marginTop: 10}}>
+              {exercise.sets.map((set, i) => (
+                <div key={i}>{i + 1}:{set.weight} x {set.reps}</div>
+              ))}
             </div>
           </div>
-          ))}
         </div>
+        ))}
       </div>
-    </div>
+    </AppBlock>
   );
 };

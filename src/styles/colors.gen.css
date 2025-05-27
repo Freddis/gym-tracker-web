@@ -21,18 +21,18 @@
 --color-on-info: var(--color-on-info);
 --color-success: var(--color-success);
 --color-on-success: var(--color-on-success);
---color-accent: #ea3031;
+--color-accent: var(--color-red-600);
 }
 .theme-dark {
---color-neutral: #111;
+--color-neutral: var(--color-neutral-800);
 --color-on-neutral: white;
---color-neutral-surface: #333;
+--color-neutral-surface: var(--color-neutral-900);
 --color-on-neutral-surface: white;
 --color-neutral-cavity: black;
 --color-on-neutral-cavity: white;
---color-lightest: #333;
+--color-lightest: var(--color-neutral-800);
 --color-on-lightest: white;
---color-lightest-surface: #111;
+--color-lightest-surface: var(--color-neutral-800);
 --color-on-lightest-surface: white;
 --color-darkest: black;
 --color-on-darkest: white;

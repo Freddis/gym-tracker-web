@@ -2,7 +2,6 @@ import {RouterProvider, createRouter, createMemoryHistory, createRootRoute} from
 import {FC, useState} from 'react';
 import {PaletteName} from '../../../src/frontend/enums/PaletteName';
 import {PartialStoryFn} from 'storybook/internal/types';
-import {twMerge} from 'tailwind-merge';
 import {AuthContext} from '../../../src/frontend/components/layout/AuthProvider/AuthContext';
 import {AuthContextValue} from '../../../src/frontend/components/layout/AuthProvider/types/AuthContextValue';
 import {
@@ -10,11 +9,16 @@ import {
   LanguageContextValue,
 } from '../../../src/frontend/components/layout/LanguageProvider/context/LanguageContext';
 import {Language} from '../../../src/frontend/components/layout/LanguageProvider/enums/Language';
+import {ThemeContext} from '../../../src/frontend/components/layout/ThemeProvider/context/ThemeContext';
+import {Theme} from '../../../src/frontend/components/layout/ThemeProvider/enums/Theme';
+import {Header} from '../../../src/frontend/components/layout/Header/Header';
+import {Footer} from '../../../src/frontend/components/layout/Footer/Footer';
 export interface StoryBookDisplayProps {
   story: PartialStoryFn,
   className?: string,
   palette?: PaletteName,
-  column?:boolean
+  column?:boolean,
+  page?: boolean,
 }
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
   const auth: AuthContextValue = {
@@ -46,16 +50,28 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       <LanguageContext.Provider value={lang}>
         <AuthContext.Provider value={auth} >
         <div className={`flex ${flexDiraction} h-full w-full justify-center font-extralight`}>
-          <div className={twMerge(baseClasses, 'theme-light')}>
-            <div className={props.className}>
-              <props.story />
+          <ThemeContext.Provider value={Theme.Light}>
+            <div className="theme-light">
+              {props.page && <Header />}
+              <div className={baseClasses}>
+                <div className={props.className}>
+                  <props.story />
+                </div>
+              </div>
+              {props.page && <Footer />}
             </div>
+          </ThemeContext.Provider>
+          <ThemeContext.Provider value={Theme.Dark}>
+          <div className="theme-dark">
+            {props.page && <Header />}
+              <div className={baseClasses}>
+                <div className={props.className}>
+                  <props.story />
+                </div>
+              </div>
+            {props.page && <Footer />}
           </div>
-          <div className={twMerge(baseClasses, 'theme-dark')}>
-            <div className={props.className}>
-              <props.story />
-            </div>
-          </div>
+          </ThemeContext.Provider>
         </div>
         </AuthContext.Provider>
       </LanguageContext.Provider>

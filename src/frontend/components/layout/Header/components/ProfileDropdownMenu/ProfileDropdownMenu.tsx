@@ -42,7 +42,7 @@ export const ProfileDropdownMenu: FC = () => {
       <img src="/images/avatar.gif" className="ml-2 border-light border-2 shadow-2xl shadow-red-600 rounded-full w-12"/>
     </div>
     </AppDropdownMenuTrigger>
-    <AppDropdownMenuContent sideOffset={-2} className="w-50">
+    <AppDropdownMenuContent sideOffset={-2} className={`w-50 ${theme.toLowerCase()}`}>
       <AppDropdownMenuLabel>{t(i18n.profileMenu.name)}</AppDropdownMenuLabel>
       <AppDropdownMenuSeparator />
       <AppDropdownMenuItem onClick={(e) => e.preventDefault()} className="focus:bg-inherit">

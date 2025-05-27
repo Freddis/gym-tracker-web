@@ -28,7 +28,7 @@ export function WorkoutListPage() {
   };
   if (response.isLoading || !response.data) {
     return (
-      <PageContainer>
+      <PageContainer className="bg-neutral">
         <AppSpinner/>
       </PageContainer>
     );
@@ -39,7 +39,7 @@ export function WorkoutListPage() {
         <AppButton>{t(i18n.buttons.addWorkout)}</AppButton>
       </Link>
       <div className="mt-5">
-        {response.data.items.map((item) => <WorkoutBlock key={item.id} item={item}/>)}
+        {response.data.items.slice(0, 10).map((item) => <WorkoutBlock key={item.id} item={item}/>)}
       </div>
     </PageContainer>
   );

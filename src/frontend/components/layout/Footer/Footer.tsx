@@ -11,7 +11,7 @@ export const Footer: FC = () => {
         <div className=" max-w-6xl p-10 grid grid-cols-3 gap-6">
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.about.heading)}</h5>
-            <p className="color-neutral">{t(i18n.about.content)}.</p>
+            <p className="color-neutral text-sm">{t(i18n.about.content)}.</p>
           </div>
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.social.heading)}</h5>
@@ -34,7 +34,7 @@ export const Footer: FC = () => {
           </div>
         </div>
       </div>
-      <div className="bg-darkest text-on-darkest p-5 text-center">{t(i18n.copyright)}</div>
+      <div className="bg-darkest text-xs text-on-darkest p-5 text-center">{t(i18n.copyright)}</div>
     </div>
   );
 };

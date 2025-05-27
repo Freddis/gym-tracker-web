@@ -5,22 +5,23 @@ import {AppDropdownMenu, AppDropdownMenuTrigger,
   AppDropdownMenuContent,
   AppDropdownMenuItem} from '../AppDropdownMenu/AppDropdownMenu';
 import {LanguageContext} from '../../layout/LanguageProvider/context/LanguageContext';
+import {ThemeContext} from '../../layout/ThemeProvider/context/ThemeContext';
 
 export const AppLanguageDropdown: FC = () => {
   const language = useContext(LanguageContext);
-  console.log(language);
+  const theme = useContext(ThemeContext);
   const languages = Object.values(Language);
   const [opened, setOpened] = useState(false);
   return (
-    <AppDropdownMenu onOpenChange={(e) => setOpened(e)}>
+    <AppDropdownMenu onOpenChange={(e) => setOpened(e)} >
       <AppDropdownMenuTrigger className="text-lg">
-      <div className="flex items-center cursor-pointer">
+      <div className={'flex items-center cursor-pointer'}>
         <span className="text-base w-5">{language.language}</span>
         {!opened && <FiChevronDown className=" relative" />}
         {opened && <FiChevronUp className=" relative" />}
       </div>
       </AppDropdownMenuTrigger>
-      <AppDropdownMenuContent sideOffset={-2} >
+      <AppDropdownMenuContent sideOffset={-2} className={`${theme.toLowerCase()}`}>
         {languages.map((lang) => (
           <AppDropdownMenuItem
             key={lang}
