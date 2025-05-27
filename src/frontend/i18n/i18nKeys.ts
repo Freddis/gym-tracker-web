@@ -1,5 +1,14 @@
+import {Language} from '../components/layout/LanguageProvider/enums/Language';
 import {extractTranslationKeys} from './extractTranslationKeys';
-import {dictionary as enDefault} from './locales/en/en';
-// todo: this is where we are going to set current language and whitelabel (for now only english)
-export const currentTranslation = enDefault;
-export const i18nKeys = extractTranslationKeys(currentTranslation);
+import {dictionary as en} from './locales/en/en';
+import {dictionary as ru} from './locales/ru/ru';
+import {Translation} from './types/Translation';
+
+type TranlationMap = {
+  [key in Language]: Translation
+}
+export const translations: TranlationMap = {
+  [Language.English]: en,
+  [Language.Russian]: ru,
+};
+export const i18nKeys = extractTranslationKeys(en);

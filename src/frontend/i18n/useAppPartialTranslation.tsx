@@ -1,18 +1,20 @@
-import {ReactNode} from 'react';
+import {ReactNode, useContext} from 'react';
 import reactStringReplace from 'react-string-replace';
 import {FreeFormTranslationKeysObject} from './types/FreeFormTranslationKeysObject';
 import {FreeFormTranslationObject} from './types/FreeFormTranslationObject';
 import {Translation} from './types/Translation';
 import {TranslationKey} from './types/TranslationKey';
 import {TranslationKeys} from './types/TranslationKeys';
-import {currentTranslation, i18nKeys} from './i18nKeys';
+import {translations, i18nKeys} from './i18nKeys';
+import {LanguageContext} from '../components/layout/LanguageProvider/context/LanguageContext';
 
 export function useAppPartialTranslation<T extends FreeFormTranslationKeysObject>(
     callback: (dictionary: TranslationKeys<Translation>) => T,
 ) {
+  const language = useContext(LanguageContext);
   const findTranslationString = (key: TranslationKey): string => {
     const parts = key.split('.');
-    let cursor: FreeFormTranslationObject = currentTranslation;
+    let cursor: FreeFormTranslationObject = translations[language.language];
     for (const currentKey of parts) {
       if (typeof cursor[currentKey] === 'string') {
         return cursor[currentKey];

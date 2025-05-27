@@ -15,6 +15,7 @@ import {AppSwitch} from '../../../../atoms/AppSwitch/AppSwitch';
 import {EditThemeContext} from '../../../ThemeProvider/context/EditThemeContext';
 import {ThemeContext} from '../../../ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../ThemeProvider/enums/Theme';
+import {AppLanguageDropdown} from '../../../../atoms/AppLanguageDropdown/AppLanguageDropdown';
 
 
 export const ProfileDropdownMenu: FC = () => {
@@ -42,18 +43,26 @@ export const ProfileDropdownMenu: FC = () => {
     </div>
     </AppDropdownMenuTrigger>
     <AppDropdownMenuContent sideOffset={-2} className="w-50">
-      <AppDropdownMenuLabel>My Profile</AppDropdownMenuLabel>
+      <AppDropdownMenuLabel>{t(i18n.profileMenu.name)}</AppDropdownMenuLabel>
       <AppDropdownMenuSeparator />
       <AppDropdownMenuItem onClick={(e) => e.preventDefault()} className="focus:bg-inherit">
         <div className="flex flex-row items-center w-full">
-          <span>Dark Theme</span>
+          <span>{t(i18n.profileMenu.darkTheme)}</span>
           <div className="flex-grow flex flex-row-reverse">
           <AppSwitch onClick={toggleDarkTheme} checked={theme === Theme.Dark}/>
           </div>
         </div>
       </AppDropdownMenuItem>
+      <AppDropdownMenuItem onClick={(e) => e.preventDefault()} className="focus:bg-inherit">
+        <div className="flex flex-row items-center w-full">
+          <span>{t(i18n.profileMenu.language)}</span>
+          <div className="flex-grow flex flex-row-reverse">
+            <AppLanguageDropdown />
+          </div>
+        </div>
+      </AppDropdownMenuItem>
       <AppDropdownMenuItem onClick={logout} className="cursor-pointer focus:bg-inherit focus:text-accent">
-        <span>{t(i18n.menu.signOut)}</span>
+        <span>{t(i18n.profileMenu.signOut)}</span>
       </AppDropdownMenuItem>
     </AppDropdownMenuContent>
   </AppDropdownMenu>

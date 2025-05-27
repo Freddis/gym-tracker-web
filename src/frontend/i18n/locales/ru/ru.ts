@@ -1,0 +1,101 @@
+import {Translation} from '../../types/Translation';
+
+export const dictionary: Translation = {
+  layout: {
+    header: {
+      profileMenu: {
+        name: 'Мой Профиль',
+        signOut: 'Выйти',
+        language: 'Язык',
+        darkTheme: 'Темная Тема',
+      },
+      menu: {
+        signIn: 'Войти',
+        signOut: 'Выйти',
+        feed: 'Лента',
+        home: 'Главная',
+        product: 'О Продукте',
+        articles: 'Статьи',
+        aboutUs: 'О нас',
+        activities: 'Активность',
+        calories: 'Калории',
+      },
+    },
+    popups: {
+      exerciseSelection: {
+        heading: 'Выберите упражнение',
+        labels: {
+          exercises: 'Упражнения:',
+          ownLibrary: 'Моя Библиотека',
+          searchPlaceholder: 'Поиск...',
+        },
+      },
+    },
+    footer: {
+      copyright: '© Home Studio 2025. Все права защищены. Разработано Alex S.',
+      about: {
+        heading: 'О Нас',
+        content: `Мы любим животных и стараемся поддерживать тех из них, кому не посчастливилось иметь 
+        ласковых хозяев и тёплый кров. Один из проверенных 
+        способов это сделать — помочь благотворительному фонду`,
+      },
+      contacts: {
+        heading: 'Контакты',
+        address: 'Сочи, пгт. Сириус, Войтенко 27',
+      },
+      social: {
+        heading: 'Социальные Сети',
+      },
+    },
+  },
+  components: {
+  },
+  pages: {
+    activities: {
+      list: {
+        buttons: {
+          addWorkout: 'Добавить',
+        },
+        objects: {
+          workout: {
+            type: 'Тренировка',
+            calories: 'Калориии',
+            duration: 'Длительность',
+          },
+        },
+      },
+    },
+    auth: {
+      login: {
+        heading: 'Войти в существующий аккаунт',
+        registerCta: 'Нет аккаунта?',
+        form: {
+          labels: {
+            email: 'Почта',
+            password: 'Пароль',
+          },
+          buttons: {
+            signIn: 'Войти',
+            register: 'Регистрация',
+            forgotPassword: 'Я забыл пароль',
+          },
+        },
+      },
+      registration: {
+        heading: 'Создать новый аккаунт',
+        form: {
+          labels: {
+            name: 'Имя',
+            email: 'Почта',
+            password: 'Пароль',
+            passwordConfirmation: 'Подтверждение Пароля',
+          },
+          buttons: {
+            signIn: 'Войти',
+            register: 'Зарегистрироваться',
+          },
+        },
+      },
+    },
+  },
+};

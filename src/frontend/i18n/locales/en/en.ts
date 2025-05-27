@@ -3,6 +3,22 @@ import {header} from './layout/header';
 export const dictionary = {
   layout: {
     header: header,
+    footer: {
+      about: {
+        heading: 'About Us',
+        content: `Praesent vel rutrum purus. Nam vel dui eu risus duis dignissim dignissim. 
+        Suspen disse at eros tempus, congueconsequat.
+        Fusce sit amet urna feugiat.Praesent vel rutrum purus. Nam vel dui eu risus.`,
+      },
+      contacts: {
+        heading: 'Contacts',
+        address: '44 New Design Street, rne 005',
+      },
+      social: {
+        heading: 'Social Networks',
+      },
+      copyright: '© Copyright Home Studio 2025. All Right Reserved. Designed and Developed by Alex S.',
+    },
     popups: {
       exerciseSelection: {
         heading: 'Select Exercise',

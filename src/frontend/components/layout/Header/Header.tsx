@@ -29,7 +29,7 @@ export const Header: FC = () => {
           <AppLogo />
         </Link>
         <div className="space-x-5 flex items-center grow gap-3">
-          <HeaderLink to="/">Home</HeaderLink>
+          <HeaderLink to="/">{t(i18n.menu.home)}</HeaderLink>
           <Conditional condition={!!auth.user}>
             <HeaderLink to="/feed">{t(i18n.menu.feed)}</HeaderLink>
           </Conditional>
@@ -39,13 +39,6 @@ export const Header: FC = () => {
           <Conditional condition={!!auth.user}>
             <HeaderLink to="/exercises">{t(i18n.menu.calories)}</HeaderLink>
           </Conditional>
-          {/* <Conditional condition={!!auth.user}>
-            <Link to="/exercises" style={aStyle}>Exercise Library</Link>
-          </Conditional> */}
-
-          {/* <Conditional condition={!!auth.user}>
-            <Link to="/" onClick={logout} style={aStyle}>Logout</Link>
-          </Conditional> */}
           <Conditional condition={!auth.user}>
             <HeaderLink to="/auth/login">{t(i18n.menu.feed)}</HeaderLink>
           </Conditional>

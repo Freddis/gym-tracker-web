@@ -6,6 +6,7 @@ import {PopupProvider} from '../../atoms/Popup/PopupProvider';
 import {Footer} from '../Footer/Footer';
 import {ThemeProvider} from '../ThemeProvider/ThemeProvider';
 import {StrictMode} from 'react';
+import {LanguageProvider} from '../LanguageProvider/LanguageProvider';
 
 const queryClient = new QueryClient();
 export function Layout() {
@@ -16,20 +17,22 @@ export function Layout() {
       </head>
       <StrictMode>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <AuthProvider>
-                <PopupProvider>
-                  <div className="flex flex-col h-screen">
-                    <Header/>
-                    <div className="grow">
-                    <Outlet />
+          <LanguageProvider>
+            <ThemeProvider>
+              <AuthProvider>
+                  <PopupProvider>
+                    <div className="flex flex-col h-screen">
+                      <Header/>
+                      <div className="grow">
+                      <Outlet />
+                      </div>
+                      <Footer />
                     </div>
-                    <Footer />
-                  </div>
-                </PopupProvider>
-            </AuthProvider>
-            <Scripts />
-          </ThemeProvider>
+                  </PopupProvider>
+              </AuthProvider>
+              <Scripts />
+            </ThemeProvider>
+          </LanguageProvider>
         </QueryClientProvider>
       </StrictMode>
     </html>
