@@ -48,6 +48,9 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdResponse,
   PatchWorkoutsByIdError,
+  PostWeightData,
+  PostWeightResponse,
+  PostWeightError,
   GetEntriesData,
   GetEntriesResponse,
   GetEntriesError,
@@ -63,6 +66,7 @@ import {
   getWorkoutsResponseTransformer,
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
+  postWeightResponseTransformer,
   getEntriesResponseTransformer,
 } from "./transformers.gen";
 
@@ -409,6 +413,33 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/workouts/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Adds new weight entry for the user
+ */
+export const postWeight = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWeightData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWeightResponse,
+    PostWeightError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: postWeightResponseTransformer,
+    url: "/weight/",
     ...options,
     headers: {
       "Content-Type": "application/json",

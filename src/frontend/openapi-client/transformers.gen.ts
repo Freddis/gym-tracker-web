@@ -7,6 +7,7 @@ import type {
   GetWorkoutsResponse,
   PutWorkoutsResponse,
   GetWorkoutsByIdResponse,
+  PostWeightResponse,
   GetEntriesResponse,
 } from "./types.gen";
 
@@ -123,6 +124,24 @@ export const getWorkoutsByIdResponseTransformer = async (
   data: any,
 ): Promise<GetWorkoutsByIdResponse> => {
   data.item = workoutSchemaResponseTransformer(data.item);
+  return data;
+};
+
+const weightSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const postWeightResponseTransformer = async (
+  data: any,
+): Promise<PostWeightResponse> => {
+  data = weightSchemaResponseTransformer(data);
   return data;
 };
 

@@ -10,9 +10,11 @@ import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
 import {AppOpenApiRequestServices} from 'src/common/types/AppOpenApiRequestServices';
 import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
 import {ExerciseService} from 'src/backend/services/ExerciseService/ExerciseService';
+import {WeightService} from '../../services/WeightService/WeightService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
+  protected drizzleCached?: DrizzleService;
 
   async cleanup() {
     if (this.allocatedDestroyables.drizzle) {
@@ -24,7 +26,10 @@ export class GlobalServiceFactory {
 
   async drizzle(): Promise<DrizzleService> {
     this.allocatedDestroyables.drizzle = true;
-    return new DrizzleService();
+    if (!this.drizzleCached) {
+      this.drizzleCached = new DrizzleService();
+    }
+    return this.drizzleCached;
   }
 
   async auth(): Promise<AuthService> {
@@ -59,6 +64,7 @@ export class GlobalServiceFactory {
         entry: new EntryService(drizzle),
         workout: new WorkoutService(drizzle),
         exercise: new ExerciseService(drizzle),
+        weight: new WeightService(drizzle),
       },
     };
     return services;

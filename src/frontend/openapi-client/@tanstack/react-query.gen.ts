@@ -16,6 +16,7 @@ import {
   deleteWorkoutsById,
   getWorkoutsById,
   patchWorkoutsById,
+  postWeight,
   getEntries,
   getEntriesTypes,
 } from "../sdk.gen";
@@ -60,6 +61,9 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdError,
   PatchWorkoutsByIdResponse,
+  PostWeightData,
+  PostWeightError,
+  PostWeightResponse,
   GetEntriesData,
   GetEntriesError,
   GetEntriesResponse,
@@ -485,6 +489,48 @@ export const patchWorkoutsByIdMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await patchWorkoutsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postWeightQueryKey = (options?: Options<PostWeightData>) =>
+  createQueryKey("postWeight", options);
+
+export const postWeightOptions = (options?: Options<PostWeightData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWeight({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postWeightQueryKey(options),
+  });
+};
+
+export const postWeightMutation = (
+  options?: Partial<Options<PostWeightData>>,
+): UseMutationOptions<
+  PostWeightResponse,
+  AxiosError<PostWeightError>,
+  Options<PostWeightData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostWeightResponse,
+    AxiosError<PostWeightError>,
+    Options<PostWeightData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postWeight({
         ...options,
         ...localOptions,
         throwOnError: true,

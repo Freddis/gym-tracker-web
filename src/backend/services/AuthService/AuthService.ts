@@ -106,7 +106,7 @@ export class AuthService implements OpenApiAuthService {
   async hashString(str: string): Promise<string> {
     return await hash(str, this.config.hashSalt);
   }
-  protected createToken(user: Client): string {
+  public createToken(user: Client): string {
     const token = jwt.sign(
       {
         time: new Date().toISOString(),

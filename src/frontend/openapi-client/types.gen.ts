@@ -115,6 +115,17 @@ export type WorkoutExerciseSetUpdateDto = {
   reps: number | null;
 };
 
+export type Weight = {
+  id: number;
+  externalId: string | null;
+  userId: number;
+  weight: number;
+  units: string;
+  createdAt: Date;
+  updatedAt: Date | null;
+  deletedAt: Date | null;
+};
+
 export type PostAuthRegisterData = {
   body?: {
     name: string;
@@ -2194,6 +2205,154 @@ export type PatchWorkoutsByIdResponses = {
 
 export type PatchWorkoutsByIdResponse =
   PatchWorkoutsByIdResponses[keyof PatchWorkoutsByIdResponses];
+
+export type PostWeightData = {
+  body?: {
+    weight: number;
+  };
+  path?: never;
+  query?: never;
+  url: "/weight/";
+};
+
+export type PostWeightErrors = {
+  /**
+   * Action Error or Validation Error
+   */
+  400:
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "actionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "validationFailed";
+          fieldErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unauthorized" | "userNotFound";
+    };
+  };
+  /**
+   * Permission Error
+   */
+  403: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "missingPermission";
+      /**
+       * List of possible permissions to allow access
+       */
+      permissions: Array<"clientRead">;
+    };
+  };
+  /**
+   * Validation Error Response
+   */
+  422: {
+    error: {
+      /**
+       * Code to handle on the frontend.
+       */
+      code: "validationFailed";
+      fieldErrors?: Array<{
+        /**
+         * Name of the field
+         */
+        field: string;
+        /**
+         * Error message
+         */
+        message: string;
+        fieldErrors: Array<{
+          /**
+           * Name of the field
+           */
+          field: string;
+          /**
+           * Error message
+           */
+          message: string;
+        }>;
+      }>;
+    };
+  };
+  /**
+   * Unhandled Error
+   */
+  500: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "unknownError";
+    };
+  };
+};
+
+export type PostWeightError = PostWeightErrors[keyof PostWeightErrors];
+
+export type PostWeightResponses = {
+  /**
+   * Good Response
+   */
+  200: Weight;
+};
+
+export type PostWeightResponse = PostWeightResponses[keyof PostWeightResponses];
 
 export type GetEntriesData = {
   body?: never;

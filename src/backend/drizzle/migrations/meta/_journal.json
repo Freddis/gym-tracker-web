@@ -57,6 +57,13 @@
       "when": 1744885171158,
       "tag": "0007_synced_entities_deletion",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1748437312259,
+      "tag": "0008_weight",
+      "breakpoints": true
     }
   ]
 }

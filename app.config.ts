@@ -22,7 +22,7 @@ export default defineConfig({
         projects: ['./tsconfig.json'],
       }),
       {
-        name: 'postbuild-commands', // the name of your custom plugin. Could be anything.
+        name: 'postbuild-commands',
         watchChange: async () => {
           if (generationSkip) {
             return;

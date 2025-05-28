@@ -188,6 +188,7 @@ export default tseslint.config(
     'app/backend/drizzle/schema/schema.ts',
     'app/backend/drizzle/schema/relations.ts',
     'src/frontend/openapi-client/**',
+    'html/**',
   ],
   languageOptions: {
     parser: tsParser,

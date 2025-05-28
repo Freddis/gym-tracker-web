@@ -15,6 +15,7 @@ import {deleteWorkout} from '../../routes/api/v1/workouts/deleteWorkout';
 import {updateWorkout} from '../../routes/api/v1/workouts/updateWorkout';
 import {upsertExercises} from 'src/routes/api/v1/exercises/upsertExercises';
 import {upsertWorkouts} from 'src/routes/api/v1/workouts/upsertWorkouts';
+import {createWeight} from '../../routes/api/v1/weight/createWeight';
 
 export const openApiRoutes: OpenApiRouteMap = [
   {
@@ -44,6 +45,12 @@ export const openApiRoutes: OpenApiRouteMap = [
       updateWorkout,
       upsertWorkouts,
       deleteWorkout,
+    ],
+  },
+  {
+    path: '/weight',
+    routes: [
+      createWeight,
     ],
   },
   {

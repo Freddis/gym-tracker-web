@@ -3069,6 +3069,222 @@ paths:
                     description: Error response
                 required:
                   - error
+  /weight/:
+    post:
+      description: Adds new weight entry for the user
+      security:
+        - bearerHttpAuthentication: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+              required:
+                - weight
+      responses:
+        "200":
+          description: Good Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Weight"
+        "400":
+          description: Action Error or Validation Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      error:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            const: actionError
+                            description: Code to handle on the frontend.
+                          actionErrorCode:
+                            type: string
+                            enum:
+                              - invalidPassword
+                              - emailAlreadyExists
+                            description: Subcategory of error.
+                          humanReadable:
+                            type: string
+                            description: Description of the error. Can be safely displayed.
+                        required:
+                          - code
+                          - actionErrorCode
+                          - humanReadable
+                    required:
+                      - error
+                    description: Action Error
+                  - type: object
+                    properties:
+                      error:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            const: validationFailed
+                            description: Code to handle on the frontend.
+                          fieldErrors:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                field:
+                                  type: string
+                                  description: Name of the field
+                                message:
+                                  type: string
+                                  description: Error message
+                                fieldErrors:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      field:
+                                        type: string
+                                        description: Name of the field
+                                      message:
+                                        type: string
+                                        description: Error message
+                                    required:
+                                      - field
+                                      - message
+                                    description: Field error
+                              required:
+                                - field
+                                - message
+                                - fieldErrors
+                              description: Field error
+                        required:
+                          - code
+                    required:
+                      - error
+                    description: Validation Error Response
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - unauthorized
+                          - userNotFound
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
+        "403":
+          description: Permission Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: missingPermission
+                        description: Code to handle on the frontend
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - clientRead
+                        description: List of possible permissions to allow access
+                    required:
+                      - code
+                      - permissions
+                    description: Error response
+                required:
+                  - error
+        "422":
+          description: Validation Error on Response. Always server-side problem.
+            Introduced for debugging purposes, disabled in prod.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: validationFailed
+                        description: Code to handle on the frontend.
+                      fieldErrors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                              description: Name of the field
+                            message:
+                              type: string
+                              description: Error message
+                            fieldErrors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  field:
+                                    type: string
+                                    description: Name of the field
+                                  message:
+                                    type: string
+                                    description: Error message
+                                required:
+                                  - field
+                                  - message
+                                description: Field error
+                          required:
+                            - field
+                            - message
+                            - fieldErrors
+                          description: Field error
+                    required:
+                      - code
+                required:
+                  - error
+                description: Validation Error Response
+        "500":
+          description: Unhandled Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        const: unknownError
+                        description: Code to handle on the frontend
+                    required:
+                      - code
+                    description: Error response
+                required:
+                  - error
   /entries/:
     get:
       description: Returns data on all entries from Argus
@@ -4636,3 +4852,46 @@ components:
         - end
         - weight
         - reps
+    Weight:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        externalId:
+          type:
+            - string
+            - "null"
+        userId:
+          type: integer
+          minimum: -2147483648
+          maximum: 2147483647
+        weight:
+          type: number
+          minimum: -8388608
+          maximum: 8388607
+        units:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+        deletedAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+      required:
+        - id
+        - externalId
+        - userId
+        - weight
+        - units
+        - createdAt
+        - updatedAt
+        - deletedAt

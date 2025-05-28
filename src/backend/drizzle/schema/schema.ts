@@ -67,6 +67,22 @@ export const workouts = gymTracker.table('workouts', {
 ]
 );
 
+export const weight = gymTracker.table('weight', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  externalId: varchar(),
+  userId: integer().notNull(),
+  weight: real().notNull(),
+  units: varchar().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+(table) => [
+  index().on(table.userId),
+  index().on(table.deletedAt),
+]
+);
+
 export const workoutExercises = gymTracker.table('workout_exercises', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   workoutId: integer().notNull().references(() => workouts.id),

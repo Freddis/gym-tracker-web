@@ -1,8 +1,23 @@
 import {getTableColumns, SQL, sql} from 'drizzle-orm';
 import {PgTable, PgUpdateSetSource} from 'drizzle-orm/pg-core';
-import {db, dbSchema, pgClient} from 'src/backend/drizzle/db';
+import {dbRelations, dbSchema} from 'src/backend/drizzle/db';
+import {serverConfig} from '../../utils/ServerConfig/config';
+import {drizzle} from 'drizzle-orm/node-postgres';
+import {QueryLogger} from '../../utils/QueryLogger/QueryLogger';
+import pg from 'pg';
+
+const pgClient = new pg.Client({
+  ...serverConfig.database,
+  connectionTimeoutMillis: 2000,
+});
+const db = drizzle(pgClient, {
+  logger: new QueryLogger(false, true, 'postgres'),
+  schema: {...dbSchema, ...dbRelations},
+});
+
 export class DrizzleService {
   protected static connected = false;
+
   async getDb(): Promise<typeof db> {
     if (!DrizzleService.connected) {
       DrizzleService.connected = true;
