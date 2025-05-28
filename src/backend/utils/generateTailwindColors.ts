@@ -40,5 +40,5 @@ export const generateTailwindColorsOnUpdate = async () => {
     '}',
   ];
   const content = lines.join('\n');
-  writeFileSync('./src/styles/colors.gen.css', content);
+  writeFileSync('./src/frontend/css/colors.gen.css', content);
 };
