@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
-import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-import {LoginPage} from '../../../src/frontend/components/pages/Auth/LoginPage/LoginPage';
+import {PaletteName} from '../../../../src/frontend/enums/PaletteName';
+import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
+import {LoginPage} from '../../../../src/frontend/components/pages/Auth/LoginPage/LoginPage';
 
 const meta = {
-  title: 'Pages/LoginPage',
+  title: 'Pages/Auth/LoginPage',
   component: LoginPage,
   tags: ['autodocs'],
   globals: {
@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column page />],
 } satisfies Meta<typeof LoginPage>;
 
 export default meta;

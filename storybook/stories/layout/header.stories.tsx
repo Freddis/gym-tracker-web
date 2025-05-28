@@ -2,23 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {PaletteName} from '../../../src/frontend/enums/PaletteName';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 import {Header} from '../../../src/frontend/components/layout/Header/Header';
-import {AuthContextValue} from '../../../src/frontend/components/layout/AuthProvider/types/AuthContextValue';
-import {AuthContext} from '../../../src/frontend/components/layout/AuthProvider/AuthContext';
 
-const contextValue: AuthContextValue = {
-  user: {
-    id: 1,
-    name: 'Alex Sarychev',
-    email: 'test@email.com',
-    jwt: 'something',
-  },
-  login: function(): void {
-    throw new Error('Function not implemented.');
-  },
-  logout: function(): void {
-    throw new Error('Function not implemented.');
-  },
-};
 const meta = {
   title: 'Layout/Header',
   component: Header,
@@ -45,5 +29,5 @@ export const Primary: Story = {
 };
 
 export const WithLoggedInUser: Story = {
-  render: () => <AuthContext.Provider value={contextValue} ><Header/></AuthContext.Provider>,
+  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column user/>],
 };

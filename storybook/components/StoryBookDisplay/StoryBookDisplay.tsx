@@ -19,6 +19,7 @@ export interface StoryBookDisplayProps {
   palette?: PaletteName,
   column?:boolean,
   page?: boolean,
+  user?: boolean
 }
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
   const auth: AuthContextValue = {
@@ -35,6 +36,9 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       throw new Error('Function not implemented.');
     },
   };
+  if (!props.user) {
+    auth.user = null;
+  }
   const [language, setLanguage] = useState(Language.English);
   const lang: LanguageContextValue = {
     language: language,

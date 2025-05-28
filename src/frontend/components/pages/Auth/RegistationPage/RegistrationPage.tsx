@@ -22,8 +22,8 @@ export const RegistrationPage: FC = () => {
   return (
     <PageContainer className="justify-center bg-neutral">
       <div className="bg-neutral-surface text-on-neutral-surface p-10 min-w-xl rounded-sm">
-          <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
-          <div className="flex flex-col gap-3">
+        <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
+        <div className="flex flex-col gap-3">
           <AppLabel>{t(i18n.form.labels.name)}</AppLabel>
           <AppTextInput onChange={(e) => setName(e.target.value)} value={name}/>
           <AppLabel>{t(i18n.form.labels.email)}</AppLabel>
