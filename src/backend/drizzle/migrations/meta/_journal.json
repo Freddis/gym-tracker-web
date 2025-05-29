@@ -64,6 +64,13 @@
       "when": 1748437312259,
       "tag": "0008_weight",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1748541945565,
+      "tag": "0009_argus_checkins_renaming",
+      "breakpoints": true
     }
   ]
 }

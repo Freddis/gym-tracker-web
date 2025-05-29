@@ -32,7 +32,7 @@ export const Header: FC = () => {
         <div className="space-x-5 flex items-center grow gap-3">
           <HeaderLink to="/">{t(i18n.menu.home)}</HeaderLink>
           <Conditional condition={!!auth.user}>
-            <HeaderLink to="/feed">{t(i18n.menu.feed)}</HeaderLink>
+            <HeaderLink to="/argus">{t(i18n.menu.feed)}</HeaderLink>
           </Conditional>
           <Conditional condition={!!auth.user}>
             <HeaderLink to="/workouts">{t(i18n.menu.activities)}</HeaderLink>

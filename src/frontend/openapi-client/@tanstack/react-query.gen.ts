@@ -17,8 +17,8 @@ import {
   getWorkoutsById,
   patchWorkoutsById,
   postWeight,
-  getEntries,
-  getEntriesTypes,
+  getArgusCheckin,
+  getArgusCheckinTypes,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -64,10 +64,10 @@ import type {
   PostWeightData,
   PostWeightError,
   PostWeightResponse,
-  GetEntriesData,
-  GetEntriesError,
-  GetEntriesResponse,
-  GetEntriesTypesData,
+  GetArgusCheckinData,
+  GetArgusCheckinError,
+  GetArgusCheckinResponse,
+  GetArgusCheckinTypesData,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -541,13 +541,16 @@ export const postWeightMutation = (
   return mutationOptions;
 };
 
-export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
-  createQueryKey("getEntries", options);
+export const getArgusCheckinQueryKey = (
+  options?: Options<GetArgusCheckinData>,
+) => createQueryKey("getArgusCheckin", options);
 
-export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
+export const getArgusCheckinOptions = (
+  options?: Options<GetArgusCheckinData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntries({
+      const { data } = await getArgusCheckin({
         ...options,
         ...queryKey[0],
         signal,
@@ -555,7 +558,7 @@ export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
       });
       return data;
     },
-    queryKey: getEntriesQueryKey(options),
+    queryKey: getArgusCheckinQueryKey(options),
   });
 };
 
@@ -593,22 +596,22 @@ const createInfiniteParams = <
   return params as unknown as typeof page;
 };
 
-export const getEntriesInfiniteQueryKey = (
-  options?: Options<GetEntriesData>,
-): QueryKey<Options<GetEntriesData>> =>
-  createQueryKey("getEntries", options, true);
+export const getArgusCheckinInfiniteQueryKey = (
+  options?: Options<GetArgusCheckinData>,
+): QueryKey<Options<GetArgusCheckinData>> =>
+  createQueryKey("getArgusCheckin", options, true);
 
-export const getEntriesInfiniteOptions = (
-  options?: Options<GetEntriesData>,
+export const getArgusCheckinInfiniteOptions = (
+  options?: Options<GetArgusCheckinData>,
 ) => {
   return infiniteQueryOptions<
-    GetEntriesResponse,
-    AxiosError<GetEntriesError>,
-    InfiniteData<GetEntriesResponse>,
-    QueryKey<Options<GetEntriesData>>,
+    GetArgusCheckinResponse,
+    AxiosError<GetArgusCheckinError>,
+    InfiniteData<GetArgusCheckinResponse>,
+    QueryKey<Options<GetArgusCheckinData>>,
     | number
     | Pick<
-        QueryKey<Options<GetEntriesData>>[0],
+        QueryKey<Options<GetArgusCheckinData>>[0],
         "body" | "headers" | "path" | "query"
       >
   >(
@@ -617,7 +620,7 @@ export const getEntriesInfiniteOptions = (
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
-          QueryKey<Options<GetEntriesData>>[0],
+          QueryKey<Options<GetArgusCheckinData>>[0],
           "body" | "headers" | "path" | "query"
         > =
           typeof pageParam === "object"
@@ -628,7 +631,7 @@ export const getEntriesInfiniteOptions = (
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getEntries({
+        const { data } = await getArgusCheckin({
           ...options,
           ...params,
           signal,
@@ -636,21 +639,21 @@ export const getEntriesInfiniteOptions = (
         });
         return data;
       },
-      queryKey: getEntriesInfiniteQueryKey(options),
+      queryKey: getArgusCheckinInfiniteQueryKey(options),
     },
   );
 };
 
-export const getEntriesTypesQueryKey = (
-  options?: Options<GetEntriesTypesData>,
-) => createQueryKey("getEntriesTypes", options);
+export const getArgusCheckinTypesQueryKey = (
+  options?: Options<GetArgusCheckinTypesData>,
+) => createQueryKey("getArgusCheckinTypes", options);
 
-export const getEntriesTypesOptions = (
-  options?: Options<GetEntriesTypesData>,
+export const getArgusCheckinTypesOptions = (
+  options?: Options<GetArgusCheckinTypesData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntriesTypes({
+      const { data } = await getArgusCheckinTypes({
         ...options,
         ...queryKey[0],
         signal,
@@ -658,6 +661,6 @@ export const getEntriesTypesOptions = (
       });
       return data;
     },
-    queryKey: getEntriesTypesQueryKey(options),
+    queryKey: getArgusCheckinTypesQueryKey(options),
   });
 };

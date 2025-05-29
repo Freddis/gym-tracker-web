@@ -3,7 +3,7 @@ import {OpenApiService} from 'src/backend/services/OpenApiService/OpenApiService
 import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
 import {AuthService} from 'src/backend/services/AuthService/AuthService';
 import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
-import {EntryService} from 'src/backend/services/EntryService/EntryService';
+import {ArgusCheckinService} from 'src/backend/services/ArgusCheckinService/ArgusCheckinService';
 import {AppOpenApiRouteContexts} from 'src/common/types/AppOpenApiRouteContexts';
 import {serverConfig} from '../ServerConfig/config';
 import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
@@ -61,7 +61,7 @@ export class GlobalServiceFactory {
     const services: AppOpenApiRequestServices = {
       auth: new AuthService(serverConfig.services.auth, drizzle),
       models: {
-        entry: new EntryService(drizzle),
+        argusCheckin: new ArgusCheckinService(drizzle),
         workout: new WorkoutService(drizzle),
         exercise: new ExerciseService(drizzle),
         weight: new WeightService(drizzle),

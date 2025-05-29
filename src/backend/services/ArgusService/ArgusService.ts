@@ -5,7 +5,7 @@ import {NewModel} from 'src/common/types/NewModel';
 import {Logger} from 'src/common/utils/Logger/Logger';
 import {exerciseData} from './data/argusExercisesJson';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
-import {workoutEntryValidator} from 'src/backend/model/Entry/validators/WorkoutEntry';
+import {argusWorkoutCheckinValidator} from 'src/backend/model/ArgusCheckin/validators/ArgusWorkoutCheckin';
 import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
 import {existsSync, readFileSync, realpathSync, writeFileSync} from 'fs';
 import {z} from 'zod';
@@ -27,7 +27,7 @@ export class ArgusService {
     const logger = new Logger('Wipe Data');
     const db = await this.drizzle.getDb();
     const schema = this.drizzle.getSchema();
-    await db.delete(schema.entries);
+    await db.delete(schema.argusCheckins);
     await db.delete(schema.exercises).where(
       isNull(schema.exercises.userId)
     );
@@ -160,10 +160,10 @@ export class ArgusService {
       'Full preacher': 'EZ Curl Bar Biceps Curl (Preacher, Underhand Grip, Sitting)',
       'Smith weighted bridge': 'Weighted Bridge',
     };
-    const workoutEntriesRows = await db.query.entries.findMany({
+    const workoutEntriesRows = await db.query.argusCheckins.findMany({
       where: (table, ops) => ops.eq(table.subtype, 'workout'),
     });
-    const workoutEntries = workoutEntriesRows.map((x) => workoutEntryValidator.parse(x));
+    const workoutEntries = workoutEntriesRows.map((x) => argusWorkoutCheckinValidator.parse(x));
     let i = 1;
     for (const item of workoutEntries) {
       logger.info(`Processing ${i++} /${workoutEntries.length} `);
@@ -347,7 +347,7 @@ export class ArgusService {
     const dbSchema = this.drizzle.getSchema();
 
     logger.info('Reading path', {filePath});
-    const entries: Omit<typeof dbSchema.entries.$inferInsert, 'id'>[] = [];
+    const checkins: Omit<typeof dbSchema.argusCheckins.$inferInsert, 'id'>[] = [];
     const json = readFileSync(filePath).toString();
     const data = JSON.parse(json);
     logger.info('Data', {data});
@@ -360,7 +360,7 @@ export class ArgusService {
 
     for (const checkin of validatedData.data.checkins) {
       const createdAt = new Date(checkin.created);
-      const entry: Omit<typeof dbSchema.entries.$inferInsert, 'id'> = {
+      const item: Omit<typeof dbSchema.argusCheckins.$inferInsert, 'id'> = {
         type: checkin.type,
         externalId: checkin.id,
         createdAt: createdAt,
@@ -368,12 +368,12 @@ export class ArgusService {
         data: checkin,
         subtype: checkin.subtype ?? null,
       };
-      entries.push(entry);
+      checkins.push(item);
     }
 
     logger.info('Inserting entries');
-    for (const entry of entries) {
-      await db.insert(dbSchema.entries).values(entry);
+    for (const checkin of checkins) {
+      await db.insert(dbSchema.argusCheckins).values(checkin);
     }
   }
   protected async getSeededUser(): Promise<User| null> {

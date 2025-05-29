@@ -28,7 +28,7 @@ export const LoginPage: FC = () => {
     });
     if (!result.error) {
       auth.login(result.data);
-      navigate({to: '/feed'});
+      navigate({to: '/workouts'});
       return;
     }
     const err: PostAuthLoginError = result.error;

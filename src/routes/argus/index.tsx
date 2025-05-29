@@ -7,7 +7,7 @@ const queryParams = z.object({
   type: z.string().optional(),
 });
 
-export const Route = createFileRoute('/feed/')({
+export const Route = createFileRoute('/argus/')({
   component: ArgusEntriesListPage,
   validateSearch: queryParams,
 });

@@ -2354,7 +2354,7 @@ export type PostWeightResponses = {
 
 export type PostWeightResponse = PostWeightResponses[keyof PostWeightResponses];
 
-export type GetEntriesData = {
+export type GetArgusCheckinData = {
   body?: never;
   path?: never;
   query?: {
@@ -2375,10 +2375,10 @@ export type GetEntriesData = {
       | "sleepreport"
       | "fitnesstest";
   };
-  url: "/entries/";
+  url: "/argus/checkin";
 };
 
-export type GetEntriesErrors = {
+export type GetArgusCheckinErrors = {
   /**
    * Action Error or Validation Error
    */
@@ -2474,9 +2474,10 @@ export type GetEntriesErrors = {
   };
 };
 
-export type GetEntriesError = GetEntriesErrors[keyof GetEntriesErrors];
+export type GetArgusCheckinError =
+  GetArgusCheckinErrors[keyof GetArgusCheckinErrors];
 
-export type GetEntriesResponses = {
+export type GetArgusCheckinResponses = {
   /**
    * Good Response
    */
@@ -2706,16 +2707,17 @@ export type GetEntriesResponses = {
   };
 };
 
-export type GetEntriesResponse = GetEntriesResponses[keyof GetEntriesResponses];
+export type GetArgusCheckinResponse =
+  GetArgusCheckinResponses[keyof GetArgusCheckinResponses];
 
-export type GetEntriesTypesData = {
+export type GetArgusCheckinTypesData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/entries/types";
+  url: "/argus/checkin/types";
 };
 
-export type GetEntriesTypesErrors = {
+export type GetArgusCheckinTypesErrors = {
   /**
    * Action Error or Validation Error
    */
@@ -2843,10 +2845,10 @@ export type GetEntriesTypesErrors = {
   };
 };
 
-export type GetEntriesTypesError =
-  GetEntriesTypesErrors[keyof GetEntriesTypesErrors];
+export type GetArgusCheckinTypesError =
+  GetArgusCheckinTypesErrors[keyof GetArgusCheckinTypesErrors];
 
-export type GetEntriesTypesResponses = {
+export type GetArgusCheckinTypesResponses = {
   /**
    * Good Response
    */
@@ -2870,8 +2872,8 @@ export type GetEntriesTypesResponses = {
   };
 };
 
-export type GetEntriesTypesResponse =
-  GetEntriesTypesResponses[keyof GetEntriesTypesResponses];
+export type GetArgusCheckinTypesResponse =
+  GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
 
 export type ClientOptions = {
   baseURL: "http://localhost:3000/api/v1" | (string & {});

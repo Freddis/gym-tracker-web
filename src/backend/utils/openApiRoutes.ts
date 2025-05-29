@@ -1,10 +1,10 @@
 import {deleteExercise} from '../../routes/api/v1/exercises/deleteExercise';
 import {updateExercise} from '../../routes/api/v1/exercises/updateExercise';
 import {getExercise} from '../../routes/api/v1/exercises/getExercise';
-import {getEntryTypes} from '../../routes/api/v1/entries/getEntryTypes';
+import {getArgusCheckinTypes} from '../../routes/api/v1/argus-checkins/getArgusCheckinTypes';
 import {getExerciseList} from '../../routes/api/v1/exercises/getExerciseList';
 import {createExercise} from '../../routes/api/v1/exercises/createExercise';
-import {getEntries} from '../../routes/api/v1/entries/getEntries';
+import {getArgusCheckins} from '../../routes/api/v1/argus-checkins/getArgusCheckins';
 import {registerUser} from '../../routes/api/v1/auth/registerUser';
 import {loginUser} from '../../routes/api/v1/auth/loginUser';
 import {OpenApiRouteMap} from '../services/OpenApiService/types/OpenApiRouteMap';
@@ -54,10 +54,10 @@ export const openApiRoutes: OpenApiRouteMap = [
     ],
   },
   {
-    path: '/entries',
+    path: '/argus',
     routes: [
-      getEntries,
-      getEntryTypes,
+      getArgusCheckins,
+      getArgusCheckinTypes,
     ],
   },
 ];

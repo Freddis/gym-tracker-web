@@ -51,12 +51,12 @@ import type {
   PostWeightData,
   PostWeightResponse,
   PostWeightError,
-  GetEntriesData,
-  GetEntriesResponse,
-  GetEntriesError,
-  GetEntriesTypesData,
-  GetEntriesTypesResponse,
-  GetEntriesTypesError,
+  GetArgusCheckinData,
+  GetArgusCheckinResponse,
+  GetArgusCheckinError,
+  GetArgusCheckinTypesData,
+  GetArgusCheckinTypesResponse,
+  GetArgusCheckinTypesError,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -67,7 +67,7 @@ import {
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
   postWeightResponseTransformer,
-  getEntriesResponseTransformer,
+  getArgusCheckinResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -449,31 +449,31 @@ export const postWeight = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns data on all entries from Argus
+ * Returns data on all checkins from Argus
  */
-export const getEntries = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesData, ThrowOnError>,
+export const getArgusCheckin = <ThrowOnError extends boolean = false>(
+  options?: Options<GetArgusCheckinData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetEntriesResponse,
-    GetEntriesError,
+    GetArgusCheckinResponse,
+    GetArgusCheckinError,
     ThrowOnError
   >({
-    responseTransformer: getEntriesResponseTransformer,
-    url: "/entries/",
+    responseTransformer: getArgusCheckinResponseTransformer,
+    url: "/argus/checkin",
     ...options,
   });
 };
 
 /**
- * Returns possible entry types for Argus
+ * Returns possible checkin types for Argus
  */
-export const getEntriesTypes = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesTypesData, ThrowOnError>,
+export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetArgusCheckinTypesData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetEntriesTypesResponse,
-    GetEntriesTypesError,
+    GetArgusCheckinTypesResponse,
+    GetArgusCheckinTypesError,
     ThrowOnError
   >({
     security: [
@@ -482,7 +482,7 @@ export const getEntriesTypes = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    url: "/entries/types",
+    url: "/argus/checkin/types",
     ...options,
   });
 };

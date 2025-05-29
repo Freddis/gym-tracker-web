@@ -3285,9 +3285,9 @@ paths:
                     description: Error response
                 required:
                   - error
-  /entries/:
+  /argus/checkin:
     get:
-      description: Returns data on all entries from Argus
+      description: Returns data on all checkins from Argus
       parameters:
         - in: query
           name: page
@@ -4107,9 +4107,9 @@ paths:
                     description: Error response
                 required:
                   - error
-  /entries/types:
+  /argus/checkin/types:
     get:
-      description: Returns possible entry types for Argus
+      description: Returns possible checkin types for Argus
       security:
         - bearerHttpAuthentication: []
       responses:

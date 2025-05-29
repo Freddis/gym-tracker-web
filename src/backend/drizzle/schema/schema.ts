@@ -2,7 +2,7 @@ import {pgSchema, integer, varchar, timestamp, json, text, real, index} from 'dr
 
 export const gymTracker = pgSchema('gym_tracker');
 
-export const entries = gymTracker.table('entries', {
+export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   externalId: varchar().notNull(),
   type: varchar().notNull(),

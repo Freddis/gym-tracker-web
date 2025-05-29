@@ -15,6 +15,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as WorkoutsIndexImport } from './routes/workouts/index'
 import { Route as FeedIndexImport } from './routes/feed/index'
 import { Route as ExercisesIndexImport } from './routes/exercises/index'
+import { Route as ArgusIndexImport } from './routes/argus/index'
 import { Route as ExercisesCreateImport } from './routes/exercises/create'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
@@ -44,6 +45,12 @@ const FeedIndexRoute = FeedIndexImport.update({
 const ExercisesIndexRoute = ExercisesIndexImport.update({
   id: '/exercises/',
   path: '/exercises/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArgusIndexRoute = ArgusIndexImport.update({
+  id: '/argus/',
+  path: '/argus/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesCreateImport
       parentRoute: typeof rootRoute
     }
+    '/argus/': {
+      id: '/argus/'
+      path: '/argus'
+      fullPath: '/argus'
+      preLoaderRoute: typeof ArgusIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/exercises/': {
       id: '/exercises/'
       path: '/exercises'
@@ -154,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
@@ -166,6 +181,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
@@ -179,6 +195,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/argus/': typeof ArgusIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
   '/feed/': typeof FeedIndexRoute
   '/workouts/': typeof WorkoutsIndexRoute
@@ -193,6 +210,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
+    | '/argus'
     | '/exercises'
     | '/feed'
     | '/workouts'
@@ -204,6 +222,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
+    | '/argus'
     | '/exercises'
     | '/feed'
     | '/workouts'
@@ -215,6 +234,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
+    | '/argus/'
     | '/exercises/'
     | '/feed/'
     | '/workouts/'
@@ -228,6 +248,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
+  ArgusIndexRoute: typeof ArgusIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
   FeedIndexRoute: typeof FeedIndexRoute
   WorkoutsIndexRoute: typeof WorkoutsIndexRoute
@@ -240,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
+  ArgusIndexRoute: ArgusIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
   FeedIndexRoute: FeedIndexRoute,
   WorkoutsIndexRoute: WorkoutsIndexRoute,
@@ -261,6 +283,7 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/register",
         "/exercises/create",
+        "/argus/",
         "/exercises/",
         "/feed/",
         "/workouts/",
@@ -279,6 +302,9 @@ export const routeTree = rootRoute
     },
     "/exercises/create": {
       "filePath": "exercises/create.tsx"
+    },
+    "/argus/": {
+      "filePath": "argus/index.tsx"
     },
     "/exercises/": {
       "filePath": "exercises/index.tsx"
