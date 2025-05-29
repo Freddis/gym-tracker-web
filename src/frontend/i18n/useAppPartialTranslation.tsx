@@ -61,5 +61,5 @@ export function useAppPartialTranslation<T extends FreeFormTranslationKeysObject
   };
 
   const subKeys = callback(i18nKeys);
-  return {t, tc, i18n: subKeys};
+  return {t, tc, i18n: subKeys, translations: translations[language.language]};
 }

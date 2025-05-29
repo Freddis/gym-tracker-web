@@ -1,6 +1,29 @@
 import {header} from './layout/header';
 
+// todo: figure out proper approach
+interface WeekDaysTranslation extends Record<string, string> {
+  '0': string,
+  '1': string,
+  '2': string,
+  '3': string,
+  '4': string,
+  '5': string,
+  '6': string,
+}
 export const dictionary = {
+  utils: {
+    time: {
+      weekDays: {
+        0: 'Monday',
+        1: 'Tuesday',
+        2: 'Wednesday',
+        3: 'Thursday',
+        4: 'Friday',
+        5: 'Saturday',
+        6: 'Sunday',
+      } as WeekDaysTranslation,
+    },
+  },
   layout: {
     header: header,
     footer: {
@@ -33,6 +56,46 @@ export const dictionary = {
   components: {
   },
   pages: {
+    static: {
+      home: {
+        hero: {
+          heading: {
+            start: 'Discipline.',
+            middle: ' the way to achieve your ',
+            end: 'Goals',
+          },
+          subheading: `In sports and fitness you don't get far if you can't track your progress. 
+                    Dicsipline tracker is your trustworthy companion.`,
+          button: 'Download App',
+        },
+        features: {
+          heading: {
+            start: 'What is ',
+            end: ' discipline?',
+          },
+          workouts: {
+            title: 'Gym Workout Tracking',
+            description: `Track your workouts and progress. 
+                        Built-in library contrains over 2000 exercises and 
+                        you can tweak them as you like and create your own.`,
+          },
+          activities: {
+            title: 'Activity Tracking',
+            description: `Track your running, cycling, swimming and hiking. 
+            Add your own activities to calculate calorie expendure and progress`,
+          },
+          calories: {
+            title: 'Calorie Tracking',
+            description: 'Track calories, macros & more. Log even faster with tools like barcode scan & the NEW voice log.',
+          },
+          analytics: {
+            title: 'Analytics',
+            description: `Observe your progress with our analytics.
+             History, charts, body measurements. Set up your goals and see your pace towards them.`,
+          },
+        },
+      },
+    },
     activities: {
       list: {
         buttons: {

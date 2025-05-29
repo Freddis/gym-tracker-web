@@ -5,7 +5,7 @@ import {useAppPartialTranslation} from '../../../../../i18n/useAppPartialTransla
 import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 
 export const WorkoutBlock: FC<{item: Workout}> = (props) => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
   const item = props.item;
   const date = new Date(item.createdAt);
   const duration = props.item.end ? (new Date(props.item.end).getTime() - new Date(props.item.start).getTime()) / 1000 : 0;
@@ -15,13 +15,16 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const minutesStr = minutes.toLocaleString(undefined, {minimumIntegerDigits: 2});
   const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
+
+  const weekDayString = translations.utils.time.weekDays[date.getDay()];
+  console.log(date.getDay());
   return (
     <AppBlock>
       <div>
         <AppLink to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}}>
           <b>{t(i18n.type)}: {item.id}</b>
         </AppLink>
-        <div style={{float: 'right'}}>{date.toDateString()}, {date.toLocaleTimeString()}</div>
+        <div style={{float: 'right'}}>{weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}</div>
       </div>
       <div style={{marginTop: 10}}>{t(i18n.duration)}: {time}</div>
       <div>{t(i18n.calories)}: {item.calories}</div>
