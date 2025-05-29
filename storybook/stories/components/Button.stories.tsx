@@ -11,7 +11,7 @@ const meta = {
   tags: ['autodocs'],
   args: {children: 'Button'},
   decorators: [
-    (Story) => <StoryBookDisplay story={Story} />,
+    (Story) => <StoryBookDisplay story={<Story/>} />,
   ],
 
 } satisfies Meta<typeof AppButton>;

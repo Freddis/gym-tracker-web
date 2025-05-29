@@ -20,7 +20,7 @@ const meta = {
     },
   },
   decorators: [
-    (Story) => <StoryBookDisplay story={Story} column />,
+    (Story) => <StoryBookDisplay story={<Story/>} column />,
   ],
 
 } satisfies Meta<typeof AppToast>;

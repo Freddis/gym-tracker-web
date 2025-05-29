@@ -16,7 +16,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Lightest} />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Lightest} />],
 } satisfies Meta<typeof LiaAddressCard>;
 
 export default meta;

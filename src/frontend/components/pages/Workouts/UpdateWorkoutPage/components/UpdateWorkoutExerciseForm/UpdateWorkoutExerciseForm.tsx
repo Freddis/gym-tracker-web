@@ -1,10 +1,10 @@
-import {FC, useContext, useState, CSSProperties, ChangeEvent} from 'react';
-import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
-import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
-import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
+import {FC, useContext, useState, ChangeEvent} from 'react';
 import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormProps';
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
+import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {Exercise, WorkoutUpsertDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../openapi-client';
+import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
@@ -17,13 +17,6 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
     setExercise({...selected});
   };
   const popup = <ExerciseSelectionPopup onSelect={finalizeExerciseSwap}/>;
-  const imageStyle: CSSProperties = {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    objectFit: 'cover',
-    marginTop: 10,
-  };
   const swapExercise = () => {
     popupContext.setContent(popup);
   };
@@ -76,29 +69,41 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
     targetSet.reps = value;
     setWorkoutExercise({...workoutExercise});
   };
-
   return (
-    <div style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
-    <img style={imageStyle} key={exercise.images[0]} src={exercise.images[0]}/>
-    <div style={{paddingLeft: 20}}>
-      <div>
-        <b>{exercise.name}</b>
-        <AppButton onClick={swapExercise}>Swap Exercise</AppButton>
-        <AppButton onClick={() => deleteExercise(props.item.workoutExercise)} color={'error'}>Delete</AppButton>
-      </div>
-      <div style={{marginTop: 10}}>
-        {workoutExercise.sets.map((set, i) => (
-          <div key={i} style={{marginBottom: 5}}>
-            <span style={{marginRight: 5}}>{i + 1}:</span>
-            <AppTextInput onChange={(e) => updateSetWeight(set, e)} value={(set.weight ?? 0).toString()} />
-            <span style={{margin: '0px 5px'}}> x </span>
-            <AppTextInput onChange={(e) => updateSetReps(set, e)} value={(set.reps ?? 0).toString()} />
-            <AppButton onClick={() => deleteSet(set)} color={'error'}>Delete</AppButton>
+    <div>
+      <div className="pb-5 flex flex-row">
+        <img className="w-25 h-25 rounded-md object-cover " key={exercise.images[0]} src={exercise.images[0]}/>
+        <div className="pl-5 grow">
+          <div className="flex flex-row">
+            <b>{exercise.name}</b>
+            <div className="grow flex flex-row-reverse gap-2">
+              <AppButton onClick={() => deleteExercise(props.item.workoutExercise)} color={'error'}>Delete</AppButton>
+              <AppButton onClick={swapExercise}>Change</AppButton>
+            </div>
           </div>
-        ))}
-        <AppButton onClick={addSet}>Add Set</AppButton>
+          <div>
+            {workoutExercise.sets.map((set, i) => (
+              <div key={i} className="mb-5 flex flex-row gap-3 items-center">
+                <span>{i + 1}:</span>
+                <AppTextInput
+                  onChange={(e) => updateSetWeight(set, e)}
+                  value={(set.weight ?? 0).toString()}
+                  className="w-15 text-center"
+                />
+                <span>x</span>
+                <AppTextInput
+                  onChange={(e) => updateSetReps(set, e)}
+                  value={(set.reps ?? 0).toString()}
+                  className="w-15 text-center"
+                />
+                <AppButton onClick={() => deleteSet(set)} color={'error'}>Delete</AppButton>
+              </div>
+            ))}
+            <AppButton onClick={addSet}>Add Set</AppButton>
+          </div>
+        </div>
       </div>
+      <div className="mt-5 mb-5 border-b-1 border-neutral-on-surface"/>
     </div>
-  </div>
   );
 };

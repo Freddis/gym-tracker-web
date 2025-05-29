@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column />],
 } satisfies Meta<typeof Footer>;
 
 export default meta;

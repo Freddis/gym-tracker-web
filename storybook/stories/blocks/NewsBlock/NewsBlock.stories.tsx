@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} className="max-w-5xl" column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} className="max-w-5xl" column />],
 } satisfies Meta<typeof NewsBlock>;
 
 export default meta;

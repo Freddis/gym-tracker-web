@@ -49,7 +49,7 @@ export default tseslint.config(
       'key-spacing': [2, {beforeColon: false, afterColon: true}],
       'keyword-spacing': [2, {before: true, after: true, overrides: {}}],
       'linebreak-style': [2, 'unix'],
-      'max-len': [2, 130, 2],
+      'max-len': [2, 140, 2],
       'new-cap': [2, {capIsNew: false, newIsCap: true}],
       'new-parens': 2,
       'no-alert': 2,

@@ -17,7 +17,7 @@ const meta = {
     },
   },
   args: {children: 'Button'},
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Lightest} />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Lightest} />],
 } satisfies Meta<typeof HeaderLink>;
 
 export default meta;

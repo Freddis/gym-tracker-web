@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../../src/frontend/enums/PaletteName';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {LoginPage} from '../../../../src/frontend/components/pages/Auth/LoginPage/LoginPage';
+import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 
 const meta = {
   title: 'Pages/Auth/LoginPage',
@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column page />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} column type={StoryBookDisplayType.Page} />],
 } satisfies Meta<typeof LoginPage>;
 
 export default meta;

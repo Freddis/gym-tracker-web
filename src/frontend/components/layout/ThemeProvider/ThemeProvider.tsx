@@ -35,7 +35,7 @@ export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
   return (
   <ThemeContext.Provider value={theme}>
     <EditThemeContext.Provider value={{setTheme}}>
-      <body className={`h-screen font-extralight ${themeStr}`}>
+      <body className={`min-w-screen font-extralight ${themeStr}`}>
         {props.children}
       </body>
     </EditThemeContext.Provider>

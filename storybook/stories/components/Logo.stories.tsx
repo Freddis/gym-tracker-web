@@ -16,7 +16,7 @@ const meta: Meta<typeof AppLogo> = {
     },
   },
   args: {withText: true},
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Lightest} />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Lightest} />],
 };
 
 export default meta;

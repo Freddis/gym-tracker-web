@@ -1,7 +1,5 @@
 import {RouterProvider, createRouter, createMemoryHistory, createRootRoute} from '@tanstack/react-router';
 import {FC, useState} from 'react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
-import {PartialStoryFn} from 'storybook/internal/types';
 import {AuthContext} from '../../../src/frontend/components/layout/AuthProvider/AuthContext';
 import {AuthContextValue} from '../../../src/frontend/components/layout/AuthProvider/types/AuthContextValue';
 import {
@@ -11,24 +9,24 @@ import {
 import {Language} from '../../../src/frontend/components/layout/LanguageProvider/enums/Language';
 import {ThemeContext} from '../../../src/frontend/components/layout/ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../src/frontend/components/layout/ThemeProvider/enums/Theme';
-import {Header} from '../../../src/frontend/components/layout/Header/Header';
-import {Footer} from '../../../src/frontend/components/layout/Footer/Footer';
-export interface StoryBookDisplayProps {
-  story: PartialStoryFn,
-  className?: string,
-  palette?: PaletteName,
-  column?:boolean,
-  page?: boolean,
-  user?: boolean
-}
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {StoryBookComponentDisplay} from './components/StoryBookComponentDisplay/StoryBookComponentDisplay';
+import {StoryBookPageDisplay} from './components/StoryBookPageDisplay/StoryBookPageDisplay';
+import {StoryBookDisplayProps} from './types/StoryBookDisplayProps';
+import {StoryBookDisplayType} from './enums/StoryBookDisplayType';
+import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
+import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBookPopupDisplay';
+import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
+import {client} from '../../../src/frontend/openapi-client/client.gen';
+import {ClientOptions, Config} from '@hey-api/client-axios';
+import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
+
+const queryClient = new QueryClient();
+
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
+  const type = props.type ?? StoryBookDisplayType.Component;
   const auth: AuthContextValue = {
-    user: {
-      id: 1,
-      name: 'Alex Sarychev',
-      email: 'test@example.com',
-      jwt: 'dsadsada',
-    },
+    user: StorybookDataUtils.getUser(),
     login: function(): void {
       throw new Error('Function not implemented.');
     },
@@ -36,6 +34,22 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       throw new Error('Function not implemented.');
     },
   };
+
+  const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
+    const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
+    return {
+      responseType: 'json',
+      throwOnError: false,
+      headers: {
+        Authorization: authHeader,
+      },
+    };
+  };
+  client.setConfig(getClientConfig(auth.user));
+  client.setConfig({
+    responseType: 'json',
+  });
+
   if (!props.user) {
     auth.user = null;
   }
@@ -46,38 +60,42 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       setLanguage(l);
     },
   };
-  const pallete = props.palette ?? PaletteName.Neutral;
   const flexDiraction = props.column ? 'flex-col' : 'flex-row';
   const InternalDisplay: FC = () => {
-    const baseClasses = `p-10 bg-${pallete} text-on-${pallete} flex items-center justify-center`;
     return (
       <LanguageContext.Provider value={lang}>
-        <AuthContext.Provider value={auth} >
-        <div className={`flex ${flexDiraction} h-full w-full justify-center font-extralight`}>
-          <ThemeContext.Provider value={Theme.Light}>
-            <div className="theme-light">
-              {props.page && <Header />}
-              <div className={baseClasses}>
-                <div className={props.className}>
-                  <props.story />
-                </div>
+        <QueryClientProvider client={queryClient}>
+          <AuthContext.Provider value={auth} >
+          <div className={`flex ${flexDiraction} h-full w-full justify-center font-extralight`}>
+            <ThemeContext.Provider value={Theme.Light}>
+              <div className="theme-light">
+                <Conditional condition={type === StoryBookDisplayType.Component}>
+                  <StoryBookComponentDisplay {...props} />
+                </Conditional>
+                <Conditional condition={type === StoryBookDisplayType.Page}>
+                  <StoryBookPageDisplay story={props.story} />
+                </Conditional>
+                <Conditional condition={type === StoryBookDisplayType.Popup}>
+                  <StoryBookPopupDisplay {...props} />
+                </Conditional>
               </div>
-              {props.page && <Footer />}
+            </ThemeContext.Provider>
+            <ThemeContext.Provider value={Theme.Dark}>
+            <div className="theme-dark">
+              <Conditional condition={type === StoryBookDisplayType.Component}>
+              <StoryBookComponentDisplay {...props} />
+              </Conditional>
+              <Conditional condition={type === StoryBookDisplayType.Page}>
+                <StoryBookPageDisplay story={props.story} />
+              </Conditional>
+              <Conditional condition={type === StoryBookDisplayType.Popup}>
+                <StoryBookPopupDisplay {...props} />
+              </Conditional>
             </div>
-          </ThemeContext.Provider>
-          <ThemeContext.Provider value={Theme.Dark}>
-          <div className="theme-dark">
-            {props.page && <Header />}
-              <div className={baseClasses}>
-                <div className={props.className}>
-                  <props.story />
-                </div>
-              </div>
-            {props.page && <Footer />}
+            </ThemeContext.Provider>
           </div>
-          </ThemeContext.Provider>
-        </div>
-        </AuthContext.Provider>
+          </AuthContext.Provider>
+        </QueryClientProvider>
       </LanguageContext.Provider>
     );
   };

@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column />],
 } satisfies Meta<typeof Header>;
 
 export default meta;
@@ -29,5 +29,5 @@ export const Primary: Story = {
 };
 
 export const WithLoggedInUser: Story = {
-  decorators: [(Story) => <StoryBookDisplay story={Story} palette={PaletteName.Neutral} column user/>],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column user/>],
 };

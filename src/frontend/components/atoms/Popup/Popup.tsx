@@ -1,4 +1,5 @@
 import {FC, ReactNode, useState, MouseEventHandler} from 'react';
+import {PopupContentWrapper} from './components/PopupContentWrapper';
 
 export const Popup: FC<{
   contentProvider: (callback: (node: ReactNode| null) => void) => void,
@@ -23,7 +24,7 @@ export const Popup: FC<{
     }
     return (
     <div className="fixed flex items-center justify-center w-full h-full z-10 bg-black/50" onClick={close}>
-      <div className="rounded-sm bg-neutral text-on-neutral p-5" onClick={stopPropagation}>{content}</div>
+      <PopupContentWrapper onClick={stopPropagation}>{content}</PopupContentWrapper>
     </div>
     );
   };

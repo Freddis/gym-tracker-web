@@ -14,7 +14,7 @@ const meta = {
     children: <AppButton>Button</AppButton>,
   },
   decorators: [
-    (Story) => <StoryBookDisplay story={Story} />,
+    (Story) => <StoryBookDisplay story={<Story/>} />,
   ],
 
 } satisfies Meta<typeof AppBlock>;

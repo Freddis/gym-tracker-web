@@ -1,14 +1,19 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
-import {FC, useState, CSSProperties, useContext} from 'react';
-import {Exercise, Workout, WorkoutUpdateDto, WorkoutUpsertDto} from 'src/frontend/openapi-client';
-import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
+import {FC, useState, useContext} from 'react';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
-import {PopupContext} from 'src/frontend/components/atoms/Popup/PopupContext';
-import {ExerciseSelectionPopup} from 'src/frontend/components/atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {UpdateWorkoutExerciseFormExercrise} from '../UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
+import {Workout, WorkoutUpdateDto, WorkoutUpsertDto, Exercise} from '../../../../../../openapi-client';
+import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from '../../../../../../openapi-client/@tanstack/react-query.gen';
+import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
+import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {AppBlock} from '../../../../../atoms/AppBlock/AppBlock';
+import {AppBlockHeader} from '../../../../../atoms/AppBlock/components/AppBlockHeader';
+import {Conditional} from '../../../../../layout/Header/Header';
+import {AppLink} from '../../../../../atoms/AppLink/AppLink';
+import {AppLabel} from '../../../../../atoms/AppLabel/AppLabel';
 
 export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const client = useQueryClient();
@@ -66,11 +71,6 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     });
   };
 
-  const back = () => {
-    navigation({
-      to: '/workouts',
-    });
-  };
   const deleteItem = async () => {
     const result = await deleteMutation.mutateAsync({
       path: {
@@ -116,46 +116,42 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     popupContext.setContent(null);
   };
 
-  const labelStyle: CSSProperties = {
-    width: 100,
-    display: 'inline-block',
-  };
-
-  const rowStyle: CSSProperties = {
-    marginBottom: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  };
   return (
-    <>
-      <h2>Update Workout</h2>
-      <div style={rowStyle}>
-        <label style={labelStyle}>Started</label>
-        <AppTextInput onChange={(e) => setStart(new Date(e.target.value))} value={item.start.toISOString()}/>
+    <AppBlock className="max-w-2xl">
+      <AppBlockHeader>{`Update Workout ${props.item.id.toString()}`}</AppBlockHeader>
+      <div className="mb-5 flex flex-row items-center">
+        <AppLabel className="w-20">Started</AppLabel>
+        <AppTextInput className="w-60 text-center" onChange={(e) => setStart(new Date(e.target.value))} value={item.start.toISOString()}/>
       </div>
-      <div style={rowStyle}>
-        <label style={labelStyle}>Ended</label>
-        <AppTextInput onChange={(e) => setEnd(new Date(e.target.value))} value={item.end?.toISOString()}/>
+      <div className="mb-5 flex flex-row items-center">
+        <AppLabel className="w-20">Ended</AppLabel>
+        <AppTextInput className="w-60 text-center" onChange={(e) => setEnd(new Date(e.target.value))} value={item.end?.toISOString()}/>
       </div>
-      <div style={rowStyle}>
-        <label style={labelStyle}>Calories</label>
-        <AppTextInput onChange={(e) => setCaloriesFromString(e.target.value)} value={item.calories} />
+      <div className="mb-5 flex flex-row items-center">
+        <AppLabel className="w-20">Calories</AppLabel>
+        <AppTextInput className="w-20 text-center" onChange={(e) => setCaloriesFromString(e.target.value)} value={item.calories} />
       </div>
-      <div>
-        <h3>Exercises:</h3>
-      </div>
-      <div style={{marginTop: 10}}>
-        {exercises.map((row) => <UpdateWorkoutExerciseForm key={row.workoutExercise.id} item={row} onDelete={deleteExercise} />)}
+      <Conditional condition={exercises.length > 0}>
         <div>
+          <AppLabel>Exercises:</AppLabel>
+        </div>
+      </Conditional>
+      <div style={{marginTop: 10}}>
+        {exercises.map((row) => (
+          <UpdateWorkoutExerciseForm key={row.workoutExercise.id} item={row} onDelete={deleteExercise} />
+          ))}
+        <div className="flex justify-center">
           <AppButton onClick={showAddExercisePopup}>Add Exercise</AppButton>
         </div>
       </div>
-      <div style={{marginTop: 20}}>
-        <AppButton onClick={back}>Back</AppButton>
-        <AppButton onClick={save} style={{marginLeft: 20}}>Save</AppButton>
-        <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
+      <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+      <div className="mt-5 flex flex-row">
+        <AppLink to="/workouts">Back</AppLink>
+        <div className="grow flex flex-row-reverse gap-2">
+          <AppButton onClick={save}>Save</AppButton>
+          <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
+        </div>
       </div>
-    </>
+    </AppBlock>
   );
 };

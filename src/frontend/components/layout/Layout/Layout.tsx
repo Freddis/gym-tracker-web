@@ -21,7 +21,7 @@ export function Layout() {
             <ThemeProvider>
               <AuthProvider>
                   <PopupProvider>
-                    <div className="flex flex-col h-screen">
+                    <div className="flex flex-col">
                       <Header/>
                       <div className="grow">
                       <Outlet />

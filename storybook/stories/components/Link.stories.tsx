@@ -15,7 +15,7 @@ const meta = {
     },
   },
   args: {children: 'Button'},
-  decorators: [(Story) => <StoryBookDisplay story={Story} />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} />],
 } satisfies Meta<typeof AppLink>;
 
 export default meta;

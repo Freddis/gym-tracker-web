@@ -1,14 +1,14 @@
 
 import {FC, useState, useContext} from 'react';
-import {useOpenApiQuery} from 'src/frontend/hooks/useOpenApiQuery';
-import {Exercise} from 'src/frontend/openapi-client';
-import {getExercisesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {ExerciseRow} from './components/ExerciseRow';
 import {AuthContext} from '../../layout/AuthProvider/AuthContext';
 import {AppTextInput} from '../AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 import {AppSwitch} from '../AppSwitch/AppSwitch';
 import {AppSpinner} from '../AppSpinner/AppSpinner';
+import {useOpenApiQuery} from '../../../hooks/useOpenApiQuery';
+import {Exercise} from '../../../openapi-client';
+import {getExercisesOptions} from '../../../openapi-client/@tanstack/react-query.gen';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
   const query = useOpenApiQuery(getExercisesOptions, {});
@@ -37,7 +37,7 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
       {query.isSuccess && (
         <div className="mt-5 flex flex-col overflow-hidden">
           <div>{t(i18n.labels.exercises)}</div>
-          <div className="h-200 overflow-scroll mt-2 bg-neutral-surface p-2">
+          <div className="h-200 overflow-scroll mt-2 bg-neutral p-2 rounded-xs">
             {query.data.items.filter(searchFilter).map((item) => (
               <ExerciseRow key={item.id} item={item} onSelect={props.onSelect}/>)
             )}
