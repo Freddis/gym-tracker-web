@@ -17,7 +17,7 @@ export const HeroBlock: FC = () => {
                 In sports and fitness you don't get far if you can't track your progress.
                 Dicsipline tracker is your trustworthy companion.
               </p>
-              <AppButton className="mt-10">Download App</AppButton>
+              <AppButton variant="lg" className="mt-10">Download App</AppButton>
             </div>
         </div>
       </div>

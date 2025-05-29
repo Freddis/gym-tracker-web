@@ -20,9 +20,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Accent: Story = {
-  render: (args) => <AppButton variant={args.variant}>{args.children}</AppButton>,
+  render: (args) => <AppButton>{args.children}</AppButton>,
 };
 
 export const Neutral: Story = {
-  render: () => <AppButton variant="neutral">Button</AppButton>,
+  args: {
+    palette: 'neutral',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    variant: 'lg',
+  },
 };
