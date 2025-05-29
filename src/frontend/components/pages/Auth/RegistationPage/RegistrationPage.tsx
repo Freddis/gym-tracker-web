@@ -1,10 +1,11 @@
-import {Link, useNavigate} from '@tanstack/react-router';
+import {useNavigate} from '@tanstack/react-router';
 import {FC, useState} from 'react';
 import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
+import {AppLink} from '../../../atoms/AppLink/AppLink';
 
 
 export const RegistrationPage: FC = () => {
@@ -32,9 +33,11 @@ export const RegistrationPage: FC = () => {
           <AppTextInput type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
           <AppLabel>{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
           <AppTextInput type="password" onChange={(e) => setPasswordConfirmation(e.target.value)} value={passwordConfirmation} />
-          <div>
-            <AppButton onClick={register}>Register</AppButton>
-            <Link to="/auth/login" style={{marginLeft: 20}}>Sign in</Link>
+          <div className="flex flex-row mt-5">
+            <AppLink to="/auth/login" style={{marginLeft: 20}}>{t(i18n.form.buttons.signIn)}</AppLink>
+            <div className="grow flex flex-row-reverse">
+              <AppButton onClick={register}>{t(i18n.form.buttons.register)}</AppButton>
+            </div>
           </div>
         </div>
       </div>
