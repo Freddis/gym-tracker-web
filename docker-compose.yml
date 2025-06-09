@@ -11,9 +11,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      args:
+        - NO=value
+      target: base
     ports:
       - 3000:3000 
     environment:
       - DB_HOST=db
       - DB_PORT=5432
-    entrypoint: "npm run start"
+    # entrypoint: "sleep 1000000" # debug
