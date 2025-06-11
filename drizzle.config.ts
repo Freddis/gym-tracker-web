@@ -20,7 +20,7 @@ export default defineConfig({
     password: serverConfig.database.password,
     host: serverConfig.database.host,
     port: serverConfig.database.port,
-    ssl: false,
+    ssl: serverConfig.database.ssl,
   },
   verbose: true,
 });
