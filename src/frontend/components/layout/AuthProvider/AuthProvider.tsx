@@ -29,7 +29,9 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
+      ...client.getConfig(),
       responseType: 'json',
+      baseURL: '/api/v1',
       throwOnError: false,
       headers: {
         Authorization: authHeader,
@@ -37,9 +39,6 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     };
   };
   client.setConfig(getClientConfig(user));
-  client.setConfig({
-    responseType: 'json',
-  });
   const logout = () => {
     setUser(null);
     cookies.delete(CookieName.User);

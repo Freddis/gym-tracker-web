@@ -2876,5 +2876,8 @@ export type GetArgusCheckinTypesResponse =
   GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
 
 export type ClientOptions = {
-  baseURL: "http://localhost:3000/api/v1" | (string & {});
+  baseURL:
+    | "http://localhost:3000/api/v1"
+    | "https://discipline.alex-sarychev.com/api/v1"
+    | (string & {});
 };

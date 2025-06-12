@@ -573,6 +573,10 @@ export class OpenApiService<
           url: 'http://localhost:3000/api/v1' + this.basePath,
           description: 'Local',
         },
+        {
+          url: 'https://discipline.alex-sarychev.com/api/v1' + this.basePath,
+          description: 'Production',
+        },
       ],
     };
     const paths: ZodOpenApiPathsObject = {};
