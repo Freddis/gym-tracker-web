@@ -19,6 +19,7 @@ paths:
               properties:
                 name:
                   type: string
+                  minLength: 1
                 email:
                   type: string
                   format: email
@@ -27,6 +28,7 @@ paths:
                   minLength: 5
                 passwordConfirmation:
                   type: string
+                  minLength: 1
               required:
                 - name
                 - email

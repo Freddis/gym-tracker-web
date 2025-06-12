@@ -10,10 +10,10 @@ export const registerUser = openApiInstance.factory.createRoute({
   path: '/register',
   validators: {
     body: z.object({
-      name: z.string(),
+      name: z.string().nonempty(),
       email: z.string().email(),
       password: z.string().min(5),
-      passwordConfirmation: z.string(),
+      passwordConfirmation: z.string().nonempty(),
     }),
     response: z.object({
       id: z.number(),
