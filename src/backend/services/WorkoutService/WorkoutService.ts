@@ -27,6 +27,9 @@ export class WorkoutService {
       calories: 0,
     };
     const result = await db.insert(this.table).values(entity).returning({id: this.table.id});
+    if (!result[0]) {
+      throw new Error('Unable to get inserted workout ');
+    }
     const firstRow = result[0];
     return firstRow;
   }
@@ -65,6 +68,9 @@ export class WorkoutService {
         const inserted = await db.insert(dbSchema.workoutExercises)
         .values(newExercise)
         .returning({id: dbSchema.workoutExercises.id});
+        if (!inserted[0]) {
+          throw new Error('Unable to get inserted workout exercise');
+        }
         const workoutExerciseid = inserted[0].id;
         for (const set of exercise.sets) {
           const existing: Partial<WorkoutExerciseSet> = workout.exercises
@@ -107,6 +113,9 @@ export class WorkoutService {
           set: this.db.generateConflictUpdateSetAllColumns(schema.workouts),
         }).returning();
         result.push(...res);
+        if (!result[0]) {
+          throw new Error('Unable to get inserted workout');
+        }
         const workoutId = result[0].id;
         await db.delete(dbSchema.workoutExerciseSets).where(
           eq(dbSchema.workoutExerciseSets.workoutId, workoutId)
@@ -127,6 +136,9 @@ export class WorkoutService {
             target: schema.workoutExercises.id,
             set: this.db.generateConflictUpdateSetAllColumns(schema.workoutExercises),
           }).returning();
+          if (!res[0]) {
+            throw new Error('Unable to get inserted workout exercise');
+          }
           const workoutExerciseId = res[0].id;
 
           const sets: SemiPartial<WorkoutExerciseSet, 'id'>[] = exercise.sets.map((y) => ({

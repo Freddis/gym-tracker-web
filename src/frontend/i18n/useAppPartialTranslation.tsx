@@ -19,6 +19,10 @@ export function useAppPartialTranslation<T extends FreeFormTranslationKeysObject
       if (typeof cursor[currentKey] === 'string') {
         return cursor[currentKey];
       }
+      if (!cursor[currentKey]) {
+        // never
+        throw new Error(`Path not found for key '${key}: ${currentKey}`);
+      }
       cursor = cursor[currentKey];
     }
     throw new Error(`No translation found for key '${key}'`);

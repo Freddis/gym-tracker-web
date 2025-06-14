@@ -23,6 +23,9 @@ export class ExerciseService {
     };
     const result = await db.insert(dbSchema.exercises).values(entity).returning({id: dbSchema.exercises.id});
     const firstRow = result[0];
+    if (!firstRow) {
+      throw new Error('Unable to get inserted user');
+    }
     return firstRow;
   }
 

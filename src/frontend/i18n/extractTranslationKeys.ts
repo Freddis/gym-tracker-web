@@ -10,6 +10,10 @@ export function extractTranslationKeys<T extends FreeFormTranslationObject>(para
         result[key] = keyPath;
         continue;
       }
+      if (!obj[key]) {
+        // never
+        throw new Error(`Path ${key} not found in translation`);
+      }
       result[key] = collectPath(obj[key], keyPath);
     }
     return result as TranslationKeys<T>;

@@ -85,6 +85,9 @@ export class ArgusService {
     for (const exercise of exerciseData.exercises) {
       logger.info(`Processing ${i++} /${exerciseData.exercises.length} `);
       const nameParts = exercise.name.split('(');
+      if (!nameParts[0]) {
+        throw new Error('Splited string incorrectly');
+      }
       const baseName = nameParts[0].trim().replaceAll('_', ' ').trim();
       const extension = nameParts[1] ? ' (' + nameParts[1].replaceAll('_', ', ') : '';
       const name = baseName + extension;
@@ -118,7 +121,11 @@ export class ArgusService {
     }
 
     for (const row of exercises) {
-      const baseName = row.name.split('(')[0].trim().replaceAll('_', ' ').trim();
+      const firstPart = row.name.split('(')[0];
+      if (!firstPart) {
+        throw new Error('Splited string incorrectly');
+      }
+      const baseName = firstPart.trim().replaceAll('_', ' ').trim();
       const visualParent = map.get(baseName);
       if (visualParent && visualParent.count > 1) {
         const result = await db.select()
@@ -137,6 +144,9 @@ export class ArgusService {
             ...visualParent,
             name: baseName,
           }).returning({id: dbSchema.exercises.id});
+          if (!res[0]) {
+            throw new Error('Unable to insert exercise');
+          }
           row.parentExerciseId = res[0].id;
         }
       }
@@ -177,6 +187,9 @@ export class ArgusService {
       };
       const exercises = item.data.exercises ?? [];
       const ids = await db.insert(dbSchema.workouts).values(workout).returning({id: dbSchema.workouts.id});
+      if (!ids[0]) {
+        throw new Error('Unable to insert workout');
+      }
       const workoutId = ids[0].id;
       for (const exercise of exercises) {
         const name = exercise.exercise_name.replaceAll('_', ', ');
@@ -200,6 +213,9 @@ export class ArgusService {
             const ids = await db.insert(dbSchema.exercises).values({
               ...insertData, name, userId: user.id,
             }).returning({id: dbSchema.exercises.id});
+            if (!ids[0]) {
+              throw new Error('Unable to insert exercise');
+            }
             exerciseId = ids[0].id;
           } else {
             throw new Error(`Library exercise for name ${name} not found`);
@@ -219,6 +235,9 @@ export class ArgusService {
             const ids = await db.insert(dbSchema.exercises).values({
               ...libraryExercise, name, userId: user.id,
             }).returning({id: dbSchema.exercises.id});
+            if (!ids[0]) {
+              throw new Error('Unable to insert exercise');
+            }
             id = ids[0].id;
           }
           exerciseId = id;
@@ -235,6 +254,9 @@ export class ArgusService {
           .returning({
             id: dbSchema.workoutExercises.id,
           });
+        if (!result[0]) {
+          throw new Error('Unable to insert workout exercise');
+        }
         const workoutExerciseId = result[0].id;
         const sets = exercise.sets;
         for (const set of sets) {

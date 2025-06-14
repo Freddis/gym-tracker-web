@@ -27,7 +27,7 @@ export class ArgusCheckinService {
       .where(params.type ? eq(dbSchema.argusCheckins.type, params.type) : undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return {items: result as any, info: {page: params.page, pageSize: limit, count: countResp[0].count}};
+    return {items: result as any, info: {page: params.page, pageSize: limit, count: countResp[0] ? countResp[0].count : 0}};
   }
 
   getCategories(): ArgusCheckinType[] {

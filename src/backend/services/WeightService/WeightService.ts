@@ -24,7 +24,9 @@ export class WeightService {
       deletedAt: null,
     };
     const result = await db.insert(schema.weight).values(obj).returning();
-
+    if (!result[0]) {
+      throw new Error('Unable to get inserted weight');
+    }
     return result[0];
   }
 }

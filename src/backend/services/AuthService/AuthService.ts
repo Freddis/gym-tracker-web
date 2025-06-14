@@ -100,6 +100,9 @@ export class AuthService implements OpenApiAuthService {
       name: schema.users.name,
     });
     const user = users[0];
+    if (!user) {
+      throw new Error("User hasn't been inserted");
+    }
     const token = this.createToken(user);
     return {...user, jwt: token};
   }

@@ -160,8 +160,7 @@ export class OpenApiService<
         if (routeParts.length !== pathParts.length) {
           continue;
         }
-        for (let i = 0; i < routeParts.length; i++) {
-          const chunk = routeParts[i];
+        for (const [i, chunk] of routeParts.entries()) {
           if (chunk.includes('{')) {
             continue;
           }
@@ -193,10 +192,13 @@ export class OpenApiService<
       const pathParams: Record<string, string> = {};
       const routeParts = route.path.split('/');
       const pathParts = urlPath.split('/');
-      for (let i = 0; i < routeParts.length; i++) {
-        const chunk = routeParts[i];
+      for (const [i, chunk] of routeParts.entries()) {
         if (chunk.startsWith('{') && chunk.endsWith('}')) {
           const name = chunk.slice(1, chunk.length - 1);
+          if (!pathParts[i]) {
+            //never
+            throw new Error(`Can't find '${name}' param in path`);
+          }
           pathParams[name] = pathParts[i];
           continue;
         }
@@ -437,6 +439,9 @@ export class OpenApiService<
     } = {};
     const finalShape = (finalValidator as ZodObject<ZodRawShape>).shape;
     for (const key of Object.keys(finalShape)) {
+      if (!finalShape[key]) {
+        throw new Error(`Key ${key} not found in validator shape`);
+      }
       let def = finalShape[key]._def;
       if (def.typeName === 'ZodDefault') {
         def = def.innerType._def;
@@ -463,7 +468,11 @@ export class OpenApiService<
       throw new OpenApiValidationError(initialResult.error, paramSourceName);
     }
     const transformedParams: Record<string, unknown> = {};
-    for (const field of Object.keys(initialResult.data)) {
+    for (const field of Object.keys(finalShape)) {
+      if (!finalShape[field]) {
+        // never
+        throw new Error(`'${field}' not found in final validator shape`);
+      }
       let type = finalShape[field]._def.typeName;
       let def = finalShape[field]._def;
       let validator = finalShape[field];
