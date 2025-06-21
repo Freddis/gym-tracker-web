@@ -1,12 +1,10 @@
-import {OpenApiErrorCode} from '../../enums/OpenApiErrorCode';
-
-export class OpenApiError extends Error {
-  private code: OpenApiErrorCode;
-  constructor(code: OpenApiErrorCode) {
+export abstract class OpenApiError<TCode extends string> extends Error {
+  private code: TCode;
+  constructor(code: TCode) {
     super(code);
     this.code = code;
   }
-  getOpenApiCode() {
+  getCode(): TCode {
     return this.code;
   }
 }

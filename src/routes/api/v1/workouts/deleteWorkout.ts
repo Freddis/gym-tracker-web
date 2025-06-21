@@ -1,13 +1,13 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
-import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
+import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
+import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
+import {OpenApiMethods} from 'strap-on-openapi';
 
 export const deleteWorkout = openApiInstance.factory.createRoute({
   method: OpenApiMethods.delete,
-  type: AppOpenApiRouteTypes.User,
+  type: ApiRouteTypes.User,
   description: 'Deletes workout from user',
   path: '/{id}',
   validators: {
@@ -20,7 +20,7 @@ export const deleteWorkout = openApiInstance.factory.createRoute({
   },
   handler: async (ctx) => {
     if (!ctx.services.models.workout.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
-      throw new OpenApiError(OpenApiErrorCode.unauthorized);
+      throw new ApiError(ApiErrorCode.Unauthorized);
     }
     await ctx.services.models.workout.delete(ctx.params.path.id);
     return {success: true};

@@ -1,10 +1,10 @@
 import {User} from 'src/backend/model/User/User';
-import {RouteContextMap} from 'src/backend/services/OpenApiService/types/RouteContextMap';
 import {AppOpenApiRequestServices} from './AppOpenApiRequestServices';
-import {AppOpenApiRouteTypes} from './AppOpenApiRouteTypes';
+import {ApiRouteTypes} from './ApiRouteTypes';
+import {RouteContextMap} from 'strap-on-openapi';
 
 
-export interface AppOpenApiRouteContexts extends RouteContextMap<AppOpenApiRouteTypes> {
+export interface AppOpenApiRouteContexts extends RouteContextMap<ApiRouteTypes> {
   Public: {
     services: AppOpenApiRequestServices
   }

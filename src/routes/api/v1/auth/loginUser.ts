@@ -1,11 +1,11 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {OpenApiMethods} from 'strap-on-openapi';
 
 export const loginUser = openApiInstance.factory.createRoute({
   method: OpenApiMethods.post,
-  type: AppOpenApiRouteTypes.Public,
+  type: ApiRouteTypes.Public,
   description: 'Logins a user',
   path: '/login',
   validators: {

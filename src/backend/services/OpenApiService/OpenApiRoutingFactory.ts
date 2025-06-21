@@ -1,24 +1,21 @@
 import {ZodFirstPartySchemaTypes, ZodObject, ZodRawShape} from 'zod';
 import {OpenApiMethods} from './enums/OpenApiMethods';
-import {RouteContextMap} from './types/RouteContextMap';
-import {RouteExtraPropsMap} from './types/RouteExtraPropsMap';
 import {BaseOpenApiRoute} from './types/BaseOpenApiRoute';
-import {RouteContextCreatorMap} from './types/RouteContextCreatorMap';
+import {OpenApiConfig} from './types/OpenApiConfig';
 
 export class OpenApiRoutingFactory<
-TRouteTypes extends string,
-TContextMap extends RouteContextMap<TRouteTypes> = RouteContextMap<TRouteTypes>,
-TPropsMap extends RouteExtraPropsMap<TRouteTypes> = RouteExtraPropsMap<TRouteTypes>,
+ TRouteTypes extends Record<string, string>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TSpec extends OpenApiConfig<TRouteTypes, any, any, any>
 > {
+  protected map: TSpec;
 
-  protected map: RouteContextCreatorMap<TRouteTypes, TContextMap>;
-
-  constructor(map: RouteContextCreatorMap<TRouteTypes, TContextMap>) {
+  constructor(map: TSpec) {
     this.map = map;
   }
 
-  createRoute<
-      TRouteType extends TRouteTypes,
+  public createRoute<
+      TRouteType extends TRouteTypes[keyof TRouteTypes],
       TMethod extends OpenApiMethods,
       TResponseValidator extends ZodFirstPartySchemaTypes,
       TQueryValidator extends ZodObject<ZodRawShape> | undefined = undefined,
@@ -27,16 +24,16 @@ TPropsMap extends RouteExtraPropsMap<TRouteTypes> = RouteExtraPropsMap<TRouteTyp
     >(
       params: BaseOpenApiRoute<
         TRouteType,
-        TContextMap,
+        Awaited<ReturnType<TSpec['routes'][TRouteType]['context']>>,
         TResponseValidator,
         TPathValidator,
         TQueryValidator,
         TBodyValidator,
         TMethod
-      > & TPropsMap[TRouteType]
+      >// & TPropsMap[TRouteType]
     ): BaseOpenApiRoute<
-        TRouteType,
-        TContextMap,
+        TRouteTypes[keyof TRouteTypes],
+        Awaited<ReturnType<TSpec['routes'][TRouteTypes[keyof TRouteTypes]]['context']>>,
         TResponseValidator,
         TPathValidator,
         TQueryValidator,
@@ -44,8 +41,8 @@ TPropsMap extends RouteExtraPropsMap<TRouteTypes> = RouteExtraPropsMap<TRouteTyp
       > {
 
     const result : BaseOpenApiRoute<
-      TRouteType,
-      TContextMap,
+      TRouteTypes[keyof TRouteTypes],
+      Awaited<ReturnType<TSpec['routes'][TRouteTypes[keyof TRouteTypes]]['context']>>,
       TResponseValidator,
       TPathValidator,
       TQueryValidator,

@@ -32,9 +32,9 @@ export const LoginPage: FC = () => {
       return;
     }
     const err: PostAuthLoginError = result.error;
-    if (err.error.code === 'validationFailed') {
+    if (err.error.code === 'ValidationFailed') {
       setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'actionError') {
+    } else if (err.error.code === 'ActionError') {
       // eslint-disable-next-line no-alert
       alert(err.error.humanReadable);
     } else {

@@ -1,11 +1,10 @@
 import {ZodObject, ZodRawShape, ZodFirstPartySchemaTypes} from 'zod';
 import {BaseOpenApiRoute} from './BaseOpenApiRoute';
-import {RouteContextMap} from './RouteContextMap';
 
-export type OpenApiRoute<TRouteType extends string, TContext extends RouteContextMap<TRouteType>> =
+export type OpenApiRoute<TRouteType extends string> =
 BaseOpenApiRoute<
     TRouteType,
-    TContext,
+    object,
     ZodFirstPartySchemaTypes,
     ZodObject<ZodRawShape> | undefined,
     ZodObject<ZodRawShape> | undefined,

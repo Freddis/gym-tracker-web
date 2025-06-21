@@ -166,6 +166,11 @@ export default tseslint.config(
       'no-mixed-requires': 2,
       'no-new-require': 2,
       'no-path-concat': 2,
+      'import/no-internal-modules': ['error', {
+        forbid: [
+          '**/OpenApiService/**',
+        ],
+      }],
       // Import
       'import/default': 0,
       'import/export': 2,

@@ -1,56 +1,41 @@
 import 'zod-openapi/extend';
-import fs from 'fs';
-import {stringify} from 'yaml';
 import {
   z,
   ZodArray,
-  ZodDefault,
-  ZodFirstPartyTypeKind,
   ZodObject,
-  ZodOptional,
   ZodRawShape,
-  ZodString,
   ZodTypeAny,
   ZodUnion,
   ZodUnionOptions,
 } from 'zod';
-import {
-  createDocument,
-  ZodOpenApiObject,
-  ZodOpenApiOperationObject,
-  ZodOpenApiParameters,
-  ZodOpenApiPathsObject,
-} from 'zod-openapi';
-import {openApiActionErrorResponseValidator} from './validators/errors/OpenApiActionErrorResponseValidator';
-import {
-  OpenApiFieldError,
-  openApiValidationErrorResponseValidator,
-} from './validators/errors/OpenApiValidationErrorResponseValidator';
 import {Logger} from '../../../common/utils/Logger/Logger';
 import {OpenApiErrorCode} from './enums/OpenApiErrorCode';
 import {ValidationLocations} from './enums/ValidationLocations';
-import {OpenApiActionError} from './types/errors/OpenApiActionError';
-import {OpenApiError} from './types/errors/OpenApiError';
-import {OpenApiPermissionError} from './types/errors/OpenApiPermissionError';
 import {OpenApiValidationError} from './types/errors/OpenApiValidationError';
-import {OpenApiErrorResponse} from './types/responses/OpenApiErrorResponse';
 import {OpenApiRoute} from './types/OpenApiRoute';
-import {Permission} from './types/Permission';
 import {OpenApiRoutingFactory} from './OpenApiRoutingFactory';
-import {RouteExtraPropsMap} from './types/RouteExtraPropsMap';
-import {RouteContextMap} from './types/RouteContextMap';
-import {RouteContextCreatorMap} from './types/RouteContextCreatorMap';
 import {OpenApiRouteMap} from './types/OpenApiRouteMap';
+import {SchemaGenerator} from './SchemaGenerator';
+import {OpenApiMethods} from './enums/OpenApiMethods';
+import {Validator} from './Validator';
+import {OpenApiConfig} from './types/OpenApiConfig';
+import {RouteConfigMap} from './types/RouteConfigMap';
+import {OpenApiErrorConfigMap} from './types/OpenApiErrorConfigMap';
+import {OpenApiBuiltInError} from './types/errors/OpenApiBuiltInError';
+
 
 export class OpenApiService<
-  TRouteTypes extends string,
-  TContextMap extends RouteContextMap<TRouteTypes> = RouteContextMap<TRouteTypes>,
-  TPropsMap extends RouteExtraPropsMap<TRouteTypes> = RouteExtraPropsMap<TRouteTypes>,
+  TRouteTypes extends Record<string, string>,
+  TErrorCodes extends Record<string, string>,
+  TSpec extends OpenApiConfig<
+    TRouteTypes,
+    TErrorCodes,
+    RouteConfigMap<TRouteTypes[keyof TRouteTypes], TErrorCodes[keyof TErrorCodes]>,
+    OpenApiErrorConfigMap<TErrorCodes[keyof TErrorCodes]>
+  >
 > {
-
-  protected routes: OpenApiRoute<TRouteTypes, TContextMap>[] = [];
+  protected routes: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>[] = [];
   protected logger: Logger;
-  // protected auth: OpenApiAuthService;
   protected basePath = '';
   public readonly validators = {
     paginatedQuery: <X extends ZodRawShape>(filter: X) =>
@@ -77,28 +62,28 @@ export class OpenApiService<
     objects: {
     },
   };
-  public readonly factory: OpenApiRoutingFactory<TRouteTypes, TContextMap, TPropsMap>;
-  contextMap: RouteContextCreatorMap<TRouteTypes, TContextMap>;
+  public readonly factory: OpenApiRoutingFactory<TRouteTypes, TSpec>;
+  protected spec: TSpec;
 
 
-  constructor(contextMap: RouteContextCreatorMap<TRouteTypes, TContextMap>) {
-    this.contextMap = contextMap;
+  constructor(a: TRouteTypes, b: TErrorCodes, spec: TSpec) {
+    this.spec = spec;
     this.logger = new Logger('OpenAPI');
-    this.factory = new OpenApiRoutingFactory<TRouteTypes, TContextMap, TPropsMap>(contextMap);
+    this.factory = new OpenApiRoutingFactory<TRouteTypes, TSpec>(spec);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public addRoutes(pathExtension: string, routes: (OpenApiRoute<any, any>)[]) {
+
+  public addRoute(pathExtension: string, routes: (OpenApiRoute<TRouteTypes[keyof TRouteTypes]>)[]) {
     const newRoutes = routes.map((x) => ({...x, path: pathExtension + x.path}));
     this.routes.push(...newRoutes);
   }
 
-  public addRoutesByMap(routeMap: OpenApiRouteMap) {
+  public addRouteMap(routeMap: OpenApiRouteMap) {
     for (const row of routeMap) {
-      this.addRoutes(row.path, row.routes);
+      this.addRoute(row.path, row.routes);
     }
   }
-  protected checkRouteDescriptions(route: OpenApiRoute<TRouteTypes, TContextMap>) {
+  protected checkRouteDescriptions(route: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>) {
     const minimalLength = 10;
     if (!route.description || route.description.length < minimalLength) {
       throw new Error(`Description for ${route.path} is missing or too small`);
@@ -112,7 +97,7 @@ export class OpenApiService<
   }
 
   protected checkValidatorDescriptions(
-    route: OpenApiRoute<TRouteTypes, TContextMap>,
+    route: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>,
     validatorName: string,
     field: string | undefined,
     validator: ZodTypeAny,
@@ -141,16 +126,18 @@ export class OpenApiService<
       this.checkShapeDescription(route, validatorName, obj.shape);
     }
   }
-
-  protected checkShapeDescription(route: OpenApiRoute<TRouteTypes, TContextMap>, validatorName: string, shape: ZodRawShape) {
+  protected checkShapeDescription(
+    route: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>,
+    validatorName: string, shape: ZodRawShape
+  ) {
     for (const field of Object.keys(shape)) {
       const value = shape[field] as ZodObject<ZodRawShape>;
       this.checkValidatorDescriptions(route, validatorName, field, value);
     }
   }
 
-  protected getRouteForPath(path: string, method: string): OpenApiRoute<TRouteTypes, TContextMap> | null {
-    const fittingRoutes: OpenApiRoute<TRouteTypes, TContextMap>[] = [];
+  protected getRouteForPath(path: string, method: string): OpenApiRoute<TRouteTypes[keyof TRouteTypes]> | null {
+    const fittingRoutes: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>[] = [];
     outer:
     for (const route of this.routes) {
       if (route.method === method) {
@@ -178,14 +165,14 @@ export class OpenApiService<
   async processRootRoute(
     basePath: string,
     originalReq: Request
-  ): Promise<{status: number; body: OpenApiErrorResponse}| {status: 200, body: unknown}> {
+  ): Promise<{status: number; body: unknown}> {
     try {
       const url = new URL(originalReq.url);
       const urlPath = url.pathname.replace(basePath, '');
       const route = this.getRouteForPath(urlPath, originalReq.method);
       if (!route) {
         this.logger.info(`Route for ${originalReq.method}:${urlPath} no found`);
-        throw new OpenApiError(OpenApiErrorCode.notFound);
+        throw new OpenApiBuiltInError(OpenApiErrorCode.NotFound);
       }
 
       // obtaining path params
@@ -224,41 +211,23 @@ export class OpenApiService<
         query: req.query,
         body: req.body,
       });
-      const query = this.convertStringsAndSafeParse(
-        route.validators.query?.strict() ?? z.object({}),
-        req.query,
-        ValidationLocations.query,
-      );
+      const validator = new Validator();
+      const query = validator.validateQuery(route.validators.query, req.query);
       if (!query.success) {
         throw new OpenApiValidationError(query.error, ValidationLocations.query);
       }
-      const path = this.convertStringsAndSafeParse(
-      route.validators.path?.strict() ?? z.object({}),
-      req.params,
-      ValidationLocations.path,
-    );
+      const path = validator.validatePath(route.validators.path, req.params);
       if (!path.success) {
         throw new OpenApiValidationError(path.error, ValidationLocations.path);
       }
       let response: unknown;
-      const containsBody =
-      route.method === 'POST' ||
-      route.method === 'PATCH' ||
-      route.method === 'PUT' ||
-      route.method === 'DELETE';
-
+      const containsBody = route.method !== OpenApiMethods.get;
       if (containsBody && route.validators.body) {
-        const bodyWithConvertedDatesValidator = this.swapValidators(
-          route.validators.body,
-          ZodFirstPartyTypeKind.ZodDate,
-          z.string().transform((x) => new Date(x))
-        );
-        const body = bodyWithConvertedDatesValidator.safeParse(req.body);
+        const body = validator.validateBody(route.validators.body, req.body);
         if (!body.success) {
           throw new OpenApiValidationError(body.error, ValidationLocations.body);
         }
-        // const context = await this.createContext(originalReq, route, path.data, query.data, body.data);
-        const context = await this.contextMap[route.type]({
+        const context = await this.spec.routes[route.type].context({
           route: route,
           request: originalReq,
           params: {
@@ -276,7 +245,7 @@ export class OpenApiService<
           },
         });
       } else {
-        const context = await this.contextMap[route.type]({
+        const context = await this.spec.routes[route.type].context({
           route: route,
           request: originalReq,
           params: {
@@ -285,11 +254,13 @@ export class OpenApiService<
             body: {},
           },
         });
-        response = await route.handler({...context, params: {
-          query: query.data,
-          path: path.data,
-          body: {},
-        }});
+        response = await route.handler({
+          ...context,
+          params: {
+            query: query.data,
+            path: path.data,
+            body: {},
+          }});
       }
 
       const validated = route.validators.response.safeParse(response);
@@ -298,427 +269,43 @@ export class OpenApiService<
       }
       this.logger.info('Response: 200', validated.data);
       return {status: 200, body: validated.data};
-    } catch (e) {
-      const response = this.getErrorResponse(e);
-      const result = {status: response.status, body: {error: response.body}};
-      this.logger.info(`Response: ${result.status}`, result.body);
+    } catch (e: unknown) {
+      const response = this.spec.handleError(e);
+      const status = this.spec.errors[response.code].status;
+      const valid = this.spec.errors[response.code].validator.safeParse(response.body);
+      if (!valid.success) {
+        return {status: 500, body: this.spec.defaultErrorResponse};
+      }
+      this.logger.info(`Response: '${status}'`, response.body);
       this.logger.error('Error during request openAPI route handling', e);
-      return result;
+      return {status: Number(response.code), body: response.body};
     }
   }
-
-  protected swapValidators(
-    original: z.ZodTypeAny & {shape: ZodRawShape},
-    searchType: ZodFirstPartyTypeKind,
-    substitute: z.ZodTypeAny
-  ): ZodTypeAny {
-    if (original._def.typeName.toString() === searchType) {
-      return substitute;
-    }
-
-    if (original._def.type) {
-      const innerType = this.swapValidators(original._def.type, searchType, substitute);
-      if (original._def.typeName === 'ZodArray') {
-        return z.array(innerType);
-      } else if (original._def.typeName === 'ZodOptional') {
-        return z.optional(innerType);
-      }
-      throw new Error(`Can't convert ${original._def.typeName} validator`);
-    }
-    if (original._def.typeName && original._def.typeName === 'ZodNullable') {
-      return this.swapValidators(original._def.innerType, searchType, substitute).nullable();
-    }
-
-    if (original.shape) {
-      const result: ZodRawShape = {};
-      for (const key in original.shape) {
-        if (!Object.hasOwn(original.shape, key)) {
-          continue;
-        }
-        const validator = original.shape[key];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        result[key] = this.swapValidators(validator as any, searchType, substitute);
-      }
-      return z.object(result);
-    }
-    return original;
-
-  }
-
-  protected getErrorResponse(e: unknown): {status: number; body: OpenApiErrorResponse['error']} {
-    if (e instanceof OpenApiError) {
-      const code = e.getOpenApiCode();
-      if (code === OpenApiErrorCode.notFound) {
-        return {
-          status: 404,
-          body: {
-            code,
-          },
-        };
-      }
-      if (code === OpenApiErrorCode.unauthorized) {
-        return {
-          status: 401,
-          body: {
-            code: code,
-          },
-        };
-      }
-      if (e instanceof OpenApiActionError) {
-        return {
-          status: 400,
-          body: {
-            code: e.getOpenApiCode(),
-            actionErrorCode: e.getActionErrorCode(),
-            humanReadable: e.getClientFriendlyMessage(),
-          },
-        };
-      }
-      if (e instanceof OpenApiPermissionError) {
-        return {
-          status: 403,
-          body: {
-            code: OpenApiErrorCode.missingPermission,
-            requiredPermissions: e.getRequiredPermissions(),
-          },
-        };
-      }
-      const showResponseErrors = true;
-      if (
-        e instanceof OpenApiValidationError &&
-        (e.getLocation() !== ValidationLocations.response || showResponseErrors)
-      ) {
-        const zodError = e.getZodError();
-        const location = e.getLocation();
-        const map: OpenApiFieldError[] = [];
-        for (const issue of zodError.issues) {
-          map.push({
-            field: issue.path.map((x) => x.toString()).join('.'),
-            message: issue.message,
-          });
-        }
-        const bodyFields = {
-          code: OpenApiErrorCode.validationFailed,
-          location: e.getLocation(),
-          fieldErrors: map,
-        };
-
-        return {
-          status: location === ValidationLocations.response ? 422 : 400,
-          body: bodyFields,
-        };
-      }
-      return {
-        status: 500,
-        body: {
-          code: code,
-        },
-      };
-    }
-    return {
-      status: 500,
-      body: {
-        code: OpenApiErrorCode.unknownError,
-      },
-    };
-  }
-
-  protected convertStringsAndSafeParse(
-    finalValidator: z.ZodObject<ZodRawShape>,
-    data: unknown,
-    paramSourceName: ValidationLocations,
-  ): z.SafeParseReturnType<unknown, object> {
-    const initialValidatorShape: {
-      [key: string]:
-        | ZodArray<ZodString>
-        | ZodString
-        | ZodOptional<ZodString | ZodArray<ZodString>>
-        | ZodDefault<ZodString>
-        | ZodUnion<ZodUnionOptions>
-        | ZodOptional<ZodUnion<ZodUnionOptions>>
-    } = {};
-    const finalShape = (finalValidator as ZodObject<ZodRawShape>).shape;
-    for (const key of Object.keys(finalShape)) {
-      if (!finalShape[key]) {
-        throw new Error(`Key ${key} not found in validator shape`);
-      }
-      let def = finalShape[key]._def;
-      if (def.typeName === 'ZodDefault') {
-        def = def.innerType._def;
-        // no continue, just unwrapping
-      }
-
-      if (def.typeName === 'ZodArray') {
-        const validator = z.union([z.string().transform((x) => [x]), z.string().array()]);
-        initialValidatorShape[key] = validator;
-        continue;
-      }
-      initialValidatorShape[key] = z.string();
-      if (def.typeName === 'ZodOptional') {
-        initialValidatorShape[key] = z.string().optional();
-        if (def.innerType._def.typeName === 'ZodArray') {
-          const validator = z.union([z.string().transform((x) => [x]), z.string().array()]).optional();
-          initialValidatorShape[key] = validator;
-        }
-      }
-    }
-    const initialValidator = z.object(initialValidatorShape).strict();
-    const initialResult = initialValidator.safeParse(data);
-    if (!initialResult.success) {
-      throw new OpenApiValidationError(initialResult.error, paramSourceName);
-    }
-    const transformedParams: Record<string, unknown> = {};
-    for (const field of Object.keys(finalShape)) {
-      if (!finalShape[field]) {
-        // never
-        throw new Error(`'${field}' not found in final validator shape`);
-      }
-      let type = finalShape[field]._def.typeName;
-      let def = finalShape[field]._def;
-      let validator = finalShape[field];
-      if (type === 'ZodDefault') {
-        type = def.innerType._def.typeName;
-        validator = def.innerType;
-        def = def.innerType._def;
-      }
-      if (type === 'ZodOptional') {
-        type = def.innerType._def.typeName;
-        validator = def.innerType;
-        def = def.innerType._def;
-      }
-      const initialValue = initialResult.data[field];
-      if (initialValue === undefined) {
-        continue;
-      }
-      if (type === 'ZodString') {
-        transformedParams[field] = initialValue;
-        continue;
-      }
-
-      if (type === 'ZodArray') {
-        const subtype = def.type._def.typeName;
-        const values: unknown[] = [];
-        for (const value of initialValue) {
-          const val = this.convertValue(subtype, value, field, paramSourceName, def.type);
-          values.push(val);
-        }
-        transformedParams[field] = values;
-        continue;
-      }
-      const value: unknown = this.convertValue(type, initialValue, field, paramSourceName, validator);
-      transformedParams[field] = value;
-    }
-
-    const result = finalValidator.safeParse(transformedParams);
-    return result;
-  }
-
-  protected convertValue(
-    type: string,
-    initialValue: string,
-    field: string,
-    paramSourceName: string,
-    validator: ZodTypeAny,
-  ) {
-    let value: string | number| Date | boolean | object = '';
-    let typeName = 'Unknown';
-    switch (type) {
-      case 'ZodNumber':
-        value = Number(initialValue);
-        typeName = 'number';
-        break;
-      case 'ZodDate':
-        value = new Date(Date.parse(initialValue));
-        typeName = 'date';
-        break;
-      case 'ZodBoolean':
-        if (initialValue === 'true') {
-          value = true;
-        }
-        if (initialValue === 'false') {
-          value = false;
-        }
-        typeName = 'boolean';
-        break;
-      case 'ZodNativeEnum':
-        // eslint-disable-next-line no-case-declarations
-        const parsed = validator.safeParse(initialValue);
-        value = parsed.data ?? '';
-        typeName = 'enum';
-        break;
-      default:
-        throw new Error(`Couldn't parse ${field} from ${paramSourceName}, type '${type}' cannot be used`);
-    }
-    const stringValue = typeName === 'date' ? (value as Date).toISOString() : value.toString();
-    if (stringValue !== initialValue) {
-      throw new Error(`Couldn't parse ${field} is not a valid ${typeName}: ${stringValue} != ${initialValue}`);
-    }
-    return value;
-  }
-
 
   public saveYaml(path: string) {
-    this.logger.info('Generating YAML for Open API');
-    const openApi: ZodOpenApiObject = {
-      openapi: '3.1.0',
-      info: {
-        title: 'My API',
-        version: '1.0.0',
-      },
-      components: {
-        securitySchemes: {
-          bearerHttpAuthentication: {
-            type: 'apiKey',
-            scheme: 'bearer',
-            bearerFormat: 'jwt',
-            name: 'authorization',
-            in: 'header',
-          },
-        },
-      },
-      paths: {},
-      servers: [
-        {
-          url: 'http://localhost:3000/api/v1' + this.basePath,
-          description: 'Local',
-        },
-        {
-          url: 'https://discipline.alex-sarychev.com/api/v1' + this.basePath,
-          description: 'Production',
-        },
-      ],
-    };
-    const paths: ZodOpenApiPathsObject = {};
-    for (const route of this.routes) {
-      const requestParams: ZodOpenApiParameters = {
-        query: route.validators.query,
-        path: route.validators.path,
-      };
-      const operation: ZodOpenApiOperationObject = {
-        requestParams: requestParams,
-        description: route.description,
-        responses: {
-          200: {
-            description: 'Good Response',
-            content: {
-              'application/json': {schema: route.validators.response},
-            },
-          },
-          500: {
-            description: 'Unhandled Error',
-            content: {
-              'application/json': {
-                schema: z.object({
-                  error: z.object({
-                    code: z.literal(OpenApiErrorCode.unknownError).openapi({description: 'Code to handle on the frontend'}),
-                  }).openapi({description: 'Error response'}),
-                }),
-              },
-            },
-          },
-        },
-      };
-      if (['User', 'Client'].includes(route.type)) {
-        operation.responses['401'] = {
-          description: 'Unauthorized',
-          content: {
-            'application/json': {
-              schema: z.object({
-                error: z
-                  .object({
-                    code: z
-                      .enum([OpenApiErrorCode.unauthorized, OpenApiErrorCode.userNotFound])
-                      .openapi({description: 'Code to handle on the frontend'}),
-                  })
-                  .openapi({description: 'Error response'}),
-              }),
-            },
-          },
-        };
-      }
+    const generator = new SchemaGenerator(this.logger.getInvoker(), this.spec, this.routes);
+    generator.saveYaml(path);
+  }
 
-      operation.responses['400'] = {
-        description: 'Action Error or Validation Error',
-        content: {
-          'application/json': {
-            schema: z
-              .union([
-                // Action
-                openApiActionErrorResponseValidator,
-                // validationError
-                openApiValidationErrorResponseValidator,
-              ])
-              .openapi({unionOneOf: true}),
-          },
-        },
-      };
-      operation.responses['422'] = {
-        description:
-          'Validation Error on Response. Always server-side problem. Introduced for debugging purposes, disabled in prod.',
-        content: {
-          'application/json': {
-            schema: openApiValidationErrorResponseValidator,
-          },
-        },
-      };
-      if (route.type === 'Client') {
-        operation.security = [
-          {
-            bearerHttpAuthentication: [],
-          },
-        ];
-      }
-      if (route.type === 'User') {
-        operation.security = [
-          {
-            bearerHttpAuthentication: [],
-          },
-        ];
-        operation.responses['403'] = {
-          description: 'Permission Error',
-          content: {
-            'application/json': {
-              schema: z.object({
-                error: z
-                  .object({
-                    code: z
-                      .literal(OpenApiErrorCode.missingPermission)
-                      .openapi({description: 'Code to handle on the frontend'}),
-                    permissions: z
-                      .array(z.nativeEnum(Permission))
-                      .openapi({description: 'List of possible permissions to allow access'}),
-                  })
-                  .openapi({description: 'Error response'}),
-              }),
-            },
-          },
-        };
-      }
-      if (route.method === 'POST' || route.method === 'PUT' || route.method === 'PATCH') {
-        operation.requestBody = {
-          content: {
-            'application/json': {schema: route.validators.body},
-          },
-        };
-      }
-      const existingPath = paths[route.path] ?? {};
-      paths[route.path] = {
-        ...existingPath,
-        [route.method.toLowerCase()]: operation,
-      };
-    }
-    openApi.paths = paths;
-    // this.logger.info('openApi', openApi)
-    const document = createDocument(openApi, {
-      unionOneOf: true,
-      defaultDateSchema: {
-        type: 'string', format: 'date-time',
-      },
-    });
-
-    const yaml = stringify(document, {aliasDuplicateObjects: false});
-    // no need for now
-    // fs.writeFileSync(path.replace('.yml', '.json'), JSON.stringify(document));
-    fs.writeFileSync(path, yaml);
+  public static createRouteSpec<
+    TRouteTypes extends Record<string, string>,
+    TErrorCodes extends Record<string, string>,
+    TRouteConfigMap extends RouteConfigMap<TRouteTypes[keyof TRouteTypes], TErrorCodes[keyof TErrorCodes]>,
+    TErrorMap extends OpenApiErrorConfigMap<TErrorCodes[keyof TErrorCodes]>,
+    TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes, TRouteConfigMap, TErrorMap>
+  >(
+    routeEnum: TRouteTypes,
+    errorEnum: TErrorCodes,
+    errors: TErrorMap,
+    routes: TRouteConfigMap,
+    spec: Omit<TSpec, 'errors'|'routes'>
+  ): TSpec {
+    const result: TSpec = {
+      handleError: spec.handleError,
+      routes,
+      errors: errors,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+    return result;
   }
 }

@@ -2,12 +2,12 @@ import {argusCheckinValidator} from 'src/backend/model/ArgusCheckin/ArgusCheckin
 import {ArgusCheckinType} from 'src/backend/model/ArgusCheckin/types/ArgusCheckinType';
 import {openApiInstance} from 'src/backend/utils/openApiInstance';
 import {z} from 'zod';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {OpenApiMethods} from 'strap-on-openapi';
 
 export const getArgusCheckins = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,
-  type: AppOpenApiRouteTypes.Public,
+  type: ApiRouteTypes.Public,
   description: 'Returns data on all checkins from Argus',
   path: '/checkin',
   validators: {

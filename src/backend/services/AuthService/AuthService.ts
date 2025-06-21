@@ -1,16 +1,15 @@
-import {Client} from 'src/backend/services/OpenApiService/types/Client';
-import {OpenApiAuthService} from 'src/backend/services/OpenApiService/types/OpenApiAuthService';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {compare, hash} from 'bcrypt';
-import {OpenApiActionErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiActionErrorCode';
-import {OpenApiActionError} from 'src/backend/services/OpenApiService/types/errors/OpenApiActionError';
 import jwt from 'jsonwebtoken';
 import {AuthServiceConfig} from './types/AuthServiceConfig';
 import {Logger} from 'src/common/utils/Logger/Logger';
 import {z} from 'zod';
 import {User} from 'src/backend/model/User/User';
+import {Client} from './types/Client';
+import {ActionErrorCode} from '../../utils/ApiHelper/types/ActionErrorCode';
+import {ActionError} from '../../utils/ApiHelper/errors/ActionError';
 
-export class AuthService implements OpenApiAuthService {
+export class AuthService {
   protected dbService: DrizzleService;
   protected config: AuthServiceConfig;
   protected logger = new Logger(AuthService.name);
@@ -56,11 +55,11 @@ export class AuthService implements OpenApiAuthService {
       where: (users, {eq}) => eq(users.email, email),
     });
     if (!user) {
-      throw new OpenApiActionError(OpenApiActionErrorCode.invalidPassword);
+      throw new ActionError(ActionErrorCode.InvalidPassword);
     }
     const passwordsMatch = await compare(password, user.password);
     if (!passwordsMatch) {
-      throw new OpenApiActionError(OpenApiActionErrorCode.invalidPassword);
+      throw new ActionError(ActionErrorCode.InvalidPassword);
     }
     const token = this.createToken(user);
     return {...user, jwt: token};
@@ -78,13 +77,13 @@ export class AuthService implements OpenApiAuthService {
     const db = await service.getDb();
     const schema = service.getSchema();
     if (params.password !== params.passwordConfirmation) {
-      throw new OpenApiActionError(OpenApiActionErrorCode.invalidPassword);
+      throw new ActionError(ActionErrorCode.InvalidPassword);
     }
     const existing = await db.query.users.findFirst({
       where: (users, {eq}) => eq(users.email, params.email),
     });
     if (existing) {
-      throw new OpenApiActionError(OpenApiActionErrorCode.emailAlreadyExists);
+      throw new ActionError(ActionErrorCode.EmailAlreadyExists);
     }
     const hashedPassword = await this.hashString(params.password);
     const entity: typeof schema.users.$inferInsert = {

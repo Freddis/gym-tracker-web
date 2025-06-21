@@ -1,17 +1,17 @@
 import {OpenApiService} from '../../OpenApiService';
-import {RouteContextMap} from '../../types/RouteContextMap';
-import {RouteExtraPropsMap} from '../../types/RouteExtraPropsMap';
+import {OpenApiConfig} from '../../types/OpenApiConfig';
 import {TanStackApiRoute} from './types/TanStackAPIRoute';
 import {TanstackStartRoutingFunc} from './types/TanstackStartRoutingFunc';
 
 export class OpenApiTanstackStartWrapper<
-  TRouteTypes extends string,
-  TContextMap extends RouteContextMap<TRouteTypes> = RouteContextMap<TRouteTypes>,
-  TPropsMap extends RouteExtraPropsMap<TRouteTypes> = RouteExtraPropsMap<TRouteTypes>,
+ TRouteTypes extends Record<string, string>,
+  TErrorCodes extends Record<string, string>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes, any, any>
 > {
-  protected service: OpenApiService<TRouteTypes, TContextMap, TPropsMap>;
+  protected service: OpenApiService<TRouteTypes, TErrorCodes, TSpec>;
 
-  constructor(openApi: OpenApiService<TRouteTypes, TContextMap, TPropsMap>) {
+  constructor(openApi: OpenApiService<TRouteTypes, TErrorCodes, TSpec>) {
     this.service = openApi;
   }
 

@@ -1,8 +1,7 @@
-import {RouteContextMap} from './RouteContextMap';
 import {OpenApiRoute} from './OpenApiRoute';
 
-export type ContextParams<TRouteType extends string, TContext extends RouteContextMap<TRouteType>> = {
-  route: OpenApiRoute<TRouteType, TContext>
+export type ContextParams<TRouteType extends string> = {
+  route: OpenApiRoute<TRouteType>
   request: Request,
   params: {
     body: unknown

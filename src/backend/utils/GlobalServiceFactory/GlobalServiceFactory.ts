@@ -1,16 +1,7 @@
-import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
-import {OpenApiService} from 'src/backend/services/OpenApiService/OpenApiService';
-import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
 import {AuthService} from 'src/backend/services/AuthService/AuthService';
 import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
-import {ArgusCheckinService} from 'src/backend/services/ArgusCheckinService/ArgusCheckinService';
-import {AppOpenApiRouteContexts} from 'src/common/types/AppOpenApiRouteContexts';
 import {serverConfig} from '../ServerConfig/config';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
-import {AppOpenApiRequestServices} from 'src/common/types/AppOpenApiRequestServices';
-import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
-import {ExerciseService} from 'src/backend/services/ExerciseService/ExerciseService';
-import {WeightService} from '../../services/WeightService/WeightService';
+import {ApiHelper} from '../ApiHelper/ApiHelper';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -21,7 +12,6 @@ export class GlobalServiceFactory {
       const service = await this.drizzle();
       await service.end();
     }
-
   }
 
   async drizzle(): Promise<DrizzleService> {
@@ -36,38 +26,10 @@ export class GlobalServiceFactory {
     return new AuthService(serverConfig.services.auth, await this.drizzle());
   }
 
-  async openApi(): Promise<OpenApiService<AppOpenApiRouteTypes, AppOpenApiRouteContexts>> {
-    return new OpenApiService< AppOpenApiRouteTypes, AppOpenApiRouteContexts>({
-      User: async (opts) => {
-        const auth = await this.auth();
-        const viewer = await auth.getClientFromRequest(opts.request);
-        if (!viewer) {
-          throw new OpenApiError(OpenApiErrorCode.unauthorized);
-        }
-        return {
-          services: await this.createRequestServices(),
-          viewer,
-        };
-      },
-      Public: async () => ({
-        services: await this.createRequestServices(),
-      }),
-      Manager: async () => ({}),
-    });
-  }
-
-  protected async createRequestServices(): Promise<AppOpenApiRequestServices> {
-    const drizzle = await this.drizzle();
-    const services: AppOpenApiRequestServices = {
-      auth: new AuthService(serverConfig.services.auth, drizzle),
-      models: {
-        argusCheckin: new ArgusCheckinService(drizzle),
-        workout: new WorkoutService(drizzle),
-        exercise: new ExerciseService(drizzle),
-        weight: new WeightService(drizzle),
-      },
-    };
-    return services;
+  async openApi(): Promise<ReturnType<ApiHelper['createOpenApi']>> {
+    const helper = new ApiHelper(await this.drizzle());
+    const api = helper.createOpenApi();
+    return api;
   }
 
 }

@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/OpenApiService/**"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

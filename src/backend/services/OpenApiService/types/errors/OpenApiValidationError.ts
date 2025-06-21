@@ -3,12 +3,12 @@ import {OpenApiErrorCode} from '../../enums/OpenApiErrorCode';
 import {OpenApiError} from './OpenApiError';
 import {ValidationLocations} from '../../enums/ValidationLocations';
 
-export class OpenApiValidationError extends OpenApiError {
+export class OpenApiValidationError extends OpenApiError<OpenApiErrorCode> {
   private error: ZodError<unknown>;
   private location: ValidationLocations;
 
   constructor(error: ZodError<unknown>, location: ValidationLocations) {
-    super(OpenApiErrorCode.validationFailed);
+    super(OpenApiErrorCode.ValidationFailed);
     this.error = error;
     this.location = location;
   }

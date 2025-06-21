@@ -11,7 +11,6 @@ describe('Add Weight', () => {
 
     console.log('Test');
     const response = await TestUtils.openApi.postWithUser('/weight', user, {weight: 23});
-
     console.log('Check');
     expect(response.status).to.eq(200);
     expect(response.body.weight).to.eq(23);

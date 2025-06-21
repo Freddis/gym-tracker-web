@@ -140,31 +140,18 @@ export type PostAuthRegisterData = {
 
 export type PostAuthRegisterErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -174,7 +161,27 @@ export type PostAuthRegisterErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -186,40 +193,28 @@ export type PostAuthRegisterErrors = {
             }>;
           }>;
         };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
       };
   /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -229,7 +224,7 @@ export type PostAuthRegisterErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -264,31 +259,18 @@ export type PostAuthLoginData = {
 
 export type PostAuthLoginErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -298,7 +280,27 @@ export type PostAuthLoginErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -310,40 +312,28 @@ export type PostAuthLoginErrors = {
             }>;
           }>;
         };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
       };
   /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -353,7 +343,7 @@ export type PostAuthLoginErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -386,31 +376,18 @@ export type GetExercisesData = {
 
 export type GetExercisesErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -420,7 +397,7 @@ export type GetExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -431,6 +408,45 @@ export type GetExercisesErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -444,60 +460,11 @@ export type GetExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -507,7 +474,7 @@ export type GetExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -537,31 +504,18 @@ export type PostExercisesData = {
 
 export type PostExercisesErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -571,7 +525,7 @@ export type PostExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -582,6 +536,45 @@ export type PostExercisesErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -595,60 +588,11 @@ export type PostExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -658,7 +602,7 @@ export type PostExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -688,31 +632,18 @@ export type PutExercisesData = {
 
 export type PutExercisesErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -722,7 +653,7 @@ export type PutExercisesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -733,6 +664,45 @@ export type PutExercisesErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -746,60 +716,11 @@ export type PutExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -809,7 +730,7 @@ export type PutExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -839,31 +760,18 @@ export type DeleteExercisesByIdData = {
 
 export type DeleteExercisesByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -873,7 +781,7 @@ export type DeleteExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -884,6 +792,45 @@ export type DeleteExercisesByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -897,60 +844,11 @@ export type DeleteExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -960,7 +858,7 @@ export type DeleteExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -991,31 +889,18 @@ export type GetExercisesByIdData = {
 
 export type GetExercisesByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1025,7 +910,7 @@ export type GetExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1036,6 +921,45 @@ export type GetExercisesByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1049,60 +973,11 @@ export type GetExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1112,7 +987,7 @@ export type GetExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1146,31 +1021,18 @@ export type PatchExercisesByIdData = {
 
 export type PatchExercisesByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1180,7 +1042,7 @@ export type PatchExercisesByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1191,6 +1053,45 @@ export type PatchExercisesByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1204,60 +1105,11 @@ export type PatchExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1267,7 +1119,7 @@ export type PatchExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1298,31 +1150,18 @@ export type GetWorkoutsData = {
 
 export type GetWorkoutsErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1332,7 +1171,7 @@ export type GetWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1343,6 +1182,45 @@ export type GetWorkoutsErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1356,60 +1234,11 @@ export type GetWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1419,7 +1248,7 @@ export type GetWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1449,31 +1278,18 @@ export type PostWorkoutsData = {
 
 export type PostWorkoutsErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1483,7 +1299,7 @@ export type PostWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1494,6 +1310,45 @@ export type PostWorkoutsErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1507,60 +1362,11 @@ export type PostWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1570,7 +1376,7 @@ export type PostWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1600,31 +1406,18 @@ export type PutWorkoutsData = {
 
 export type PutWorkoutsErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1634,7 +1427,7 @@ export type PutWorkoutsErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1645,6 +1438,45 @@ export type PutWorkoutsErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1658,60 +1490,11 @@ export type PutWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1721,7 +1504,7 @@ export type PutWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1761,31 +1544,18 @@ export type DeleteWorkoutsByIdData = {
 
 export type DeleteWorkoutsByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1795,7 +1565,7 @@ export type DeleteWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1806,6 +1576,45 @@ export type DeleteWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1819,60 +1628,11 @@ export type DeleteWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -1882,7 +1642,7 @@ export type DeleteWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -1913,31 +1673,18 @@ export type GetWorkoutsByIdData = {
 
 export type GetWorkoutsByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -1947,7 +1694,7 @@ export type GetWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -1958,6 +1705,45 @@ export type GetWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -1971,60 +1757,11 @@ export type GetWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -2034,7 +1771,7 @@ export type GetWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -2065,31 +1802,18 @@ export type PatchWorkoutsByIdData = {
 
 export type PatchWorkoutsByIdErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -2099,7 +1823,7 @@ export type PatchWorkoutsByIdErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2110,6 +1834,45 @@ export type PatchWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -2123,60 +1886,11 @@ export type PatchWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -2186,7 +1900,7 @@ export type PatchWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -2217,31 +1931,18 @@ export type PostWeightData = {
 
 export type PostWeightErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -2251,7 +1952,7 @@ export type PostWeightErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2262,6 +1963,45 @@ export type PostWeightErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -2275,60 +2015,11 @@ export type PostWeightErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -2338,7 +2029,7 @@ export type PostWeightErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -2380,31 +2071,18 @@ export type GetArgusCheckinData = {
 
 export type GetArgusCheckinErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -2414,7 +2092,27 @@ export type GetArgusCheckinErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2426,40 +2124,28 @@ export type GetArgusCheckinErrors = {
             }>;
           }>;
         };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
       };
   /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -2469,7 +2155,7 @@ export type GetArgusCheckinErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };
@@ -2719,31 +2405,18 @@ export type GetArgusCheckinTypesData = {
 
 export type GetArgusCheckinTypesErrors = {
   /**
-   * Action Error or Validation Error
+   * Validation Failed or Action Error
    */
   400:
     | {
+        /**
+         * Error response
+         */
         error: {
           /**
-           * Code to handle on the frontend.
+           * Code to handle on the frontend
            */
-          code: "actionError";
-          /**
-           * Subcategory of error.
-           */
-          actionErrorCode: "invalidPassword" | "emailAlreadyExists";
-          /**
-           * Description of the error. Can be safely displayed.
-           */
-          humanReadable: string;
-        };
-      }
-    | {
-        error: {
-          /**
-           * Code to handle on the frontend.
-           */
-          code: "validationFailed";
+          code: "ValidationFailed";
           fieldErrors?: Array<{
             /**
              * Name of the field
@@ -2753,7 +2426,7 @@ export type GetArgusCheckinTypesErrors = {
              * Error message
              */
             message: string;
-            fieldErrors: Array<{
+            fieldErrors?: Array<{
               /**
                * Name of the field
                */
@@ -2764,6 +2437,45 @@ export type GetArgusCheckinTypesErrors = {
               message: string;
             }>;
           }>;
+          responseValidationErrors?: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
         };
       };
   /**
@@ -2777,60 +2489,11 @@ export type GetArgusCheckinTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unauthorized" | "userNotFound";
+      code: "Unauthorized";
     };
   };
   /**
-   * Permission Error
-   */
-  403: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "missingPermission";
-      /**
-       * List of possible permissions to allow access
-       */
-      permissions: Array<"clientRead">;
-    };
-  };
-  /**
-   * Validation Error Response
-   */
-  422: {
-    error: {
-      /**
-       * Code to handle on the frontend.
-       */
-      code: "validationFailed";
-      fieldErrors?: Array<{
-        /**
-         * Name of the field
-         */
-        field: string;
-        /**
-         * Error message
-         */
-        message: string;
-        fieldErrors: Array<{
-          /**
-           * Name of the field
-           */
-          field: string;
-          /**
-           * Error message
-           */
-          message: string;
-        }>;
-      }>;
-    };
-  };
-  /**
-   * Unhandled Error
+   * Unknown Error
    */
   500: {
     /**
@@ -2840,7 +2503,7 @@ export type GetArgusCheckinTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "unknownError";
+      code: "UnknownError";
     };
   };
 };

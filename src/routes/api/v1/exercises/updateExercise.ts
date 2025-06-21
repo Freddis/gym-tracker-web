@@ -1,13 +1,13 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
-import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
-import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
+import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
+import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
+import {OpenApiMethods} from 'strap-on-openapi';
 
 export const updateExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.patch,
-  type: AppOpenApiRouteTypes.User,
+  type: ApiRouteTypes.User,
   description: 'Updates exercise in users personal library',
   path: '/{id}',
   validators: {
@@ -24,7 +24,7 @@ export const updateExercise = openApiInstance.factory.createRoute({
   },
   handler: async (ctx) => {
     if (!ctx.services.models.exercise.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
-      throw new OpenApiError(OpenApiErrorCode.unauthorized);
+      throw new ApiError(ApiErrorCode.Unauthorized);
     }
     await ctx.services.models.exercise.update(ctx.params.path.id, ctx.params.body);
     return {success: true};

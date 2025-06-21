@@ -1,12 +1,12 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
+import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
 import {exerciseValidator} from 'src/backend/model/Exercise/Exercise';
+import {OpenApiMethods} from 'strap-on-openapi';
 
 export const getExerciseList = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,
-  type: AppOpenApiRouteTypes.User,
+  type: ApiRouteTypes.User,
   description: 'Returns data on exercises available to the user',
   path: '/',
   validators: {

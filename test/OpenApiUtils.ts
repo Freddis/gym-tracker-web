@@ -1,5 +1,4 @@
 import {User} from '../src/backend/model/User/User';
-import {OpenApiErrorResponse} from '../src/backend/services/OpenApiService/types/responses/OpenApiErrorResponse';
 import {openApiRoutes} from '../src/backend/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
@@ -11,12 +10,12 @@ export class OpenApiUtils {
     user: User,
     data?: object
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<{status: number; body: OpenApiErrorResponse}| {status: 200, body: any}> {
+  ): Promise<{status: number, body: any}> {
     const factory = BusinessUtils.getFactory();
     const auth = await factory.auth();
     const openApi = await factory.openApi();
     const jwt = auth.createToken(user);
-    openApi.addRoutesByMap(openApiRoutes);
+    openApi.addRouteMap(openApiRoutes);
     const req = new Request(`http://localhost/api/v1${route}`, {
       method: 'POST',
       headers: {

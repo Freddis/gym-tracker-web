@@ -1,14 +1,14 @@
-import {z} from 'zod';
+import {OpenApiMethods} from 'strap-on-openapi';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {OpenApiError} from 'src/backend/services/OpenApiService/types/errors/OpenApiError';
-import {OpenApiErrorCode} from 'src/backend/services/OpenApiService/enums/OpenApiErrorCode';
-import {OpenApiMethods} from 'src/backend/services/OpenApiService/enums/OpenApiMethods';
-import {AppOpenApiRouteTypes} from 'src/common/types/AppOpenApiRouteTypes';
-import {exerciseValidator} from 'src/backend/model/Exercise/Exercise';
+import {ApiRouteTypes} from '../../../../common/types/ApiRouteTypes';
+import {exerciseValidator} from '../../../../backend/model/Exercise/Exercise';
+import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
+import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
+import {z} from 'zod';
 
 export const getExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,
-  type: AppOpenApiRouteTypes.User,
+  type: ApiRouteTypes.User,
   description: 'Returns data on an exercise available to the user',
   path: '/{id}',
   validators: {
@@ -22,7 +22,7 @@ export const getExercise = openApiInstance.factory.createRoute({
   handler: async (ctx) => {
     const result = await ctx.services.models.exercise.get(ctx.params.path.id, ctx.viewer.id);
     if (!result) {
-      throw new OpenApiError(OpenApiErrorCode.notFound);
+      throw new ApiError(ApiErrorCode.UnknownError);
     }
     return {
       item: result,
