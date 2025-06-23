@@ -152,7 +152,7 @@ export type PostAuthRegisterErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -172,26 +172,7 @@ export type PostAuthRegisterErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -271,7 +252,7 @@ export type PostAuthLoginErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -291,26 +272,7 @@ export type PostAuthLoginErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -388,7 +350,7 @@ export type GetExercisesErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -408,26 +370,7 @@ export type GetExercisesErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -516,7 +459,7 @@ export type PostExercisesErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -536,26 +479,7 @@ export type PostExercisesErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -644,7 +568,7 @@ export type PutExercisesErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -664,26 +588,7 @@ export type PutExercisesErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -750,7 +655,7 @@ export type PutExercisesResponse =
   PutExercisesResponses[keyof PutExercisesResponses];
 
 export type DeleteExercisesByIdData = {
-  body?: never;
+  body?: unknown;
   path: {
     id: number;
   };
@@ -772,7 +677,7 @@ export type DeleteExercisesByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -792,26 +697,7 @@ export type DeleteExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -901,7 +787,7 @@ export type GetExercisesByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -921,26 +807,7 @@ export type GetExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1033,7 +900,7 @@ export type PatchExercisesByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1053,26 +920,7 @@ export type PatchExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1162,7 +1010,7 @@ export type GetWorkoutsErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1182,26 +1030,7 @@ export type GetWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1290,7 +1119,7 @@ export type PostWorkoutsErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1310,26 +1139,7 @@ export type PostWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1418,7 +1228,7 @@ export type PutWorkoutsErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1438,26 +1248,7 @@ export type PutWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1534,7 +1325,7 @@ export type PutWorkoutsResponse =
   PutWorkoutsResponses[keyof PutWorkoutsResponses];
 
 export type DeleteWorkoutsByIdData = {
-  body?: never;
+  body?: unknown;
   path: {
     id: number;
   };
@@ -1556,7 +1347,7 @@ export type DeleteWorkoutsByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1576,26 +1367,7 @@ export type DeleteWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1685,7 +1457,7 @@ export type GetWorkoutsByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1705,26 +1477,7 @@ export type GetWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1814,7 +1567,7 @@ export type PatchWorkoutsByIdErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1834,26 +1587,7 @@ export type PatchWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -1943,7 +1677,7 @@ export type PostWeightErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -1963,26 +1697,7 @@ export type PostWeightErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -2083,7 +1798,7 @@ export type GetArgusCheckinErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2103,26 +1818,7 @@ export type GetArgusCheckinErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {
@@ -2386,7 +2082,7 @@ export type GetArgusCheckinResponses = {
        */
       page: number;
       /**
-       * Number of items per page
+       * Number of itemss per page
        */
       pageSize: number;
     };
@@ -2417,7 +2113,7 @@ export type GetArgusCheckinTypesErrors = {
            * Code to handle on the frontend
            */
           code: "ValidationFailed";
-          fieldErrors?: Array<{
+          fieldErrors: Array<{
             /**
              * Name of the field
              */
@@ -2437,26 +2133,7 @@ export type GetArgusCheckinTypesErrors = {
               message: string;
             }>;
           }>;
-          responseValidationErrors?: Array<{
-            /**
-             * Name of the field
-             */
-            field: string;
-            /**
-             * Error message
-             */
-            message: string;
-            fieldErrors?: Array<{
-              /**
-               * Name of the field
-               */
-              field: string;
-              /**
-               * Error message
-               */
-              message: string;
-            }>;
-          }>;
+          location: "query" | "path" | "body" | "response";
         };
       }
     | {

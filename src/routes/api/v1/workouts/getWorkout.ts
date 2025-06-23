@@ -3,8 +3,8 @@ import {openApiInstance} from '../../../../backend/utils/openApiInstance';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {workoutValidator} from 'src/backend/model/Workout/Workout';
 import {OpenApiMethods} from 'strap-on-openapi';
-import {ActionError} from '../../../../backend/utils/ApiHelper/errors/ActionError';
-import {ActionErrorCode} from '../../../../backend/utils/ApiHelper/types/ActionErrorCode';
+import {ActionError} from '../../../../backend/services/ApiService/errors/ActionError';
+import {ActionErrorCode} from '../../../../backend/services/ApiService/types/ActionErrorCode';
 
 export const getWorkout = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,

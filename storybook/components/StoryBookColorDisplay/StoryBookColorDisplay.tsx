@@ -18,7 +18,6 @@ export const StoryBookColorDisplay: FC<{name: string, value: string}> = (props) 
   div.style = 'background-color: ' + props.value;
   document.body.appendChild(div);
   const style = getComputedStyle(div);
-  // console.log(div, style);
   const color = rgba2hex(style.backgroundColor);
   document.body.removeChild(div);
   const name = props.name.charAt(0).toUpperCase() + props.name.slice(1);

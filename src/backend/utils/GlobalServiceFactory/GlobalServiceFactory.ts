@@ -1,7 +1,7 @@
 import {AuthService} from 'src/backend/services/AuthService/AuthService';
 import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
 import {serverConfig} from '../ServerConfig/config';
-import {ApiHelper} from '../ApiHelper/ApiHelper';
+import {ApiService} from '../../services/ApiService/ApiService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -26,8 +26,8 @@ export class GlobalServiceFactory {
     return new AuthService(serverConfig.services.auth, await this.drizzle());
   }
 
-  async openApi(): Promise<ReturnType<ApiHelper['createOpenApi']>> {
-    const helper = new ApiHelper(await this.drizzle());
+  async openApi(): Promise<ReturnType<ApiService['createOpenApi']>> {
+    const helper = new ApiService(await this.drizzle());
     const api = helper.createOpenApi();
     return api;
   }

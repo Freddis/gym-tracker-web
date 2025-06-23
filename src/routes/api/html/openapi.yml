@@ -100,38 +100,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -264,38 +243,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -416,38 +374,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -584,38 +521,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -758,38 +674,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -925,38 +820,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1104,38 +978,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1213,6 +1066,9 @@ paths:
           schema:
             type: number
           required: true
+      requestBody:
+        content:
+          application/json: {}
       responses:
         "200":
           description: Good Response
@@ -1270,38 +1126,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1436,38 +1271,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1604,38 +1418,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1828,38 +1621,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -1995,38 +1767,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -2166,38 +1917,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -2275,6 +2005,9 @@ paths:
           schema:
             type: number
           required: true
+      requestBody:
+        content:
+          application/json: {}
       responses:
         "200":
           description: Good Response
@@ -2332,38 +2065,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -2498,38 +2210,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -3264,7 +2955,7 @@ paths:
                         description: Current page
                       pageSize:
                         type: number
-                        description: Number of items per page
+                        description: Number of itemss per page
                     required:
                       - count
                       - page
@@ -3318,38 +3009,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error
@@ -3477,38 +3147,17 @@ paths:
                                 - field
                                 - message
                               description: Field error
-                          responseValidationErrors:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                field:
-                                  type: string
-                                  description: Name of the field
-                                message:
-                                  type: string
-                                  description: Error message
-                                fieldErrors:
-                                  type: array
-                                  items:
-                                    type: object
-                                    properties:
-                                      field:
-                                        type: string
-                                        description: Name of the field
-                                      message:
-                                        type: string
-                                        description: Error message
-                                    required:
-                                      - field
-                                      - message
-                                    description: Field error
-                              required:
-                                - field
-                                - message
-                              description: Field error
+                          location:
+                            type: string
+                            enum:
+                              - query
+                              - path
+                              - body
+                              - response
                         required:
                           - code
+                          - fieldErrors
+                          - location
                         description: Error response
                     required:
                       - error

@@ -1,16 +1,16 @@
 import {
   OpenApiFieldError,
-  OpenApiService,
+  OpenApi,
   OpenApiValidationError,
   ValidationLocations,
 } from 'strap-on-openapi';
 import {ApiRequestServices} from '../../../common/types/ApiRequestServices';
-import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheckinService';
-import {AuthService} from '../../services/AuthService/AuthService';
-import {ExerciseService} from '../../services/ExerciseService/ExerciseService';
-import {WeightService} from '../../services/WeightService/WeightService';
-import {WorkoutService} from '../../services/WorkoutService/WorkoutService';
-import {serverConfig} from '../ServerConfig/config';
+import {ArgusCheckinService} from '../ArgusCheckinService/ArgusCheckinService';
+import {AuthService} from '../AuthService/AuthService';
+import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {WeightService} from '../WeightService/WeightService';
+import {WorkoutService} from '../WorkoutService/WorkoutService';
+import {serverConfig} from '../../utils/ServerConfig/config';
 import {ApiErrorCode} from './types/ApiErrorCode';
 import {UnknownErrorResponse, unknownErrorResponseValidator} from './validators/UnknownErrorResponse';
 import {PermissionErrorResponse, permissionErrorResponseValidator} from './validators/PermissionErrorResponse';
@@ -20,13 +20,13 @@ import {UnauthorizedErrorResponse, unauthorizedErrorResponseValidator} from './v
 import {PermissionError} from './errors/PermissionError';
 import {ApiError} from './errors/ApiError';
 import {ActionErrorCode} from './types/ActionErrorCode';
-import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
+import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ResponseValidationErrorResponse, responseValidationErrorResponseValidator} from './validators/ReponseValidationErrorResponse';
 import {ApiRouteType} from '../../../common/types/ApiRouteType';
 
-export class ApiHelper {
+export class ApiService {
   protected drizzle: DrizzleService;
-  protected spec = OpenApiService.createRouteSpec(
+  protected spec = OpenApi.createConfig(
   ApiRouteType,
   ApiErrorCode,
     {
@@ -182,7 +182,7 @@ export class ApiHelper {
     this.drizzle = drizzle;
   }
   createOpenApi() {
-    return new OpenApiService(ApiRouteType, ApiErrorCode, this.spec);
+    return new OpenApi(ApiRouteType, ApiErrorCode, this.spec);
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {

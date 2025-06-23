@@ -1,7 +1,7 @@
 import {ArgusCheckin} from 'src/backend/model/ArgusCheckin/ArgusCheckin';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ArgusCheckinType} from 'src/backend/model/ArgusCheckin/types/ArgusCheckinType';
-import {PaginatedResult} from 'src/backend/utils/ApiHelper/types/PaginatedResponse';
+import {PaginatedResult} from 'src/backend/services/ApiService/types/PaginatedResponse';
 import {dbSchema} from 'src/backend/drizzle/db';
 import {eq, count} from 'drizzle-orm';
 

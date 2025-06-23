@@ -2,8 +2,8 @@ import {OpenApiMethods} from 'strap-on-openapi';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {exerciseValidator} from '../../../../backend/model/Exercise/Exercise';
-import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
-import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
+import {ApiError} from '../../../../backend/services/ApiService/errors/ApiError';
+import {ApiErrorCode} from '../../../../backend/services/ApiService/types/ApiErrorCode';
 import {z} from 'zod';
 
 export const getExercise = openApiInstance.factory.createRoute({

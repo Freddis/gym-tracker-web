@@ -6,8 +6,8 @@ import {Logger} from 'src/common/utils/Logger/Logger';
 import {z} from 'zod';
 import {User} from 'src/backend/model/User/User';
 import {Client} from './types/Client';
-import {ActionErrorCode} from '../../utils/ApiHelper/types/ActionErrorCode';
-import {ActionError} from '../../utils/ApiHelper/errors/ActionError';
+import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
+import {ActionError} from '../ApiService/errors/ActionError';
 
 export class AuthService {
   protected dbService: DrizzleService;

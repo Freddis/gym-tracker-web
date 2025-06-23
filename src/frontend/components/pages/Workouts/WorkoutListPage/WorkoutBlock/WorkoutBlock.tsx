@@ -17,7 +17,6 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
 
   const weekDayString = translations.utils.time.weekDays[date.getDay()];
-  console.log(date.getDay());
   return (
     <AppBlock>
       <div>

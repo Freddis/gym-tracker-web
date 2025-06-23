@@ -1,8 +1,8 @@
 import {z} from 'zod';
-import {openApiInstance} from '../../../../backend/utils/openApiInstance';
 import {ArgusCheckinType} from 'src/backend/model/ArgusCheckin/types/ArgusCheckinType';
 import {OpenApiMethods} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
+import {openApiInstance} from '../../../../backend/utils/openApiInstance';
 
 export const getArgusCheckinTypes = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,

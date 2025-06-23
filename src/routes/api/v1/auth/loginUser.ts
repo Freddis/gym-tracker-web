@@ -21,7 +21,6 @@ export const loginUser = openApiInstance.factory.createRoute({
     }),
   },
   handler: async (ctx) => {
-    console.log(ctx);
     const result = await ctx.services.auth.login(ctx.params.body.email, ctx.params.body.password);
     return result;
   },

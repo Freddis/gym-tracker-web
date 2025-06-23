@@ -1,8 +1,8 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
-import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
-import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
+import {ApiError} from '../../../../backend/services/ApiService/errors/ApiError';
+import {ApiErrorCode} from '../../../../backend/services/ApiService/types/ApiErrorCode';
 import {OpenApiMethods} from 'strap-on-openapi';
 
 export const deleteWorkout = openApiInstance.factory.createRoute({
