@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
 import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
 import {OpenApiMethods} from 'strap-on-openapi';
@@ -8,7 +8,7 @@ import {OpenApiMethods} from 'strap-on-openapi';
 
 export const deleteExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.delete,
-  type: ApiRouteTypes.User,
+  type: ApiRouteType.User,
   description: 'Deletes exercise from users personal library',
   path: '/{id}',
   validators: {

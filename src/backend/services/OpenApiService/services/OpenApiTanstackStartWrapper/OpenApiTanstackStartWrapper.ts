@@ -6,8 +6,7 @@ import {TanstackStartRoutingFunc} from './types/TanstackStartRoutingFunc';
 export class OpenApiTanstackStartWrapper<
  TRouteTypes extends Record<string, string>,
   TErrorCodes extends Record<string, string>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes, any, any>
+  TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes>
 > {
   protected service: OpenApiService<TRouteTypes, TErrorCodes, TSpec>;
 

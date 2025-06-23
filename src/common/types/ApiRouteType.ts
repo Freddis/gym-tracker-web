@@ -1,4 +1,4 @@
-export enum ApiRouteTypes {
+export enum ApiRouteType {
   Public = 'Public',
   User = 'User',
   Manager = 'Manager'

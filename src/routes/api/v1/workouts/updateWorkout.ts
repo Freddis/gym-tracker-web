@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {workoutUpdateDtoValidator} from 'src/backend/model/Workout/WorkoutUpdateDto';
 import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
 import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
@@ -8,7 +8,7 @@ import {OpenApiMethods} from 'strap-on-openapi';
 
 export const updateWorkout = openApiInstance.factory.createRoute({
   method: OpenApiMethods.patch,
-  type: ApiRouteTypes.User,
+  type: ApiRouteType.User,
   description: 'Updates workout of current user',
   path: '/{id}',
   validators: {

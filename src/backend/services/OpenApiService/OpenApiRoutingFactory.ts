@@ -5,8 +5,7 @@ import {OpenApiConfig} from './types/OpenApiConfig';
 
 export class OpenApiRoutingFactory<
  TRouteTypes extends Record<string, string>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TSpec extends OpenApiConfig<TRouteTypes, any, any, any>
+ TSpec extends OpenApiConfig<TRouteTypes, Record<string, string>>
 > {
   protected map: TSpec;
 

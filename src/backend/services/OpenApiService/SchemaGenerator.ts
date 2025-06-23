@@ -10,8 +10,7 @@ import {OpenApiMethods} from './enums/OpenApiMethods';
 
 export class SchemaGenerator<
   TRouteTypes extends Record<string, string>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TSpec extends OpenApiConfig<TRouteTypes, any, any, any>
+  TSpec extends OpenApiConfig<TRouteTypes, Record<string, string>>
 > {
   protected logger: Logger;
   protected basePath: string = '';

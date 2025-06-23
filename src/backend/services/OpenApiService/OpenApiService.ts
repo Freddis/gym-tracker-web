@@ -22,17 +22,13 @@ import {OpenApiConfig} from './types/OpenApiConfig';
 import {RouteConfigMap} from './types/RouteConfigMap';
 import {OpenApiErrorConfigMap} from './types/OpenApiErrorConfigMap';
 import {OpenApiBuiltInError} from './types/errors/OpenApiBuiltInError';
+import {OpenApiNarrowConfig} from './types/OpenApiNarrowConfig';
 
 
 export class OpenApiService<
   TRouteTypes extends Record<string, string>,
   TErrorCodes extends Record<string, string>,
-  TSpec extends OpenApiConfig<
-    TRouteTypes,
-    TErrorCodes,
-    RouteConfigMap<TRouteTypes[keyof TRouteTypes], TErrorCodes[keyof TErrorCodes]>,
-    OpenApiErrorConfigMap<TErrorCodes[keyof TErrorCodes]>
-  >
+  TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes>
 > {
   protected routes: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>[] = [];
   protected logger: Logger;
@@ -73,12 +69,12 @@ export class OpenApiService<
   }
 
 
-  public addRoute(pathExtension: string, routes: (OpenApiRoute<TRouteTypes[keyof TRouteTypes]>)[]) {
+  public addRoute(pathExtension: string, routes: OpenApiRoute<TRouteTypes[keyof TRouteTypes]>[]) {
     const newRoutes = routes.map((x) => ({...x, path: pathExtension + x.path}));
     this.routes.push(...newRoutes);
   }
 
-  public addRouteMap(routeMap: OpenApiRouteMap) {
+  public addRouteMap(routeMap: OpenApiRouteMap<TRouteTypes[keyof TRouteTypes]>) {
     for (const row of routeMap) {
       this.addRoute(row.path, row.routes);
     }
@@ -292,7 +288,7 @@ export class OpenApiService<
     TErrorCodes extends Record<string, string>,
     TRouteConfigMap extends RouteConfigMap<TRouteTypes[keyof TRouteTypes], TErrorCodes[keyof TErrorCodes]>,
     TErrorMap extends OpenApiErrorConfigMap<TErrorCodes[keyof TErrorCodes]>,
-    TSpec extends OpenApiConfig<TRouteTypes, TErrorCodes, TRouteConfigMap, TErrorMap>
+    TSpec extends OpenApiNarrowConfig<TRouteTypes, TErrorCodes, TRouteConfigMap, TErrorMap>
   >(
     routeEnum: TRouteTypes,
     errorEnum: TErrorCodes,

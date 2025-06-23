@@ -16,8 +16,9 @@ import {upsertExercises} from 'src/routes/api/v1/exercises/upsertExercises';
 import {upsertWorkouts} from 'src/routes/api/v1/workouts/upsertWorkouts';
 import {createWeight} from '../../routes/api/v1/weight/createWeight';
 import {OpenApiRouteMap} from 'strap-on-openapi';
+import {ApiRouteType} from '../../common/types/ApiRouteType';
 
-export const openApiRoutes: OpenApiRouteMap = [
+export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = [
   {
     path: '/auth',
     routes: [

@@ -4,7 +4,7 @@ import {ExerciseService} from 'src/backend/services/ExerciseService/ExerciseServ
 import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
 import {WeightService} from '../../backend/services/WeightService/WeightService';
 
-export interface AppOpenApiRequestServices {
+export interface ApiRequestServices {
   auth: AuthService
   models: {
     argusCheckin: ArgusCheckinService

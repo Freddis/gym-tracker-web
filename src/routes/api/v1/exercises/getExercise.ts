@@ -1,6 +1,6 @@
 import {OpenApiMethods} from 'strap-on-openapi';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {ApiRouteTypes} from '../../../../common/types/ApiRouteTypes';
+import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {exerciseValidator} from '../../../../backend/model/Exercise/Exercise';
 import {ApiError} from '../../../../backend/utils/ApiHelper/errors/ApiError';
 import {ApiErrorCode} from '../../../../backend/utils/ApiHelper/types/ApiErrorCode';
@@ -8,7 +8,7 @@ import {z} from 'zod';
 
 export const getExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.get,
-  type: ApiRouteTypes.User,
+  type: ApiRouteType.User,
   description: 'Returns data on an exercise available to the user',
   path: '/{id}',
   validators: {

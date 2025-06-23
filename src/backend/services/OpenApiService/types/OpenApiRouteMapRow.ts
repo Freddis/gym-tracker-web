@@ -1,8 +1,6 @@
-import {ZodFirstPartySchemaTypes} from 'zod';
-import {BaseOpenApiRoute} from './BaseOpenApiRoute';
+import {OpenApiRoute} from './OpenApiRoute';
 
-export interface OpenApiRouteMapRow {
+export interface OpenApiRouteMapRow<TRouteType extends string> {
   path: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  routes: BaseOpenApiRoute<any, any, ZodFirstPartySchemaTypes, any, any, any>[],
+  routes: OpenApiRoute<TRouteType>[]
 }

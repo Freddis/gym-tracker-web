@@ -1,11 +1,11 @@
 import {z} from 'zod';
 import {openApiInstance} from '../../../../backend/utils/openApiInstance';
-import {ApiRouteTypes} from 'src/common/types/ApiRouteTypes';
+import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {OpenApiMethods} from 'strap-on-openapi';
 
 export const createExercise = openApiInstance.factory.createRoute({
   method: OpenApiMethods.post,
-  type: ApiRouteTypes.User,
+  type: ApiRouteType.User,
   description: 'Adds new exercise to the user personal library',
   path: '/',
   validators: {

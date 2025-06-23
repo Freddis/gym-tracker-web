@@ -4,8 +4,7 @@ import {
   OpenApiValidationError,
   ValidationLocations,
 } from 'strap-on-openapi';
-import {ApiRouteTypes} from '../../../common/types/ApiRouteTypes';
-import {AppOpenApiRequestServices} from '../../../common/types/AppOpenApiRequestServices';
+import {ApiRequestServices} from '../../../common/types/ApiRequestServices';
 import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheckinService';
 import {AuthService} from '../../services/AuthService/AuthService';
 import {ExerciseService} from '../../services/ExerciseService/ExerciseService';
@@ -23,11 +22,12 @@ import {ApiError} from './errors/ApiError';
 import {ActionErrorCode} from './types/ActionErrorCode';
 import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {ResponseValidationErrorResponse, responseValidationErrorResponseValidator} from './validators/ReponseValidationErrorResponse';
+import {ApiRouteType} from '../../../common/types/ApiRouteType';
 
 export class ApiHelper {
   protected drizzle: DrizzleService;
   protected spec = OpenApiService.createRouteSpec(
-  ApiRouteTypes,
+  ApiRouteType,
   ApiErrorCode,
     {
       [ApiErrorCode.MissingPermission]: {
@@ -62,7 +62,7 @@ export class ApiHelper {
       },
     },
     {
-      [ApiRouteTypes.Public]: {
+      [ApiRouteType.Public]: {
         authorization: false,
         context: async () => {
           const context = {
@@ -76,7 +76,7 @@ export class ApiHelper {
           [ApiErrorCode.ActionError]: true,
         },
       },
-      [ApiRouteTypes.User]: {
+      [ApiRouteType.User]: {
         authorization: true,
         context: async (opts) => {
           const services = await this.createRequestServices();
@@ -96,7 +96,7 @@ export class ApiHelper {
           [ApiErrorCode.Unauthorized]: true,
         },
       },
-      [ApiRouteTypes.Manager]: {
+      [ApiRouteType.Manager]: {
         authorization: false,
         context: async () => ({}),
         errors: {
@@ -182,7 +182,7 @@ export class ApiHelper {
     this.drizzle = drizzle;
   }
   createOpenApi() {
-    return new OpenApiService(ApiRouteTypes, ApiErrorCode, this.spec);
+    return new OpenApiService(ApiRouteType, ApiErrorCode, this.spec);
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {
@@ -193,9 +193,9 @@ export class ApiHelper {
     };
     return result;
   }
-  protected async createRequestServices(): Promise<AppOpenApiRequestServices> {
+  protected async createRequestServices(): Promise<ApiRequestServices> {
     const drizzle = this.drizzle;
-    const services: AppOpenApiRequestServices = {
+    const services: ApiRequestServices = {
       auth: new AuthService(serverConfig.services.auth, drizzle),
       models: {
         argusCheckin: new ArgusCheckinService(drizzle),
