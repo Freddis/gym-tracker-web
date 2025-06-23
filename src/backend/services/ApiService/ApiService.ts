@@ -175,6 +175,7 @@ export class ApiService {
         };
         return {code: ApiErrorCode.UnknownError, body: unknownError};
       },
+      skipDescriptionsCheck: true,
     }
   );
 
@@ -182,7 +183,8 @@ export class ApiService {
     this.drizzle = drizzle;
   }
   createOpenApi() {
-    return new OpenApi(ApiRouteType, ApiErrorCode, this.spec);
+    const api = new OpenApi(ApiRouteType, ApiErrorCode, this.spec);
+    return api;
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {

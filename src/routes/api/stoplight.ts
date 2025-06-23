@@ -1,14 +1,6 @@
 import {createAPIFileRoute} from '@tanstack/react-start/api';
-import {readFileSync} from 'fs';
+import {OpenApiTanstackStartWrapper} from 'strap-on-openapi';
+import {openApiInstance} from '../../backend/utils/openApiInstance';
 
-export const APIRoute = createAPIFileRoute('/api/stoplight')({
-  GET: async () => {
-    const body = readFileSync('./src/routes/api/html/stoplight.html');
-    const res = new Response(body, {
-      headers: {
-        'Content-Type': 'text/html',
-      },
-    });
-    return res;
-  },
-});
+const wrapper = new OpenApiTanstackStartWrapper(openApiInstance);
+export const APIRoute = wrapper.createStoplightRoute('/api/openapi', 'api/stoplight', createAPIFileRoute);
