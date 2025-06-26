@@ -18,8 +18,8 @@ import {Conditional} from '../../../src/frontend/components/layout/Header/Header
 import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBookPopupDisplay';
 import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
 import {client} from '../../../src/frontend/openapi-client/client.gen';
-import {ClientOptions, Config} from '@hey-api/client-axios';
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
+
 
 const queryClient = new QueryClient();
 
@@ -35,20 +35,18 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
     },
   };
 
-  const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
+  const getClientConfig = (user: AuthUser | null) => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
-      responseType: 'json',
+      responseType: 'json' as const,
       throwOnError: false,
       headers: {
         Authorization: authHeader,
       },
     };
   };
-  client.setConfig(getClientConfig(auth.user));
-  client.setConfig({
-    responseType: 'json',
-  });
+  const conf = getClientConfig(auth.user);
+  client.setConfig(conf);
 
   if (!props.user) {
     auth.user = null;

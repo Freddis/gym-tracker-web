@@ -6,6 +6,11 @@ export default defineConfig({
 
     coverage: {
       reportsDirectory: 'html/coverage',
+      exclude: [
+        'storybook',
+        '.output/**',
+        '.vinxi/**',
+      ],
       reporter: [
         ['html-spa', {subdir: 'spa'}],
         ['html', {subdir: 'html'}],

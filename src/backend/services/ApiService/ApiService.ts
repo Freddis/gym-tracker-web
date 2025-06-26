@@ -2,7 +2,7 @@ import {
   OpenApiFieldError,
   OpenApi,
   OpenApiValidationError,
-  ValidationLocations,
+  OpenApiValidationLocation,
 } from 'strap-on-openapi';
 import {ApiRequestServices} from '../../../common/types/ApiRequestServices';
 import {ArgusCheckinService} from '../ArgusCheckinService/ArgusCheckinService';
@@ -26,7 +26,7 @@ import {ApiRouteType} from '../../../common/types/ApiRouteType';
 
 export class ApiService {
   protected drizzle: DrizzleService;
-  protected spec = OpenApi.createConfig(
+  protected spec = OpenApi.create(
   ApiRouteType,
   ApiErrorCode,
     {
@@ -134,7 +134,7 @@ export class ApiService {
               message: issue.message,
             });
           }
-          if (e.getLocation() !== ValidationLocations.response) {
+          if (e.getLocation() !== OpenApiValidationLocation.Response) {
             const response: ValidationErrorResponse = {
               error: {
                 code: ApiErrorCode.ValidationFailed,
@@ -149,7 +149,7 @@ export class ApiService {
             const response: ResponseValidationErrorResponse = {
               error: {
                 code: ApiErrorCode.ResponseValidationFailed,
-                location: ValidationLocations.response,
+                location: OpenApiValidationLocation.Response,
                 fieldErrors: map,
               },
             };
@@ -176,6 +176,7 @@ export class ApiService {
         return {code: ApiErrorCode.UnknownError, body: unknownError};
       },
       skipDescriptionsCheck: true,
+      basePath: '/api',
     }
   );
 
@@ -183,8 +184,7 @@ export class ApiService {
     this.drizzle = drizzle;
   }
   createOpenApi() {
-    const api = new OpenApi(ApiRouteType, ApiErrorCode, this.spec);
-    return api;
+    return this.spec;
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {

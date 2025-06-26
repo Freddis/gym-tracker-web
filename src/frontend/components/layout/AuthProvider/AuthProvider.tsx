@@ -2,7 +2,6 @@ import {FC, ReactNode, useMemo, useState} from 'react';
 import {AuthContext} from './AuthContext';
 import {authUserValidator, AuthUser} from './types/AuthUser';
 import {client} from 'src/frontend/openapi-client/client.gen';
-import {ClientOptions, Config} from '@hey-api/client-axios';
 import {Cookie} from '../../../../common/utils/Cookie/Cookie';
 import {CookieName} from '../../../../common/enums/CookieName';
 
@@ -26,12 +25,11 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     return null;
   }, []);
   const [user, setUser] = useState<AuthUser | null>(storedUser);
-  const getClientConfig = (user: AuthUser | null): Config<ClientOptions> => {
+  const getClientConfig = (user: AuthUser | null) => {
     const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
     return {
       ...client.getConfig(),
-      responseType: 'json',
-      baseURL: '/api/v1',
+      responseType: 'json' as const,
       throwOnError: false,
       headers: {
         Authorization: authHeader,

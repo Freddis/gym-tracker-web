@@ -8,160 +8,97 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as WorkoutsIndexImport } from './routes/workouts/index'
-import { Route as FeedIndexImport } from './routes/feed/index'
-import { Route as ExercisesIndexImport } from './routes/exercises/index'
-import { Route as ArgusIndexImport } from './routes/argus/index'
-import { Route as ExercisesCreateImport } from './routes/exercises/create'
-import { Route as AuthRegisterImport } from './routes/auth/register'
-import { Route as AuthLoginImport } from './routes/auth/login'
-import { Route as WorkoutsUpdateWorkoutIdImport } from './routes/workouts/update/$workoutId'
-import { Route as ExercisesUpdateExerciseIdImport } from './routes/exercises/update/$exerciseId'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkoutsIndexRouteImport } from './routes/workouts/index'
+import { Route as FeedIndexRouteImport } from './routes/feed/index'
+import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
+import { Route as ArgusIndexRouteImport } from './routes/argus/index'
+import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as WorkoutsUpdateWorkoutIdRouteImport } from './routes/workouts/update/$workoutId'
+import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
+import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
+import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
+import { ServerRoute as SchemaServerRouteImport } from './routes/schema'
+import { ServerRoute as ApiServerRouteImport } from './routes/api'
 
-// Create/Update Routes
+const rootServerRouteImport = createServerRootRoute()
 
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const WorkoutsIndexRoute = WorkoutsIndexImport.update({
+const WorkoutsIndexRoute = WorkoutsIndexRouteImport.update({
   id: '/workouts/',
   path: '/workouts/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const FeedIndexRoute = FeedIndexImport.update({
+const FeedIndexRoute = FeedIndexRouteImport.update({
   id: '/feed/',
   path: '/feed/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ExercisesIndexRoute = ExercisesIndexImport.update({
+const ExercisesIndexRoute = ExercisesIndexRouteImport.update({
   id: '/exercises/',
   path: '/exercises/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ArgusIndexRoute = ArgusIndexImport.update({
+const ArgusIndexRoute = ArgusIndexRouteImport.update({
   id: '/argus/',
   path: '/argus/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ExercisesCreateRoute = ExercisesCreateImport.update({
+const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
   id: '/exercises/create',
   path: '/exercises/create',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRegisterRoute = AuthRegisterImport.update({
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/auth/register',
   path: '/auth/register',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthLoginRoute = AuthLoginImport.update({
+const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const WorkoutsUpdateWorkoutIdRoute = WorkoutsUpdateWorkoutIdImport.update({
+const WorkoutsUpdateWorkoutIdRoute = WorkoutsUpdateWorkoutIdRouteImport.update({
   id: '/workouts/update/$workoutId',
   path: '/workouts/update/$workoutId',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ExercisesUpdateExerciseIdRoute = ExercisesUpdateExerciseIdImport.update({
-  id: '/exercises/update/$exerciseId',
-  path: '/exercises/update/$exerciseId',
-  getParentRoute: () => rootRoute,
+const ExercisesUpdateExerciseIdRoute =
+  ExercisesUpdateExerciseIdRouteImport.update({
+    id: '/exercises/update/$exerciseId',
+    path: '/exercises/update/$exerciseId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SwaggerServerRoute = SwaggerServerRouteImport.update({
+  id: '/swagger',
+  path: '/swagger',
+  getParentRoute: () => rootServerRouteImport,
 } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/auth/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterImport
-      parentRoute: typeof rootRoute
-    }
-    '/exercises/create': {
-      id: '/exercises/create'
-      path: '/exercises/create'
-      fullPath: '/exercises/create'
-      preLoaderRoute: typeof ExercisesCreateImport
-      parentRoute: typeof rootRoute
-    }
-    '/argus/': {
-      id: '/argus/'
-      path: '/argus'
-      fullPath: '/argus'
-      preLoaderRoute: typeof ArgusIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/exercises/': {
-      id: '/exercises/'
-      path: '/exercises'
-      fullPath: '/exercises'
-      preLoaderRoute: typeof ExercisesIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/feed/': {
-      id: '/feed/'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/workouts/': {
-      id: '/workouts/'
-      path: '/workouts'
-      fullPath: '/workouts'
-      preLoaderRoute: typeof WorkoutsIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/exercises/update/$exerciseId': {
-      id: '/exercises/update/$exerciseId'
-      path: '/exercises/update/$exerciseId'
-      fullPath: '/exercises/update/$exerciseId'
-      preLoaderRoute: typeof ExercisesUpdateExerciseIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/workouts/update/$workoutId': {
-      id: '/workouts/update/$workoutId'
-      path: '/workouts/update/$workoutId'
-      fullPath: '/workouts/update/$workoutId'
-      preLoaderRoute: typeof WorkoutsUpdateWorkoutIdImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
+const StoplightServerRoute = StoplightServerRouteImport.update({
+  id: '/stoplight',
+  path: '/stoplight',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const SchemaServerRoute = SchemaServerRouteImport.update({
+  id: '/schema',
+  path: '/schema',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiServerRoute = ApiServerRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -175,7 +112,6 @@ export interface FileRoutesByFullPath {
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
@@ -188,9 +124,8 @@ export interface FileRoutesByTo {
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -202,7 +137,6 @@ export interface FileRoutesById {
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -242,7 +176,6 @@ export interface FileRouteTypes {
     | '/workouts/update/$workoutId'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -254,6 +187,146 @@ export interface RootRouteChildren {
   WorkoutsIndexRoute: typeof WorkoutsIndexRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
   WorkoutsUpdateWorkoutIdRoute: typeof WorkoutsUpdateWorkoutIdRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api': typeof ApiServerRoute
+  '/schema': typeof SchemaServerRoute
+  '/stoplight': typeof StoplightServerRoute
+  '/swagger': typeof SwaggerServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api': typeof ApiServerRoute
+  '/schema': typeof SchemaServerRoute
+  '/stoplight': typeof StoplightServerRoute
+  '/swagger': typeof SwaggerServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api': typeof ApiServerRoute
+  '/schema': typeof SchemaServerRoute
+  '/stoplight': typeof StoplightServerRoute
+  '/swagger': typeof SwaggerServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api' | '/schema' | '/stoplight' | '/swagger'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api' | '/schema' | '/stoplight' | '/swagger'
+  id: '__root__' | '/api' | '/schema' | '/stoplight' | '/swagger'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiServerRoute: typeof ApiServerRoute
+  SchemaServerRoute: typeof SchemaServerRoute
+  StoplightServerRoute: typeof StoplightServerRoute
+  SwaggerServerRoute: typeof SwaggerServerRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/': {
+      id: '/workouts/'
+      path: '/workouts'
+      fullPath: '/workouts'
+      preLoaderRoute: typeof WorkoutsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feed/': {
+      id: '/feed/'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises/': {
+      id: '/exercises/'
+      path: '/exercises'
+      fullPath: '/exercises'
+      preLoaderRoute: typeof ExercisesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/argus/': {
+      id: '/argus/'
+      path: '/argus'
+      fullPath: '/argus'
+      preLoaderRoute: typeof ArgusIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises/create': {
+      id: '/exercises/create'
+      path: '/exercises/create'
+      fullPath: '/exercises/create'
+      preLoaderRoute: typeof ExercisesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/update/$workoutId': {
+      id: '/workouts/update/$workoutId'
+      path: '/workouts/update/$workoutId'
+      fullPath: '/workouts/update/$workoutId'
+      preLoaderRoute: typeof WorkoutsUpdateWorkoutIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises/update/$exerciseId': {
+      id: '/exercises/update/$exerciseId'
+      path: '/exercises/update/$exerciseId'
+      fullPath: '/exercises/update/$exerciseId'
+      preLoaderRoute: typeof ExercisesUpdateExerciseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/swagger': {
+      id: '/swagger'
+      path: '/swagger'
+      fullPath: '/swagger'
+      preLoaderRoute: typeof SwaggerServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/stoplight': {
+      id: '/stoplight'
+      path: '/stoplight'
+      fullPath: '/stoplight'
+      preLoaderRoute: typeof StoplightServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/schema': {
+      id: '/schema'
+      path: '/schema'
+      fullPath: '/schema'
+      preLoaderRoute: typeof SchemaServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api': {
+      id: '/api'
+      path: '/api'
+      fullPath: '/api'
+      preLoaderRoute: typeof ApiServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -268,59 +341,15 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
   WorkoutsUpdateWorkoutIdRoute: WorkoutsUpdateWorkoutIdRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/auth/login",
-        "/auth/register",
-        "/exercises/create",
-        "/argus/",
-        "/exercises/",
-        "/feed/",
-        "/workouts/",
-        "/exercises/update/$exerciseId",
-        "/workouts/update/$workoutId"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/auth/login": {
-      "filePath": "auth/login.tsx"
-    },
-    "/auth/register": {
-      "filePath": "auth/register.tsx"
-    },
-    "/exercises/create": {
-      "filePath": "exercises/create.tsx"
-    },
-    "/argus/": {
-      "filePath": "argus/index.tsx"
-    },
-    "/exercises/": {
-      "filePath": "exercises/index.tsx"
-    },
-    "/feed/": {
-      "filePath": "feed/index.tsx"
-    },
-    "/workouts/": {
-      "filePath": "workouts/index.tsx"
-    },
-    "/exercises/update/$exerciseId": {
-      "filePath": "exercises/update/$exerciseId.tsx"
-    },
-    "/workouts/update/$workoutId": {
-      "filePath": "workouts/update/$workoutId.tsx"
-    }
-  }
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiServerRoute: ApiServerRoute,
+  SchemaServerRoute: SchemaServerRoute,
+  StoplightServerRoute: StoplightServerRoute,
+  SwaggerServerRoute: SwaggerServerRoute,
 }
-ROUTE_MANIFEST_END */
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

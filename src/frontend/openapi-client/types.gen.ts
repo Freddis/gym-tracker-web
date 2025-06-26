@@ -172,7 +172,7 @@ export type PostAuthRegisterErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -272,7 +272,7 @@ export type PostAuthLoginErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -370,7 +370,7 @@ export type GetExercisesErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -479,7 +479,7 @@ export type PostExercisesErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -588,7 +588,7 @@ export type PutExercisesErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -697,7 +697,7 @@ export type DeleteExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -807,7 +807,7 @@ export type GetExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -920,7 +920,7 @@ export type PatchExercisesByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1030,7 +1030,7 @@ export type GetWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1139,7 +1139,7 @@ export type PostWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1248,7 +1248,7 @@ export type PutWorkoutsErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1367,7 +1367,7 @@ export type DeleteWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1477,7 +1477,7 @@ export type GetWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1587,7 +1587,7 @@ export type PatchWorkoutsByIdErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1697,7 +1697,7 @@ export type PostWeightErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -1818,7 +1818,7 @@ export type GetArgusCheckinErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2133,7 +2133,7 @@ export type GetArgusCheckinTypesErrors = {
               message: string;
             }>;
           }>;
-          location: "query" | "path" | "body" | "response";
+          location: "Query" | "Path" | "Body" | "Response";
         };
       }
     | {
@@ -2216,8 +2216,5 @@ export type GetArgusCheckinTypesResponse =
   GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
 
 export type ClientOptions = {
-  baseURL:
-    | "http://localhost:3000/api/v1"
-    | "https://discipline.alex-sarychev.com/api/v1"
-    | (string & {});
+  baseURL: `${string}://${string}/api` | (string & {});
 };

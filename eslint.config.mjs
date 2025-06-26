@@ -181,12 +181,12 @@ export default tseslint.config(
   ignores: [
     'build/**',
     '.vinxi/**',
+    '.tanstack/**',
+    '.nitro/**',
     // the next one doesn't work properly, still checks files and throw errors if they contain eslint rules
     'output/**',
     '.drizzle/**',
     'temp/**',
-    'app/backend/drizzle/schema/schema.ts',
-    'app/backend/drizzle/schema/relations.ts',
     'src/frontend/openapi-client/**',
     'html/**',
   ],

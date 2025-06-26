@@ -110,6 +110,9 @@ export const postAuthRegisterQueryKey = (
   options?: Options<PostAuthRegisterData>,
 ) => createQueryKey("postAuthRegister", options);
 
+/**
+ * Registers a user
+ */
 export const postAuthRegisterOptions = (
   options?: Options<PostAuthRegisterData>,
 ) => {
@@ -127,6 +130,9 @@ export const postAuthRegisterOptions = (
   });
 };
 
+/**
+ * Registers a user
+ */
 export const postAuthRegisterMutation = (
   options?: Partial<Options<PostAuthRegisterData>>,
 ): UseMutationOptions<
@@ -154,6 +160,9 @@ export const postAuthRegisterMutation = (
 export const postAuthLoginQueryKey = (options?: Options<PostAuthLoginData>) =>
   createQueryKey("postAuthLogin", options);
 
+/**
+ * Logins a user
+ */
 export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -169,6 +178,9 @@ export const postAuthLoginOptions = (options?: Options<PostAuthLoginData>) => {
   });
 };
 
+/**
+ * Logins a user
+ */
 export const postAuthLoginMutation = (
   options?: Partial<Options<PostAuthLoginData>>,
 ): UseMutationOptions<
@@ -196,6 +208,9 @@ export const postAuthLoginMutation = (
 export const getExercisesQueryKey = (options?: Options<GetExercisesData>) =>
   createQueryKey("getExercises", options);
 
+/**
+ * Returns data on exercises available to the user
+ */
 export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -214,6 +229,9 @@ export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
 export const postExercisesQueryKey = (options?: Options<PostExercisesData>) =>
   createQueryKey("postExercises", options);
 
+/**
+ * Adds new exercise to the user personal library
+ */
 export const postExercisesOptions = (options?: Options<PostExercisesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -229,6 +247,9 @@ export const postExercisesOptions = (options?: Options<PostExercisesData>) => {
   });
 };
 
+/**
+ * Adds new exercise to the user personal library
+ */
 export const postExercisesMutation = (
   options?: Partial<Options<PostExercisesData>>,
 ): UseMutationOptions<
@@ -253,6 +274,9 @@ export const postExercisesMutation = (
   return mutationOptions;
 };
 
+/**
+ * Updates or inserts exercise in users personal library
+ */
 export const putExercisesMutation = (
   options?: Partial<Options<PutExercisesData>>,
 ): UseMutationOptions<
@@ -277,6 +301,9 @@ export const putExercisesMutation = (
   return mutationOptions;
 };
 
+/**
+ * Deletes exercise from users personal library
+ */
 export const deleteExercisesByIdMutation = (
   options?: Partial<Options<DeleteExercisesByIdData>>,
 ): UseMutationOptions<
@@ -305,6 +332,9 @@ export const getExercisesByIdQueryKey = (
   options: Options<GetExercisesByIdData>,
 ) => createQueryKey("getExercisesById", options);
 
+/**
+ * Returns data on an exercise available to the user
+ */
 export const getExercisesByIdOptions = (
   options: Options<GetExercisesByIdData>,
 ) => {
@@ -322,6 +352,9 @@ export const getExercisesByIdOptions = (
   });
 };
 
+/**
+ * Updates exercise in users personal library
+ */
 export const patchExercisesByIdMutation = (
   options?: Partial<Options<PatchExercisesByIdData>>,
 ): UseMutationOptions<
@@ -349,6 +382,9 @@ export const patchExercisesByIdMutation = (
 export const getWorkoutsQueryKey = (options?: Options<GetWorkoutsData>) =>
   createQueryKey("getWorkouts", options);
 
+/**
+ * Returns list of users workouts
+ */
 export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -367,6 +403,9 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
   createQueryKey("postWorkouts", options);
 
+/**
+ * Adds new workout for the user
+ */
 export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -382,6 +421,9 @@ export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
   });
 };
 
+/**
+ * Adds new workout for the user
+ */
 export const postWorkoutsMutation = (
   options?: Partial<Options<PostWorkoutsData>>,
 ): UseMutationOptions<
@@ -406,6 +448,9 @@ export const postWorkoutsMutation = (
   return mutationOptions;
 };
 
+/**
+ * Updates or inserts workout for user
+ */
 export const putWorkoutsMutation = (
   options?: Partial<Options<PutWorkoutsData>>,
 ): UseMutationOptions<
@@ -430,6 +475,9 @@ export const putWorkoutsMutation = (
   return mutationOptions;
 };
 
+/**
+ * Deletes workout from user
+ */
 export const deleteWorkoutsByIdMutation = (
   options?: Partial<Options<DeleteWorkoutsByIdData>>,
 ): UseMutationOptions<
@@ -458,6 +506,9 @@ export const getWorkoutsByIdQueryKey = (
   options: Options<GetWorkoutsByIdData>,
 ) => createQueryKey("getWorkoutsById", options);
 
+/**
+ * Returns data on user workout
+ */
 export const getWorkoutsByIdOptions = (
   options: Options<GetWorkoutsByIdData>,
 ) => {
@@ -475,6 +526,9 @@ export const getWorkoutsByIdOptions = (
   });
 };
 
+/**
+ * Updates workout of current user
+ */
 export const patchWorkoutsByIdMutation = (
   options?: Partial<Options<PatchWorkoutsByIdData>>,
 ): UseMutationOptions<
@@ -502,6 +556,9 @@ export const patchWorkoutsByIdMutation = (
 export const postWeightQueryKey = (options?: Options<PostWeightData>) =>
   createQueryKey("postWeight", options);
 
+/**
+ * Adds new weight entry for the user
+ */
 export const postWeightOptions = (options?: Options<PostWeightData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
@@ -517,6 +574,9 @@ export const postWeightOptions = (options?: Options<PostWeightData>) => {
   });
 };
 
+/**
+ * Adds new weight entry for the user
+ */
 export const postWeightMutation = (
   options?: Partial<Options<PostWeightData>>,
 ): UseMutationOptions<
@@ -545,6 +605,9 @@ export const getArgusCheckinQueryKey = (
   options?: Options<GetArgusCheckinData>,
 ) => createQueryKey("getArgusCheckin", options);
 
+/**
+ * Returns data on all checkins from Argus
+ */
 export const getArgusCheckinOptions = (
   options?: Options<GetArgusCheckinData>,
 ) => {
@@ -568,7 +631,9 @@ const createInfiniteParams = <
   queryKey: QueryKey<Options>,
   page: K,
 ) => {
-  const params = queryKey[0];
+  const params = {
+    ...queryKey[0],
+  };
   if (page.body) {
     params.body = {
       ...(queryKey[0].body as any),
@@ -601,6 +666,9 @@ export const getArgusCheckinInfiniteQueryKey = (
 ): QueryKey<Options<GetArgusCheckinData>> =>
   createQueryKey("getArgusCheckin", options, true);
 
+/**
+ * Returns data on all checkins from Argus
+ */
 export const getArgusCheckinInfiniteOptions = (
   options?: Options<GetArgusCheckinData>,
 ) => {
@@ -648,6 +716,9 @@ export const getArgusCheckinTypesQueryKey = (
   options?: Options<GetArgusCheckinTypesData>,
 ) => createQueryKey("getArgusCheckinTypes", options);
 
+/**
+ * Returns possible checkin types for Argus
+ */
 export const getArgusCheckinTypesOptions = (
   options?: Options<GetArgusCheckinTypesData>,
 ) => {

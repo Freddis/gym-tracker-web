@@ -4,7 +4,7 @@ dns.setDefaultResultOrder('ipv4first');
 
 export default defineConfig({
   input: {
-    path: './src/routes/api/html/openapi.yml',
+    path: './openapi.yml',
   },
   output: {
     format: 'prettier',

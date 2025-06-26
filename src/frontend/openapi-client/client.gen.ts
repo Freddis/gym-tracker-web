@@ -6,7 +6,7 @@ import {
   type ClientOptions as DefaultClientOptions,
   createClient,
   createConfig,
-} from "@hey-api/client-axios";
+} from "./client";
 
 /**
  * The `createClientConfig()` function will be called on client initialization
@@ -23,6 +23,6 @@ export type CreateClientConfig<T extends DefaultClientOptions = ClientOptions> =
 
 export const client = createClient(
   createConfig<ClientOptions>({
-    baseURL: "http://localhost:3000/api/v1",
+    baseURL: "/api",
   }),
 );

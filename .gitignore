@@ -2,6 +2,8 @@
 node_modules
 build
 .vinxi
+.nitro
+.tanstack
 .output
 .DS_Store
 .drizzle
