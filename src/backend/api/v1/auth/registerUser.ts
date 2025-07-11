@@ -1,10 +1,10 @@
 import {z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
-import {OpenApiMethods} from 'strap-on-openapi';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {OpenApiMethod} from 'strap-on-openapi';
+import {openApi} from '../../../utils/openApi';
 
-export const registerUser = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.POST,
+export const registerUser = openApi.factory.createRoute({
+  method: OpenApiMethod.POST,
   type: ApiRouteType.Public,
   description: 'Registers a user',
   path: '/register',

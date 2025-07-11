@@ -1,14 +1,14 @@
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {z} from 'zod';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {workoutValidator} from '../../../model/Workout/Workout';
 import {ActionError} from '../../../services/ApiService/errors/ActionError';
 import {ActionErrorCode} from '../../../services/ApiService/types/ActionErrorCode';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
 
-export const getWorkout = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.GET,
+export const getWorkout = openApi.factory.createRoute({
+  method: OpenApiMethod.GET,
   type: ApiRouteType.User,
   description: 'Returns data on user workout',
   path: '/{id}',

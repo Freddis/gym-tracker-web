@@ -1,14 +1,14 @@
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {z} from 'zod';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {exerciseValidator} from '../../../model/Exercise/Exercise';
 import {ApiError} from '../../../services/ApiService/errors/ApiError';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
 
-export const getExercise = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.GET,
+export const getExercise = openApi.factory.createRoute({
+  method: OpenApiMethod.GET,
   type: ApiRouteType.User,
   description: 'Returns data on an exercise available to the user',
   path: '/{id}',

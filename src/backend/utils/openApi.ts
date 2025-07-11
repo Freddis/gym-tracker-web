@@ -1,3 +1,3 @@
 import {GlobalServiceFactory} from './GlobalServiceFactory/GlobalServiceFactory';
 
-export const openApiInstance = await new GlobalServiceFactory().openApi();
+export const openApi = await new GlobalServiceFactory().openApi();

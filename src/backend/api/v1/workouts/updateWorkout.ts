@@ -1,14 +1,14 @@
 import {z} from 'zod';
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {workoutUpdateDtoValidator} from '../../../model/Workout/WorkoutUpdateDto';
 import {ApiError} from '../../../services/ApiService/errors/ApiError';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
 
-export const updateWorkout = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.PATCH,
+export const updateWorkout = openApi.factory.createRoute({
+  method: OpenApiMethod.PATCH,
   type: ApiRouteType.User,
   description: 'Updates workout of current user',
   path: '/{id}',

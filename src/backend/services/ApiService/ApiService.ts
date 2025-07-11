@@ -23,53 +23,70 @@ import {ActionErrorCode} from './types/ActionErrorCode';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ResponseValidationErrorResponse, responseValidationErrorResponseValidator} from './validators/ReponseValidationErrorResponse';
 import {ApiRouteType} from '../../../common/types/ApiRouteType';
-
 export class ApiService {
   protected drizzle: DrizzleService;
-  protected spec = OpenApi.create(
-  ApiRouteType,
-  ApiErrorCode,
+  protected spec = OpenApi.builder.customizeErrors(
+  ApiErrorCode).defineErrors(
     {
       [ApiErrorCode.MissingPermission]: {
         status: '403',
         description: 'Missing Permission',
-        validator: permissionErrorResponseValidator,
+        responseValidator: permissionErrorResponseValidator,
       },
       [ApiErrorCode.UnknownError]: {
         status: '500' as const,
         description: 'Unknown Error',
-        validator: unknownErrorResponseValidator,
+        responseValidator: unknownErrorResponseValidator,
       },
       [ApiErrorCode.ValidationFailed]: {
         status: '400' as const,
         description: 'Validation Failed',
-        validator: validationErrorResponseValidator,
+        responseValidator: validationErrorResponseValidator,
       },
       [ApiErrorCode.ActionError]: {
         status: '400' as const,
         description: 'Action Error',
-        validator: actionErrorResponseValidator,
+        responseValidator: actionErrorResponseValidator,
       },
       [ApiErrorCode.Unauthorized]: {
         status: '401' as const,
         description: 'Unauthorized',
-        validator: unauthorizedErrorResponseValidator,
+        responseValidator: unauthorizedErrorResponseValidator,
       },
       [ApiErrorCode.ResponseValidationFailed]: {
         status: '422' as const,
         description: 'Validation Error on Response. Always server-side problem. Introduced for debugging purposes, disabled in prod.',
-        validator: responseValidationErrorResponseValidator,
+        responseValidator: responseValidationErrorResponseValidator,
       },
-    },
-    {
+    }).defineDefaultError({
+      code: ApiErrorCode.UnknownError,
+      body: {
+        error: {
+          code: ApiErrorCode.UnknownError,
+        },
+      },
+    }).customizeRoutes(ApiRouteType).defineRouteContexts({
+      [ApiRouteType.Public]: async () => {
+        const context = {
+          services: await this.createRequestServices(),
+        };
+        return context;
+      },
+      [ApiRouteType.User]: async (opts) => {
+        const services = await this.createRequestServices();
+        const viewer = await services.auth.getClientFromRequest(opts.request);
+        if (!viewer) {
+          throw new ApiError(ApiErrorCode.Unauthorized);
+        }
+        return {
+          services: services,
+          viewer,
+        };
+      },
+      [ApiRouteType.Manager]: () => Promise.resolve({}),
+    }).defineRoutes({
       [ApiRouteType.Public]: {
         authorization: false,
-        context: async () => {
-          const context = {
-            services: await this.createRequestServices(),
-          };
-          return context;
-        },
         errors: {
           [ApiErrorCode.UnknownError]: true,
           [ApiErrorCode.ValidationFailed]: true,
@@ -78,17 +95,7 @@ export class ApiService {
       },
       [ApiRouteType.User]: {
         authorization: true,
-        context: async (opts) => {
-          const services = await this.createRequestServices();
-          const viewer = await services.auth.getClientFromRequest(opts.request);
-          if (!viewer) {
-            throw new ApiError(ApiErrorCode.Unauthorized);
-          }
-          return {
-            services: services,
-            viewer,
-          };
-        },
+
         errors: {
           [ApiErrorCode.UnknownError]: true,
           [ApiErrorCode.ValidationFailed]: true,
@@ -98,7 +105,6 @@ export class ApiService {
       },
       [ApiRouteType.Manager]: {
         authorization: false,
-        context: async () => ({}),
         errors: {
           [ApiErrorCode.UnknownError]: true,
           [ApiErrorCode.ValidationFailed]: true,
@@ -107,13 +113,7 @@ export class ApiService {
           [ApiErrorCode.MissingPermission]: true,
         },
       },
-    },
-    {
-      defaultErrorResponse: {
-        error: {
-          code: ApiErrorCode.UnknownError,
-        },
-      } satisfies UnknownErrorResponse,
+    }).defineGlobalConfig({
       handleError: (e) => {
         if (e instanceof PermissionError) {
           const permissionError: PermissionErrorResponse = {
@@ -178,7 +178,7 @@ export class ApiService {
       skipDescriptionsCheck: true,
       basePath: '/api',
     }
-  );
+  ).create();
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;

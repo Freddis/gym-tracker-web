@@ -1,8 +1,8 @@
-import {openApiInstance} from '../../src/backend/utils/openApiInstance';
+import {openApi} from '../../src/backend/utils/openApi';
 import {openApiRoutes} from 'src/backend/utils/openApiRoutes';
 
-openApiInstance.addRouteMap(openApiRoutes);
-openApiInstance.clientGenerator.generate({
+openApi.addRouteMap(openApiRoutes);
+openApi.clientGenerator.generate({
   output: {
     format: 'prettier',
     lint: 'eslint',

@@ -1,12 +1,12 @@
 import {z} from 'zod';
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {ApiError} from '../../../services/ApiService/errors/ApiError';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
-export const updateExercise = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.PATCH,
+export const updateExercise = openApi.factory.createRoute({
+  method: OpenApiMethod.PATCH,
   type: ApiRouteType.User,
   description: 'Updates exercise in users personal library',
   path: '/{id}',

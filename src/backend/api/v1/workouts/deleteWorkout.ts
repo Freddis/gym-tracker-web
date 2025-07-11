@@ -1,12 +1,12 @@
 import {z} from 'zod';
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {ApiError} from '../../../services/ApiService/errors/ApiError';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
-export const deleteWorkout = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.DELETE,
+export const deleteWorkout = openApi.factory.createRoute({
+  method: OpenApiMethod.DELETE,
   type: ApiRouteType.User,
   description: 'Deletes workout from user',
   path: '/{id}',

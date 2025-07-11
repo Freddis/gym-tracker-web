@@ -333,7 +333,7 @@ export type GetExercisesData = {
   query?: {
     updatedAfter?: Date;
   };
-  url: "/exercises/";
+  url: "/exercises";
 };
 
 export type GetExercisesErrors = {
@@ -442,7 +442,7 @@ export type PostExercisesData = {
   };
   path?: never;
   query?: never;
-  url: "/exercises/";
+  url: "/exercises";
 };
 
 export type PostExercisesErrors = {
@@ -551,7 +551,7 @@ export type PutExercisesData = {
   };
   path?: never;
   query?: never;
-  url: "/exercises/";
+  url: "/exercises";
 };
 
 export type PutExercisesErrors = {
@@ -993,7 +993,7 @@ export type GetWorkoutsData = {
   query?: {
     updatedAfter?: Date;
   };
-  url: "/workouts/";
+  url: "/workouts";
 };
 
 export type GetWorkoutsErrors = {
@@ -1102,7 +1102,7 @@ export type PostWorkoutsData = {
   };
   path?: never;
   query?: never;
-  url: "/workouts/";
+  url: "/workouts";
 };
 
 export type PostWorkoutsErrors = {
@@ -1211,7 +1211,7 @@ export type PutWorkoutsData = {
   };
   path?: never;
   query?: never;
-  url: "/workouts/";
+  url: "/workouts";
 };
 
 export type PutWorkoutsErrors = {
@@ -1660,7 +1660,7 @@ export type PostWeightData = {
   };
   path?: never;
   query?: never;
-  url: "/weight/";
+  url: "/weight";
 };
 
 export type PostWeightErrors = {
@@ -1764,7 +1764,7 @@ export type GetArgusCheckinData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
+    page?: string;
     type?:
       | "steps"
       | "weather"

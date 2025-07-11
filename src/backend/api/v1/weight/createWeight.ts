@@ -1,12 +1,12 @@
 import {z} from 'zod';
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {weightValidator} from '../../../model/Weight/Weight';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
 
-export const createWeight = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.POST,
+export const createWeight = openApi.factory.createRoute({
+  method: OpenApiMethod.POST,
   type: ApiRouteType.User,
   description: 'Adds new weight entry for the user',
   path: '/',

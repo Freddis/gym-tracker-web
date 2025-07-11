@@ -1,5 +1,5 @@
 import {createServerFileRoute} from '@tanstack/react-start/server';
-import {openApiInstance} from '../backend/utils/openApiInstance';
+import {openApi} from '../backend/utils/openApi';
 
-const methods = openApiInstance.wrappers.tanstackStart.createShemaMethods();
+const methods = openApi.wrappers.tanstackStart.createShemaMethods();
 export const ServerRoute = createServerFileRoute('/schema').methods(methods);

@@ -1,7 +1,7 @@
 import {createServerFileRoute} from '@tanstack/react-start/server';
-import {openApiInstance} from '../backend/utils/openApiInstance';
+import {openApi} from '../backend/utils/openApi';
 
 
-const methods = openApiInstance.wrappers.tanstackStart.createSwaggerMethods('/schema');
+const methods = openApi.wrappers.tanstackStart.createSwaggerMethods('/schema');
 export const ServerRoute = createServerFileRoute('/swagger').methods(methods);
 

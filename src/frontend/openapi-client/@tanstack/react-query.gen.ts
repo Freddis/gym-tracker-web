@@ -677,7 +677,7 @@ export const getArgusCheckinInfiniteOptions = (
     AxiosError<GetArgusCheckinError>,
     InfiniteData<GetArgusCheckinResponse>,
     QueryKey<Options<GetArgusCheckinData>>,
-    | number
+    | string
     | Pick<
         QueryKey<Options<GetArgusCheckinData>>[0],
         "body" | "headers" | "path" | "query"

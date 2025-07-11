@@ -144,7 +144,7 @@ export const getExercises = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: getExercisesResponseTransformer,
-    url: "/exercises/",
+    url: "/exercises",
     ...options,
   });
 };
@@ -167,7 +167,7 @@ export const postExercises = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    url: "/exercises/",
+    url: "/exercises",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -195,7 +195,7 @@ export const putExercises = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: putExercisesResponseTransformer,
-    url: "/exercises/",
+    url: "/exercises",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -301,7 +301,7 @@ export const getWorkouts = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: getWorkoutsResponseTransformer,
-    url: "/workouts/",
+    url: "/workouts",
     ...options,
   });
 };
@@ -324,7 +324,7 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
-    url: "/workouts/",
+    url: "/workouts",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -352,7 +352,7 @@ export const putWorkouts = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: putWorkoutsResponseTransformer,
-    url: "/workouts/",
+    url: "/workouts",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -458,7 +458,7 @@ export const postWeight = <ThrowOnError extends boolean = false>(
       },
     ],
     responseTransformer: postWeightResponseTransformer,
-    url: "/weight/",
+    url: "/weight",
     ...options,
     headers: {
       "Content-Type": "application/json",

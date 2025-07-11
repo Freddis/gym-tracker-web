@@ -2,11 +2,11 @@ import {z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {workoutUpsertDtoValidator} from 'src/backend/model/Workout/WorkoutUpsertDto';
 import {workoutRowValidator} from 'src/backend/model/Workout/WorkoutRow';
-import {OpenApiMethods} from 'strap-on-openapi';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {OpenApiMethod} from 'strap-on-openapi';
+import {openApi} from '../../../utils/openApi';
 
-export const upsertWorkouts = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.PUT,
+export const upsertWorkouts = openApi.factory.createRoute({
+  method: OpenApiMethod.PUT,
   type: ApiRouteType.User,
   description: 'Updates or inserts workout for user',
   path: '/',

@@ -1,12 +1,12 @@
 import {z} from 'zod';
 import {ArgusCheckinType} from 'src/backend/model/ArgusCheckin/types/ArgusCheckinType';
-import {OpenApiMethods} from 'strap-on-openapi';
+import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
-import {openApiInstance} from '../../../utils/openApiInstance';
+import {openApi} from '../../../utils/openApi';
 
 
-export const getArgusCheckinTypes = openApiInstance.factory.createRoute({
-  method: OpenApiMethods.GET,
+export const getArgusCheckinTypes = openApi.factory.createRoute({
+  method: OpenApiMethod.GET,
   type: ApiRouteType.User,
   description: 'Returns possible checkin types for Argus',
   path: '/checkin/types',

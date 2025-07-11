@@ -21,7 +21,7 @@ export function ArgusEntriesListPage() {
     query: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       type: searchParams.type as any,
-      page: searchParams.page,
+      page: searchParams.page?.toString(),
     },
   });
   const typesResponse = useOpenApiQuery(getArgusCheckinTypesOptions, {});

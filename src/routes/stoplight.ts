@@ -1,6 +1,6 @@
 import {createServerFileRoute} from '@tanstack/react-start/server';
-import {openApiInstance} from '../backend/utils/openApiInstance';
+import {openApi} from '../backend/utils/openApi';
 
-const methods = openApiInstance.wrappers.tanstackStart.createStoplightMethods('/schema');
+const methods = openApi.wrappers.tanstackStart.createStoplightMethods('/schema');
 export const ServerRoute = createServerFileRoute('/stoplight').methods(methods);
 
