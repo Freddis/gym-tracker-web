@@ -48,6 +48,8 @@ import type {
   PatchExercisesByIdError,
   PatchExercisesByIdResponse,
   GetWorkoutsData,
+  GetWorkoutsError,
+  GetWorkoutsResponse,
   PostWorkoutsData,
   PostWorkoutsError,
   PostWorkoutsResponse,
@@ -400,6 +402,93 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   });
 };
 
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K,
+) => {
+  const params = {
+    ...queryKey[0],
+  };
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const getWorkoutsInfiniteQueryKey = (
+  options?: Options<GetWorkoutsData>,
+): QueryKey<Options<GetWorkoutsData>> =>
+  createQueryKey("getWorkouts", options, true);
+
+/**
+ * Returns list of users workouts
+ */
+export const getWorkoutsInfiniteOptions = (
+  options?: Options<GetWorkoutsData>,
+) => {
+  return infiniteQueryOptions<
+    GetWorkoutsResponse,
+    AxiosError<GetWorkoutsError>,
+    InfiniteData<GetWorkoutsResponse>,
+    QueryKey<Options<GetWorkoutsData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetWorkoutsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetWorkoutsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getWorkouts({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getWorkoutsInfiniteQueryKey(options),
+    },
+  );
+};
+
 export const postWorkoutsQueryKey = (options?: Options<PostWorkoutsData>) =>
   createQueryKey("postWorkouts", options);
 
@@ -625,42 +714,6 @@ export const getArgusCheckinOptions = (
   });
 };
 
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K,
-) => {
-  const params = {
-    ...queryKey[0],
-  };
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
-};
-
 export const getArgusCheckinInfiniteQueryKey = (
   options?: Options<GetArgusCheckinData>,
 ): QueryKey<Options<GetArgusCheckinData>> =>
@@ -677,7 +730,7 @@ export const getArgusCheckinInfiniteOptions = (
     AxiosError<GetArgusCheckinError>,
     InfiniteData<GetArgusCheckinResponse>,
     QueryKey<Options<GetArgusCheckinData>>,
-    | string
+    | number
     | Pick<
         QueryKey<Options<GetArgusCheckinData>>[0],
         "body" | "headers" | "path" | "query"

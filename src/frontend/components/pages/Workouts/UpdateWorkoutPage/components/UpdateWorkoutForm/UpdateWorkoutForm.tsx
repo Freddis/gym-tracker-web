@@ -50,8 +50,14 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   };
   const save = async () => {
     const newItem: WorkoutUpdateDto = {
-      ...item,
       exercises: exercises.map((x) => x.workoutExercise),
+      typeId: item.typeId,
+      calories: item.calories,
+      start: item.start,
+      end: item.end,
+      deletedAt: item.deletedAt,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
     };
     const result = await updateMutation.mutateAsync({
       path: {

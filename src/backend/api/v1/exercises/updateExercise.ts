@@ -12,7 +12,7 @@ export const updateExercise = openApi.factory.createRoute({
   path: '/{id}',
   validators: {
     path: z.object({
-      id: z.number(),
+      id: openApi.validators.strings.number,
     }),
     body: z.object({
       name: z.string(),

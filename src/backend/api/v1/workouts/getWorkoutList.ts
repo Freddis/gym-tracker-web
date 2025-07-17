@@ -11,16 +11,17 @@ export const getWorkoutList = openApi.factory.createRoute({
   path: '/',
   validators: {
     query: z.object({
-      updatedAfter: z.date().optional(),
+      updatedAfter: openApi.validators.strings.datetime.optional(),
+      page: openApi.validators.strings.number.optional().default('1'),
     }),
-    response: z.object({
-      items: workoutValidator.array(),
-    }),
+    response: openApi.validators.paginatedResponse(workoutValidator),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.workout.getAll(ctx.viewer.id, ctx.params.query);
-    return {
-      items: result,
-    };
+    const result = await ctx.services.models.workout.getAll(ctx.viewer.id, {
+      ...ctx.params.query,
+      perPage: 10,
+    });
+
+    return result;
   },
 });

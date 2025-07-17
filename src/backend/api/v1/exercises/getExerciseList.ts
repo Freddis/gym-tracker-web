@@ -11,7 +11,7 @@ export const getExerciseList = openApi.factory.createRoute({
   path: '/',
   validators: {
     query: z.object({
-      updatedAfter: z.date().optional(),
+      updatedAfter: openApi.validators.strings.datetime.optional(),
     }),
     response: z.object({
       items: exerciseValidator.array(),

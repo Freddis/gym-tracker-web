@@ -12,7 +12,7 @@ export const UpdateWorkoutPage: FC = () => {
   const id = !Number.isNaN(Number(params.workoutId)) ? Number(params.workoutId) : 0;
   const response = useQuery(getWorkoutsByIdOptions({
     path: {
-      id,
+      id: id,
     },
   }),
   );

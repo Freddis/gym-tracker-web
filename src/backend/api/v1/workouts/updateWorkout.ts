@@ -14,7 +14,7 @@ export const updateWorkout = openApi.factory.createRoute({
   path: '/{id}',
   validators: {
     path: z.object({
-      id: z.number(),
+      id: openApi.validators.strings.number.openapi({type: 'number'}),
     }),
     body: workoutUpdateDtoValidator,
     response: z.object({

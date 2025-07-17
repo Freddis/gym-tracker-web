@@ -6,7 +6,7 @@ const logger = new Logger('Generate Password');
 const auth = await globalServiceFactory.auth();
 const password = argv[2];
 if (!password) {
-  logger.die('Pass password to hash as parameter to the script');
+  logger.info('Pass password to hash as parameter to the script');
   process.exit();
 }
 const hashed = await auth.hashString(password);

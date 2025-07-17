@@ -6,22 +6,13 @@ import tsConfigPaths from 'vite-tsconfig-paths';
 
 let generationSkip = false;
 export default defineConfig({
-
-  // root: './src',
-  // root: './',
   build: {
     target: 'es2022',
     outDir: '.output',
   },
-  // esbuild: {
-  //   target: 'es2022',
-  // },
   optimizeDeps: {
     // fixes html import problem deep in node_modules in dev
     exclude: ['@mapbox'],
-    // esbuildOptions: {
-    //   target: 'es2022',
-    // },
   },
   server: {
     port: 3000,

@@ -1,7 +1,8 @@
 import {z} from 'zod';
-import {workoutExercisSetValidator} from './WorkoutExerciseSet';
+import {workoutExerciseSetValidator} from './WorkoutExerciseSet';
+import {openApi} from '../../utils/openApi';
 
-export const workoutExerciseSetUpsertDtoValidator = workoutExercisSetValidator.omit({
+export const workoutExerciseSetUpsertDtoValidator = workoutExerciseSetValidator.omit({
   userId: true,
   workoutId: true,
   workoutExerciseId: true,
@@ -9,6 +10,10 @@ export const workoutExerciseSetUpsertDtoValidator = workoutExercisSetValidator.o
 })
 .extend({
   id: z.number().optional(),
+  createdAt: openApi.validators.strings.datetime,
+  updatedAt: openApi.validators.strings.datetime.nullable(),
+  end: openApi.validators.strings.datetime.nullable(),
+  start: openApi.validators.strings.datetime.nullable(),
 });
 export type WorkoutExerciseSetUpsertDtoValidator = typeof workoutExerciseSetUpsertDtoValidator
 export type WorkoutExerciseSetUpsertDto = z.TypeOf<WorkoutExerciseSetUpsertDtoValidator>

@@ -1,4 +1,4 @@
-import {eq, and, desc, gte, isNull} from 'drizzle-orm';
+import {eq, and, desc, gte, isNull, inArray} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Workout} from 'src/backend/model/Workout/Workout';
 import {dbSchema} from 'src/backend/drizzle/db';
@@ -154,6 +154,9 @@ export class WorkoutService {
             start: y.start,
             end: y.end,
           }));
+          if (sets.length === 0) {
+            continue;
+          }
           await db.insert(dbSchema.workoutExerciseSets).values(sets);
         }
       }
@@ -208,8 +211,10 @@ export class WorkoutService {
   }
 
   async getAll(userId: number, params?: {
+    page: number,
+    perPage: number,
     updatedAfter?: Date
-  }): Promise<Workout[]> {
+  }) {
     const db = await this.db.getDb();
     const omitDrizzleFields = <T>(
       table: T
@@ -222,7 +227,28 @@ export class WorkoutService {
       }
       return copy;
     };
-    const result2 = await db.select({
+    const page = params?.page ?? 1;
+    const limit = params?.perPage ?? 10;
+    const offset = (page - 1) * limit;
+    const where = and(
+        eq(dbSchema.workouts.userId, userId),
+        isNull(dbSchema.workouts.deletedAt),
+        params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
+      );
+    const query = db.select({
+      id: dbSchema.workouts.id,
+    }).from(
+      dbSchema.workouts
+    ).where(where
+    )
+    .orderBy(
+      desc(dbSchema.workouts.createdAt)
+    ).limit(params?.perPage ?? 10,).offset(offset);
+
+    const count = await db.$count(dbSchema.workouts, where);
+    const workoutQueryResult = await query;
+    const workoutIds = workoutQueryResult.map((x) => x.id);
+    const query2 = db.select({
       workout: {
         ...omitDrizzleFields(dbSchema.workouts),
       },
@@ -238,11 +264,7 @@ export class WorkoutService {
     }).from(
       dbSchema.workouts
     ).where(
-      and(
-        eq(dbSchema.workouts.userId, userId),
-        isNull(dbSchema.workouts.deletedAt),
-        params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
-      )
+      inArray(dbSchema.workouts.id, workoutIds)
     ).leftJoin(
       dbSchema.workoutExercises,
       eq(dbSchema.workoutExercises.workoutId, dbSchema.workouts.id)
@@ -256,9 +278,10 @@ export class WorkoutService {
     .orderBy(
       desc(dbSchema.workouts.createdAt)
     );
+    const queryResult = await query2;
     const workouts = new Map<number, Workout & {exercises: WorkoutExerciseRow[]}>();
     const exercises = new Map<number, WorkoutExerciseRow & {exercise: Exercise, sets: WorkoutExerciseSet[]}>();
-    for (const row of result2) {
+    for (const row of queryResult) {
       const workout = workouts.get(row.workout.id) ?? {...row.workout, exercises: []};
       workouts.set(workout.id, workout);
       if (!row.workoutExercise || !row.exercise) {
@@ -281,7 +304,15 @@ export class WorkoutService {
         exercise.sets.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
       }
     }
-    return result;
+    return {
+      items: result,
+      info: {
+        page: page,
+        pageSize: limit,
+        count: count,
+      },
+    };
+    // return result;
   }
 
   async hasWriteAccess(id: number, userId: number): Promise<boolean> {

@@ -26,7 +26,7 @@ export type ExerciseUpsertDto = {
   params: Array<number>;
   copiedFromId: number | null;
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt: Date;
   deletedAt: Date | null;
 };
 
@@ -105,6 +105,8 @@ export type WorkoutUpdateDto = {
     exerciseId: number;
     sets: Array<WorkoutExerciseSetUpdateDto>;
   }>;
+  createdAt: Date;
+  updatedAt: Date | null;
 };
 
 export type WorkoutExerciseSetUpdateDto = {
@@ -113,6 +115,8 @@ export type WorkoutExerciseSetUpdateDto = {
   end: Date | null;
   weight: number | null;
   reps: number | null;
+  createdAt: Date;
+  updatedAt: Date | null;
 };
 
 export type Weight = {
@@ -992,6 +996,7 @@ export type GetWorkoutsData = {
   path?: never;
   query?: {
     updatedAfter?: Date;
+    page?: number;
   };
   url: "/workouts";
 };
@@ -1089,7 +1094,27 @@ export type GetWorkoutsResponses = {
    * Good Response
    */
   200: {
+    /**
+     * Page or items
+     */
     items: Array<Workout>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
   };
 };
 
@@ -1764,7 +1789,7 @@ export type GetArgusCheckinData = {
   body?: never;
   path?: never;
   query?: {
-    page?: string;
+    page?: number;
     type?:
       | "steps"
       | "weather"
