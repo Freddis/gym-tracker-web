@@ -6,9 +6,11 @@
   "scripts": {
     "build": "vite build",
     "start": "node ./.output/server/index.mjs",
-    "dev": "concurrently --kill-others 'npm run dev-server' 'npm run storybook'",
+    "dev": "concurrently --kill-others 'npm run dev-server -- --host' 'npm run storybook'",
     "dev-server": "npm run openapi:generate && vite dev",
     "test": "vitest --run",
+    "test:gha": "npx vitest --run --coverage --reporter=verbose",
+    "test:typecheck": "tsc --noEmit",
     "test:coverage": "npm run test -- --coverage && rm -R ./html/coverage/html && mv ./html/coverage/spa ./html/coverage/html && vite preview --outDir html --open",
     "db:backup": "mkdir ./temp/db_backup; PGPASSWORD=password pg_dump --clean -h 127.0.0.1 -p 15432 -U postgres -d gym > ./temp/db_backup/\"$(date +\"%F %T\").sql\" && echo 'done'",
     "db:restore": "PGPASSWORD=password psql -h 127.0.0.1 -p 15432 -U postgres -d gym -f ./temp/db_backup/\"$(ls -Art ./temp/db_backup | tail -n 1)\" && echo 'done'",
@@ -18,7 +20,7 @@
     "db:clean": "docker-compose rm -s -v -f db && docker volume prune -f && docker-compose up -d db && sleep 10 && npm run db:migrate",
     "db:seed": "tsx ./scripts/argus/seed.ts",
     "db:wipe": "npm run db:clean && npm run db:seed",
-    "lint": "eslint . --fix -3-ignore-pattern '.output/**'",
+    "lint": "eslint . --fix --ignore-pattern '.output/**'",
     "openapi:generate": "tsx ./scripts/openapi/generateSchema.ts",
     "openapi:ts": "openapi-ts",
     "storybook": "storybook dev -c storybook  -p 6006 --no-open"

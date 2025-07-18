@@ -10,8 +10,11 @@ export default defineConfig({
         'storybook',
         '.output/**',
         '.vinxi/**',
+        '.tanstack/**',
+        '.nitro/**',
       ],
       reporter: [
+        ['text'],
         ['html-spa', {subdir: 'spa'}],
         ['html', {subdir: 'html'}],
       ],
