@@ -7,17 +7,18 @@ import {exerciseData} from './data/argusExercisesJson';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
 import {argusWorkoutCheckinValidator} from 'src/backend/model/ArgusCheckin/validators/ArgusWorkoutCheckin';
 import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
-import {existsSync, readFileSync, realpathSync, writeFileSync} from 'fs';
+import {createWriteStream, existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync} from 'fs';
 import {z} from 'zod';
 import {argusResponseValidator} from './validators/ArgusResponse';
 import {join} from 'path';
 import {ArgusCheckin, argusCheckinValidator} from './validators/ArgusCheckin';
 import {ArgusServiceConfig} from './types/ArgusServiceConfig';
+import {request} from 'https';
 
 export class ArgusService {
   protected drizzle: DrizzleService;
   protected config: ArgusServiceConfig;
-
+  protected logger = new Logger(ArgusService.name);
   constructor(drizzle: DrizzleService, config: ArgusServiceConfig) {
     this.drizzle = drizzle;
     this.config = config;
@@ -360,6 +361,54 @@ export class ArgusService {
   async importEntries(): Promise<void> {
     const path = realpathSync(join(this.config.tempFolderPath, '_final.json'));
     return this.importEntriesFromPath(path);
+  }
+  async downloadImages() {
+    const db = await this.drizzle.getDb();
+    const logger = new Logger('DownloadImages', this.logger.getInvoker());
+    const baseUrl = 'https://storage.googleapis.com/cdn.fitnessbuddy.com/static/fb_app_images/fitness_img_v5.0/';
+    const exercises = await db.query.exercises.findMany({
+    });
+    logger.info(`Found '${exercises.length}' exercises`);
+    const destinationDir = `${this.config.tempFolderPath}/images`;
+    logger.info(`Creating folder: ${destinationDir}`);
+    if (!existsSync(destinationDir)) {
+      mkdirSync(destinationDir);
+    }
+    let i = 0;
+    for (const exercise of exercises) {
+      logger.info(`Processing ${++i}/${exercises.length}:'${exercise.id}'`, exercise);
+      for (const image of exercise.images) {
+        const parts = image.split('/');
+        const filename = parts[parts.length - 1];
+        if (!filename) {
+          // never
+          throw new Error('Array math went wrong');
+        }
+        const imageUrl = `${baseUrl}${filename.replaceAll('+', '%20')}`;
+        const destination = `${destinationDir}/${filename}`;
+        logger.info(imageUrl);
+        logger.info(destination);
+        if (existsSync(destination)) {
+          this.logger.info('Already downloaded, skipping');
+          continue;
+        }
+        const code = await new Promise<number| undefined>((res) => {
+          const req = request(imageUrl, (response) => {
+            if (response.statusCode !== 200) {
+              res(response.statusCode);
+              response.resume();
+              return;
+            }
+            response.pipe(createWriteStream(destination)).on('close', () => res(response.statusCode));
+          });
+          req.end();
+        });
+
+        if (code !== 200) {
+          logger.info(`Download failed, status: ${code}`);
+        }
+      }
+    }
   }
 
   protected async importEntriesFromPath(filePath: string): Promise<void> {
