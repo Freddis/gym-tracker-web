@@ -71,6 +71,13 @@
       "when": 1748541945565,
       "tag": "0009_argus_checkins_renaming",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1752913244885,
+      "tag": "0010_images",
+      "breakpoints": true
     }
   ]
 }

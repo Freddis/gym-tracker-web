@@ -26,6 +26,7 @@
   "author": "Alex Sarychev",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.848.0",
     "@hey-api/client-axios": "^0.6.2",
     "@hey-api/client-fetch": "^0.10.0",
     "@radix-ui/react-dropdown-menu": "^2.1.15",

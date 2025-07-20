@@ -2,6 +2,7 @@ import {AuthService} from 'src/backend/services/AuthService/AuthService';
 import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
 import {serverConfig} from '../ServerConfig/config';
 import {ApiService} from '../../services/ApiService/ApiService';
+import {ImageService} from '../../services/ImageService/ImageService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -12,6 +13,11 @@ export class GlobalServiceFactory {
       const service = await this.drizzle();
       await service.end();
     }
+  }
+
+  async image() {
+    const drizzle = await this.drizzle();
+    return new ImageService(drizzle);
   }
 
   async drizzle(): Promise<DrizzleService> {

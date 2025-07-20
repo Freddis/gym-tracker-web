@@ -115,3 +115,13 @@ export const workoutExerciseSets = gymTracker.table('workout_exercise_sets', {
   index().on(table.userId),
   index().on(table.workoutExerciseId),
 ]);
+
+
+export const images = gymTracker.table('images', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  url: text().notNull().unique(),
+  userId: integer().references(() => users.id),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});
