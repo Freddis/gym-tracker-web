@@ -3,8 +3,7 @@ import {PaletteSet} from 'src/frontend/types/PaletteSet';
 import {colors} from 'src/frontend/utils/colors';
 import {palettes} from 'src/frontend/utils/palettes';
 
-
-export const generateTailwindColors = (palettes: PaletteSet, type: 'light' | 'dark'): Record<string, string> => {
+const generateTailwindColorClasses = (palettes: PaletteSet, type: 'light' | 'dark'): Record<string, string> => {
   const result: Record<string, string> = {};
   for (const [name, palette] of Object.entries(palettes)) {
     result[`${name.toLowerCase()}`] = palette[type].color;
@@ -21,10 +20,30 @@ export const generateTailwindColors = (palettes: PaletteSet, type: 'light' | 'da
   return result;
 };
 
+const getTailWindColorsFromObject = (obj: object): string[] => {
+  const result: string[] = [];
+  for (const val of Object.values(obj)) {
+    if (typeof val === 'string' && val.includes('var(--color-')) {
+      const color = val.replace('var(--color-', '').replace(')', '');
+      result.push(color);
+    }
+    if (typeof val === 'object') {
+      result.push(...getTailWindColorsFromObject(val));
+    }
+  }
+  return result;
+};
+
 export const generateTailwindColorsOnUpdate = async () => {
-  const dark = generateTailwindColors(palettes, 'dark');
-  const light = generateTailwindColors(palettes, 'light');
+  const dark = generateTailwindColorClasses(palettes, 'dark');
+  const light = generateTailwindColorClasses(palettes, 'light');
+  const twNames = getTailWindColorsFromObject({palettes, colors});
+  const inline = [
+    ...twNames.map((x) => `bg-${x}`),
+    ...twNames.map((x) => `color-${x}`),
+  ].join(',');
   const lines = [
+    `@source inline("${inline}");`,
     '@theme  inline {',
     ...Object.entries(dark).map((x) => `--color-${x[0]}: var(--color-${x[0]});`),
     // ...Object.entries(colors).map((x) => `--color-${x[0]}: var(--color-${x[0]});`),

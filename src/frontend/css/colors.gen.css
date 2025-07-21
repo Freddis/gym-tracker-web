@@ -1,3 +1,4 @@
+@source inline("bg-neutral-800,bg-neutral-900,bg-neutral-800,bg-neutral-800,bg-red-600,color-neutral-800,color-neutral-900,color-neutral-800,color-neutral-800,color-red-600");
 @theme  inline {
 --color-neutral: var(--color-neutral);
 --color-on-neutral: var(--color-on-neutral);

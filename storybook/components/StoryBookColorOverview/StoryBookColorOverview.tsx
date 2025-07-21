@@ -7,7 +7,7 @@ export const StoryBookColorOverview: FC = () => {
   const colorNames = Object.values(Color);
   return (
     <div className="table border-collapse m-auto theme-dark">
-      {colorNames.map((name) => <StoryBookColorDisplay name={name} value={colors[name]}/>)}
+      {colorNames.map((name) => <StoryBookColorDisplay key={name} name={name} value={colors[name]}/>)}
     </div>
   );
 };
