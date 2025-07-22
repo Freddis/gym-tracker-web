@@ -22,9 +22,9 @@ export const Header: FC = () => {
   const toggleTheme = () => {
     themeContext.setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark);
   };
-  const classes = 'bg-neutral-surface text-on-neutral-surface p-2 text-2xl border-b-2 border-b-accent flex justify-center w-full';
+
   return (
-    <div className={classes}>
+    <div className="bg-surface text-on-surface p-2 text-2xl border-b-2 border-b-accent flex justify-center w-full">
       <div className="min-w-5xl flex items-center m-auto">
         <Link to="/" className="flex items-center justify-center mr-20">
           <AppLogo />

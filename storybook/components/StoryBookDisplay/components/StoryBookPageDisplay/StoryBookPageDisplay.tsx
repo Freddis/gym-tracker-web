@@ -4,7 +4,7 @@ import {Header} from '../../../../../src/frontend/components/layout/Header/Heade
 
 export const StoryBookPageDisplay: FC<{story: ReactNode}> = (props) => {
   return (
-    <div className="flex flex-col bg-neutral">
+    <div className="flex flex-col palette-neutral bg-main">
       <Header/>
         <div className="grow">
           {props.story}

@@ -21,9 +21,9 @@ export function Layout() {
             <ThemeProvider>
               <AuthProvider>
                   <PopupProvider>
-                    <div className="flex min-h-screen flex-col font-extralight">
+                    <div className="flex min-h-screen flex-col font-extralight palette-neutral">
                       <Header/>
-                      <div className="grow">
+                      <div className="flex flex-col grow">
                       <Outlet />
                       </div>
                       <Footer />

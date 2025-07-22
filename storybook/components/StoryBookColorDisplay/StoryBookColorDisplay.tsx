@@ -43,7 +43,7 @@ export const StoryBookColorDisplay: FC<{name: string, value: string}> = (props) 
   const style = className ? undefined : {backgroundColor: props.value};
   const [color, setColor] = useState('error');
   return (
-    <div className="table-row bg-lightest text-on-lightest">
+    <div className="table-row palette-lightest bg-main text-on-main">
       {<div className={className} style={style}ref={ref} />}
       <div className={`w-20 h-20 table-cell border-1 border-neutral-400 ${className}`} style={{backgroundColor: color}}></div>
       <div className="w-50 table-cell border-1 border-neutral-400 align-middle p-5 font-mono text-sm">{color}</div>

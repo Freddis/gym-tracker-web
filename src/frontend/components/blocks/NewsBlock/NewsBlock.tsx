@@ -1,7 +1,7 @@
 import {FC} from 'react';
 
 export const NewsBlock: FC = () => (
-  <div className="bg-neutral-surface text-on-neutral-surface flex flex-col shadow-neutral-shadow shadow-md rounded-md">
+  <div className="bg-surface text-on-surface flex flex-col shadow-neutral-shadow shadow-md rounded-md">
     <img className="h-50 md:h-100 w-full object-cover rounded-t-md" src="/images/pages/home/news2.jpg" />
     <div className="p-5 grow flex flex-col">
       <h3 className="uppercase mb-2 font-semibold">Gained 10 pounds in 3 months</h3>

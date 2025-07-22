@@ -37,7 +37,7 @@ export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}
       {query.isSuccess && (
         <div className="mt-5 flex flex-col overflow-hidden">
           <div>{t(i18n.labels.exercises)}</div>
-          <div className="h-200 overflow-scroll mt-2 bg-neutral p-2 rounded-xs">
+          <div className="h-200 overflow-scroll mt-2 bg-main p-2 rounded-xs">
             {query.data.items.filter(searchFilter).map((item) => (
               <ExerciseRow key={item.id} item={item} onSelect={props.onSelect}/>)
             )}

@@ -6,12 +6,12 @@ import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 export const Footer: FC = () => {
   const {i18n, t} = useAppPartialTranslation((x) => x.layout.footer);
   return (
-    <div className="w-full">
-      <div className="bg-darkest text-on-darkest flex justify-center">
+    <div className="palette-darkest  w-full">
+      <div className="bg-main text-on-main flex justify-center">
         <div className=" max-w-6xl p-10 grid grid-cols-3 gap-6">
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.about.heading)}</h5>
-            <p className="color-neutral text-sm">{t(i18n.about.content)}.</p>
+            <p className="text-sm">{t(i18n.about.content)}.</p>
           </div>
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.social.heading)}</h5>
@@ -34,7 +34,7 @@ export const Footer: FC = () => {
           </div>
         </div>
       </div>
-      <div className="bg-darkest text-xs text-on-darkest p-5 text-center">{t(i18n.copyright)}</div>
+      <div className="bg-main text-xs text-on-main p-5 text-center">{t(i18n.copyright)}</div>
     </div>
   );
 };

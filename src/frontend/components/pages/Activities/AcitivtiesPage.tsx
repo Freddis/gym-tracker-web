@@ -26,9 +26,9 @@ export const ActivityPage: FC = () => {
   ];
   return (
   <PageContainer>
-    <div className="bg-neutral">
+    <div className="bg-main">
       <div className="m-auto w-5xl max-w-full flex flex-row gap-5">
-        <div className="w-60 bg-neutral-surface p-5 rounded-md">
+        <div className="w-60 bg-surface p-5 rounded-md">
           <h3 className="font-normal mb-2">Entry type:</h3>
           {types.map((x) => (
             <div className="mb-2">

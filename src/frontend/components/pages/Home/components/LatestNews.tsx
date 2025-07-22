@@ -2,11 +2,11 @@ import {FC} from 'react';
 
 export const LatestNews: FC = () => {
   return (
-    <div className=" justify-center p-20 flex bg-neutral text-on-neutral">
+    <div className=" justify-center p-20 flex bg-main text-on-main">
       <div className="max-w-5xl">
         <h2 className="text-2xl text-center uppercase mb-10">Latest Blog Posts</h2>
         <div className="grid grid-cols-3 gap-10">
-          <div className="bg-neutral-surface text-on-neutral-surface flex flex-col shadow-neutral-shadow shadow-2xl">
+          <div className="bg-surface text-on-surface flex flex-col shadow-neutral-shadow shadow-2xl">
             <img className="h-45 w-full object-cover" src="/images/pages/home/news1.jpg"/>
             <div className="p-5 grow flex flex-col">
               <h3 className="uppercase mb-2 font-semibold">How to make incredible lats?</h3>
@@ -22,7 +22,7 @@ export const LatestNews: FC = () => {
                 </div>
               </div>
           </div>
-          <div className="bg-neutral-surface text-on-neutral-surface flex flex-col shadow-neutral-shadow shadow-2xl">
+          <div className="bg-surface text-on-surface flex flex-col shadow-neutral-shadow shadow-2xl">
             <img className="h-45 w-full object-cover" src="/images/pages/home/news2.jpg"/>
             <div className="p-5 grow flex flex-col">
               <h3 className="uppercase mb-2 font-semibold">Gained 10 pounds in 3 months</h3>
@@ -39,7 +39,7 @@ export const LatestNews: FC = () => {
                 </div>
               </div>
           </div>
-          <div className="bg-neutral-surface text-on-neutral-surface flex flex-col shadow-neutral-shadow shadow-2xl">
+          <div className="bg-surface text-on-surface flex flex-col shadow-neutral-shadow shadow-2xl">
             <img className="h-45 w-full object-cover" src="/images/pages/home/news3.jpg"/>
             <div className="p-5 grow flex flex-col">
               <h3 className="uppercase mb-2 font-semibold">Kettlebells: a gamechanger!</h3>

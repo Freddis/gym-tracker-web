@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 import {AppButton} from '../../../src/frontend/components/atoms/AppButton/AppButton';
+import {Color} from '../../../src/frontend/enums/Color';
 
 const meta = {
   title: 'Components/Button',
@@ -9,9 +10,20 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  args: {children: 'Button'},
+  args: {
+    children: 'Button',
+    palette: Color.Accent,
+  },
+  argTypes: {
+    palette: {
+      type: {
+        name: 'enum',
+        value: Object.values(Color),
+      },
+    },
+  },
   decorators: [
-    (Story) => <StoryBookDisplay story={<Story/>} />,
+    (Story) => <StoryBookDisplay palette={Color.Darkest} story={<Story/>} />,
   ],
 
 } satisfies Meta<typeof AppButton>;
@@ -25,8 +37,11 @@ export const Accent: Story = {
 
 export const Neutral: Story = {
   args: {
-    palette: 'neutral',
+    palette: Color.Neutral,
   },
+  decorators: [
+    (Story) => <div className="palette-neutral"><Story/></div>,
+  ],
 };
 
 export const Large: Story = {

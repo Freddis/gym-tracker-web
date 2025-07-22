@@ -8,7 +8,7 @@ import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslatio
 export const FeaturesBlock: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.static.home.features);
   return (
-    <div className="justify-center p-20 flex bg-lightest text-on-lightest">
+    <div className="justify-center p-20 flex bg-main text-on-main">
       <div className="max-w-5xl text-center">
         <h2 className="text-2xl uppercase">{t(i18n.heading.start)}<span className="text-accent">{t(i18n.heading.end)}</span></h2>
         <div className="flex flex-row space-x-10 mt-10 text-justify">

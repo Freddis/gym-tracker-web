@@ -7,12 +7,18 @@ import {DownloadAppsBlock} from './components/DownloadAppsBlock';
 import {CoreConceptBlock} from './components/CoreConteptBlock';
 
 export const HomePage: FC = () => {
-  return [
-    <HeroBlock key={1}/>,
-    <FeaturesBlock key={2}/>,
-    <CoreConceptBlock key={8}/>,
-    <LatestNews key={3} />,
-    <PricingBlock key={4} />,
-    <DownloadAppsBlock key={5}/>,
-  ];
+  return (
+    <>
+    <HeroBlock/>
+    <div className="palette-lightest">
+    <FeaturesBlock />
+    </div>
+    <CoreConceptBlock />
+    <LatestNews />
+    <div className="palette-darkest">
+    <PricingBlock />
+    </div>
+    <DownloadAppsBlock />
+    </>
+  );
 };

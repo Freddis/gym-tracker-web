@@ -43,13 +43,13 @@ export function WorkoutListPage() {
   };
   if (response.isLoading || !response.data) {
     return (
-      <PageContainer className="bg-neutral">
+      <PageContainer className="bg-main">
         <AppSpinner/>
       </PageContainer>
     );
   }
   return (
-    <PageContainer className="bg-neutral">
+    <PageContainer className="bg-main">
       <Link to="/workouts" onClick={createWorkout}>
         <AppButton>{t(i18n.buttons.addWorkout)}</AppButton>
       </Link>

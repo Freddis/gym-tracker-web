@@ -2,7 +2,7 @@ import {FC} from 'react';
 
 export const CoreConceptBlock: FC = () => {
   return (
-    <div className="bg-neutral text-on-neutral justify-center p-20 flex">
+    <div className="bg-main text-on-main justify-center p-20 flex">
       <div className="max-w-5xl ">
       <div className="text-center mb-20">
           <h2 className="text-2xl text-center uppercase mb-5">Let's get up close and personal</h2>

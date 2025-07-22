@@ -3,7 +3,7 @@ import {ImCheckboxUnchecked, ImCheckboxChecked} from 'react-icons/im';
 
 export const PricingBlock: FC = () => {
   return (
-    <div className=" justify-center p-20 flex bg-darkest text-on-darkest">
+    <div className=" justify-center p-20 flex bg-main text-on-main">
       <div className="max-w-5xl">
         <div className="text-center mb-20">
           <h2 className="text-2xl text-center uppercase mb-5">Our prcing plan</h2>
@@ -13,7 +13,7 @@ export const PricingBlock: FC = () => {
             We only charge for things that requires active suppoort and expenses.</p>
         </div>
         <div className="grid grid-cols-2 gap-10">
-            <div className="bg-darkest-surface text-on-darkest-surface p-10">
+            <div className="bg-surface text-on-surface p-10">
               <h3 className="uppercase block text-center font-bold text-lg mb-5">Free Plan</h3>
               <div className="text-green-800 text-center text-lg mb-5 font-bold">Free</div>
               <ul>
@@ -63,7 +63,7 @@ export const PricingBlock: FC = () => {
                 </li>
               </ul>
             </div>
-            <div className="bg-darkest-surface text-on-darkest-surface p-10">
+            <div className="bg-surface text-on-surface p-10">
             <h3 className="uppercase block text-center font-bold text-lg mb-5">Pro</h3>
             <div className="text-green-800 text-center text-lg mb-5 font-bold">$30 / year</div>
               <ul>

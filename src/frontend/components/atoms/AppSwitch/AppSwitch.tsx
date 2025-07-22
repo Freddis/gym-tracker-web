@@ -2,9 +2,11 @@
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import {cn} from '../../../utils/cn';
 import {ComponentProps, createRef, FC} from 'react';
+import {Color} from '../../../enums/Color';
 
 export interface SwitchProps extends ComponentProps<typeof SwitchPrimitive.Root> {
   label?: string,
+  color?: Color
 }
 export const AppSwitch: FC<SwitchProps> = ({className, label, ...props}) => {
   const ref = createRef<HTMLButtonElement>();
