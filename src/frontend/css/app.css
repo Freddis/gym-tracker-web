@@ -7,3 +7,78 @@
 @theme  inline {
 
 }
+
+/* .palette-neutral {
+  .bg-neutral {
+    background-color: pink;
+  }
+
+  .bg-surface {
+    background-color: white;
+  }
+}
+
+.palette-accent {
+  .bg-surface {
+    background-color: pink;
+  }
+  .text-on-surface {
+    color:white;
+  }
+}
+
+.theme-dark {
+  .palette-accent {
+    .bg-surface {
+      background-color: red;
+    }
+  }
+
+  .palette-neutral {
+    .bg-cavity {
+      background-color: black;
+    }
+    .border-in-cavity {
+      border: 1px salmon solid;
+    }
+    .bg-surface {
+      background-color: #171717;
+    }
+  }
+  
+} */
+
+/* 
+.palette-neutral {
+  --surface-bg: white;
+  --neutral-bg: pink;
+}
+.palette-accent {
+  --surface-bg: pink;
+  --on-surface: white;
+}
+
+.theme-dark .palette-neutral {
+  --surface-bg: #171717;
+  --cavity-bg: black;
+  --border-in-cavity: salmon;
+}
+.theme-dark .palette-accent {
+  --surface-bg: pink;
+}
+
+.bg-surface {
+  background-color: var(--surface-bg);
+}
+.bg-neutral {
+  background-color: var(--neutral-bg);
+}
+.text-on-surface {
+  color: var(--on-surface);
+}
+.bg-cavity {
+  background-color: var(--cavity-bg);
+}
+.border-in-cavity {
+  border: 1px solid var(--border-in-cavity);
+} */

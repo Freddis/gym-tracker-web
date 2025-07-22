@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
 import {StoryBookPaletteOverview} from '../../components/StoryBookPaletteOverview/StoryBookPaletteOverview';
+import {Color} from '../../../src/frontend/enums/Color';
 
 const meta = {
   title: 'Colors/Palette',
@@ -18,10 +18,11 @@ const meta = {
     palette: {
       type: {
         name: 'enum',
-        value: Object.values(PaletteName),
+        value: Object.values(Color),
       },
     },
   },
+  render: (args) => <StoryBookPaletteOverview palette={args.palette} />,
 } satisfies Meta<typeof StoryBookPaletteOverview>;
 
 export default meta;
@@ -30,21 +31,48 @@ type Story = StoryObj<typeof meta>;
 
 export const Lightest: Story = {
   args: {
-    palette: PaletteName.Lightest,
+    palette: Color.Lightest,
   },
-  render: (args) => <StoryBookPaletteOverview palette={args.palette} />,
 };
 
 export const Neutral: Story = {
   args: {
-    palette: PaletteName.Neutral,
+    palette: Color.Neutral,
   },
-  render: (args) => <StoryBookPaletteOverview palette={args.palette} />,
 };
 
 export const Darkest: Story = {
   args: {
-    palette: PaletteName.Darkest,
+    palette: Color.Darkest,
   },
-  render: (args) => <StoryBookPaletteOverview palette={args.palette} />,
+};
+
+export const Success: Story = {
+  args: {
+    palette: Color.Success,
+  },
+};
+
+export const Info: Story = {
+  args: {
+    palette: Color.Info,
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    palette: Color.Warning,
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    palette: Color.Danger,
+  },
+};
+
+export const Accent: Story = {
+  args: {
+    palette: Color.Accent,
+  },
 };

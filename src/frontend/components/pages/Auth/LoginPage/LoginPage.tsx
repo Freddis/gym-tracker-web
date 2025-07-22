@@ -43,11 +43,11 @@ export const LoginPage: FC = () => {
     }
   };
   return (
-    <PageContainer className="justify-center bg-neutral">
+    <PageContainer className="justify-center palette-neutral">
       <div className="flex flex-col">
-        <div className=" bg-neutral-surface text-on-neutral-surface p-10 min-w-xl rounded-sm">
+        <div className="bg-normal text-on-neutral-surface p-10 min-w-xl rounded-sm">
           <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 surface bg-">
             <AppLabel>{t(i18n.form.labels.email)}:</AppLabel>
             <AppTextInput
               onChange={(e) => setEmail(e.target.value)}

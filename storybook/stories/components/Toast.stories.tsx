@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {AppToast} from '../../../src/frontend/components/atoms/AppToast/AppToast';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 
 const meta = {
@@ -10,12 +10,12 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  args: {children: 'This is a message', variant: PaletteName.Info},
+  args: {children: 'This is a message', variant: Color.Info},
   argTypes: {
     variant: {
       type: {
         name: 'enum',
-        value: Object.values(PaletteName),
+        value: [Color.Info, Color.Success, Color.Warning, Color.Danger],
       },
     },
   },
@@ -30,25 +30,25 @@ type Story = StoryObj<typeof meta>;
 
 export const Info: Story = {
   args: {
-    variant: PaletteName.Info,
+    variant: Color.Info,
     children: 'This is a harmless info message',
   },
 };
 export const Success: Story = {
   args: {
-    variant: PaletteName.Success,
+    variant: Color.Success,
     children: 'This is a happy success message',
   },
 };
 export const Warning: Story = {
   args: {
-    variant: PaletteName.Warning,
+    variant: Color.Warning,
     children: 'This is a warning that something undesirable might happen!',
   },
 };
 export const Danger: Story = {
   args: {
-    variant: PaletteName.Danger,
+    variant: Color.Danger,
     children: "You're fucked!",
   },
 };

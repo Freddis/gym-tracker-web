@@ -55,7 +55,7 @@ export class StorybookDataUtils {
             difficulty: null,
             equipmentId: 0,
             images: [
-              'http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/Barbell+Bench+Press+(Flat_Overhand+Grip)-a.jpg',
+              'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg',
             ],
             params: [],
             userId: null,

@@ -1,11 +1,11 @@
-import {FC} from 'react';
+import {createRef, FC, useEffect, useState} from 'react';
 import {oklch, formatHex, Oklch} from 'culori';
 
 export const StoryBookColorDisplay: FC<{name: string, value: string}> = (props) => {
   const name = props.name.charAt(0).toUpperCase() + props.name.slice(1);
   const getTwClass = (color: string) => {
     if (!color.includes('var(')) {
-      return '';
+      return null;
     }
     const colorName = props.value.replaceAll('var(--color-', '').replaceAll(')', '');
     return `bg-${colorName}`;
@@ -30,18 +30,24 @@ export const StoryBookColorDisplay: FC<{name: string, value: string}> = (props) 
     return '#' + value;
   };
 
-  const className = getTwClass(props.value);
-  const div = document.createElement('div');
-  div.className = className;
-  div.style.backgroundColor = props.value;
-  document.body.appendChild(div);
-  const style = getComputedStyle(div);
-  const color = cssColorToHex(style.backgroundColor);
+  const className = getTwClass(props.value) ?? undefined;
+  const ref = createRef<HTMLDivElement>();
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+    const color = cssColorToHex(getComputedStyle(ref.current).backgroundColor);
+    console.log(color, ref.current, getComputedStyle(ref.current).backgroundColor, name, className);
+    setColor(color);
+  });
+  const style = className ? undefined : {backgroundColor: props.value};
+  const [color, setColor] = useState('error');
   return (
     <div className="table-row bg-lightest text-on-lightest">
-      <div className={'w-20 h-20 table-cell border-1 border-neutral-400'} style={{backgroundColor: color}}></div>
+      {<div className={className} style={style}ref={ref} />}
+      <div className={`w-20 h-20 table-cell border-1 border-neutral-400 ${className}`} style={{backgroundColor: color}}></div>
       <div className="w-50 table-cell border-1 border-neutral-400 align-middle p-5 font-mono text-sm">{color}</div>
-      <div className="w-50 table-cell border-1 border-neutral-400 align-middle p-5">{name}</div>
+      <div className="table-cell border-1 border-neutral-400 align-middle p-5">{name}</div>
     </div>
   );
 };

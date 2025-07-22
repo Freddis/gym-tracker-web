@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 import {Header} from '../../../src/frontend/components/layout/Header/Header';
 
@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
 } satisfies Meta<typeof Header>;
 
 export default meta;
@@ -29,5 +29,5 @@ export const Primary: Story = {
 };
 
 export const WithLoggedInUser: Story = {
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column user/>],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column user/>],
 };

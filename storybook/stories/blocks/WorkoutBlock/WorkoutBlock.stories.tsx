@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../../src/frontend/enums/Color';
 import {WorkoutBlock} from '../../../../src/frontend/components/pages/Workouts/WorkoutListPage/WorkoutBlock/WorkoutBlock';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils';
@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} className="max-w-5xl" column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} className="max-w-5xl" column />],
 } satisfies Meta<typeof WorkoutBlock>;
 
 export default meta;

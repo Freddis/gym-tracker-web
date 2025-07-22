@@ -1,11 +1,11 @@
 import {FC} from 'react';
-import {PaletteName} from '../../../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../../../src/frontend/enums/Color';
 import {StoryBookDisplayProps} from '../../types/StoryBookDisplayProps';
 import {PopupContentWrapper} from '../../../../../src/frontend/components/atoms/Popup/components/PopupContentWrapper';
 
 
 export const StoryBookPopupDisplay: FC<StoryBookDisplayProps> = (props) => {
-  const palette = props.palette ?? PaletteName.Neutral;
+  const palette = props.palette ?? Color.Neutral;
   const baseClasses = `bg-${palette} text-on-${palette} flex items-center justify-center`;
   return (
      <div className={baseClasses}>

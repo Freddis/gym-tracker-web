@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {FaFacebook, FaGoogle, FaVk} from 'react-icons/fa';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 
 const meta = {
@@ -15,7 +15,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Lightest} />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Lightest} />],
 } satisfies Meta<typeof FaFacebook>;
 
 export default meta;

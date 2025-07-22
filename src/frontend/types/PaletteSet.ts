@@ -1,9 +1,9 @@
-import {PaletteName} from '../enums/PaletteName';
+import {Color} from '../enums/Color';
 import {Palette} from './Palette';
 
 export type PaletteSet = {
-  [key in PaletteName]: {
-    dark: Palette,
-    light: Palette,
+  [key in Color]: {
+    dark: Palette<key>,
+    light: Palette<key>,
   }
 }

@@ -1,107 +1,72 @@
-import {PaletteName} from '../enums/PaletteName';
+import {Color} from '../enums/Color';
 import {PaletteSet} from '../types/PaletteSet';
+import {neutralPalette} from './palettes/neutralPalette';
+import {neutralDarkPalette} from './palettes/neutralDarkPalette';
+import {dangerPalette} from './palettes/dangerPalette';
+import {warningPalette} from './palettes/warningPalette';
+import {infoPalette} from './palettes/infoPalette';
+import {successPalette} from './palettes/successPalette';
+import {accentPalette} from './palettes/accentPalette';
+import {lightestDarkPalette} from './palettes/lightestDarkPalette';
+import {lightestPalette} from './palettes/lightestPalette';
+import {darkestPalette} from './palettes/darkestPalette';
+import {darkestDarkPalette} from './palettes/darkestDarkPallete';
 
 export const palettes: PaletteSet = {
-  [PaletteName.Neutral]: {
+  [Color.Neutral]: {
     dark: {
-      color: 'var(--color-neutral-800)',
-      text: 'white',
-      surface: {
-        color: 'var(--color-neutral-900)',
-        text: 'white',
-      },
-      cavity: {
-        color: 'black',
-        text: 'white',
-      },
+      ...neutralDarkPalette,
+      surface: lightestDarkPalette,
+      cavity: neutralDarkPalette,
     },
     light: {
-      color: '#f8f8f8',
-      text: '#666',
-      surface: {
-        color: 'white',
-        text: '#333',
-      },
-      cavity: {
-        color: '#eee',
-        text: '#666',
-      },
+      ...neutralPalette,
+      surface: lightestPalette,
+      cavity: neutralPalette,
     },
   },
-  [PaletteName.Lightest]: {
+  [Color.Lightest]: {
     dark: {
-      color: 'var(--color-neutral-800)',
-      text: 'white',
-      surface: {
-        color: 'var(--color-neutral-800)',
-        text: 'white',
-      },
+      ...lightestDarkPalette,
+      surface: neutralDarkPalette,
+      cavity: lightestDarkPalette,
     },
     light: {
-      color: 'white',
-      text: '#333',
-      surface: {
-        color: 'white',
-        text: '#333',
-      },
+      ...lightestPalette,
+      surface: neutralPalette,
+      cavity: lightestPalette,
     },
   },
-  [PaletteName.Darkest]: {
+  [Color.Darkest]: {
     dark: {
-      color: 'black',
-      text: 'white',
-      surface: {
-        color: '#333',
-        text: 'white',
-      },
+      ...darkestDarkPalette,
+      surface: neutralDarkPalette,
+      cavity: darkestDarkPalette,
     },
     light: {
-      color: 'black',
-      text: 'white',
-      surface: {
-        color: 'white',
-        text: 'black',
-      },
+      ...darkestPalette,
+      surface: lightestPalette,
+      cavity: darkestPalette,
     },
   },
-  [PaletteName.Danger]: {
-    dark: {
-      color: '#f9d4d4',
-      text: 'rgb(98.85, 24.15, 24.15)',
-    },
-    light: {
-      color: '#f9d4d4',
-      text: 'rgb(98.85, 24.15, 24.15)',
-    },
+  [Color.Danger]: {
+    dark: dangerPalette,
+    light: dangerPalette,
   },
-  [PaletteName.Warning]: {
-    dark: {
-      color: '#feecc5',
-      text: 'rgb(112.35, 70.05, 10.65)',
-    },
-    light: {
-      color: '#feecc5',
-      text: 'rgb(112.35, 70.05, 10.65)',
-    },
+  [Color.Warning]: {
+    dark: warningPalette,
+    light: warningPalette,
   },
-  [PaletteName.Info]: {
-    dark: {
-      color: '#c0e6ff',
-      text: 'rgb(28.75, 75.55, 114.25)',
-    },
-    light: {
-      color: '#c0e6ff',
-      text: 'rgb(28.75, 75.55, 114.25)',
-    },
+  [Color.Info]: {
+    dark: infoPalette,
+    light: infoPalette,
   },
-  [PaletteName.Success]: {
-    dark: {
-      color: '#cbedd6',
-      text: 'rgb(18.6, 83.4, 35.7)',
-    },
-    light: {
-      color: '#cbedd6',
-      text: 'rgb(18.6, 83.4, 35.7)',
-    },
+  [Color.Success]: {
+    dark: successPalette,
+    light: successPalette,
+  },
+  [Color.Accent]: {
+    dark: accentPalette,
+    light: accentPalette,
   },
 };

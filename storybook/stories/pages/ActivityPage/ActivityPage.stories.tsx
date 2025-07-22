@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {ActivityPage} from '../../../../src/frontend/components/pages/Activities/AcitivtiesPage';
-import {PaletteName} from '../../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 
@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column type={StoryBookDisplayType.Page} user/>],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column type={StoryBookDisplayType.Page} user/>],
 } satisfies Meta<typeof ActivityPage>;
 
 export default meta;

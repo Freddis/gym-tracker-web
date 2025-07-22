@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 import {Footer} from '../../../src/frontend/components/layout/Footer/Footer';
 
@@ -18,7 +18,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
 } satisfies Meta<typeof Footer>;
 
 export default meta;

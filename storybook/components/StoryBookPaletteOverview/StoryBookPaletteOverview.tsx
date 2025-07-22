@@ -1,9 +1,9 @@
 import {FC} from 'react';
-import {PaletteName} from '../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../src/frontend/enums/Color';
 import {palettes} from '../../../src/frontend/utils/palettes';
 import {StoryBookPaletteDisplay} from '../StoryBookPaletteDisplay/StoryBookPaletteDisplay';
 
-export const StoryBookPaletteOverview: FC<{palette: PaletteName}> = (props) => {
+export const StoryBookPaletteOverview: FC<{palette: Color}> = (props) => {
   const palette = palettes[props.palette];
   return (
     <div className="flex flex-row h-full w-full justify-center">

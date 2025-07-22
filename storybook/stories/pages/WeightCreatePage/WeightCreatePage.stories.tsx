@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {PaletteName} from '../../../../src/frontend/enums/PaletteName';
+import {Color} from '../../../../src/frontend/enums/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {WeightCreatePage} from '../../../../src/frontend/components/pages/Weight/WeightCreatePage/WeightCreatePage';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={PaletteName.Neutral} column type={StoryBookDisplayType.Page}/>],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column type={StoryBookDisplayType.Page}/>],
 } satisfies Meta<typeof WeightCreatePage>;
 
 export default meta;

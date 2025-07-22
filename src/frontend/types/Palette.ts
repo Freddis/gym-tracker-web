@@ -1,8 +1,10 @@
 import {CSSProperties} from 'react';
+import {Color} from '../enums/Color';
 
-export interface Palette {
+export interface Palette<T extends Color = Color> {
+  name: T,
   color: Exclude<CSSProperties['color'], undefined>,
   text: Exclude<CSSProperties['color'], undefined>,
-  surface?: Palette
-  cavity?: Palette
+  surface?: Omit<Palette, 'name'>
+  cavity?: Omit<Palette, 'name'>
 }
