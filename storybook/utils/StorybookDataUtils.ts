@@ -1,5 +1,5 @@
 import {AuthUser} from '../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-import {Workout} from '../../src/frontend/openapi-client';
+import {Exercise, Workout} from '../../src/frontend/openapi-client';
 
 export class StorybookDataUtils {
   static getUser(): AuthUser {
@@ -11,6 +11,38 @@ export class StorybookDataUtils {
       jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiMjAyNS0wNS0yOFQxMzoyOToyMy44NDlaIiwiaWQiOjEsIm5hbWUiOiJBbGV4IFNhcnljaGV2IiwiZW1haWwiOiJmcmVkZGlzMzM2QGdtYWlsLmNvbSIsImlhdCI6MTc0ODQzODk2MywiZXhwIjoxNzU3MDc4OTYzfQ._9Ka2GlV9GQFRI7bdXZ8W_iedK2g76ix_W4YG7uCGDk',
     };
     return user;
+  }
+
+  static getImage(): string {
+    return 'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg';
+  }
+
+  static getExercise(): Exercise {
+    const exercise: Exercise = {
+      id: 10,
+      name: 'Barbell Bench Press (Flat, Overhand Grip)',
+      description: `<1>Lie back on the decline bench. Hold the barbell with overhand Grip.
+       Distance between your hands is slighter wider than shoulder width. Hold the barbell with arms fully extended. 
+       The barbell is directly above the center of your chest.
+      <2>Lower the barbell towards your lower chest as you keep your elbows close to your body. 
+      The barbell should slightly Touch your chest at the end of the movement. 
+      Refrain from bouncing the barbell off your chest. Hold for a brief moment. 
+      Return to starting position. Keep your entire back on the bench at all times. Refrain from any leg movements.`.replaceAll('\n', ''),
+      difficulty: null,
+      equipmentId: 0,
+      images: [
+        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg',
+        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-b.jpg',
+      ],
+      params: [],
+      userId: null,
+      copiedFromId: null,
+      parentExerciseId: null,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    };
+    return exercise;
   }
 
   static getEmptyWorkout(): Workout {
@@ -48,23 +80,7 @@ export class StorybookDataUtils {
           exerciseId: 0,
           createdAt: new Date(),
           updatedAt: null,
-          exercise: {
-            id: 10,
-            name: 'Barbell Bench Press (Flat, Overhand Grip)',
-            description: null,
-            difficulty: null,
-            equipmentId: 0,
-            images: [
-              'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg',
-            ],
-            params: [],
-            userId: null,
-            copiedFromId: null,
-            parentExerciseId: null,
-            createdAt: new Date(),
-            updatedAt: null,
-            deletedAt: null,
-          },
+          exercise: this.getExercise(),
           sets: [
             {
               id: 0,

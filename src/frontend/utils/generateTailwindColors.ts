@@ -22,7 +22,9 @@ const getPaletteVariables = (color: Color, mode: 'dark'|'light') => {
   const lines: string[] = [
     `.theme-${mode} .palette-${color} {`,
   ];
+
   lines.push(...[
+    ...Object.values(palettes).map((x) => `--color-${x[mode].name}: ${x[mode].color};`),
     `--color-main: ${palette.color};`,
     `--color-on-main: ${palette.text};`,
   ]);
@@ -67,6 +69,7 @@ export const generateTailwindColorsOnUpdate = async () => {
   const fileLines = [
     ...alwaysPresentClasses,
     '@theme  inline {',
+    ...Object.values(palettes).map((x) => `--color-${x.dark.name}: var(--color-${x.dark.name});`),
     `--color-accent: ${palettes.accent.light.color};`,
     '--color-main: var(--color-main);',
     '--color-on-main: var(--color-on-main);',

@@ -18,7 +18,7 @@ TQueryKey extends QueryKey = readonly unknown[]
   if (options?.queryKey) {
     opts.queryKey = options.queryKey;
   }
-
+  opts.retry = 0;
   const result = useQuery(opts);
   return result;
 }

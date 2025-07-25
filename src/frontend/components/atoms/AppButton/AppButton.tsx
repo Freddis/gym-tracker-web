@@ -12,7 +12,12 @@ export const AppButton: FC<AppButtonProps> = (props) => {
     md: ['px-2', 'py-1', 'font-normal'],
     lg: ['px-3', 'py-2', 'uppercase'],
   };
-  const classes = [`palette-${color}`, 'bg-main', 'text-on-main', ...sizes[variant]];
+  const classes = [
+    `palette-${color}`,
+    'bg-main',
+    'text-on-main',
+    ...sizes[variant],
+  ];
   const className = twMerge('px-2 py-1 font-normal  rounded-sm cursor-pointer ', classes, props.className);
   return (
     <button {...props} className={className}>{props.children}</button>

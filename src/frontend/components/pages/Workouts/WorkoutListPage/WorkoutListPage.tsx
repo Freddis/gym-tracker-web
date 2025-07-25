@@ -53,7 +53,7 @@ export function WorkoutListPage() {
       <Link to="/workouts" onClick={createWorkout}>
         <AppButton>{t(i18n.buttons.addWorkout)}</AppButton>
       </Link>
-      <div className="mt-5">
+      <div className="mt-5 flex flex-col gap-5">
         {response.data && (
           <>
             <div className="flex justify-center mb-3">

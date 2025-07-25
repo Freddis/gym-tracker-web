@@ -47,7 +47,7 @@ export const AppLogo: FC<{withText?: boolean}> = (props) => {
           470 1761 576 2735 40 370 89 1120 73 1120 -3 0 -23 -21 -45 -47z"/>
         </g>
       </svg>
-      {withText && <span className=" uppercase font-bold text-xl -ml-2">Discipline</span>}
+      {withText && <span className=" uppercase font-bold text-xl -ml-2 text-on-main">Discipline</span>}
     </div>
   );
 };

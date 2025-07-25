@@ -22,7 +22,7 @@ export const StoryBookPaletteDisplay: FC<{palette: Palette}> = (props) => {
           </>
         )}
       </div>
-      <div className={`palette-${props.palette.name}`}>
+      <div className={`palette-${props.palette.name} font-extralight`}>
         <StoryBookPaletteSampleBlock/>
       </div>
     </div>
