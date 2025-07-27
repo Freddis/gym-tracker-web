@@ -3,6 +3,7 @@
 import type {
   GetExercisesResponse,
   PutExercisesResponse,
+  GetExercisesBuiltInResponse,
   GetExercisesByIdResponse,
   GetWorkoutsResponse,
   PutWorkoutsResponse,
@@ -22,11 +23,19 @@ const exerciseSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const nestedExerciseSchemaResponseTransformer = (data: any) => {
+  data = exerciseSchemaResponseTransformer(data);
+  data.variations = data.variations.map((item: any) => {
+    return exerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
 export const getExercisesResponseTransformer = async (
   data: any,
 ): Promise<GetExercisesResponse> => {
   data.items = data.items.map((item: any) => {
-    return exerciseSchemaResponseTransformer(item);
+    return nestedExerciseSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -36,6 +45,15 @@ export const putExercisesResponseTransformer = async (
 ): Promise<PutExercisesResponse> => {
   data.items = data.items.map((item: any) => {
     return exerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getExercisesBuiltInResponseTransformer = async (
+  data: any,
+): Promise<GetExercisesBuiltInResponse> => {
+  data.items = data.items.map((item: any) => {
+    return nestedExerciseSchemaResponseTransformer(item);
   });
   return data;
 };

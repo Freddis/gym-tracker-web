@@ -1,9 +1,9 @@
 import {and, eq, isNull, like} from 'drizzle-orm';
 import {User} from 'src/backend/model/User/User';
-import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
+import {AppDb, DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
 import {NewModel} from 'src/common/types/NewModel';
 import {Logger} from 'src/common/utils/Logger/Logger';
-import {exerciseData} from './data/argusExercisesJson';
+import {Exercise as ArgusExercise, exerciseData} from './data/argusExercisesJson';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';
 import {argusWorkoutCheckinValidator} from 'src/backend/model/ArgusCheckin/validators/ArgusWorkoutCheckin';
 import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
@@ -14,6 +14,8 @@ import {join} from 'path';
 import {ArgusCheckin, argusCheckinValidator} from './validators/ArgusCheckin';
 import {ArgusServiceConfig} from './types/ArgusServiceConfig';
 import {request} from 'https';
+import {Muscle} from '../../../common/enums/Muscle';
+import {Equipment} from '../../../common/enums/Equipment';
 
 export class ArgusService {
   protected drizzle: DrizzleService;
@@ -72,6 +74,71 @@ export class ArgusService {
     logger.info('Done');
   }
 
+  async createMusclesAndEquipmentForExercises() {
+    const logger = new Logger('Create muscles for exercises');
+    const db = await this.drizzle.getDb();
+    await db.delete(db._.fullSchema.muscles);
+    let i = 0;
+    for (const exercise of exerciseData.exercises) {
+      logger.info(`Processing exercise ${++i}/${exerciseData.exercises.length}`);
+      const nameParts = exercise.name.split('(');
+      if (nameParts[0] === undefined) {
+        throw new Error('Splited string incorrectly');
+      }
+      const baseName = nameParts[0].trim().replaceAll('_', ' ').trim();
+      const extension = nameParts[1] ? ' (' + nameParts[1].replaceAll('_', ', ') : '';
+      const name = baseName + extension;
+      const existing = await db.query.exercises.findMany({
+        where: (t, op) => op.and(
+          op.eq(t.name, name),
+          op.isNull(t.userId),
+        ),
+      });
+      if (existing.length === 0) {
+        throw new Error(`Exercise with name '${name}' not found in DB`);
+      }
+      for (const row of existing) {
+        await this.attachMusclesAndEquipmentToExercise(db, row, exercise);
+      }
+    }
+  }
+  protected async attachMusclesAndEquipmentToExercise(db: AppDb, row: Exercise, exercise: ArgusExercise) {
+    const validatedMuscle = z.nativeEnum(Muscle).safeParse(exercise.primaryMuscle);
+    if (validatedMuscle.success) {
+      await db.insert(db._.fullSchema.muscles).values({
+        exerciseId: row.id,
+        muscle: validatedMuscle.data,
+        createdAt: new Date(),
+        isPrimary: true,
+      });
+    }
+    for (const muscle of exercise.otherMuscles) {
+      const validatedMuscle = z.nativeEnum(Muscle).safeParse(muscle);
+      if (validatedMuscle.success) {
+        await db.insert(db._.fullSchema.muscles).values({
+          exerciseId: row.id,
+          muscle: validatedMuscle.data,
+          createdAt: new Date(),
+          isPrimary: false,
+        });
+      }
+    }
+
+    for (const equipment of exercise.equipmentCategories) {
+      const vlaidatedEquipment = z.nativeEnum(Equipment).safeParse(equipment);
+      if (!vlaidatedEquipment.success) {
+        continue;
+      }
+      await db.update(db._.fullSchema.exercises).set({
+        equipment: vlaidatedEquipment.data,
+      }).where(
+        eq(db._.fullSchema.exercises.id, row.id)
+      );
+    }
+
+  }
+
+
   async createExerciseLibrary() {
     const logger = new Logger('CreateExerciseLibrary');
     logger.info('Starting argus static data processing');
@@ -111,6 +178,7 @@ export class ArgusService {
         copiedFromId: null,
         parentExerciseId: null,
         deletedAt: null,
+        equipment: null,
       };
       exercises.push(row);
       const parent = map.get(baseName);

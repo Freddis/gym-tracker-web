@@ -1,6 +1,15 @@
-import {pgSchema, integer, varchar, timestamp, json, text, real, index} from 'drizzle-orm/pg-core';
+import {pgSchema, integer, varchar, timestamp, json, text, real, index, pgEnum, boolean} from 'drizzle-orm/pg-core';
+import {Muscle} from '../../../common/enums/Muscle';
+import {array, string} from 'zod';
+import {Equipment} from '../../../common/enums/Equipment';
 
 export const gymTracker = pgSchema('gym_tracker');
+
+const muscleValues = array(string()).nonempty().parse(Object.values(Muscle));
+export const muscleEnum = pgEnum('Muscle', muscleValues);
+
+const equipmentValues = array(string()).nonempty().parse(Object.values(Equipment));
+export const equipmentEnum = pgEnum('Equipment', equipmentValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -18,6 +27,7 @@ export const exercises = gymTracker.table('exercises', {
   description: text(),
   difficulty: integer(),
   equipmentId: integer().notNull(),
+  equipment: equipmentEnum(),
   images: varchar().array().notNull(),
   params: integer().array().notNull(),
   userId: integer(),
@@ -30,8 +40,17 @@ export const exercises = gymTracker.table('exercises', {
 (table) => [
   index().on(table.userId),
   index().on(table.deletedAt),
-]
-);
+]);
+
+export const muscles = gymTracker.table('exercise_muscles', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  muscle: muscleEnum().notNull().$type<Muscle>(),
+  exerciseId: integer().notNull().references(() => exercises.id),
+  isPrimary: boolean().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});
 
 export const users = gymTracker.table('users', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

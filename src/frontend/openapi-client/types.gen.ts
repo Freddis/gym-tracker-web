@@ -6,6 +6,46 @@ export type Exercise = {
   description: string | null;
   difficulty: number | null;
   equipmentId: number;
+  equipment:
+    | "rowing"
+    | "swimming"
+    | "plate loaded"
+    | "foam roller"
+    | "pullup bar"
+    | "stair climber"
+    | "selectorized"
+    | "dip bar"
+    | "preacher"
+    | "hyperextension"
+    | "sandbag"
+    | "elliptical"
+    | "chair"
+    | "cable"
+    | "captain's chair"
+    | "towel"
+    | "water bottle"
+    | "stability ball"
+    | "table"
+    | "smith"
+    | "kettlebell"
+    | "cycling"
+    | "step aerobics"
+    | "plate"
+    | "platform"
+    | "medicine ball"
+    | "running"
+    | "barbell"
+    | "backpack"
+    | "ez curl bar"
+    | "walking"
+    | "bench"
+    | "bodyweight"
+    | "resistance band"
+    | "dumbbell"
+    | "jump rope"
+    | "treadmill"
+    | "bosu ball"
+    | null;
   images: Array<string>;
   params: Array<number>;
   userId: number | null;
@@ -16,12 +56,167 @@ export type Exercise = {
   deletedAt: Date | null;
 };
 
+export type NestedExercise = Exercise & {
+  muscles: {
+    primary: Array<
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors"
+    >;
+    secondary: Array<
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors"
+    >;
+  };
+  variations: Array<
+    Exercise & {
+      muscles: {
+        primary: Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >;
+        secondary: Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >;
+      };
+    }
+  >;
+};
+
 export type ExerciseUpsertDto = {
   id: number | null;
   name: string;
   description: string | null;
   difficulty: number | null;
   equipmentId: number;
+  equipment:
+    | "rowing"
+    | "swimming"
+    | "plate loaded"
+    | "foam roller"
+    | "pullup bar"
+    | "stair climber"
+    | "selectorized"
+    | "dip bar"
+    | "preacher"
+    | "hyperextension"
+    | "sandbag"
+    | "elliptical"
+    | "chair"
+    | "cable"
+    | "captain's chair"
+    | "towel"
+    | "water bottle"
+    | "stability ball"
+    | "table"
+    | "smith"
+    | "kettlebell"
+    | "cycling"
+    | "step aerobics"
+    | "plate"
+    | "platform"
+    | "medicine ball"
+    | "running"
+    | "barbell"
+    | "backpack"
+    | "ez curl bar"
+    | "walking"
+    | "bench"
+    | "bodyweight"
+    | "resistance band"
+    | "dumbbell"
+    | "jump rope"
+    | "treadmill"
+    | "bosu ball"
+    | null;
   images: Array<string>;
   params: Array<number>;
   copiedFromId: number | null;
@@ -129,6 +324,39 @@ export type Weight = {
   updatedAt: Date | null;
   deletedAt: Date | null;
 };
+
+export type ArgusCheckinType =
+  | "steps"
+  | "weather"
+  | "calories"
+  | "food"
+  | "activity"
+  | "weight"
+  | "consumedcalories"
+  | "drink"
+  | "heartrate"
+  | "status"
+  | "bodymetrics"
+  | "workout_log"
+  | "sleepreport"
+  | "fitnesstest";
+
+export const ArgusCheckinType = {
+  STEPS: "steps",
+  WEATHER: "weather",
+  CALORIES: "calories",
+  FOOD: "food",
+  ACTIVITY: "activity",
+  WEIGHT: "weight",
+  CONSUMEDCALORIES: "consumedcalories",
+  DRINK: "drink",
+  HEARTRATE: "heartrate",
+  STATUS: "status",
+  BODYMETRICS: "bodymetrics",
+  WORKOUT_LOG: "workout_log",
+  SLEEPREPORT: "sleepreport",
+  FITNESSTEST: "fitnesstest",
+} as const;
 
 export type PostAuthRegisterData = {
   body?: {
@@ -335,6 +563,7 @@ export type GetExercisesData = {
   body?: never;
   path?: never;
   query?: {
+    filter?: string;
     updatedAfter?: Date;
   };
   url: "/exercises";
@@ -433,7 +662,7 @@ export type GetExercisesResponses = {
    * Good Response
    */
   200: {
-    items: Array<Exercise>;
+    items: Array<NestedExercise>;
   };
 };
 
@@ -657,6 +886,153 @@ export type PutExercisesResponses = {
 
 export type PutExercisesResponse =
   PutExercisesResponses[keyof PutExercisesResponses];
+
+export type GetExercisesBuiltInData = {
+  body?: never;
+  path?: never;
+  query?: {
+    filter?: string;
+    muscle?:
+      | Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors";
+  };
+  url: "/exercises/built-in";
+};
+
+export type GetExercisesBuiltInErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unknown Error
+   */
+  500: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "UnknownError";
+    };
+  };
+};
+
+export type GetExercisesBuiltInError =
+  GetExercisesBuiltInErrors[keyof GetExercisesBuiltInErrors];
+
+export type GetExercisesBuiltInResponses = {
+  /**
+   * Good Response
+   */
+  200: {
+    items: Array<NestedExercise>;
+  };
+};
+
+export type GetExercisesBuiltInResponse =
+  GetExercisesBuiltInResponses[keyof GetExercisesBuiltInResponses];
 
 export type DeleteExercisesByIdData = {
   body?: unknown;
@@ -2218,22 +2594,7 @@ export type GetArgusCheckinTypesResponses = {
    * Good Response
    */
   200: {
-    items: Array<
-      | "steps"
-      | "weather"
-      | "calories"
-      | "food"
-      | "activity"
-      | "weight"
-      | "consumedcalories"
-      | "drink"
-      | "heartrate"
-      | "status"
-      | "bodymetrics"
-      | "workout_log"
-      | "sleepreport"
-      | "fitnesstest"
-    >;
+    items: Array<ArgusCheckinType>;
   };
 };
 

@@ -7,6 +7,7 @@ import {
   getExercises,
   postExercises,
   putExercises,
+  getExercisesBuiltIn,
   deleteExercisesById,
   getExercisesById,
   patchExercisesById,
@@ -40,6 +41,7 @@ import type {
   PutExercisesData,
   PutExercisesError,
   PutExercisesResponse,
+  GetExercisesBuiltInData,
   DeleteExercisesByIdData,
   DeleteExercisesByIdError,
   DeleteExercisesByIdResponse,
@@ -301,6 +303,30 @@ export const putExercisesMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getExercisesBuiltInQueryKey = (
+  options?: Options<GetExercisesBuiltInData>,
+) => createQueryKey("getExercisesBuiltIn", options);
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesBuiltInOptions = (
+  options?: Options<GetExercisesBuiltInData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getExercisesBuiltIn({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getExercisesBuiltInQueryKey(options),
+  });
 };
 
 /**

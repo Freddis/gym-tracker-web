@@ -7,18 +7,21 @@ export default defineConfig({
     coverage: {
       reportsDirectory: 'html/coverage',
       exclude: [
+        'html/**',
         'storybook',
         '.output/**',
         '.vinxi/**',
         '.tanstack/**',
         '.nitro/**',
+        'eslint.config.mjs',
+        'src/frontend/**',
       ],
       reporter: [
-        ['text'],
         ['html-spa', {subdir: 'spa'}],
         ['html', {subdir: 'html'}],
+        ['text'],
       ],
-      provider: 'v8',
+      provider: 'istanbul',
     },
   },
 });

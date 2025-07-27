@@ -31,24 +31,11 @@ export const Header: FC = () => {
         </Link>
         <div className="space-x-5 flex items-center grow gap-3">
           <HeaderLink to="/">{t(i18n.menu.home)}</HeaderLink>
-          <Conditional condition={!!auth.user}>
-            <HeaderLink to="/argus">{t(i18n.menu.feed)}</HeaderLink>
-          </Conditional>
+          <HeaderLink to="/argus">{t(i18n.menu.feed)}</HeaderLink>
           <Conditional condition={!!auth.user}>
             <HeaderLink to="/workouts">{t(i18n.menu.activities)}</HeaderLink>
           </Conditional>
-          <Conditional condition={!!auth.user}>
-            <HeaderLink to="/exercises">{t(i18n.menu.calories)}</HeaderLink>
-          </Conditional>
-          <Conditional condition={!auth.user}>
-            <HeaderLink to="/auth/login">{t(i18n.menu.feed)}</HeaderLink>
-          </Conditional>
-          <Conditional condition={!auth.user}>
-            <HeaderLink to="/auth/login">{t(i18n.menu.product)}</HeaderLink>
-          </Conditional>
-          <Conditional condition={!auth.user}>
-            <HeaderLink to="/auth/login">{t(i18n.menu.articles)}</HeaderLink>
-          </Conditional>
+          <HeaderLink to="/exercises">{t(i18n.menu.exerciseLibrary)}</HeaderLink>
           <Conditional condition={!auth.user}>
             <HeaderLink to="/auth/login">{t(i18n.menu.signIn)}</HeaderLink>
           </Conditional>

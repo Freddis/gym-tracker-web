@@ -17,6 +17,9 @@ import type {
   PutExercisesData,
   PutExercisesResponses,
   PutExercisesErrors,
+  GetExercisesBuiltInData,
+  GetExercisesBuiltInResponses,
+  GetExercisesBuiltInErrors,
   DeleteExercisesByIdData,
   DeleteExercisesByIdResponses,
   DeleteExercisesByIdErrors,
@@ -58,6 +61,7 @@ import { client as _heyApiClient } from "./client.gen";
 import {
   getExercisesResponseTransformer,
   putExercisesResponseTransformer,
+  getExercisesBuiltInResponseTransformer,
   getExercisesByIdResponseTransformer,
   getWorkoutsResponseTransformer,
   putWorkoutsResponseTransformer,
@@ -201,6 +205,24 @@ export const putExercises = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesBuiltIn = <ThrowOnError extends boolean = false>(
+  options?: Options<GetExercisesBuiltInData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetExercisesBuiltInResponses,
+    GetExercisesBuiltInErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getExercisesBuiltInResponseTransformer,
+    url: "/exercises/built-in",
+    ...options,
   });
 };
 

@@ -17,7 +17,8 @@ export const createExercise = openApi.factory.createRoute({
     }),
   },
   handler: async (ctx) => {
-    await ctx.services.models.exercise.create(ctx.viewer.id, {
+    await ctx.services.models.exercise.create({
+      userId: ctx.viewer.id,
       name: ctx.params.body.name,
     });
     return {success: true};

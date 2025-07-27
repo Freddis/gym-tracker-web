@@ -1,20 +1,67 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useOpenApiQuery} from 'src/frontend/hooks/useOpenApiQuery';
-import {getExercisesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
-import {useState} from 'react';
+import {getExercisesBuiltInOptions, getExercisesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
+import {FC, useContext, useRef} from 'react';
 import {ExerciseBlock} from './ExerciseBlock';
-import {Exercise} from 'src/frontend/openapi-client';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
-import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
+import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
+import {Conditional} from '../../../layout/Header/Header';
+import {GetExercisesBuiltInData} from '../../../../openapi-client';
+import {useVirtualizer} from '@tanstack/react-virtual';
+import {AppSearchInput} from '../../../atoms/AppSearchInput/AppSearchInput';
+import {Muscle} from '../../../../../common/enums/Muscle';
+import {getRouteApi} from '@tanstack/react-router';
+import {AppToast} from '../../../atoms/AppToast/AppToast';
+import {Color} from '../../../../enums/Color';
 
-export function ExerciseLibraryPage() {
-  const response = useOpenApiQuery(getExercisesOptions, {});
-  const [searchName, setSearchName] = useState<string|null>(null);
-  console.log(response);
+const routeApi = getRouteApi('/exercises/');
+
+export const ExerciseLibraryPage: FC = () => {
+  const auth = useContext(AuthContext);
+  const searchParams = routeApi.useSearch();
+  const navigate = routeApi.useNavigate();
+  const parentRef = useRef(null);
+  const getResponse = () => {
+    const query: GetExercisesBuiltInData['query'] = {
+      filter: searchParams.filter,
+      muscle: searchParams.muscles,
+    };
+    if (auth.user) {
+      return useOpenApiQuery(getExercisesOptions, {query, queryKey: [searchParams]});
+    }
+    return useOpenApiQuery(getExercisesBuiltInOptions, {query, queryKey: [searchParams]});
+  };
+  const response = getResponse();
+  const rowVirtualizer = useVirtualizer({
+    count: response.data?.items.length ?? 0,
+    getScrollElement: () => parentRef.current, //typeof window !== 'undefined' ? window : null,
+    estimateSize: () => 144,
+    overscan: 10,
+  });
+  const filterByMuscle = (muscle: Muscle, checked: boolean) => {
+    const existing = searchParams.muscles?.filter((x) => x !== muscle) ?? [];
+    if (checked) {
+      existing.push(muscle);
+    }
+    const muscles = existing.length > 0 ? existing : undefined;
+    console.log(muscles);
+    navigate({
+      search: {
+        ...searchParams,
+        muscles,
+      },
+    });
+  };
+  const filterByName = (filter: string | null) => {
+    navigate({search: {
+      ...searchParams,
+      filter: filter ?? undefined,
+    }});
+  };
   if (response.isError) {
     return (
       <PageContainer>
@@ -22,96 +69,55 @@ export function ExerciseLibraryPage() {
       </PageContainer>
     );
   }
-  if (response.isLoading || !response.data) {
-    return (
-      <PageContainer>
-        <AppSpinner/>
-      </PageContainer>
-    );
-  }
-  const setSearchValue = (value: string) => {
-    const trimmed = value.trim();
-    if (trimmed.length < 3) {
-      setSearchName(null);
-      return;
-    }
-    setSearchName(value.trim());
-  };
-
-  const map = new Map<number, Exercise[]>();
-  const primaryExercises: Exercise[] = [];
-  const personalExercises: Exercise[] = [];
-  for (const exercise of response.data.items) {
-    if (searchName !== null && !exercise.name.toLocaleLowerCase().includes(searchName.toLocaleLowerCase())) {
-      continue;
-    }
-    if (exercise.userId !== null) {
-      personalExercises.push(exercise);
-      continue;
-    }
-
-    if (exercise.parentExerciseId == null) {
-      if (searchName !== null && !exercise.name.toLocaleLowerCase().includes(searchName.toLocaleLowerCase())) {
-        continue;
-      }
-      primaryExercises.push(exercise);
-      continue;
-    }
-
-    const existing = map.get(exercise.parentExerciseId) ?? [];
-    existing.push(exercise);
-    map.set(exercise.parentExerciseId, existing);
-  }
-  const items = primaryExercises.map((item) => ({
-    ...item,
-    variations: map.get(item.id),
-  })
-  );
-
+  const items = response.data?.items ?? [];
   return (
-    <PageContainer>
-      <div className="flex flex-row gap-5 items-start ">
+    <PageContainer >
+      <div className="max-w-5xl w-full flex flex-row gap-5 items-start " ref={parentRef}>
         <AppBlock className="w-70 p-5">
           <AppLabel className="mb-2">Search:</AppLabel>
           <div className="mb-5">
-            <AppTextInput onChange={(e) => setSearchValue(e.target.value)} />
+            <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
           </div>
           <AppLabel className="mb-2">Muscle Groups:</AppLabel>
           <div className="mb-5 flex flex-col gap-2">
-            <AppSwitch label="Abdominals"/>
-            <AppSwitch label="Shoulders" />
-            <AppSwitch label="Biceps"/>
-            <AppSwitch label="Triceps"/>
-            <AppSwitch label="Forearms"/>
-            <AppSwitch label="Quadriceps"/>
-            <AppSwitch label="Hamstrings"/>
-            <AppSwitch label="Calves"/>
-            <AppSwitch label="Glutes"/>
-            <AppSwitch label="Abductors"/>
-            <AppSwitch label="Adductors"/>
-            <AppSwitch label="Lats"/>
-            <AppSwitch label="Traps"/>
-            <AppSwitch label="Lower Back"/>
-            <AppSwitch label="Upper Back"/>
-            <AppSwitch label="Chest"/>
-            <AppSwitch label="Neck"/>
+            {Object.values(Muscle).sort().map((x) => (
+              <AppSwitch
+              key={x}
+              label={x}
+              checked={searchParams.muscles?.includes(x) ?? false}
+              onCheckedChange={(e) => filterByMuscle(x, e)}
+              />
+            ))}
           </div>
         </AppBlock>
-        <div>
+        <div className="max-w-2xl w-full">
           <div className="flex mb-5">
             <h1 className="text-xl">Built-In Library</h1>
-            <div className="grow flex flex-row-reverse">
-              <AppLink to="/exercises/create">Add Exercise</AppLink>
-            </div>
+            <Conditional condition={!!auth.user}>
+              <div className="grow flex flex-row-reverse">
+                <AppLink to="/exercises/create">Add Exercise</AppLink>
+              </div>
+            </Conditional>
           </div>
-          <div className="w-2xl min-w-max flex flex-col gap-5">
-            {items.length === 0 && (
-              <div>No exercises found</div>
+          <div className="flex flex-col gap-5">
+            {response.isFetching && <AppSpinner />}
+            {!response.isFetching && (
+              <div className="flex flex-col gap-5">
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                  const item = items[virtualRow.index];
+                  if (!item) {
+                    throw new Error('Something went wrong');
+                  }
+                  return <ExerciseBlock key={item.id} item={item} />;
+                })}
+               </div>
             )}
-            {items.map((item) => <ExerciseBlock key={item.id} item={item}/>)}
+            {!response.isFetching && items.length === 0 && (
+              <AppToast variant={Color.Danger}>No exercises found</AppToast>
+            )}
           </div>
         </div>
       </div>
     </PageContainer>
   );
-}
+};

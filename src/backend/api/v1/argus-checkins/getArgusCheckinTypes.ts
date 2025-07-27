@@ -12,7 +12,7 @@ export const getArgusCheckinTypes = openApi.factory.createRoute({
   path: '/checkin/types',
   validators: {
     response: z.object({
-      items: z.nativeEnum(ArgusCheckinType).array(),
+      items: z.nativeEnum(ArgusCheckinType).openapi({ref: 'ArgusCheckinType'}).array(),
     }),
   },
   handler: async (ctx) => {

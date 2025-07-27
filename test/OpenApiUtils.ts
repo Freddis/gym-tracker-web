@@ -1,21 +1,57 @@
+import {OpenApiMethod} from 'strap-on-openapi';
 import {User} from '../src/backend/model/User/User';
 import {openApiRoutes} from '../src/backend/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type OpenApiResponse = {status: number, body: any}
+
 export class OpenApiUtils {
+  static async get(route: string): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.GET);
+    return response;
+  }
+
+  static async put(
+    route: string,
+    user: User,
+    data?: object
+  ): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.PUT, user, data);
+    return response;
+  }
+
+  static async request(
+    route: string,
+    method: OpenApiMethod,
+    data?: object
+  ): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, method, undefined, data);
+    return response;
+  }
+
   static async postWithUser(
     route: string,
     user: User,
     data?: object
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<{status: number, body: any}> {
+  ): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.POST, user, data);
+    return response;
+  }
+
+  protected static async sendRequest(
+    route: string,
+    method: OpenApiMethod,
+    user?: User,
+    data?: object
+  ): Promise<OpenApiResponse> {
     const factory = BusinessUtils.getFactory();
     const auth = await factory.auth();
     const openApi = await factory.openApi();
-    const jwt = auth.createToken(user);
+    const jwt = user ? auth.createToken(user) : '';
     openApi.addRouteMap(openApiRoutes);
     const req = new Request(`http://localhost/${openApi.getBasePath()}${route}`, {
-      method: 'POST',
+      method,
       headers: {
         'content-type': 'application/json',
         'Authorization': `Bearer ${jwt}`,
@@ -25,5 +61,4 @@ export class OpenApiUtils {
     const response = await openApi.processRootRoute(req);
     return response;
   }
-
 }

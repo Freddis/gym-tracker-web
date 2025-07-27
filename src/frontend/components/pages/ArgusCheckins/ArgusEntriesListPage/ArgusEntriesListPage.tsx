@@ -16,7 +16,6 @@ const routeApi = getRouteApi('/argus/');
 export function ArgusEntriesListPage() {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
-
   const entriesResponse = useOpenApiQuery(getArgusCheckinOptions, {
     query: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

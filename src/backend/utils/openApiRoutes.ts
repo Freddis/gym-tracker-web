@@ -17,6 +17,7 @@ import {getWorkoutList} from '../api/v1/workouts/getWorkoutList';
 import {updateWorkout} from '../api/v1/workouts/updateWorkout';
 import {upsertWorkouts} from '../api/v1/workouts/upsertWorkouts';
 import {getArgusCheckinTypes} from '../api/v1/argus-checkins/getArgusCheckinTypes';
+import {getBuiltInExerciseList} from '../api/v1/exercises/getBuiltInExerciseList';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -25,8 +26,9 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/exercises': [
     createExercise,
-    getExercise,
     getExerciseList,
+    getBuiltInExerciseList,
+    getExercise,
     updateExercise,
     upsertExercises,
     deleteExercise,

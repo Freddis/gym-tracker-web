@@ -27,11 +27,8 @@ export const dictionary: Translation = {
         signOut: 'Выйти',
         feed: 'Лента',
         home: 'Главная',
-        product: 'О Продукте',
-        articles: 'Статьи',
-        aboutUs: 'О нас',
         activities: 'Активность',
-        calories: 'Калории',
+        exerciseLibrary: 'Упражнения',
       },
     },
     popups: {
