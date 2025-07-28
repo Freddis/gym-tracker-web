@@ -1,6 +1,4 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {useOpenApiQuery} from 'src/frontend/hooks/useOpenApiQuery';
-import {getExercisesBuiltInOptions, getExercisesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {FC, useContext, useRef} from 'react';
 import {ExerciseBlock} from './ExerciseBlock';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
@@ -10,16 +8,17 @@ import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {Conditional} from '../../../layout/Header/Header';
-import {GetExercisesBuiltInData} from '../../../../openapi-client';
+import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../openapi-client';
 import {useVirtualizer} from '@tanstack/react-virtual';
 import {AppSearchInput} from '../../../atoms/AppSearchInput/AppSearchInput';
 import {Muscle} from '../../../../../common/enums/Muscle';
 import {getRouteApi} from '@tanstack/react-router';
 import {AppToast} from '../../../atoms/AppToast/AppToast';
 import {Color} from '../../../../enums/Color';
+import {useQuery} from '@tanstack/react-query';
+import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 
 const routeApi = getRouteApi('/exercises/');
-
 export const ExerciseLibraryPage: FC = () => {
   const auth = useContext(AuthContext);
   const searchParams = routeApi.useSearch();
@@ -30,15 +29,19 @@ export const ExerciseLibraryPage: FC = () => {
       filter: searchParams.filter,
       muscle: searchParams.muscles,
     };
-    if (auth.user) {
-      return useOpenApiQuery(getExercisesOptions, {query, queryKey: [searchParams]});
-    }
-    return useOpenApiQuery(getExercisesBuiltInOptions, {query, queryKey: [searchParams]});
+    // if (auth.user) {
+    //   return useOpenApiQuery(getExercisesOptions, {query, queryKey: [searchParams]});
+    // }
+    const response = useQuery({
+      queryFn: () => getExercisesBuiltIn({query}),
+      queryKey: [searchParams],
+    });
+    return response;
   };
   const response = getResponse();
   const rowVirtualizer = useVirtualizer({
-    count: response.data?.items.length ?? 0,
-    getScrollElement: () => parentRef.current, //typeof window !== 'undefined' ? window : null,
+    count: response.data?.data?.items.length ?? 0,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 144,
     overscan: 10,
   });
@@ -48,7 +51,6 @@ export const ExerciseLibraryPage: FC = () => {
       existing.push(muscle);
     }
     const muscles = existing.length > 0 ? existing : undefined;
-    console.log(muscles);
     navigate({
       search: {
         ...searchParams,
@@ -62,14 +64,16 @@ export const ExerciseLibraryPage: FC = () => {
       filter: filter ?? undefined,
     }});
   };
-  if (response.isError) {
+
+  if (response.isError || response.data?.error) {
+    const error = response.data?.error?.error;
     return (
       <PageContainer>
-        <div>Error</div>
+        <AppApiErrorDisplay error={error} />
       </PageContainer>
     );
   }
-  const items = response.data?.items ?? [];
+  const items = response.data?.data?.items ?? [];
   return (
     <PageContainer >
       <div className="max-w-5xl w-full flex flex-row gap-5 items-start " ref={parentRef}>

@@ -17,7 +17,13 @@ export const AppToast: FC<AppToastProps> = (props) => {
     [Color.Success]: null,
   };
   const icon = iconMap[props.variant];
+  const parts = props.children.split('\n');
   return (
-    <div className={twMerge(classes, props.className)}>{icon}{props.children}</div>
+    <div className={twMerge(classes, props.className)}>
+      <div>{icon}</div>
+      <div className="flex flex-col grow">
+        {parts.map((x) => <div key={x}>{x}</div>)}
+      </div>
+    </div>
   );
 };
