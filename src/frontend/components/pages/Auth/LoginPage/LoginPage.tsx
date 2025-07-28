@@ -52,8 +52,7 @@ export const LoginPage: FC = () => {
   };
   return (
     <PageContainer className="justify-center bg-main text-main">
-      <div className="flex flex-col">
-        <AppBlock className="bg-surface text-on-surface p-10 min-w-xl rounded-sm">
+        <AppBlock className="p-10 w-full max-w-xl rounded-sm">
           <h1 className="text-center text-xl mb-5">{t(i18n.heading)}</h1>
           <div className="flex flex-col surface bg-">
             <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
@@ -92,7 +91,6 @@ export const LoginPage: FC = () => {
             </AppLink>
           </div>
           </AppBlock>
-        </div>
     </PageContainer>
   );
 };

@@ -79,6 +79,14 @@ export const generateTailwindColorsOnUpdate = async () => {
     '--color-on-cavity: var(--color-on-cavity);',
     '}',
     ...paleteVariables,
+    'body {',
+    ' &.theme-dark {',
+    ...Object.values(palettes).map((x) => `--color-${x.dark.name}: ${x.dark.color};`),
+    ' }',
+    ' &.theme-light {',
+    ...Object.values(palettes).map((x) => `--color-${x.light.name}: ${x.light.color};`),
+    ' }',
+    '}',
   ];
   const content = fileLines.join('\n');
   writeFileSync('./src/frontend/css/colors.gen.css', content);

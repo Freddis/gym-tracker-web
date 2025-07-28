@@ -8,17 +8,17 @@ export const Footer: FC = () => {
   return (
     <div className="palette-darkest  w-full">
       <div className="bg-main text-on-main flex justify-center">
-        <div className=" max-w-6xl p-10 grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl p-10">
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.about.heading)}</h5>
             <p className="text-sm">{t(i18n.about.content)}.</p>
           </div>
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.social.heading)}</h5>
-            <div className="flex flex-row gap-10">
+            <div className="flex flex-row items-center gap-10">
               <FaFacebook size="30"/>
-              <FaGoogle size="30"/>
-              <FaVk size="30"/>
+              <FaGoogle size="28"/>
+              <FaVk size="42"/>
             </div>
           </div>
           <div>

@@ -9,11 +9,13 @@ export const DownloadAppsBlock: FC = () => {
             <div className="border-b-2 border-accent w-100 mb-5 m-auto"></div>
             <p>"COME ON!! DO IT!!! DO IT NOW!!!! (c) Arnold Schwarzenegger</p>
         </div>
-        <div className="flex flex-row gap-10 justify-center">
-          <div className="">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-center">
+          <div className="flex justify-center">
+            <img className="w-58" src="/images/pages/home/google-play-download-link.png" />
+          </div>
+          <div className="flex justify-center">
             <img className="w-50 py-5" src="/images/pages/home/appstore-download-link.svg" />
           </div>
-          <img className="w-60" src="/images/pages/home/google-play-download-link.png" />
         </div>
       </div>
     </div>

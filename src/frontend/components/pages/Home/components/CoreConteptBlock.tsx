@@ -10,11 +10,11 @@ export const CoreConceptBlock: FC = () => {
           <p>There is a very good reason <span className="text-accent">Discipline</span> exists</p>
         </div>
 
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2">
           <div>
             <img src="/images/pages/home/kettlebells.jpg" />
           </div>
-          <div className="px-10">
+          <div className="pt-10 md:px-10 md:pt-0">
           {/* <h2 className="uppercase mb-10 text-center text-2xl"></h2> */}
           <p>
             Hey there, I'm Alex. I spent almost 10 years being a gym rat and once I found myself in a very unpleasant situation.

@@ -9,7 +9,7 @@ export const HeroBlock: FC = () => {
   return (
       <div style={{backgroundImage}} className="h-180 bg-cover">
         <div className="bg-black/50 w-full h-full flex items-center justify-center">
-            <div className="mb-10 text-center">
+            <div className="p-5 mb-10 text-center">
               <h1 className="text-white text-4xl uppercase">
                 <span className="text-accent">{t(i18n.heading.start)}</span>
                 <span>{t(i18n.heading.middle)}</span>

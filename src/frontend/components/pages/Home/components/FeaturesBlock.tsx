@@ -11,7 +11,7 @@ export const FeaturesBlock: FC = () => {
     <div className="justify-center p-20 flex bg-main text-on-main">
       <div className="max-w-5xl text-center">
         <h2 className="text-2xl uppercase">{t(i18n.heading.start)}<span className="text-accent">{t(i18n.heading.end)}</span></h2>
-        <div className="flex flex-row space-x-10 mt-10 text-justify">
+        <div className="grid w-full max-w-sm grid-cols-1 md:grid-cols-4 md:max-w-full gap-10 mt-10 text-justify">
           <div>
             <FaDumbbell size={60} className="m-auto" />
             <h3 className="text-accent text-center uppercase mt-2">{t(i18n.workouts.title)}</h3>

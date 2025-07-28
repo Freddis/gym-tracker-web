@@ -12,7 +12,7 @@ export const PricingBlock: FC = () => {
              You get everything you can do in excel spreadsheets for <span className="text-accent">free! </span>
             We only charge for things that requires active suppoort and expenses.</p>
         </div>
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="bg-surface text-on-surface p-10">
               <h3 className="uppercase block text-center font-bold text-lg mb-5">Free Plan</h3>
               <div className="text-green-800 text-center text-lg mb-5 font-bold">Free</div>

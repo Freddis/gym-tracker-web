@@ -327,3 +327,25 @@
 --color-cavity: var(--color-emerald-100);
 --color-on-cavity: var(--color-emerald-900);
 }
+body {
+ &.theme-dark {
+--color-neutral: var(--color-neutral-800);
+--color-lightest: var(--color-neutral-900);
+--color-darkest: black;
+--color-danger: var(--color-red-100);
+--color-warning: var(--color-orange-100);
+--color-info: var(--color-blue-100);
+--color-success: var(--color-emerald-100);
+--color-accent: var(--color-red-600);
+ }
+ &.theme-light {
+--color-neutral: #f8f8f8;
+--color-lightest: white;
+--color-darkest: black;
+--color-danger: var(--color-red-100);
+--color-warning: var(--color-orange-100);
+--color-info: var(--color-blue-100);
+--color-success: var(--color-emerald-100);
+--color-accent: var(--color-red-600);
+ }
+}
