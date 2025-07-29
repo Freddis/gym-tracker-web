@@ -1,32 +1,37 @@
 import {getTableColumns, SQL, sql} from 'drizzle-orm';
 import {PgTable, PgUpdateSetSource} from 'drizzle-orm/pg-core';
 import {dbRelations, dbSchema} from 'src/backend/drizzle/db';
-import {serverConfig} from '../../utils/ServerConfig/config';
 import {drizzle, NodePgDatabase} from 'drizzle-orm/node-postgres';
-import {QueryLogger} from '../../utils/QueryLogger/QueryLogger';
+import {QueryLogger} from './utils/QueryLogger/QueryLogger';
 import pg from 'pg';
+import {DrizzleServiceConfig} from './types/DrizzleServiceConfig';
 
-const pgClient = new pg.Client({
-  ...serverConfig.database,
-  connectionTimeoutMillis: 2000,
-});
 const schema = {...dbSchema, ...dbRelations};
-const db = drizzle(pgClient, {
-  logger: new QueryLogger(false, true, 'postgres'),
-  schema: schema,
-});
-
 export type AppDbSchema = typeof schema;
 export type AppDb = NodePgDatabase<AppDbSchema>
 export class DrizzleService {
   protected static connected = false;
+  protected db?: AppDb;
+  protected pgClient?: pg.Client;
+  protected config: DrizzleServiceConfig;
+
+  constructor(config: DrizzleServiceConfig) {
+    this.config = config;
+  }
 
   async getDb(): Promise<AppDb> {
-    if (!DrizzleService.connected) {
-      DrizzleService.connected = true;
-      await pgClient.connect();
+    if (!this.db) {
+      this.pgClient = new pg.Client({
+        ...this.config,
+        connectionTimeoutMillis: 2000,
+      });
+      await this.pgClient.connect();
+      this.db = drizzle(this.pgClient, {
+        logger: new QueryLogger(false, true, 'postgres'),
+        schema: schema,
+      });
     }
-    return db;
+    return this.db;
   }
 
   getSchema() {
@@ -45,6 +50,6 @@ export class DrizzleService {
   };
 
   async end() {
-    pgClient.end();
+    this.pgClient?.end();
   }
 }
