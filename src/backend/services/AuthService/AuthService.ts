@@ -73,9 +73,8 @@ export class AuthService {
       passwordConfirmation: string;
     }
   ): Promise<Client & {jwt: string}> {
-    const service = new DrizzleService();
-    const db = await service.getDb();
-    const schema = service.getSchema();
+    const db = await this.dbService.getDb();
+    const schema = this.dbService.getSchema();
     if (params.password !== params.passwordConfirmation) {
       throw new ActionError(ActionErrorCode.InvalidPassword);
     }
