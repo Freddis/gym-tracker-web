@@ -1,6 +1,6 @@
 import {getTableColumns, SQL, sql} from 'drizzle-orm';
 import {PgTable, PgUpdateSetSource} from 'drizzle-orm/pg-core';
-import {dbRelations, dbSchema} from 'src/backend/drizzle/db';
+import {dbRelations, dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {drizzle, NodePgDatabase} from 'drizzle-orm/node-postgres';
 import {QueryLogger} from './utils/QueryLogger/QueryLogger';
 import pg from 'pg';

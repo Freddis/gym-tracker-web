@@ -1,3 +1,3 @@
-import {dbSchema} from '../../drizzle/db';
+import {dbSchema} from '../../services/DrizzleService/types/db';
 
 export type Image = typeof dbSchema.images.$inferSelect;

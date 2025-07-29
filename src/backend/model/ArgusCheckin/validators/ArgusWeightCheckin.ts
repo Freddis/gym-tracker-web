@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {ArgusCheckinType} from '../types/ArgusCheckinType';
 import {createSelectSchema} from 'drizzle-zod';
-import {dbSchema} from 'src/backend/drizzle/db';
+import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {argusCheckinDataValidator} from './ArgusCheckinData';
 
 export const argusWeightCheckinValidator = createSelectSchema(dbSchema.argusCheckins).extend({

@@ -2,7 +2,7 @@ import {z} from 'zod';
 import {argusCheckinDataValidator} from './ArgusCheckinData';
 import {ArgusCheckinType} from '../types/ArgusCheckinType';
 import {createSelectSchema} from 'drizzle-zod';
-import {dbSchema} from 'src/backend/drizzle/db';
+import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 
 export const argusWeatherCheckinValidator = createSelectSchema(dbSchema.argusCheckins).extend({
   subtype: z.null(),

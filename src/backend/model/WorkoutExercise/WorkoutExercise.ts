@@ -1,5 +1,5 @@
 import {createSelectSchema} from 'drizzle-zod';
-import {dbSchema} from 'src/backend/drizzle/db';
+import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {z} from 'zod';
 import {exerciseValidator} from '../Exercise/Exercise';
 import {workoutExerciseSetValidator} from '../WorkoutExerciseSet/WorkoutExerciseSet';

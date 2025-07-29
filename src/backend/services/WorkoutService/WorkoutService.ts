@@ -1,7 +1,7 @@
 import {eq, and, desc, gte, isNull, inArray} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Workout} from 'src/backend/model/Workout/Workout';
-import {dbSchema} from 'src/backend/drizzle/db';
+import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
 import {WorkoutExerciseSet} from 'src/backend/model/WorkoutExerciseSet/WorkoutExerciseSet';
 import {Exercise} from 'src/backend/model/Exercise/Exercise';

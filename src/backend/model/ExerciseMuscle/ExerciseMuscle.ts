@@ -1,5 +1,5 @@
 import {createSelectSchema} from 'drizzle-zod';
-import {dbSchema} from '../../drizzle/db';
+import {dbSchema} from '../../services/DrizzleService/types/db';
 import {nativeEnum, TypeOf} from 'zod';
 import {Muscle} from '../../../common/enums/Muscle';
 
