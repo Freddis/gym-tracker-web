@@ -85,6 +85,13 @@
       "when": 1753779723872,
       "tag": "0011_exercise_equipment_and_muscles",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1753788240118,
+      "tag": "0012_changing_identity_settings_for_tables",
+      "breakpoints": true
     }
   ]
 }

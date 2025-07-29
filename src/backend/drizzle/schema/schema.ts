@@ -12,7 +12,7 @@ const equipmentValues = array(string()).nonempty().parse(Object.values(Equipment
 export const equipmentEnum = gymTracker.enum('Equipment', equipmentValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   externalId: varchar().notNull(),
   type: varchar().notNull(),
   subtype: varchar(),
@@ -42,7 +42,7 @@ export const exercises = gymTracker.table('exercises', {
 ]);
 
 export const muscles = gymTracker.table('exercise_muscles', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   muscle: muscleEnum().notNull().$type<Muscle>(),
   exerciseId: integer().notNull().references(() => exercises.id),
   isPrimary: boolean().notNull(),
@@ -52,20 +52,13 @@ export const muscles = gymTracker.table('exercise_muscles', {
 });
 
 export const users = gymTracker.table('users', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: varchar().notNull(),
   email: varchar().notNull(),
   password: varchar().notNull(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
-
-// export const workoutTypes = gymTracker.table('workout_types', {
-//   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-//   name: varchar().notNull(),
-//   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
-//   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
-// });
 
 export const workouts = gymTracker.table('workouts', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
