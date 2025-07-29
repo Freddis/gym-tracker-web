@@ -20,7 +20,6 @@ export class ExerciseService {
       name: data.name,
       createdAt: new Date(),
       userId: data.userId,
-      equipmentId: 0,
       images: [],
     };
     const result = await db.insert(dbSchema.exercises).values(entity).returning();
@@ -79,12 +78,9 @@ export class ExerciseService {
   async get(exerciseId: number, userId?: number): Promise<Exercise | null> {
     const db = await this.db.getDb();
     const result = await db.query.exercises.findFirst({
-      where: (table, {eq, not, and, or, isNull}) =>
+      where: (table, {eq, and, or, isNull}) =>
         and(
           eq(table.id, exerciseId),
-          not(
-            eq(table.equipmentId, 13)
-          ),
           isNull(table.deletedAt),
           or(
             isNull(table.userId),
@@ -104,9 +100,6 @@ export class ExerciseService {
     const db = await this.db.getDb();
     const result = await db.query.exercises.findMany({
       where: (t, op) => op.and(
-        op.not(
-          op.eq(t.equipmentId, 13)
-        ),
         op.isNull(t.deletedAt),
         op.or(
           op.isNull(t.userId),

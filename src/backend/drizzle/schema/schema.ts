@@ -1,4 +1,4 @@
-import {pgSchema, integer, varchar, timestamp, json, text, real, index, pgEnum, boolean} from 'drizzle-orm/pg-core';
+import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean} from 'drizzle-orm/pg-core';
 import {Muscle} from '../../../common/enums/Muscle';
 import {array, string} from 'zod';
 import {Equipment} from '../../../common/enums/Equipment';
@@ -6,10 +6,10 @@ import {Equipment} from '../../../common/enums/Equipment';
 export const gymTracker = pgSchema('gym_tracker');
 
 const muscleValues = array(string()).nonempty().parse(Object.values(Muscle));
-export const muscleEnum = pgEnum('Muscle', muscleValues);
+export const muscleEnum = gymTracker.enum('Muscle', muscleValues);
 
 const equipmentValues = array(string()).nonempty().parse(Object.values(Equipment));
-export const equipmentEnum = pgEnum('Equipment', equipmentValues);
+export const equipmentEnum = gymTracker.enum('Equipment', equipmentValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -26,7 +26,6 @@ export const exercises = gymTracker.table('exercises', {
   name: varchar().notNull(),
   description: text(),
   difficulty: integer(),
-  equipmentId: integer().notNull(),
   equipment: equipmentEnum(),
   images: varchar().array().notNull(),
   params: integer().array().notNull(),

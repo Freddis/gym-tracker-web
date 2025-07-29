@@ -169,7 +169,6 @@ export class ArgusService {
         createdAt: new Date(),
         name: name,
         description: exercise.description.map((item, i) => `<${i + 1}>${item}`).join(''),
-        equipmentId: 0,
         difficulty: Number(0),
         params: params,
         images: [image, image2],

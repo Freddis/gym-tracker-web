@@ -1,5 +1,5 @@
 {
-  "id": "2bd6b1f1-60d9-4c6c-b9a3-d56e8005ca89",
+  "id": "d501e4f7-971c-4634-81d1-33c0681489bf",
   "prevId": "af31712a-fc36-4cb0-8e5c-eb034330273b",
   "version": "7",
   "dialect": "postgresql",
@@ -109,11 +109,12 @@
           "primaryKey": false,
           "notNull": false
         },
-        "equipmentId": {
-          "name": "equipmentId",
-          "type": "integer",
+        "equipment": {
+          "name": "equipment",
+          "type": "Equipment",
+          "typeSchema": "gym_tracker",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "images": {
           "name": "images",
@@ -310,7 +311,7 @@
         "muscle": {
           "name": "muscle",
           "type": "Muscle",
-          "typeSchema": "public",
+          "typeSchema": "gym_tracker",
           "primaryKey": false,
           "notNull": true
         },
@@ -1005,9 +1006,53 @@
     }
   },
   "enums": {
-    "public.Muscle": {
+    "gym_tracker.Equipment": {
+      "name": "Equipment",
+      "schema": "gym_tracker",
+      "values": [
+        "rowing",
+        "swimming",
+        "plate loaded",
+        "foam roller",
+        "pullup bar",
+        "stair climber",
+        "selectorized",
+        "dip bar",
+        "preacher",
+        "hyperextension",
+        "sandbag",
+        "elliptical",
+        "chair",
+        "cable",
+        "captain's chair",
+        "towel",
+        "water bottle",
+        "stability ball",
+        "table",
+        "smith",
+        "kettlebell",
+        "cycling",
+        "step aerobics",
+        "plate",
+        "platform",
+        "medicine ball",
+        "running",
+        "barbell",
+        "backpack",
+        "ez curl bar",
+        "walking",
+        "bench",
+        "bodyweight",
+        "resistance band",
+        "dumbbell",
+        "jump rope",
+        "treadmill",
+        "bosu ball"
+      ]
+    },
+    "gym_tracker.Muscle": {
       "name": "Muscle",
-      "schema": "public",
+      "schema": "gym_tracker",
       "values": [
         "Lower Back",
         "Soleus",

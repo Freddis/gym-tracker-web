@@ -5,7 +5,6 @@ export type Exercise = {
   name: string;
   description: string | null;
   difficulty: number | null;
-  equipmentId: number;
   equipment:
     | "rowing"
     | "swimming"
@@ -176,7 +175,6 @@ export type ExerciseUpsertDto = {
   name: string;
   description: string | null;
   difficulty: number | null;
-  equipmentId: number;
   equipment:
     | "rowing"
     | "swimming"
