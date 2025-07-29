@@ -33,13 +33,16 @@ export const ProfileDropdownMenu: FC = () => {
     const newTheme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
     themeContext.setTheme(newTheme);
   };
+
   return (
     <AppDropdownMenu>
     <AppDropdownMenuTrigger className="text-lg">
     <div className="flex items-center cursor-pointer">
       <span className="text-base ">{auth.user?.name}</span>
       <FiChevronDown className=" relative" />
-      <img src="/images/avatar.gif" className="ml-2 border-light border-2 shadow-2xl shadow-red-600 rounded-full w-12"/>
+      <div className="ml-2 font-bold border-light border-2 shadow-2xl rounded-full w-12 h-12 flex items-center justify-center bg-cyan-600">
+      {auth.user?.name.substring(0, 1)}
+      </div>
     </div>
     </AppDropdownMenuTrigger>
     <AppDropdownMenuContent sideOffset={-2} className={`w-50 ${theme.toLowerCase()}`}>
