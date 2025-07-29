@@ -30,7 +30,6 @@ export class StorybookDataUtils {
       Refrain from bouncing the barbell off your chest. Hold for a brief moment. 
       Return to starting position. Keep your entire back on the bench at all times. Refrain from any leg movements.`.replaceAll('\n', ''),
       difficulty: null,
-      equipmentId: 0,
       images: [
         'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg',
         'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-b.jpg',
