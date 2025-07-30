@@ -1,6 +1,6 @@
-import {ExerciseRow} from '../src/backend/services/DrizzleService/types/ExerciseRow';
-import {UserRow} from '../src/backend/services/DrizzleService/types/UserRow';
-import {Logger} from '../src/common/utils/Logger/Logger';
+import {ExerciseRow} from '../../../services/DrizzleService/types/ExerciseRow';
+import {UserRow} from '../../../services/DrizzleService/types/UserRow';
+import {Logger} from '../../../../common/utils/Logger/Logger';
 import {BusinessUtils} from './BusinessUtils';
 
 export class SeedUtils {

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {describe, test} from 'vitest';
-import {TestUtils} from '../../../../../test/TestUtils';
+import {TestUtils} from '../../../utils/TestUtils/TestUtils';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
 

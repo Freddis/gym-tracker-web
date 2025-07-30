@@ -1,7 +1,7 @@
 import {describe, expect, test} from 'vitest';
 import {WorkoutService} from './WorkoutService';
 import {globalServiceFactory} from '../../utils/GlobalServiceFactory/globalServiceFactoryInstance';
-import {TestUtils} from '../../../../test/TestUtils';
+import {TestUtils} from '../../utils/TestUtils/TestUtils';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 
 

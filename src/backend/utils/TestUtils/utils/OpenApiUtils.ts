@@ -1,6 +1,6 @@
 import {OpenApiMethod} from 'strap-on-openapi';
-import {UserRow} from '../src/backend/services/DrizzleService/types/UserRow';
-import {openApiRoutes} from '../src/backend/utils/openApiRoutes';
+import {UserRow} from '../../../services/DrizzleService/types/UserRow';
+import {openApiRoutes} from '../../openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,11 +12,7 @@ export class OpenApiUtils {
     return response;
   }
 
-  static async put(
-    route: string,
-    user: UserRow,
-    data?: object
-  ): Promise<OpenApiResponse> {
+  static async put(route: string, user: UserRow, data?: object): Promise<OpenApiResponse> {
     const response = await this.sendRequest(route, OpenApiMethod.PUT, user, data);
     return response;
   }
