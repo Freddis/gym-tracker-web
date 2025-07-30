@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 import {AuthServiceConfig} from './types/AuthServiceConfig';
 import {Logger} from 'src/common/utils/Logger/Logger';
 import {z} from 'zod';
-import {User} from 'src/backend/model/User/User';
-import {Client} from './types/Client';
+import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
+import {AuthUser} from './types/AuthUser';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ActionError} from '../ApiService/errors/ActionError';
 
@@ -19,7 +19,7 @@ export class AuthService {
     this.dbService = drizzleService;
   }
 
-  async getClientFromRequest(request: Request): Promise<User | null> {
+  async getUserFromRequest(request: Request): Promise<UserRow | null> {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
       return null;
@@ -49,7 +49,7 @@ export class AuthService {
     return user;
   }
 
-  async login(email: string, password: string): Promise<Client & {jwt: string}> {
+  async login(email: string, password: string): Promise<AuthUser> {
     const db = await this.dbService.getDb();
     const user = await db.query.users.findFirst({
       where: (users, {eq}) => eq(users.email, email),
@@ -72,7 +72,7 @@ export class AuthService {
       password: string;
       passwordConfirmation: string;
     }
-  ): Promise<Client & {jwt: string}> {
+  ): Promise<AuthUser> {
     const db = await this.dbService.getDb();
     const schema = this.dbService.getSchema();
     if (params.password !== params.passwordConfirmation) {
@@ -107,7 +107,8 @@ export class AuthService {
   async hashString(str: string): Promise<string> {
     return await hash(str, this.config.hashSalt);
   }
-  public createToken(user: Client): string {
+
+  public createToken(user: Omit<AuthUser, 'jwt'>): string {
     const token = jwt.sign(
       {
         time: new Date().toISOString(),

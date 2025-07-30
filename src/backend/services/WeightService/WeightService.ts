@@ -1,9 +1,9 @@
 import {WeightUnits} from '../../../common/enums/WeightUnits';
 import {NewModel} from '../../../common/types/NewModel';
-import {User} from '../../model/User/User';
-import {Weight} from '../../model/Weight/Weight';
+import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
-
+import {Weight} from './types/Weight';
+import {UserRow} from '../DrizzleService/types/UserRow';
 export class WeightService {
   protected drizzle: DrizzleService;
 
@@ -11,10 +11,10 @@ export class WeightService {
     this.drizzle = drizzle;
   }
 
-  async create(user: User, weight: number): Promise<Weight> {
+  async create(user: UserRow, weight: number): Promise<Weight> {
     const db = await this.drizzle.getDb();
     const schema = this.drizzle.getSchema();
-    const obj: NewModel<Weight> = {
+    const obj: NewModel<WeightRow> = {
       externalId: null,
       createdAt: new Date(),
       updatedAt: null,

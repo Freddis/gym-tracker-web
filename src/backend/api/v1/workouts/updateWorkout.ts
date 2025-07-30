@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
-import {workoutUpdateDtoValidator} from '../../../model/Workout/WorkoutUpdateDto';
+import {workoutUpdateDtoValidator} from './validators/workoutUpdateDtoValidator';
 import {ApiError} from '../../../services/ApiService/errors/ApiError';
 import {ApiErrorCode} from '../../../services/ApiService/types/ApiErrorCode';
 import {openApi} from '../../../utils/openApi';
@@ -25,6 +25,7 @@ export const updateWorkout = openApi.factory.createRoute({
     if (!ctx.services.models.workout.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
       throw new ApiError(ApiErrorCode.Unauthorized);
     }
+
     await ctx.services.models.workout.update(ctx.params.path.id, ctx.params.body);
     return {success: true};
   },

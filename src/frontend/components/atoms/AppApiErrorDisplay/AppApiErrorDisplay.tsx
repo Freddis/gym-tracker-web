@@ -1,14 +1,16 @@
 import {FC} from 'react';
-import {GetExercisesBuiltInErrors} from '../../../openapi-client';
+import {GetExercisesBuiltInError, GetWorkoutsError} from '../../../openapi-client';
 import {AppToast} from '../AppToast/AppToast';
 import {Color} from '../../../enums/Color';
 
 interface AppApiErrorDisplayProps {
-  error?: GetExercisesBuiltInErrors['500']['error'] | GetExercisesBuiltInErrors['400']['error']
+  error?: GetExercisesBuiltInError['error'] | GetWorkoutsError['error']
 }
 
 export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {
-  let message = 'Unknown Error';
+  let message = [
+    'Looks like we have an unexpected error on the server. Please reach our support and we will fix it.',
+  ].join('\n');
   if (props.error && props.error.code === 'ActionError') {
     message = props.error.humanReadable;
   }

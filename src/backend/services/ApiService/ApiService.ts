@@ -74,7 +74,7 @@ export class ApiService {
       },
       [ApiRouteType.User]: async (opts) => {
         const services = await this.createRequestServices();
-        const viewer = await services.auth.getClientFromRequest(opts.request);
+        const viewer = await services.auth.getUserFromRequest(opts.request);
         if (!viewer) {
           throw new ApiError(ApiErrorCode.Unauthorized);
         }
@@ -197,12 +197,13 @@ export class ApiService {
   }
   protected async createRequestServices(): Promise<ApiRequestServices> {
     const drizzle = this.drizzle;
+    const exerciseService = new ExerciseService(drizzle);
     const services: ApiRequestServices = {
       auth: new AuthService(serverConfig.services.auth, drizzle),
       models: {
         argusCheckin: new ArgusCheckinService(drizzle),
-        workout: new WorkoutService(drizzle),
-        exercise: new ExerciseService(drizzle),
+        workout: new WorkoutService(drizzle, exerciseService),
+        exercise: exerciseService,
         weight: new WeightService(drizzle),
       },
     };

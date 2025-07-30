@@ -1,12 +1,12 @@
 import {and, eq, isNull, like} from 'drizzle-orm';
-import {User} from 'src/backend/model/User/User';
+import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AppDb, DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
 import {NewModel} from 'src/common/types/NewModel';
 import {Logger} from 'src/common/utils/Logger/Logger';
 import {Exercise as ArgusExercise, exerciseData} from './data/argusExercisesJson';
-import {Exercise} from 'src/backend/model/Exercise/Exercise';
-import {argusWorkoutCheckinValidator} from 'src/backend/model/ArgusCheckin/validators/ArgusWorkoutCheckin';
-import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
+import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
+import {argusWorkoutCheckinValidator} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWorkoutCheckin';
+import {WorkoutExerciseRow} from 'src/backend/services/DrizzleService/types/WorkoutExerciseRow';
 import {createWriteStream, existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync} from 'fs';
 import {z} from 'zod';
 import {argusResponseValidator} from './validators/ArgusResponse';
@@ -63,7 +63,7 @@ export class ArgusService {
     }
     const db = await this.drizzle.getDb();
     const schema = this.drizzle.getSchema();
-    const user: NewModel<User> = {
+    const user: NewModel<UserRow> = {
       name: this.config.seededUser.name,
       email: this.config.seededUser.email,
       password: this.config.seededUser.password,
@@ -102,7 +102,7 @@ export class ArgusService {
       }
     }
   }
-  protected async attachMusclesAndEquipmentToExercise(db: AppDb, row: Exercise, exercise: ArgusExercise) {
+  protected async attachMusclesAndEquipmentToExercise(db: AppDb, row: ExerciseRow, exercise: ArgusExercise) {
     const validatedMuscle = z.nativeEnum(Muscle).safeParse(exercise.primaryMuscle);
     if (validatedMuscle.success) {
       await db.insert(db._.fullSchema.muscles).values({
@@ -148,8 +148,8 @@ export class ArgusService {
     logger.info('Clearing existing exercises');
     await db.delete(dbSchema.exercises);
     let i = 1;
-    const map = new Map<string, NewModel<Exercise & {count: number}>>();
-    const exercises: NewModel<Exercise>[] = [];
+    const map = new Map<string, NewModel<ExerciseRow & {count: number}>>();
+    const exercises: NewModel<ExerciseRow>[] = [];
     for (const exercise of exerciseData.exercises) {
       logger.info(`Processing ${i++} /${exerciseData.exercises.length} `);
       const nameParts = exercise.name.split('(');
@@ -165,7 +165,7 @@ export class ArgusService {
       const image = `http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/${imgName}-a.jpg`;
       const image2 = `http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/${imgName}-b.jpg`;
 
-      const row: NewModel<Exercise> = {
+      const row: NewModel<ExerciseRow> = {
         createdAt: new Date(),
         name: name,
         description: exercise.description.map((item, i) => `<${i + 1}>${item}`).join(''),
@@ -514,7 +514,7 @@ export class ArgusService {
       await db.insert(dbSchema.argusCheckins).values(checkin);
     }
   }
-  protected async getSeededUser(): Promise<User| null> {
+  protected async getSeededUser(): Promise<UserRow| null> {
     const db = await this.drizzle.getDb();
     const seedUser = await db.query.users.findFirst({
       where: (t, op) => op.eq(t.email, this.config.seededUser.email),

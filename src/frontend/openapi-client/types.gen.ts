@@ -53,9 +53,6 @@ export type Exercise = {
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
-};
-
-export type NestedExercise = Exercise & {
   muscles: {
     primary: Array<
       | "Lower Back"
@@ -110,64 +107,114 @@ export type NestedExercise = Exercise & {
       | "Adductors"
     >;
   };
-  variations: Array<
-    Exercise & {
-      muscles: {
-        primary: Array<
-          | "Lower Back"
-          | "Soleus"
-          | "Front Deltoids"
-          | "Lats"
-          | "Forearms"
-          | "Pecs"
-          | "Hamstrings"
-          | "Wrist Flexors"
-          | "Biceps"
-          | "Triceps"
-          | "Rear Deltoids"
-          | "Rotator Cuff"
-          | "Ankle"
-          | "Abdominals"
-          | "Glutes"
-          | "Quadriceps"
-          | "Obliques"
-          | "Abductors"
-          | "Gastrocnemius"
-          | "Lateral Deltoids"
-          | "Hip Flexors"
-          | "Trapezius"
-          | "Neck"
-          | "Adductors"
-        >;
-        secondary: Array<
-          | "Lower Back"
-          | "Soleus"
-          | "Front Deltoids"
-          | "Lats"
-          | "Forearms"
-          | "Pecs"
-          | "Hamstrings"
-          | "Wrist Flexors"
-          | "Biceps"
-          | "Triceps"
-          | "Rear Deltoids"
-          | "Rotator Cuff"
-          | "Ankle"
-          | "Abdominals"
-          | "Glutes"
-          | "Quadriceps"
-          | "Obliques"
-          | "Abductors"
-          | "Gastrocnemius"
-          | "Lateral Deltoids"
-          | "Hip Flexors"
-          | "Trapezius"
-          | "Neck"
-          | "Adductors"
-        >;
-      };
-    }
-  >;
+  variations: Array<{
+    id: number;
+    name: string;
+    description: string | null;
+    difficulty: number | null;
+    equipment:
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captain's chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball"
+      | null;
+    images: Array<string>;
+    params: Array<number>;
+    userId: number | null;
+    copiedFromId: number | null;
+    parentExerciseId: number | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+    muscles: {
+      primary: Array<
+        | "Lower Back"
+        | "Soleus"
+        | "Front Deltoids"
+        | "Lats"
+        | "Forearms"
+        | "Pecs"
+        | "Hamstrings"
+        | "Wrist Flexors"
+        | "Biceps"
+        | "Triceps"
+        | "Rear Deltoids"
+        | "Rotator Cuff"
+        | "Ankle"
+        | "Abdominals"
+        | "Glutes"
+        | "Quadriceps"
+        | "Obliques"
+        | "Abductors"
+        | "Gastrocnemius"
+        | "Lateral Deltoids"
+        | "Hip Flexors"
+        | "Trapezius"
+        | "Neck"
+        | "Adductors"
+      >;
+      secondary: Array<
+        | "Lower Back"
+        | "Soleus"
+        | "Front Deltoids"
+        | "Lats"
+        | "Forearms"
+        | "Pecs"
+        | "Hamstrings"
+        | "Wrist Flexors"
+        | "Biceps"
+        | "Triceps"
+        | "Rear Deltoids"
+        | "Rotator Cuff"
+        | "Ankle"
+        | "Abdominals"
+        | "Glutes"
+        | "Quadriceps"
+        | "Obliques"
+        | "Abductors"
+        | "Gastrocnemius"
+        | "Lateral Deltoids"
+        | "Hip Flexors"
+        | "Trapezius"
+        | "Neck"
+        | "Adductors"
+      >;
+    };
+  }>;
 };
 
 export type ExerciseUpsertDto = {
@@ -243,7 +290,60 @@ export type WorkoutExercise = {
   exerciseId: number;
   createdAt: Date;
   updatedAt: Date | null;
-  exercise: Exercise;
+  exercise: {
+    id: number;
+    name: string;
+    description: string | null;
+    difficulty: number | null;
+    equipment:
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captain's chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball"
+      | null;
+    images: Array<string>;
+    params: Array<number>;
+    userId: number | null;
+    copiedFromId: number | null;
+    parentExerciseId: number | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
+  };
   sets: Array<WorkoutExerciseSet>;
 };
 
@@ -271,7 +371,6 @@ export type WorkoutUpsertDto = {
   updatedAt: Date | null;
   deletedAt: Date | null;
   exercises: Array<{
-    id?: number;
     exerciseId: number;
     createdAt: Date;
     updatedAt: Date | null;
@@ -294,7 +393,6 @@ export type WorkoutUpdateDto = {
   end: Date | null;
   deletedAt: Date | null;
   exercises: Array<{
-    id?: number;
     exerciseId: number;
     sets: Array<WorkoutExerciseSetUpdateDto>;
   }>;
@@ -303,7 +401,6 @@ export type WorkoutUpdateDto = {
 };
 
 export type WorkoutExerciseSetUpdateDto = {
-  id?: number;
   start: Date | null;
   end: Date | null;
   weight: number | null;
@@ -660,7 +757,7 @@ export type GetExercisesResponses = {
    * Good Response
    */
   200: {
-    items: Array<NestedExercise>;
+    items: Array<Exercise>;
   };
 };
 
@@ -878,7 +975,60 @@ export type PutExercisesResponses = {
    * Good Response
    */
   200: {
-    items: Array<Exercise>;
+    items: Array<{
+      id: number;
+      name: string;
+      description: string | null;
+      difficulty: number | null;
+      equipment:
+        | "rowing"
+        | "swimming"
+        | "plate loaded"
+        | "foam roller"
+        | "pullup bar"
+        | "stair climber"
+        | "selectorized"
+        | "dip bar"
+        | "preacher"
+        | "hyperextension"
+        | "sandbag"
+        | "elliptical"
+        | "chair"
+        | "cable"
+        | "captain's chair"
+        | "towel"
+        | "water bottle"
+        | "stability ball"
+        | "table"
+        | "smith"
+        | "kettlebell"
+        | "cycling"
+        | "step aerobics"
+        | "plate"
+        | "platform"
+        | "medicine ball"
+        | "running"
+        | "barbell"
+        | "backpack"
+        | "ez curl bar"
+        | "walking"
+        | "bench"
+        | "bodyweight"
+        | "resistance band"
+        | "dumbbell"
+        | "jump rope"
+        | "treadmill"
+        | "bosu ball"
+        | null;
+      images: Array<string>;
+      params: Array<number>;
+      userId: number | null;
+      copiedFromId: number | null;
+      parentExerciseId: number | null;
+      createdAt: Date;
+      updatedAt: Date | null;
+      deletedAt: Date | null;
+    }>;
   };
 };
 
@@ -1025,7 +1175,7 @@ export type GetExercisesBuiltInResponses = {
    * Good Response
    */
   200: {
-    items: Array<NestedExercise>;
+    items: Array<Exercise>;
   };
 };
 

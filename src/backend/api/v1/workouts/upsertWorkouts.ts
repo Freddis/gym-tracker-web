@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
-import {workoutUpsertDtoValidator} from 'src/backend/model/Workout/WorkoutUpsertDto';
-import {workoutRowValidator} from 'src/backend/model/Workout/WorkoutRow';
+import {workoutUpsertDtoValidator} from 'src/backend/api/v1/workouts/validators/workoutUpsertDtoValidator';
+import {workoutRowValidator} from 'src/backend/services/DrizzleService/types/WorkoutRow';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {openApi} from '../../../utils/openApi';
 

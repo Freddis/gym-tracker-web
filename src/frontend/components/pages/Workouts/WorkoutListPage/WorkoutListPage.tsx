@@ -1,25 +1,33 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {getWorkoutsOptions, postWorkoutsMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
+import {postWorkoutsMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {getRouteApi, Link} from '@tanstack/react-router';
 import {MouseEventHandler} from 'react';
-import {useMutation} from '@tanstack/react-query';
+import {keepPreviousData, useMutation, useQuery} from '@tanstack/react-query';
 import {WorkoutBlock} from './WorkoutBlock/WorkoutBlock';
 import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
 import {Pagination} from '../../../atoms/Pagination/Pagination';
-import {useOpenApiQuery} from '../../../../hooks/useOpenApiQuery';
+import {getWorkouts} from '../../../../openapi-client';
+import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
+import {AppToast} from '../../../atoms/AppToast/AppToast';
+import {Color} from '../../../../enums/Color';
 
 const routeApi = getRouteApi('/workouts/');
 
 export function WorkoutListPage() {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list);
   const searchParams = routeApi.useSearch();
-  const response = useOpenApiQuery(getWorkoutsOptions, {
-    query: {
-      page: searchParams.page,
-    },
+  const response = useQuery({
+    queryFn: () => getWorkouts({
+      query: {
+        page: searchParams.page,
+      },
+    }),
+    queryKey: [searchParams],
+    placeholderData: keepPreviousData,
   });
+
 
   const createWorkoutMutation = useMutation({
     ...postWorkoutsMutation(),
@@ -41,11 +49,19 @@ export function WorkoutListPage() {
         page,
       }});
   };
-  if (response.isLoading || !response.data) {
+  if (response.isLoading) {
     return (
       <PageContainer className="bg-main">
         <AppSpinner/>
       </PageContainer>
+    );
+  }
+  if (response.isError || response.data?.error) {
+    const error = response.data?.error?.error;
+    return (
+        <PageContainer>
+          <AppApiErrorDisplay error={error} />
+        </PageContainer>
     );
   }
   return (
@@ -54,18 +70,18 @@ export function WorkoutListPage() {
         <AppButton>{t(i18n.buttons.addWorkout)}</AppButton>
       </Link>
       <div className="mt-5 flex flex-col gap-5">
-        {response.data && (
+        {response.data && response.data.data.items.length > 0 && (
           <>
             <div className="flex justify-center mb-3">
-              <Pagination onPageChanged={onPageChanged} info={response.data?.info} />
+              <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
             </div>
-            {response.data.items.slice(0, 10).map((item) => <WorkoutBlock key={item.id} item={item}/>)}
+            {response.data?.data.items.slice(0, 10).map((item) => <WorkoutBlock key={item.id} item={item}/>)}
             <div className="flex justify-center">
-              <Pagination onPageChanged={onPageChanged} info={response.data?.info} />
+              <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
             </div>
           </>
         )}
-
+        {response.data?.data.items.length === 0 && <AppToast variant={Color.Warning}>No Acitivities Found</AppToast>}
       </div>
     </PageContainer>
   );

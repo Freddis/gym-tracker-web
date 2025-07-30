@@ -3,7 +3,7 @@ import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormP
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
-import {Exercise, WorkoutUpsertDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../openapi-client';
+import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutUpdateDto} from '../../../../../../openapi-client';
 import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
@@ -20,7 +20,7 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
   const swapExercise = () => {
     popupContext.setContent(popup);
   };
-  const deleteExercise = (exercise: WorkoutUpsertDto['exercises'][0]) => {
+  const deleteExercise = (exercise: WorkoutUpdateDto['exercises'][0]) => {
     props.onDelete(exercise);
   };
   const addSet = () => {

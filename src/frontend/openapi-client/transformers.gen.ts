@@ -20,13 +20,15 @@ const exerciseSchemaResponseTransformer = (data: any) => {
   if (data.deletedAt) {
     data.deletedAt = new Date(data.deletedAt);
   }
-  return data;
-};
-
-const nestedExerciseSchemaResponseTransformer = (data: any) => {
-  data = exerciseSchemaResponseTransformer(data);
   data.variations = data.variations.map((item: any) => {
-    return exerciseSchemaResponseTransformer(item);
+    item.createdAt = new Date(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = new Date(item.updatedAt);
+    }
+    if (item.deletedAt) {
+      item.deletedAt = new Date(item.deletedAt);
+    }
+    return item;
   });
   return data;
 };
@@ -35,7 +37,7 @@ export const getExercisesResponseTransformer = async (
   data: any,
 ): Promise<GetExercisesResponse> => {
   data.items = data.items.map((item: any) => {
-    return nestedExerciseSchemaResponseTransformer(item);
+    return exerciseSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -44,7 +46,14 @@ export const putExercisesResponseTransformer = async (
   data: any,
 ): Promise<PutExercisesResponse> => {
   data.items = data.items.map((item: any) => {
-    return exerciseSchemaResponseTransformer(item);
+    item.createdAt = new Date(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = new Date(item.updatedAt);
+    }
+    if (item.deletedAt) {
+      item.deletedAt = new Date(item.deletedAt);
+    }
+    return item;
   });
   return data;
 };
@@ -53,7 +62,7 @@ export const getExercisesBuiltInResponseTransformer = async (
   data: any,
 ): Promise<GetExercisesBuiltInResponse> => {
   data.items = data.items.map((item: any) => {
-    return nestedExerciseSchemaResponseTransformer(item);
+    return exerciseSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -84,7 +93,13 @@ const workoutExerciseSchemaResponseTransformer = (data: any) => {
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
-  data.exercise = exerciseSchemaResponseTransformer(data.exercise);
+  data.exercise.createdAt = new Date(data.exercise.createdAt);
+  if (data.exercise.updatedAt) {
+    data.exercise.updatedAt = new Date(data.exercise.updatedAt);
+  }
+  if (data.exercise.deletedAt) {
+    data.exercise.deletedAt = new Date(data.exercise.deletedAt);
+  }
   data.sets = data.sets.map((item: any) => {
     return workoutExerciseSetSchemaResponseTransformer(item);
   });

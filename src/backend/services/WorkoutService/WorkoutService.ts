@@ -1,24 +1,27 @@
-import {eq, and, desc, gte, isNull, inArray} from 'drizzle-orm';
+import {eq, and, desc, gte, isNull} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
-import {Workout} from 'src/backend/model/Workout/Workout';
+import {Workout} from 'src/backend/services/WorkoutService/types/Workout';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
-import {WorkoutExerciseRow} from 'src/backend/model/WorkoutExercise/WorkoutExerciseRow';
-import {WorkoutExerciseSet} from 'src/backend/model/WorkoutExerciseSet/WorkoutExerciseSet';
-import {Exercise} from 'src/backend/model/Exercise/Exercise';
+import {WorkoutExerciseRow} from 'src/backend/services/DrizzleService/types/WorkoutExerciseRow';
+import {WorkoutExerciseSetRow} from 'src/backend/services/DrizzleService/types/WorkoutExerciseSetRow';
 import {NewModel} from 'src/common/types/NewModel';
-import {WorkoutUpdateDto} from 'src/backend/model/Workout/WorkoutUpdateDto';
-import {WorkoutUpsertDto} from 'src/backend/model/Workout/WorkoutUpsertDto';
 import {SemiPartial} from 'src/common/types/SemiPartial';
-import {WorkoutRow} from 'src/backend/model/Workout/WorkoutRow';
-
+import {WorkoutRow} from 'src/backend/services/DrizzleService/types/WorkoutRow';
+import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {Exercise} from '../ExerciseService/types/Exercise';
+import {WorkoutUpdateDto} from './types/WorkoutUpdateDto';
+import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';
 export class WorkoutService {
   protected db: DrizzleService;
+  protected exerciseService: ExerciseService;
   protected table = dbSchema.workouts;
-  constructor(db: DrizzleService) {
+  constructor(db: DrizzleService, exerciseService: ExerciseService) {
     this.db = db;
+    this.exerciseService = exerciseService;
   }
 
-  async create(userId: number): Promise<{id: number}> {
+  async create(userId: number): Promise<Workout> {
     const db = await this.db.getDb();
     const entity: typeof this.table.$inferInsert = {
       createdAt: new Date(),
@@ -26,11 +29,14 @@ export class WorkoutService {
       start: new Date(),
       calories: 0,
     };
-    const result = await db.insert(this.table).values(entity).returning({id: this.table.id});
+    const result = await db.insert(this.table).values(entity).returning();
     if (!result[0]) {
       throw new Error('Unable to get inserted workout ');
     }
-    const firstRow = result[0];
+    const firstRow: Workout = {
+      ...result[0],
+      exercises: [],
+    };
     return firstRow;
   }
 
@@ -55,15 +61,15 @@ export class WorkoutService {
       eq(dbSchema.workoutExercises.workoutId, id)
     );
       for (const exercise of data.exercises) {
-        const existing: Partial<WorkoutExerciseRow> = workout.exercises.find((x) => x.id === exercise.id) ?? {};
+
         const newExercise: NewModel<WorkoutExerciseRow> = {
           ...exercise,
           id: undefined,
           userId: workout.userId,
           workoutId: workout.id,
           exerciseId: exercise.exerciseId,
-          createdAt: existing.createdAt ?? new Date(),
-          updatedAt: existing.createdAt ? new Date() : null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
         const inserted = await db.insert(dbSchema.workoutExercises)
         .values(newExercise)
@@ -73,21 +79,15 @@ export class WorkoutService {
         }
         const workoutExerciseid = inserted[0].id;
         for (const set of exercise.sets) {
-          const existing: Partial<WorkoutExerciseSet> = workout.exercises
-          .find(
-            (x) => x.id === exercise.id
-          )?.sets.find(
-            (x) => x.id === set.id
-        ) ?? {};
-          const newSet: NewModel<WorkoutExerciseSet> = {
+          const newSet: NewModel<WorkoutExerciseSetRow> = {
             ...set,
             id: undefined,
             userId: workout.userId,
             workoutId: workout.id,
             exerciseId: exercise.exerciseId,
             workoutExerciseId: workoutExerciseid,
-            createdAt: existing.createdAt ?? new Date(),
-            updatedAt: existing.createdAt ? new Date() : null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
           };
           await db.insert(dbSchema.workoutExerciseSets).values(newSet);
         }
@@ -124,8 +124,7 @@ export class WorkoutService {
         eq(dbSchema.workoutExercises.workoutId, workoutId)
         );
         for (const exercise of workout.exercises) {
-          const row: SemiPartial<WorkoutExerciseRow, 'id'> = {
-            id: exercise.id ?? undefined,
+          const row: NewModel<WorkoutExerciseRow> = {
             userId,
             workoutId,
             createdAt: exercise.createdAt,
@@ -141,8 +140,7 @@ export class WorkoutService {
           }
           const workoutExerciseId = res[0].id;
 
-          const sets: SemiPartial<WorkoutExerciseSet, 'id'>[] = exercise.sets.map((y) => ({
-            id: y.id ?? undefined,
+          const sets: SemiPartial<WorkoutExerciseSetRow, 'id'>[] = exercise.sets.map((y) => ({
             userId,
             workoutId,
             exerciseId: exercise.exerciseId,
@@ -160,7 +158,6 @@ export class WorkoutService {
           await db.insert(dbSchema.workoutExerciseSets).values(sets);
         }
       }
-
       return result;
     });
     // todo: should I go out of my way to insure ordering of result rows in returning()?
@@ -184,17 +181,27 @@ export class WorkoutService {
 
   async get(id: number, userId?: number): Promise<Workout | null> {
     const db = await this.db.getDb();
-    const result = await db.query.workouts.findFirst({
-      where: (table, {eq, and, isNull}) =>
+    const table = db._.fullSchema.workouts;
+    const result = await db.select({
+      id: table.id,
+    }).from(table).where(
         and(
           eq(table.id, id),
           isNull(table.deletedAt),
           userId ? eq(table.userId, userId ?? 0) : undefined,
         ),
+    );
+    const workouts = await this.load(result.map((x) => x.id));
+    return workouts[0] ?? null;
+  }
+
+  async load(ids: number[]): Promise<Workout[]> {
+    const db = await this.db.getDb();
+    const rows = await db.query.workouts.findMany({
+      where: (t, op) => op.inArray(t.id, ids),
       with: {
         exercises: {
           with: {
-            exercise: true,
             sets: {
               orderBy: (t, op) => [
                 op.asc(t.createdAt),
@@ -207,26 +214,51 @@ export class WorkoutService {
         },
       },
     });
-    return result ?? null;
+    const exerciseIds = rows.flatMap((r) => r.exercises.map((e) => e.exerciseId));
+    const exercises = await this.exerciseService.getAll({ids: exerciseIds});
+    const eMap = new Map<number, Exercise>();
+    for (const exercise of exercises) {
+      eMap.set(exercise.id, exercise);
+      for (const variation of exercise.variations) {
+        eMap.set(variation.id, {...variation, variations: []});
+      }
+    }
+    const getOrThrow = <T>(map: Map<number, T>, key: number): T => {
+      const x = map.get(key);
+      if (!x) {
+        throw new Error(`Exercise '${key}' not found`);
+      }
+      return x;
+    };
+    const workouts: Workout[] = rows.map((row) => ({
+      ...row,
+      exercises: row.exercises.map((erow) => ({
+        ...erow,
+        exercise: getOrThrow(eMap, erow.exerciseId),
+      })),
+    }));
+
+    const map = new Map<number, Workout>();
+    for (const workout of workouts) {
+      map.set(workout.id, workout);
+    }
+    const ordered: Workout[] = [];
+    for (const id of ids) {
+      const w = map.get(id);
+      if (!w) {
+        throw new Error('Error while ordering workouts');
+      }
+      ordered.push(w);
+    }
+    return ordered;
   }
 
   async getAll(userId: number, params?: {
     page: number,
     perPage: number,
     updatedAfter?: Date
-  }) {
+  }): Promise<PaginatedResult<Workout>> {
     const db = await this.db.getDb();
-    const omitDrizzleFields = <T>(
-      table: T
-    ): Omit<T, '_'| 'getSQL' | 'shouldOmitSQLParens' | '$inferInsert' | '$inferSelect' | 'enableRLS'> => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const copy: any = {...table};
-      const keys = ['_', 'getSQL', 'shouldOmitSQLParens', '$inferInsert', '$inferSelect', 'enableRLS'];
-      for (const key of keys) {
-        delete copy[key];
-      }
-      return copy;
-    };
     const page = params?.page ?? 1;
     const limit = params?.perPage ?? 10;
     const offset = (page - 1) * limit;
@@ -248,71 +280,16 @@ export class WorkoutService {
     const count = await db.$count(dbSchema.workouts, where);
     const workoutQueryResult = await query;
     const workoutIds = workoutQueryResult.map((x) => x.id);
-    const query2 = db.select({
-      workout: {
-        ...omitDrizzleFields(dbSchema.workouts),
-      },
-      exercise: {
-        ...omitDrizzleFields(dbSchema.exercises),
-      },
-      workoutExercise: {
-        ...omitDrizzleFields(dbSchema.workoutExercises),
-      },
-      set: {
-        ...omitDrizzleFields(dbSchema.workoutExerciseSets),
-      },
-    }).from(
-      dbSchema.workouts
-    ).where(
-      inArray(dbSchema.workouts.id, workoutIds)
-    ).leftJoin(
-      dbSchema.workoutExercises,
-      eq(dbSchema.workoutExercises.workoutId, dbSchema.workouts.id)
-    ).leftJoin(
-      dbSchema.exercises,
-      eq(dbSchema.workoutExercises.exerciseId, dbSchema.exercises.id)
-    ).leftJoin(
-      dbSchema.workoutExerciseSets,
-      eq(dbSchema.workoutExerciseSets.workoutExerciseId, dbSchema.workoutExercises.id)
-    )
-    .orderBy(
-      desc(dbSchema.workouts.createdAt)
-    );
-    const queryResult = await query2;
-    const workouts = new Map<number, Workout & {exercises: WorkoutExerciseRow[]}>();
-    const exercises = new Map<number, WorkoutExerciseRow & {exercise: Exercise, sets: WorkoutExerciseSet[]}>();
-    for (const row of queryResult) {
-      const workout = workouts.get(row.workout.id) ?? {...row.workout, exercises: []};
-      workouts.set(workout.id, workout);
-      if (!row.workoutExercise || !row.exercise) {
-        continue;
-      }
-      const exercise = exercises.get(row.workoutExercise.id) ?? {...row.workoutExercise, sets: [], exercise: row.exercise};
-      if (!workout.exercises.find((x) => x.id === exercise.id)) {
-        workout.exercises.push(exercise);
-      }
-      if (!row.set) {
-        continue;
-      }
-      exercises.set(exercise.id, exercise);
-      exercise.sets.push(row.set);
-    }
-    const result = Array.from(workouts.values());
-    for (const row of result) {
-      row.exercises.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
-      for (const exercise of row.exercises) {
-        exercise.sets.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
-      }
-    }
-    return {
-      items: result,
+    const items = await this.load(workoutIds);
+    const result: PaginatedResult<Workout> = {
+      items,
       info: {
-        page: page,
+        page,
+        count,
         pageSize: limit,
-        count: count,
       },
     };
-    // return result;
+    return result;
   }
 
   async hasWriteAccess(id: number, userId: number): Promise<boolean> {

@@ -1,8 +1,6 @@
 import {z} from 'zod';
-import {extendZodWithOpenApi} from 'zod-openapi';
 import {ActionErrorCode} from '../types/ActionErrorCode';
 import {ApiErrorCode} from '../types/ApiErrorCode';
-extendZodWithOpenApi(z);
 
 export const actionErrorResponseValidator = z.object({
   error: z.object({

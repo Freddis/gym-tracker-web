@@ -1,5 +1,5 @@
 import {OpenApiMethod} from 'strap-on-openapi';
-import {User} from '../src/backend/model/User/User';
+import {UserRow} from '../src/backend/services/DrizzleService/types/UserRow';
 import {openApiRoutes} from '../src/backend/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
@@ -14,7 +14,7 @@ export class OpenApiUtils {
 
   static async put(
     route: string,
-    user: User,
+    user: UserRow,
     data?: object
   ): Promise<OpenApiResponse> {
     const response = await this.sendRequest(route, OpenApiMethod.PUT, user, data);
@@ -32,7 +32,7 @@ export class OpenApiUtils {
 
   static async postWithUser(
     route: string,
-    user: User,
+    user: UserRow,
     data?: object
   ): Promise<OpenApiResponse> {
     const response = await this.sendRequest(route, OpenApiMethod.POST, user, data);
@@ -42,7 +42,7 @@ export class OpenApiUtils {
   protected static async sendRequest(
     route: string,
     method: OpenApiMethod,
-    user?: User,
+    user?: UserRow,
     data?: object
   ): Promise<OpenApiResponse> {
     const factory = BusinessUtils.getFactory();

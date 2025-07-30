@@ -1,12 +1,12 @@
 import {FC, MouseEventHandler, useState} from 'react';
-import {NestedExercise} from 'src/frontend/openapi-client';
+import {Exercise} from 'src/frontend/openapi-client';
 import {AppImage} from '../../../atoms/AppImage/AppImage';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
 
 type ExerciseBlockProps = {
-  item: NestedExercise;
+  item: Exercise;
 };
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {

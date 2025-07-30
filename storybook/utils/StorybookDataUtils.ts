@@ -1,6 +1,6 @@
 import {Muscle} from '../../src/common/enums/Muscle';
 import {AuthUser} from '../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-import {NestedExercise, Workout} from '../../src/frontend/openapi-client';
+import {Exercise, Workout} from '../../src/frontend/openapi-client';
 
 export class StorybookDataUtils {
   static getUser(): AuthUser {
@@ -18,8 +18,8 @@ export class StorybookDataUtils {
     return 'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg';
   }
 
-  static getExercise(): NestedExercise {
-    const exercise: NestedExercise = {
+  static getExercise(): Exercise {
+    const exercise: Exercise = {
       id: 10,
       name: 'Barbell Bench Press (Flat, Overhand Grip)',
       description: `<1>Lie back on the decline bench. Hold the barbell with overhand Grip.

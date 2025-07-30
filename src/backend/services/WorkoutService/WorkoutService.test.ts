@@ -2,10 +2,14 @@ import {describe, expect, test} from 'vitest';
 import {WorkoutService} from './WorkoutService';
 import {globalServiceFactory} from '../../utils/GlobalServiceFactory/globalServiceFactoryInstance';
 import {TestUtils} from '../../../../test/TestUtils';
+import {ExerciseService} from '../ExerciseService/ExerciseService';
 
 
 describe(WorkoutService.name, async () => {
-  const service = new WorkoutService(await globalServiceFactory.drizzle());
+  const service = new WorkoutService(
+    await globalServiceFactory.drizzle(),
+    new ExerciseService(await globalServiceFactory.drizzle())
+  );
 
   test('Can create workout', async () => {
     const user = await TestUtils.seed.createUser();

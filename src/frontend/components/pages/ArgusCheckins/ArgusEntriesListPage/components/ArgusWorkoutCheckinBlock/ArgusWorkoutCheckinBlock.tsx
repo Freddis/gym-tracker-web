@@ -1,5 +1,5 @@
 import {CSSProperties} from 'react';
-import {ArgusWorkoutCheckin} from 'src/backend/model/ArgusCheckin/validators/ArgusWorkoutCheckin';
+import {ArgusWorkoutCheckin} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWorkoutCheckin';
 import {ArgusCheckinContainer} from '../ArgusCheckinContainer/ArgusCheckinContainer';
 
 export function ArgusWorkoutCheckinBlock(props: {item: ArgusWorkoutCheckin}) {

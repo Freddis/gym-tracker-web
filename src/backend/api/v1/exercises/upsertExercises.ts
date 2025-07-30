@@ -1,9 +1,9 @@
 import {z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
-import {exerciseUpsertDtoValidator} from 'src/backend/model/Exercise/ExerciseUpsertDto';
-import {exerciseValidator} from 'src/backend/model/Exercise/Exercise';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {openApi} from '../../../utils/openApi';
+import {exerciseUpsertDtoValidator} from './validators/exerciseUpsertDtoValidator';
+import {exerciseRowValidator} from '../../../services/DrizzleService/types/ExerciseRow';
 
 export const upsertExercises = openApi.factory.createRoute({
   method: OpenApiMethod.PUT,
@@ -15,7 +15,7 @@ export const upsertExercises = openApi.factory.createRoute({
       items: exerciseUpsertDtoValidator.array(),
     }),
     response: z.object({
-      items: exerciseValidator.array(),
+      items: exerciseRowValidator.array(),
     }),
   },
   handler: async (ctx) => {

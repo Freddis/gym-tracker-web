@@ -1,10 +1,9 @@
-import {string, object, nativeEnum, union} from 'zod';
+import {object} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {openApi} from '../../../utils/openApi';
-import {nestedExerciseValidator} from '../../../model/Exercise/NestedExercise';
-import {Muscle} from '../../../../common/enums/Muscle';
-
+import {getExerciseListQueryValidator} from './validators/getExerciseListQueryValidator';
+import {exerciseValidator} from './validators/exerciseValidator';
 
 export const getBuiltInExerciseList = openApi.factory.createRoute({
   method: OpenApiMethod.GET,
@@ -12,19 +11,16 @@ export const getBuiltInExerciseList = openApi.factory.createRoute({
   description: 'Returns data on exercises available to the user',
   path: '/built-in',
   validators: {
-    query: object({
-      filter: string().optional(),
-      muscle: union([
-        nativeEnum(Muscle).array(),
-        nativeEnum(Muscle).transform((x) => [x]),
-      ]).optional(),
-    }),
+    query: getExerciseListQueryValidator,
     response: object({
-      items: nestedExerciseValidator.array(),
+      items: exerciseValidator.array(),
     }),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.exercise.getAll(ctx.params.query);
+    const result = await ctx.services.models.exercise.getAll({
+      ...ctx.params.query,
+      userId: null,
+    });
     return {
       items: result,
     };

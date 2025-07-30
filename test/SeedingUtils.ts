@@ -1,5 +1,5 @@
-import {Exercise} from '../src/backend/model/Exercise/Exercise';
-import {User} from '../src/backend/model/User/User';
+import {ExerciseRow} from '../src/backend/services/DrizzleService/types/ExerciseRow';
+import {UserRow} from '../src/backend/services/DrizzleService/types/UserRow';
 import {Logger} from '../src/common/utils/Logger/Logger';
 import {BusinessUtils} from './BusinessUtils';
 
@@ -8,7 +8,7 @@ export class SeedUtils {
   protected static defaultPassword = '1q2w3e4r';
   protected static logger = new Logger(SeedUtils.name);
 
-  static async createUser(): Promise<User> {
+  static async createUser(): Promise<UserRow> {
     const factory = BusinessUtils.getFactory();
     const drizzle = await factory.drizzle();
     const db = await drizzle.getDb();
@@ -27,7 +27,7 @@ export class SeedUtils {
     return user;
   }
 
-  static async createExercise(exercise: Partial<Exercise> = {}): Promise<Exercise> {
+  static async createExercise(exercise: Partial<ExerciseRow> = {}): Promise<ExerciseRow> {
     const factory = BusinessUtils.getFactory();
     const exerciseService = await factory.getExerciseService();
     const result = await exerciseService.create({

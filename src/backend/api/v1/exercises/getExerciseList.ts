@@ -2,7 +2,7 @@ import {string, z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {openApi} from '../../../utils/openApi';
-import {nestedExerciseValidator} from '../../../model/Exercise/NestedExercise';
+import {exerciseValidator} from './validators/exerciseValidator';
 
 export const getExerciseList = openApi.factory.createRoute({
   method: OpenApiMethod.GET,
@@ -15,7 +15,7 @@ export const getExerciseList = openApi.factory.createRoute({
       updatedAfter: openApi.validators.strings.datetime.optional(),
     }),
     response: z.object({
-      items: nestedExerciseValidator.array(),
+      items: exerciseValidator.array(),
     }),
   },
   handler: async (ctx) => {

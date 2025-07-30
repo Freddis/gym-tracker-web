@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {ArgusCheckinType} from 'src/backend/model/ArgusCheckin/types/ArgusCheckinType';
+import {ArgusCheckinType} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinType';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
 import {openApi} from '../../../utils/openApi';

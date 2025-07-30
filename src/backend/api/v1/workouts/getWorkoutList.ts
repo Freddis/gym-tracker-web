@@ -1,8 +1,8 @@
 import {z} from 'zod';
 import {ApiRouteType} from 'src/common/types/ApiRouteType';
-import {workoutValidator} from 'src/backend/model/Workout/Workout';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {openApi} from '../../../utils/openApi';
+import {workoutValidator} from './validators/workoutValidator';
 
 export const getWorkoutList = openApi.factory.createRoute({
   method: OpenApiMethod.GET,

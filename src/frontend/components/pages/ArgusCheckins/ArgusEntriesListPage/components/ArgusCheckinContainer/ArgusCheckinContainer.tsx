@@ -1,7 +1,7 @@
 import {ReactNode} from 'react';
-import {ArgusCheckin} from 'src/backend/model/ArgusCheckin/ArgusCheckin';
+import {ArgusCheckinRow} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/ArgusCheckinRow';
 
-export function ArgusCheckinContainer(props: {children: ReactNode, item: ArgusCheckin}) {
+export function ArgusCheckinContainer(props: {children: ReactNode, item: ArgusCheckinRow}) {
 
   const date = new Date(props.item.createdAt);
 

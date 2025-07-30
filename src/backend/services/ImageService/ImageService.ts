@@ -1,6 +1,6 @@
 import {BucketAlreadyOwnedByYou, CreateBucketCommand, PutObjectCommand, S3Client, S3ServiceException} from '@aws-sdk/client-s3';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
-import {Image} from '../../model/Image/Image';
+import {ImageRow} from '../DrizzleService/types/ImageRow';
 
 export class ImageService {
   protected bucket = 'gymtracker-images-23';
@@ -12,7 +12,7 @@ export class ImageService {
     this.s3 = new S3Client({});
   }
 
-  async getImageByName(name: string): Promise<Image| null> {
+  async getImageByName(name: string): Promise<ImageRow| null> {
     const db = await this.drizzle.getDb();
     const url = this.generateUrl(name);
     const image = await db.query.images.findFirst({
@@ -25,14 +25,14 @@ export class ImageService {
     return `https://${this.bucket}.s3.eu-central-1.amazonaws.com/${name}`;
   }
 
-  async createFromFile(file: Buffer, name: string): Promise<Image> {
+  async createFromFile(file: Buffer, name: string): Promise<ImageRow> {
     const image = this.saveImageToDb(name);
     await this.createBucket(this.bucket);
     await this.uploadFile(file, this.bucket, name);
     return image;
   }
 
-  protected async saveImageToDb(name:string): Promise<Image> {
+  protected async saveImageToDb(name:string): Promise<ImageRow> {
     const db = await this.drizzle.getDb();
     const inserted = await db.insert(db._.fullSchema.images).values({
       url: this.generateUrl(name),

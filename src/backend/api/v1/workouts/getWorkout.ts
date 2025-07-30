@@ -1,10 +1,11 @@
 import {OpenApiMethod} from 'strap-on-openapi';
 import {z} from 'zod';
 import {ApiRouteType} from '../../../../common/types/ApiRouteType';
-import {workoutValidator} from '../../../model/Workout/Workout';
+
 import {ActionError} from '../../../services/ApiService/errors/ActionError';
 import {ActionErrorCode} from '../../../services/ApiService/types/ActionErrorCode';
 import {openApi} from '../../../utils/openApi';
+import {workoutValidator} from './validators/workoutValidator';
 
 
 export const getWorkout = openApi.factory.createRoute({

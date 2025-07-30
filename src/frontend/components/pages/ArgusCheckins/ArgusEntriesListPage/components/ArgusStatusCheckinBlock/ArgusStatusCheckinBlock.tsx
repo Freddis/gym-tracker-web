@@ -1,6 +1,6 @@
 import {CSSProperties} from 'react';
 import {ArgusCheckinContainer} from '../ArgusCheckinContainer/ArgusCheckinContainer';
-import {ArgusStatusCheckin} from 'src/backend/model/ArgusCheckin/validators/ArgusStatusCheckin';
+import {ArgusStatusCheckin} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusStatusCheckin';
 
 export function ArgusStatusCheckinBlock(props: {item: ArgusStatusCheckin}) {
   const item = props.item.data;

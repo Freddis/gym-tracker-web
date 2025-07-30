@@ -1,9 +1,9 @@
 import {and, inArray, eq} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
-import {Exercise} from 'src/backend/model/Exercise/Exercise';
-import {ExerciseUpsertDto} from 'src/backend/model/Exercise/ExerciseUpsertDto';
+import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
+import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
 import {SemiPartial} from 'src/common/types/SemiPartial';
-import {NestedExercise} from '../../model/Exercise/NestedExercise';
+import {Exercise} from './types/Exercise';
 import {Muscle} from '../../../common/enums/Muscle';
 
 export class ExerciseService {
@@ -12,7 +12,7 @@ export class ExerciseService {
     this.db = db;
   }
 
-  async create(data: {userId?: number, name: string;}): Promise<Exercise> {
+  async create(data: {userId?: number, name: string;}): Promise<ExerciseRow> {
     const db = await this.db.getDb();
     const dbSchema = this.db.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
@@ -56,13 +56,13 @@ export class ExerciseService {
       );
   }
 
-  async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<Exercise[]> {
+  async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<ExerciseRow[]> {
     const db = await this.db.getDb();
     const schema = this.db.getSchema();
     if (data.length === 0) {
       return [];
     }
-    const attachedToUser: SemiPartial<Exercise, 'id'>[] = data.map((x) => ({
+    const attachedToUser: SemiPartial<ExerciseRow, 'id'>[] = data.map((x) => ({
       ...x,
       id: x.id ?? undefined,
       userId: userId,
@@ -88,27 +88,33 @@ export class ExerciseService {
           )
         ),
     });
-    return result ?? null;
+    if (!result) {
+      return null;
+    }
+    const nested = await this.nestExercises([result]);
+    return nested[0] ?? null;
   }
 
   async getAll(params?: {
+    ids?: number[],
     filter?: string,
-    userId?: number,
+    userId?: number | null,
     muscle?: Muscle[],
     updatedAfter?: Date
-  }): Promise<NestedExercise[]> {
+  }): Promise<Exercise[]> {
     const db = await this.db.getDb();
     const result = await db.query.exercises.findMany({
       where: (t, op) => op.and(
         op.isNull(t.deletedAt),
         op.or(
-          op.isNull(t.userId),
+          params?.userId === null ? op.isNull(t.userId) : undefined,
           params?.userId ? op.eq(t.userId, params.userId) : undefined
         ),
         params?.updatedAfter ? op.gte(t.updatedAt, params.updatedAfter) : undefined,
         !params?.filter ? undefined : op.and(
           ...params.filter.trim().split(' ').map((filter) => op.ilike(t.name, `%${filter}%`))
-        )
+        ),
+        params?.ids ? op.inArray(t.id, params.ids) : undefined,
       ),
       orderBy: (table, {asc}) => asc(table.name),
     });
@@ -136,10 +142,10 @@ export class ExerciseService {
     return filtered;
   }
 
-  async nestExercises(exercises: (Exercise)[]): Promise<NestedExercise[]> {
-    const primaryExercises: (Exercise)[] = [];
-    const personalExercises: (Exercise)[] = [];
-    const map = new Map<number, Exercise[]>();
+  async nestExercises(exercises: ExerciseRow[]): Promise<Exercise[]> {
+    const primaryExercises: (ExerciseRow)[] = [];
+    const personalExercises: (ExerciseRow)[] = [];
+    const map = new Map<number, ExerciseRow[]>();
     const exerciseIds = exercises.map((x) => x.id);
     const db = await this.db.getDb();
     const muscles = await db.select({
@@ -174,7 +180,7 @@ export class ExerciseService {
       map.set(exercise.parentExerciseId, existing);
     }
 
-    const items: NestedExercise[] = primaryExercises.map((item) => ({
+    const items: Exercise[] = exercises.map((item) => ({
       ...item,
       variations: map.get(item.id)?.map((variation) => ({
         ...variation,

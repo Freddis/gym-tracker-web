@@ -5,7 +5,7 @@ import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWork
 import {UpdateWorkoutExerciseFormExercrise} from '../UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
-import {Workout, WorkoutUpdateDto, WorkoutUpsertDto, Exercise} from '../../../../../../openapi-client';
+import {Workout, WorkoutUpdateDto, Exercise} from '../../../../../../openapi-client';
 import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from '../../../../../../openapi-client/@tanstack/react-query.gen';
 import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
@@ -97,7 +97,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     props.item.calories = value;
     setItem({...props.item});
   };
-  const deleteExercise = (row: WorkoutUpsertDto['exercises'][0]) => {
+  const deleteExercise = (row: WorkoutUpdateDto['exercises'][0]) => {
     const filtered = exercises.filter((x) => x.workoutExercise !== row);
     setExercises(filtered);
   };
@@ -105,7 +105,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
     popupContext.setContent(<ExerciseSelectionPopup onSelect={addExercise}/>);
   };
   const addExercise = (exercise: Exercise) => {
-    const workoutExercise: WorkoutUpsertDto['exercises'][0] = {
+    const workoutExercise: WorkoutUpdateDto['exercises'][0] = {
       exerciseId: exercise.id,
       sets: [{
         start: new Date(),
@@ -115,8 +115,6 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
         createdAt: new Date(),
         updatedAt: null,
       }],
-      createdAt: new Date(),
-      updatedAt: null,
     };
     setExercises([...exercises, {workoutExercise, exercise}]);
     popupContext.setContent(null);
@@ -143,8 +141,8 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
         </div>
       </Conditional>
       <div style={{marginTop: 10}}>
-        {exercises.map((row) => (
-          <UpdateWorkoutExerciseForm key={row.workoutExercise.id} item={row} onDelete={deleteExercise} />
+        {exercises.map((row, i) => (
+          <UpdateWorkoutExerciseForm key={i} item={row} onDelete={deleteExercise} />
           ))}
         <div className="flex justify-center">
           <AppButton onClick={showAddExercisePopup}>Add Exercise</AppButton>

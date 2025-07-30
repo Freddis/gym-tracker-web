@@ -1,4 +1,4 @@
-import {ArgusWeatherCheckin} from 'src/backend/model/ArgusCheckin/validators/ArgusWeatherCheckin';
+import {ArgusWeatherCheckin} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWeatherCheckin';
 import {ArgusCheckinContainer} from '../ArgusCheckinContainer/ArgusCheckinContainer';
 
 export function ArgusWeatherCheckinBlock(props: {item: ArgusWeatherCheckin}) {
