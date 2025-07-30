@@ -2,7 +2,8 @@ import {FC} from 'react';
 import {FaFacebook, FaGoogle, FaVk} from 'react-icons/fa';
 import {IoIosMail} from 'react-icons/io';
 import {LiaAddressCard} from 'react-icons/lia';
-import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+
 export const Footer: FC = () => {
   const {i18n, t} = useAppPartialTranslation((x) => x.layout.footer);
   return (

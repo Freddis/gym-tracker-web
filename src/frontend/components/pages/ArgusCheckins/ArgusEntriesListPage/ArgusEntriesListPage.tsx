@@ -1,6 +1,5 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {useOpenApiQuery} from 'src/frontend/hooks/useOpenApiQuery';
-import {getArgusCheckinOptions, getArgusCheckinTypesOptions} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
+import {useOpenApiQuery} from 'src/frontend/utils/useOpenApiQuery';
 import {ArgusCheckinSubtype} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinSubtype';
 import {Pagination} from 'src/frontend/components/atoms/Pagination/Pagination';
 import {getRouteApi} from '@tanstack/react-router';
@@ -10,6 +9,7 @@ import {ArgusCheckinBlock} from './components/ArgusCheckinBlock';
 import {ArgusWeatherCheckinBlock} from './components/ArgusWeatherCheckinBlock/ArgusWeatherCheckinBlock';
 import {ArgusWorkoutCheckinBlock} from './components/ArgusWorkoutCheckinBlock/ArgusWorkoutCheckinBlock';
 import {ArgusWeightCheckinBlock} from './components/ArgusWeightCheckinBlock/ArgusWeightCheckinBlock';
+import {getArgusCheckinOptions, getArgusCheckinTypesOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 
 const routeApi = getRouteApi('/argus/');
 

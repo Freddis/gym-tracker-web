@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import {Color} from '../../../../src/frontend/enums/Color';
+import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplayType} from '../enums/StoryBookDisplayType';
 
 export interface StoryBookDisplayProps {

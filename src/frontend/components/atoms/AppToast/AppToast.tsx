@@ -1,5 +1,5 @@
 import {FC, ReactNode} from 'react';
-import {Color} from '../../../enums/Color';
+import {Color} from '../../../utils/design-system/types/Color';
 import {twMerge} from 'tailwind-merge';
 import {FaCircleXmark} from 'react-icons/fa6';
 import {FaExclamationTriangle} from 'react-icons/fa';

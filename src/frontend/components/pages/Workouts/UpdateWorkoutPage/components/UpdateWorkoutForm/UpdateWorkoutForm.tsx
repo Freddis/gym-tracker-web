@@ -5,8 +5,6 @@ import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWork
 import {UpdateWorkoutExerciseFormExercrise} from '../UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
-import {Workout, WorkoutUpdateDto, Exercise} from '../../../../../../openapi-client';
-import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from '../../../../../../openapi-client/@tanstack/react-query.gen';
 import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {AppBlock} from '../../../../../atoms/AppBlock/AppBlock';
@@ -14,6 +12,8 @@ import {AppBlockHeader} from '../../../../../atoms/AppBlock/components/AppBlockH
 import {Conditional} from '../../../../../layout/Header/Header';
 import {AppLink} from '../../../../../atoms/AppLink/AppLink';
 import {AppLabel} from '../../../../../atoms/AppLabel/AppLabel';
+import {Workout, WorkoutUpdateDto, Exercise} from '../../../../../../utils/openapi-client';
+import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from '../../../../../../utils/openapi-client/@tanstack/react-query.gen';
 
 export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const client = useQueryClient();

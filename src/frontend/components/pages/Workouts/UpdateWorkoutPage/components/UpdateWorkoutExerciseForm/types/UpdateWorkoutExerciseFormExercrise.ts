@@ -1,5 +1,5 @@
-import {Exercise, WorkoutUpdateDto} from 'src/frontend/openapi-client';
 import {StictOmit} from '../../../../../../../../common/types/StrictOmit';
+import {Exercise, WorkoutUpdateDto} from '../../../../../../../utils/openapi-client';
 
 export interface UpdateWorkoutExerciseFormExercrise {
   exercise: StictOmit<Exercise, 'muscles'|'variations'>,

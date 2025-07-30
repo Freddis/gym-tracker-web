@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {IoIosMail} from 'react-icons/io';
 import {LiaAddressCard} from 'react-icons/lia';
-import {Color} from '../../../src/frontend/enums/Color';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 
 const meta = {

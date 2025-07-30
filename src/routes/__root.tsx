@@ -1,7 +1,7 @@
 import {createRootRoute} from '@tanstack/react-router';
 import {Layout} from '../frontend/components/layout/Layout/Layout';
 import {NotFoundPage} from '../frontend/components/pages/NotFound/NotFoundPage';
-import appCss from '../frontend/css/app.css?url';
+import appCss from '../frontend/utils/css/app.css?url';
 
 export const Route = createRootRoute({
   head: () => ({

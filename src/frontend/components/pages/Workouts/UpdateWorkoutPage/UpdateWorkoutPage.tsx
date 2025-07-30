@@ -3,8 +3,8 @@ import {useQuery} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
 import {UpdateWorkoutForm} from './components/UpdateWorkoutForm/UpdateWorkoutForm';
 import {FC} from 'react';
-import {getWorkoutsByIdOptions} from '../../../../openapi-client/@tanstack/react-query.gen';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
+import {getWorkoutsByIdOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 
 const routeApi = getRouteApi('/workouts/update/$workoutId');
 export const UpdateWorkoutPage: FC = () => {

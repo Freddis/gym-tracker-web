@@ -8,7 +8,7 @@ import {AppTextInput} from '../../../src/frontend/components/atoms/AppTextInput/
 import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
 import {AppInputError} from '../../../src/frontend/components/atoms/AppInputError/AppInputError';
 import {AppToast} from '../../../src/frontend/components/atoms/AppToast/AppToast';
-import {Color} from '../../../src/frontend/enums/Color';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 
 export const StoryBookPaletteSampleBlock: FC = () => {
   const updateDTO = StorybookDataUtils.getWorkout();

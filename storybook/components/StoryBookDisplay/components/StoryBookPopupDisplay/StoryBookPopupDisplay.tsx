@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Color} from '../../../../../src/frontend/enums/Color';
+import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplayProps} from '../../types/StoryBookDisplayProps';
 import {PopupContentWrapper} from '../../../../../src/frontend/components/atoms/Popup/components/PopupContentWrapper';
 

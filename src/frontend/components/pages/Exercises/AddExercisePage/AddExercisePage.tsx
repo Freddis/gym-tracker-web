@@ -1,8 +1,8 @@
-import {postExercisesMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useState} from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
+import {postExercisesMutation} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 
 export function AddExercisePage() {
   const [name, setName] = useState('');

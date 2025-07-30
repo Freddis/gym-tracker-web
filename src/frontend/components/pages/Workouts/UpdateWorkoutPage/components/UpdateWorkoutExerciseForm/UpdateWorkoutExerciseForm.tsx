@@ -3,8 +3,8 @@ import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormP
 import {AppButton} from '../../../../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
-import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutUpdateDto} from '../../../../../../openapi-client';
 import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
+import {Exercise, WorkoutUpdateDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../utils/openapi-client';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);

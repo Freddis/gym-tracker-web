@@ -1,9 +1,9 @@
 import {FC, MouseEventHandler, useState} from 'react';
-import {Exercise} from 'src/frontend/openapi-client';
 import {AppImage} from '../../../atoms/AppImage/AppImage';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
+import {Exercise} from '../../../../utils/openapi-client';
 
 type ExerciseBlockProps = {
   item: Exercise;

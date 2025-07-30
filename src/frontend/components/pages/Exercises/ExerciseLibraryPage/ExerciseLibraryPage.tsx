@@ -8,15 +8,15 @@ import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {Conditional} from '../../../layout/Header/Header';
-import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../openapi-client';
 import {useVirtualizer} from '@tanstack/react-virtual';
 import {AppSearchInput} from '../../../atoms/AppSearchInput/AppSearchInput';
 import {Muscle} from '../../../../../common/enums/Muscle';
 import {getRouteApi} from '@tanstack/react-router';
 import {AppToast} from '../../../atoms/AppToast/AppToast';
-import {Color} from '../../../../enums/Color';
+import {Color} from '../../../../utils/design-system/types/Color';
 import {useQuery} from '@tanstack/react-query';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
+import {GetExercisesBuiltInData, getExercisesBuiltIn} from '../../../../utils/openapi-client';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {

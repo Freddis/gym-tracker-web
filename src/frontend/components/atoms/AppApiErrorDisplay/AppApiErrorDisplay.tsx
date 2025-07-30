@@ -1,7 +1,7 @@
 import {FC} from 'react';
-import {GetExercisesBuiltInError, GetWorkoutsError} from '../../../openapi-client';
 import {AppToast} from '../AppToast/AppToast';
-import {Color} from '../../../enums/Color';
+import {Color} from '../../../utils/design-system/types/Color';
+import {GetExercisesBuiltInError, GetWorkoutsError} from '../../../utils/openapi-client';
 
 interface AppApiErrorDisplayProps {
   error?: GetExercisesBuiltInError['error'] | GetWorkoutsError['error']

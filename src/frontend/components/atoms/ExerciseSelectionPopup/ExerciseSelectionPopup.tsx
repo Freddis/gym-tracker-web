@@ -3,12 +3,12 @@ import {FC, useState, useContext} from 'react';
 import {ExerciseRow} from './components/ExerciseRow';
 import {AuthContext} from '../../layout/AuthProvider/AuthContext';
 import {AppTextInput} from '../AppTextInput/AppTextInput';
-import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 import {AppSwitch} from '../AppSwitch/AppSwitch';
 import {AppSpinner} from '../AppSpinner/AppSpinner';
-import {useOpenApiQuery} from '../../../hooks/useOpenApiQuery';
-import {Exercise} from '../../../openapi-client';
-import {getExercisesOptions} from '../../../openapi-client/@tanstack/react-query.gen';
+import {useOpenApiQuery} from '../../../utils/useOpenApiQuery';
+import {Exercise} from '../../../utils/openapi-client';
+import {getExercisesOptions} from '../../../utils/openapi-client/@tanstack/react-query.gen';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
   const query = useOpenApiQuery(getExercisesOptions, {});

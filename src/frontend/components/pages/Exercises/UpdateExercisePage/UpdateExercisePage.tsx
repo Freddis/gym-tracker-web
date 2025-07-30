@@ -1,13 +1,14 @@
-import {
-  deleteExercisesByIdMutation,
-  getExercisesByIdOptions,
-  patchExercisesByIdMutation,
-  } from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useState} from 'react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
-import {Exercise} from 'src/frontend/openapi-client';
+import {Exercise} from '../../../../utils/openapi-client';
+import {
+  patchExercisesByIdMutation,
+  deleteExercisesByIdMutation,
+  getExercisesByIdOptions,
+} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
+
 const routeApi = getRouteApi('/exercises/update/$exerciseId');
 
 const EditExerciseForm = (props: {item: Exercise}) => {

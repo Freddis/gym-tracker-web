@@ -1,16 +1,15 @@
 import {useNavigate} from '@tanstack/react-router';
 import {FC, useContext, useState} from 'react';
-import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
-import {postAuthRegister, PostAuthRegisterError} from '../../../../openapi-client';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
-import {useResponseErrors} from '../../../../hooks/useResponseErrors';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
-
+import {postAuthRegister, PostAuthRegisterError} from '../../../../utils/openapi-client';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 export const RegistrationPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);

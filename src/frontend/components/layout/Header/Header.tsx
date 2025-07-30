@@ -6,9 +6,9 @@ import {AppLogo} from '../../atoms/AppLogo/AppLogo';
 import {EditThemeContext} from '../ThemeProvider/context/EditThemeContext';
 import {Theme} from '../ThemeProvider/enums/Theme';
 import {ThemeContext} from '../ThemeProvider/context/ThemeContext';
-import {useAppPartialTranslation} from '../../../i18n/useAppPartialTranslation';
 import {ProfileDropdownMenu} from './components/ProfileDropdownMenu/ProfileDropdownMenu';
 import {DarkModeSwitch} from './components/DarkModeSwitch/DarkModeSwitch';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 export const Conditional: FC<{condition: boolean, children: ReactNode}> = (props) => {
   return props.condition ? props.children : null;

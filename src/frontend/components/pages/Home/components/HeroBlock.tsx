@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
-import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 export const HeroBlock: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.static.home.hero);

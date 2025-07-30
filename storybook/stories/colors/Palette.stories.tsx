@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookPaletteOverview} from '../../components/StoryBookPaletteOverview/StoryBookPaletteOverview';
-import {Color} from '../../../src/frontend/enums/Color';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 
 const meta = {
   title: 'Colors/Palette',

@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Exercise} from 'src/frontend/openapi-client';
+import {Exercise} from '../../../../utils/openapi-client';
 
 export const ExerciseRow: FC<{item: Exercise, onSelect?: (item: Exercise)=> void}> = (props) => {
   const item = props.item;

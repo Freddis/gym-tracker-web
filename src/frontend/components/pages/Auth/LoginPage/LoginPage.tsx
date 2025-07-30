@@ -1,8 +1,6 @@
 import {useNavigate} from '@tanstack/react-router';
 import {FC, useContext, useState} from 'react';
-import {useResponseErrors} from '../../../../hooks/useResponseErrors';
-import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
-import {postAuthLogin, PostAuthLoginError} from '../../../../openapi-client';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
@@ -12,7 +10,8 @@ import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
-
+import {postAuthLogin, PostAuthLoginError} from '../../../../utils/openapi-client';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);

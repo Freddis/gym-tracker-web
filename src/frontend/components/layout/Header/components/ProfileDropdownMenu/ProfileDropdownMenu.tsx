@@ -1,7 +1,6 @@
 import {useNavigate} from '@tanstack/react-router';
 import {FC, MouseEventHandler, useContext} from 'react';
 import {AuthContext} from '../../../AuthProvider/AuthContext';
-import {useAppPartialTranslation} from '../../../../../i18n/useAppPartialTranslation';
 import {FiChevronDown} from 'react-icons/fi';
 import {
   AppDropdownMenu,
@@ -16,6 +15,7 @@ import {EditThemeContext} from '../../../ThemeProvider/context/EditThemeContext'
 import {ThemeContext} from '../../../ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../ThemeProvider/enums/Theme';
 import {AppLanguageDropdown} from '../../../../atoms/AppLanguageDropdown/AppLanguageDropdown';
+import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 
 
 export const ProfileDropdownMenu: FC = () => {
@@ -40,7 +40,7 @@ export const ProfileDropdownMenu: FC = () => {
     <div className="flex items-center cursor-pointer">
       <span className="text-base ">{auth.user?.name}</span>
       <FiChevronDown className=" relative" />
-      <div className="ml-2 font-bold border-light border-2 shadow-2xl rounded-full w-12 h-12 flex items-center justify-center bg-cyan-600">
+      <div className="text-white ml-2 font-bold border-light rounded-full w-12 h-12 flex items-center justify-center bg-cyan-600">
       {auth.user?.name.substring(0, 1)}
       </div>
     </div>

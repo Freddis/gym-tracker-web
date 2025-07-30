@@ -3,7 +3,7 @@ import {IoFastFood} from 'react-icons/io5';
 import {FaDumbbell} from 'react-icons/fa';
 import {MdOutlineSportsHandball} from 'react-icons/md';
 import {GrAnalytics} from 'react-icons/gr';
-import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 export const FeaturesBlock: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.static.home.features);

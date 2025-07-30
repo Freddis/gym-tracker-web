@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Color} from '../../../src/frontend/enums/Color';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookColorDisplay} from '../StoryBookColorDisplay/StoryBookColorDisplay';
 
 export const StoryBookColorOverview: FC = () => {

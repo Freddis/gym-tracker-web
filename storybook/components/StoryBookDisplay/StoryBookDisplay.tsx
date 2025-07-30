@@ -17,9 +17,8 @@ import {StoryBookDisplayType} from './enums/StoryBookDisplayType';
 import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
 import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBookPopupDisplay';
 import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
-import {client} from '../../../src/frontend/openapi-client/client.gen';
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-
+import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
 
 const queryClient = new QueryClient();
 

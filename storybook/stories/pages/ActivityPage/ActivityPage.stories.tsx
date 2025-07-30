@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {ActivityPage} from '../../../../src/frontend/components/pages/Activities/AcitivtiesPage';
-import {Color} from '../../../../src/frontend/enums/Color';
+import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 

@@ -1,17 +1,17 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {postWorkoutsMutation} from 'src/frontend/openapi-client/@tanstack/react-query.gen';
 import {getRouteApi, Link} from '@tanstack/react-router';
 import {MouseEventHandler} from 'react';
 import {keepPreviousData, useMutation, useQuery} from '@tanstack/react-query';
 import {WorkoutBlock} from './WorkoutBlock/WorkoutBlock';
 import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
-import {useAppPartialTranslation} from '../../../../i18n/useAppPartialTranslation';
 import {Pagination} from '../../../atoms/Pagination/Pagination';
-import {getWorkouts} from '../../../../openapi-client';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {AppToast} from '../../../atoms/AppToast/AppToast';
-import {Color} from '../../../../enums/Color';
+import {Color} from '../../../../utils/design-system/types/Color';
+import {getWorkouts} from '../../../../utils/openapi-client';
+import {postWorkoutsMutation} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 const routeApi = getRouteApi('/workouts/');
 

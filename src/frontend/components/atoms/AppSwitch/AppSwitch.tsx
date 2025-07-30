@@ -2,7 +2,7 @@
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import {cn} from '../../../utils/cn';
 import {ComponentProps, createRef, FC} from 'react';
-import {Color} from '../../../enums/Color';
+import {Color} from '../../../utils/design-system/types/Color';
 
 export interface SwitchProps extends ComponentProps<typeof SwitchPrimitive.Root> {
   label?: string,

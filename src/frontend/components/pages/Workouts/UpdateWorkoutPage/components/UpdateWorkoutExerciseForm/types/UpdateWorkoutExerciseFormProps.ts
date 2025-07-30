@@ -1,4 +1,4 @@
-import {WorkoutUpdateDto} from 'src/frontend/openapi-client';
+import {WorkoutUpdateDto} from '../../../../../../../utils/openapi-client';
 import {UpdateWorkoutExerciseFormExercrise} from './UpdateWorkoutExerciseFormExercrise';
 export interface UpdateWorkoutExerciseFormProps {
   item: UpdateWorkoutExerciseFormExercrise,

@@ -6,6 +6,6 @@ openApi.clientGenerator.generate({
   output: {
     format: 'prettier',
     lint: 'eslint',
-    path: './src/frontend/openapi-client',
+    path: './src/frontend/utils/openapi-client',
   },
 });

@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../src/frontend/enums/Color';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {AppSpinner} from '../../../src/frontend/components/atoms/AppSpinner/AppSpinner';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 

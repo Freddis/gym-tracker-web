@@ -1,5 +1,5 @@
-import {WorkoutExercise} from '../../../../frontend/openapi-client';
 import {Workout} from './Workout';
+import {WorkoutExercise} from './WorkoutExercise';
 import {WorkoutExerciseSet} from './WorkoutExerciseSet';
 
 type StictOmit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

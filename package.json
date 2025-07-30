@@ -22,7 +22,6 @@
     "db:wipe": "npm run db:clean && npm run db:seed",
     "lint": "eslint . --fix --ignore-pattern '.output/**'",
     "openapi:generate": "tsx ./scripts/openapi/generateSchema.ts",
-    "openapi:ts": "openapi-ts",
     "storybook": "storybook dev -c storybook  -p 6006 --no-open"
   },
   "author": "Alex Sarychev",

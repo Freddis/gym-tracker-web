@@ -1,6 +1,6 @@
 import {FC} from 'react';
-import {Color} from '../../../src/frontend/enums/Color';
-import {palettes} from '../../../src/frontend/utils/palettes';
+import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {palettes} from '../../../src/frontend/utils/design-system/palettes';
 import {StoryBookPaletteDisplay} from '../StoryBookPaletteDisplay/StoryBookPaletteDisplay';
 
 export const StoryBookPaletteOverview: FC<{palette: Color}> = (props) => {

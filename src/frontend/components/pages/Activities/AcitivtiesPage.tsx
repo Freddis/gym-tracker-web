@@ -1,8 +1,8 @@
 import {FC} from 'react';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {WorkoutBlock} from '../Workouts/WorkoutListPage/WorkoutBlock/WorkoutBlock';
-import {Workout} from '../../../openapi-client';
 import {NewsBlock} from '../../blocks/NewsBlock/NewsBlock';
+import {Workout} from '../../../utils/openapi-client';
 
 export const ActivityPage: FC = () => {
 

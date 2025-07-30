@@ -1,9 +1,9 @@
 import {FC, ReactNode, useMemo, useState} from 'react';
 import {AuthContext} from './AuthContext';
 import {authUserValidator, AuthUser} from './types/AuthUser';
-import {client} from 'src/frontend/openapi-client/client.gen';
 import {Cookie} from '../../../../common/utils/Cookie/Cookie';
 import {CookieName} from '../../../../common/enums/CookieName';
+import {client} from '../../../utils/openapi-client/client.gen';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
   const cookies = new Cookie();
