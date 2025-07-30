@@ -187,7 +187,7 @@ export default tseslint.config(
     'output/**',
     '.drizzle/**',
     'temp/**',
-    'src/frontend/openapi-client/**',
+    'src/frontend/utils/openapi-client/**',
     'html/**',
   ],
   languageOptions: {

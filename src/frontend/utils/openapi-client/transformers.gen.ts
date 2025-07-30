@@ -10,7 +10,7 @@ import type {
   GetWorkoutsByIdResponse,
   PostWeightResponse,
   GetArgusCheckinResponse,
-} from './types.gen';
+} from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);

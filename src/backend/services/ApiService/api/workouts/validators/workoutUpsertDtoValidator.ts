@@ -1,5 +1,3 @@
-
-
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutExerciseUpsertDtoValidator} from './workoutExerciseUpsertDtoValidator';
 import {workoutValidator} from './workoutValidator';

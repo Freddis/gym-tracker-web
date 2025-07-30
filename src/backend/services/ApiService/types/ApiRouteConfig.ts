@@ -11,8 +11,8 @@ import {ActionErrorCode} from './ActionErrorCode';
 import {ApiRequestServices} from './ApiRequestServices';
 import {DrizzleService} from '../../DrizzleService/DrizzleService';
 import {ApiError} from '../errors/ApiError';
-import {UserRow} from '../../DrizzleService/types/UserRow';
-
+import {UserRouteContext} from './UserRouteContext';
+import {PublicRouteContext} from './PublicRouteContext';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
   protected drizzle: DrizzleService;
@@ -25,14 +25,25 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     extraProps: undefined,
     contextFactory: async () => (undefined),
   };
-  Public: OpenApiRouteConfig<ApiRouteType.Public, ApiErrorCode, undefined, {services: ApiRequestServices}> = {
+  Public: OpenApiRouteConfig<ApiRouteType.Public, ApiErrorCode, undefined, PublicRouteContext> = {
     authorization: false,
     extraProps: undefined,
+    errors: {
+      [ApiErrorCode.UnknownError]: true,
+      [ApiErrorCode.ValidationFailed]: true,
+      [ApiErrorCode.ActionError]: true,
+    },
     contextFactory: async () => ({services: await this.createRequestServices()}),
   };
-  User: OpenApiRouteConfig<ApiRouteType.User, ApiErrorCode, undefined, {services: ApiRequestServices, viewer: UserRow }> = {
-    authorization: false,
+  User: OpenApiRouteConfig<ApiRouteType.User, ApiErrorCode, undefined, UserRouteContext > = {
+    authorization: true,
     extraProps: undefined,
+    errors: {
+      [ApiErrorCode.UnknownError]: true,
+      [ApiErrorCode.ValidationFailed]: true,
+      [ApiErrorCode.ActionError]: true,
+      [ApiErrorCode.Unauthorized]: true,
+    },
     contextFactory: async (ctx) => {
       const services = await this.createRequestServices();
       const viewer = await services.auth.getUserFromRequest(ctx.request);
