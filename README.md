@@ -191,10 +191,12 @@ For each pallete a special class is generated in tailwind: 'palatte-neutral', 'p
 
 To change palette on a block simply change pallete on the top-most HTML element of this block.
 
-> [!NOTE] This approach guarantees that colors are ALWAYS perfectly aligned and you don't need to change any internal tailwind classes inside blocks if you need to change pallete for specific block
+> [!NOTE] 
+> This approach guarantees that colors are ALWAYS perfectly aligned and you don't need to change any internal tailwind classes inside blocks if you need to change pallete for specific block
 
 Palletes are always regenerated on any change of any file. It's managed  by a small custom plugin I wrote for Vite.
 
+> 
 > [!NOTE] Storybook has all the elements displayed in both light and dark mode. There is a page that demonstrates all the available palletes on a sample block
 
 ### Tests
