@@ -1,0 +1,22 @@
+import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
+import {OpenApiMethod} from 'strap-on-openapi';
+import {object, number} from 'zod';
+import {RouteFactory} from '../../utils/RouteFactory';
+
+export const createWorkout = RouteFactory.createRoute({
+  method: OpenApiMethod.POST,
+  type: ApiRouteType.User,
+  description: 'Adds new workout for the user',
+  path: '/',
+  validators: {
+    body: object({
+    }),
+    response: object({
+      id: number(),
+    }),
+  },
+  handler: async (ctx) => {
+    const result = await ctx.services.models.workout.create(ctx.viewer.id);
+    return result;
+  },
+});

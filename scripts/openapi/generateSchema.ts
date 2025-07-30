@@ -1,7 +1,6 @@
-import {openApi} from '../../src/backend/utils/openApi';
-import {openApiRoutes} from 'src/backend/utils/openApiRoutes';
+import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
 
-openApi.addRouteMap(openApiRoutes);
+const openApi = await globalServiceFactory.openApi();
 openApi.clientGenerator.generate({
   output: {
     format: 'prettier',

@@ -3,8 +3,8 @@ import {
   OpenApi,
   OpenApiValidationError,
   OpenApiValidationLocation,
+  OpenApiValidationUtils,
 } from 'strap-on-openapi';
-import {ApiRequestServices} from '../../../common/types/ApiRequestServices';
 import {ArgusCheckinService} from '../ArgusCheckinService/ArgusCheckinService';
 import {AuthService} from '../AuthService/AuthService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
@@ -22,7 +22,10 @@ import {ApiError} from './errors/ApiError';
 import {ActionErrorCode} from './types/ActionErrorCode';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ResponseValidationErrorResponse, responseValidationErrorResponseValidator} from './validators/ReponseValidationErrorResponse';
-import {ApiRouteType} from '../../../common/types/ApiRouteType';
+import {ApiRequestServices} from './types/ApiRequestServices';
+import {ApiRouteType} from './types/ApiRouteType';
+import {openApiRoutes} from './utils/openApiRoutes';
+
 export class ApiService {
   protected drizzle: DrizzleService;
   protected spec = OpenApi.builder.customizeErrors(
@@ -184,7 +187,10 @@ export class ApiService {
     this.drizzle = drizzle;
   }
   createOpenApi() {
-    return this.spec;
+    // const api = OpenApi.builder.create(ApiRouteType, ApiErrorCode, new ApiConfig(this.drizzle));
+    const api = this.spec;
+    api.addRouteMap(openApiRoutes);
+    return api;
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {

@@ -11,6 +11,7 @@ export default defineConfig({
     target: 'es2022',
     outDir: '.output',
   },
+  publicDir: './src/frontend/utils/public',
   optimizeDeps: {
     // fixes html import problem deep in node_modules in dev
     exclude: ['@mapbox'],

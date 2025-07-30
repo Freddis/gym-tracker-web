@@ -1,6 +1,6 @@
 import {OpenApiMethod} from 'strap-on-openapi';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
-import {openApiRoutes} from '../../openApiRoutes';
+import {openApiRoutes} from '../../../services/ApiService/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
