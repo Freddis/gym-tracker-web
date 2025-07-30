@@ -127,7 +127,8 @@ The objective of controllers is to route requests to model and return View (json
 
 Controllers are in charge of data validation as well and aware about authentication and users. 
 
- > [!NOTE] Model should never interfere with with API or and controllers should never interfere with business logic. 
+ > [!NOTE] 
+ > Model should never interfere with with API or and controllers should never interfere with business logic. 
 
 ### Validators
  Normally I prefer to create validators and their types in the same file, like it's done in <b>DrizzleService</b>.
@@ -196,8 +197,8 @@ To change palette on a block simply change pallete on the top-most HTML element 
 
 Palletes are always regenerated on any change of any file. It's managed  by a small custom plugin I wrote for Vite.
 
-> 
-> [!NOTE] Storybook has all the elements displayed in both light and dark mode. There is a page that demonstrates all the available palletes on a sample block
+> [!NOTE] 
+> Storybook has all the elements displayed in both light and dark mode. There is a page that demonstrates all the available palletes on a sample block
 
 ### Tests
 
