@@ -70,6 +70,9 @@ The project uses Tanstack Start as the frontend framework, which is similar to <
 Unlike NextJS, Tanstack Start easily allows you to turn it into a single page application (SPA). Combined with the fact that Strap-On OpenAPI is framework agnostic, it allows for quick scaling when the time comes.
 
 ### Folder structure
+
+The toplevel of (<b>src</b> folder) follows the common Tanstack Start structure: router.tsx client.tsx, routeTree.tsx, routes dir. You should quickly find your way around those if you're familiar with the framework. <b>backend</b> and <b>frontend</b> folders differ and follow more sophisticated approach described below.
+
 Both backend and frontend should follow the same approach: 
 1. Common components and types should be on the top level.
 2. Each component should be placed in a folder, which would serve as the top level for its subcomponents.
