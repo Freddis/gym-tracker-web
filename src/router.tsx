@@ -25,6 +25,9 @@ export function createRouter() {
       }
       // correcting urlencoded arrays in query params
       const res = '?' + stringify(searchObj, {arrayFormat: 'brackets', encodeValuesOnly: true});
+      if (res === '?') {
+        return '';
+      }
       return res;
     },
     defaultPreload: 'intent',

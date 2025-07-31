@@ -1,10 +1,11 @@
-import {and, inArray, eq} from 'drizzle-orm';
+import {and, inArray, eq, exists, isNull, asc, or, gte, ilike} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
 import {SemiPartial} from 'src/common/types/SemiPartial';
 import {Exercise} from './types/Exercise';
 import {Muscle} from '../../../common/enums/Muscle';
+import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
 
 export class ExerciseService {
   protected db: DrizzleService;
@@ -96,53 +97,69 @@ export class ExerciseService {
   }
 
   async getAll(params?: {
+    page?: number,
+    perPage?: number,
     ids?: number[],
     filter?: string,
     userId?: number | null,
     muscle?: Muscle[],
     updatedAfter?: Date
-  }): Promise<Exercise[]> {
+  }): Promise<PaginatedResult<Exercise>> {
     const db = await this.db.getDb();
-    const result = await db.query.exercises.findMany({
-      where: (t, op) => op.and(
-        op.isNull(t.deletedAt),
-        op.or(
-          params?.userId === null ? op.isNull(t.userId) : undefined,
-          params?.userId ? op.eq(t.userId, params.userId) : undefined
-        ),
-        params?.updatedAfter ? op.gte(t.updatedAt, params.updatedAfter) : undefined,
-        !params?.filter ? undefined : op.and(
-          ...params.filter.trim().split(' ').map((filter) => op.ilike(t.name, `%${filter}%`))
-        ),
-        params?.ids ? op.inArray(t.id, params.ids) : undefined,
-      ),
-      orderBy: (table, {asc}) => asc(table.name),
-    });
-    const nested = await this.nestExercises(result);
-    let filtered = nested;
-    if (params?.muscle) {
-      filtered = [];
-      for (const row of nested) {
-        const allMuscles = [...row.muscles.primary, ...row.muscles.secondary];
-        let include = true;
-        for (const muscle of params.muscle) {
-          if (!allMuscles.includes(muscle)) {
-            // continue outer;
-            include = false;
-            break;
-          }
-        }
-        if (!include) {
-          continue;
-        }
-        filtered.push(row);
-      }
+    const page = params?.page ?? 1;
+    const limit = params?.perPage ?? 30;
+    const offset = (page - 1) * limit;
 
-    }
-    return filtered;
+    // For each muscle we need subquery to find if the muscle is attached to this exercise
+    // All muscles have to be attached
+    const muscleSubsqueries = params?.muscle?.map((muscle) => exists(
+        db.select({id: db._.fullSchema.muscles.id})
+          .from(db._.fullSchema.muscles)
+          .where(
+            and(
+              eq(db._.fullSchema.muscles.exerciseId, db._.fullSchema.exercises.id),
+              eq(db._.fullSchema.muscles.muscle, muscle),
+            )
+          )
+      )
+    ) ?? [];
+
+    const where = and(
+      or(
+          params?.userId === null ? isNull(db._.fullSchema.exercises.userId) : undefined,
+          params?.userId ? eq(db._.fullSchema.exercises.userId, params.userId) : undefined
+        ),
+      params?.updatedAfter ? gte(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
+      params?.filter ? and(
+        ...params.filter.trim().split(' ').map((filter) => ilike(db._.fullSchema.exercises.name, `%${filter}%`))
+      ) : undefined,
+      params?.ids ? inArray(db._.fullSchema.exercises.id, params.ids) : undefined,
+      params?.muscle ? and(...muscleSubsqueries) : undefined,
+      isNull(db._.fullSchema.exercises.deletedAt)
+    );
+    const rows = await db.select()
+    .from(db._.fullSchema.exercises)
+    .where(where)
+    .orderBy(
+      asc(db._.fullSchema.exercises.name)
+    )
+    .limit(limit)
+    .offset(offset);
+
+    const count = await db.$count(db._.fullSchema.exercises, where);
+    const items = await this.nestExercises(rows);
+    const result: PaginatedResult<Exercise> = {
+      items,
+      info: {
+        page,
+        count,
+        pageSize: limit,
+      },
+    };
+    return result;
   }
 
-  async nestExercises(exercises: ExerciseRow[]): Promise<Exercise[]> {
+  protected async nestExercises(exercises: ExerciseRow[]): Promise<Exercise[]> {
     const primaryExercises: (ExerciseRow)[] = [];
     const personalExercises: (ExerciseRow)[] = [];
     const map = new Map<number, ExerciseRow[]>();

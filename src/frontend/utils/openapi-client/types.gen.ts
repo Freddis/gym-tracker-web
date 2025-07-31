@@ -658,8 +658,59 @@ export type GetExercisesData = {
   body?: never;
   path?: never;
   query?: {
+    page?: number;
     filter?: string;
-    updatedAfter?: Date;
+    muscle?:
+      | Array<
+          | "Lower Back"
+          | "Soleus"
+          | "Front Deltoids"
+          | "Lats"
+          | "Forearms"
+          | "Pecs"
+          | "Hamstrings"
+          | "Wrist Flexors"
+          | "Biceps"
+          | "Triceps"
+          | "Rear Deltoids"
+          | "Rotator Cuff"
+          | "Ankle"
+          | "Abdominals"
+          | "Glutes"
+          | "Quadriceps"
+          | "Obliques"
+          | "Abductors"
+          | "Gastrocnemius"
+          | "Lateral Deltoids"
+          | "Hip Flexors"
+          | "Trapezius"
+          | "Neck"
+          | "Adductors"
+        >
+      | "Lower Back"
+      | "Soleus"
+      | "Front Deltoids"
+      | "Lats"
+      | "Forearms"
+      | "Pecs"
+      | "Hamstrings"
+      | "Wrist Flexors"
+      | "Biceps"
+      | "Triceps"
+      | "Rear Deltoids"
+      | "Rotator Cuff"
+      | "Ankle"
+      | "Abdominals"
+      | "Glutes"
+      | "Quadriceps"
+      | "Obliques"
+      | "Abductors"
+      | "Gastrocnemius"
+      | "Lateral Deltoids"
+      | "Hip Flexors"
+      | "Trapezius"
+      | "Neck"
+      | "Adductors";
   };
   url: "/exercises";
 };
@@ -757,7 +808,27 @@ export type GetExercisesResponses = {
    * Good Response
    */
   200: {
+    /**
+     * Page or items
+     */
     items: Array<Exercise>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
   };
 };
 
@@ -1039,6 +1110,7 @@ export type GetExercisesBuiltInData = {
   body?: never;
   path?: never;
   query?: {
+    page?: number;
     filter?: string;
     muscle?:
       | Array<
@@ -1175,7 +1247,27 @@ export type GetExercisesBuiltInResponses = {
    * Good Response
    */
   200: {
+    /**
+     * Page or items
+     */
     items: Array<Exercise>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
   };
 };
 

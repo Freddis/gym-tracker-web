@@ -68,7 +68,7 @@ export class GlobalServiceFactory {
         argusAuthToken: EnvHelper.getString('AUTH_TOKEN'),
       },
     };
-    const service = new ArgusService(await this.drizzle(), config);
+    const service = new ArgusService(await this.getExerciseService(), await this.drizzle(), config);
     return service;
   }
 

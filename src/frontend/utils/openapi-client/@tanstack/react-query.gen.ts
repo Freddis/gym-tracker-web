@@ -35,6 +35,8 @@ import type {
   PostAuthLoginError,
   PostAuthLoginResponse,
   GetExercisesData,
+  GetExercisesError,
+  GetExercisesResponse,
   PostExercisesData,
   PostExercisesError,
   PostExercisesResponse,
@@ -42,6 +44,8 @@ import type {
   PutExercisesError,
   PutExercisesResponse,
   GetExercisesBuiltInData,
+  GetExercisesBuiltInError,
+  GetExercisesBuiltInResponse,
   DeleteExercisesByIdData,
   DeleteExercisesByIdError,
   DeleteExercisesByIdResponse,
@@ -230,6 +234,93 @@ export const getExercisesOptions = (options?: Options<GetExercisesData>) => {
   });
 };
 
+const createInfiniteParams = <
+  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
+>(
+  queryKey: QueryKey<Options>,
+  page: K,
+) => {
+  const params = {
+    ...queryKey[0],
+  };
+  if (page.body) {
+    params.body = {
+      ...(queryKey[0].body as any),
+      ...(page.body as any),
+    };
+  }
+  if (page.headers) {
+    params.headers = {
+      ...queryKey[0].headers,
+      ...page.headers,
+    };
+  }
+  if (page.path) {
+    params.path = {
+      ...(queryKey[0].path as any),
+      ...(page.path as any),
+    };
+  }
+  if (page.query) {
+    params.query = {
+      ...(queryKey[0].query as any),
+      ...(page.query as any),
+    };
+  }
+  return params as unknown as typeof page;
+};
+
+export const getExercisesInfiniteQueryKey = (
+  options?: Options<GetExercisesData>,
+): QueryKey<Options<GetExercisesData>> =>
+  createQueryKey("getExercises", options, true);
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesInfiniteOptions = (
+  options?: Options<GetExercisesData>,
+) => {
+  return infiniteQueryOptions<
+    GetExercisesResponse,
+    AxiosError<GetExercisesError>,
+    InfiniteData<GetExercisesResponse>,
+    QueryKey<Options<GetExercisesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetExercisesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetExercisesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getExercises({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getExercisesInfiniteQueryKey(options),
+    },
+  );
+};
+
 export const postExercisesQueryKey = (options?: Options<PostExercisesData>) =>
   createQueryKey("postExercises", options);
 
@@ -329,6 +420,57 @@ export const getExercisesBuiltInOptions = (
   });
 };
 
+export const getExercisesBuiltInInfiniteQueryKey = (
+  options?: Options<GetExercisesBuiltInData>,
+): QueryKey<Options<GetExercisesBuiltInData>> =>
+  createQueryKey("getExercisesBuiltIn", options, true);
+
+/**
+ * Returns data on exercises available to the user
+ */
+export const getExercisesBuiltInInfiniteOptions = (
+  options?: Options<GetExercisesBuiltInData>,
+) => {
+  return infiniteQueryOptions<
+    GetExercisesBuiltInResponse,
+    AxiosError<GetExercisesBuiltInError>,
+    InfiniteData<GetExercisesBuiltInResponse>,
+    QueryKey<Options<GetExercisesBuiltInData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetExercisesBuiltInData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetExercisesBuiltInData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getExercisesBuiltIn({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getExercisesBuiltInInfiniteQueryKey(options),
+    },
+  );
+};
+
 /**
  * Deletes exercise from users personal library
  */
@@ -426,42 +568,6 @@ export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
     },
     queryKey: getWorkoutsQueryKey(options),
   });
-};
-
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K,
-) => {
-  const params = {
-    ...queryKey[0],
-  };
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
 };
 
 export const getWorkoutsInfiniteQueryKey = (

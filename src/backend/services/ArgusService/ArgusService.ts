@@ -1,4 +1,4 @@
-import {and, eq, isNull, like} from 'drizzle-orm';
+import {and, eq, isNotNull, isNull, like} from 'drizzle-orm';
 import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AppDb, DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
 import {NewModel} from 'src/common/types/NewModel';
@@ -16,14 +16,18 @@ import {ArgusServiceConfig} from './types/ArgusServiceConfig';
 import {request} from 'https';
 import {Muscle} from '../../../common/enums/Muscle';
 import {Equipment} from '../../../common/enums/Equipment';
+import {ExerciseService} from '../ExerciseService/ExerciseService';
 
 export class ArgusService {
   protected drizzle: DrizzleService;
   protected config: ArgusServiceConfig;
   protected logger = new Logger(ArgusService.name);
-  constructor(drizzle: DrizzleService, config: ArgusServiceConfig) {
+  protected excerciseService: ExerciseService;
+
+  constructor(exercises: ExerciseService, drizzle: DrizzleService, config: ArgusServiceConfig) {
     this.drizzle = drizzle;
     this.config = config;
+    this.excerciseService = exercises;
   }
 
   async wipeData() {
@@ -99,6 +103,47 @@ export class ArgusService {
       }
       for (const row of existing) {
         await this.attachMusclesAndEquipmentToExercise(db, row, exercise);
+      }
+    }
+
+    // updating Parent exercises
+    const rows = await db.select({
+      id: db._.fullSchema.exercises.parentExerciseId,
+    })
+    .from(db._.fullSchema.exercises)
+    .where(
+      isNotNull(db._.fullSchema.exercises.parentExerciseId),
+    );
+    const parentIds = Array.from(new Set(rows.map((x) => x.id))).filter((x) => x !== null);
+    const parents = await this.excerciseService.getAll({ids: parentIds, perPage: 10000});
+
+    for (const parent of parents.items) {
+      const variationRows = await db.select({
+        id: db._.fullSchema.exercises.id,
+      })
+      .from(db._.fullSchema.exercises)
+      .where(eq(db._.fullSchema.exercises.parentExerciseId, parent.id));
+      const children = await this.excerciseService.getAll({ids: variationRows.map((x) => x.id).slice(0, 1), perPage: 10000});
+      const child = children.items[0];
+      if (!child) {
+        logger.info(`Skipping ${parent.name}, no children`);
+        continue;
+      }
+      for (const muscle of child.muscles.primary) {
+        await db.insert(db._.fullSchema.muscles).values({
+          exerciseId: parent.id,
+          muscle: muscle,
+          createdAt: new Date(),
+          isPrimary: true,
+        });
+      }
+      for (const muscle of child.muscles.secondary) {
+        await db.insert(db._.fullSchema.muscles).values({
+          exerciseId: parent.id,
+          muscle: muscle,
+          createdAt: new Date(),
+          isPrimary: false,
+        });
       }
     }
   }

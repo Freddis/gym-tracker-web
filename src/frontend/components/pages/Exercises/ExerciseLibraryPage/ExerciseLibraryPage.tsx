@@ -1,6 +1,6 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {FC, useContext, useRef} from 'react';
-import {ExerciseBlock} from './ExerciseBlock';
+import {FC, useContext, useEffect, useRef} from 'react';
+import {ExerciseBlock} from './components/ExerciseBlock';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
@@ -8,15 +8,15 @@ import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {Conditional} from '../../../layout/Header/Header';
-import {useVirtualizer} from '@tanstack/react-virtual';
 import {AppSearchInput} from '../../../atoms/AppSearchInput/AppSearchInput';
 import {Muscle} from '../../../../../common/enums/Muscle';
 import {getRouteApi} from '@tanstack/react-router';
 import {AppToast} from '../../../atoms/AppToast/AppToast';
 import {Color} from '../../../../utils/design-system/types/Color';
-import {useQuery} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
-import {GetExercisesBuiltInData, getExercisesBuiltIn} from '../../../../utils/openapi-client';
+import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../utils/openapi-client';
+import {useInView} from 'react-intersection-observer';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
@@ -24,27 +24,41 @@ export const ExerciseLibraryPage: FC = () => {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const parentRef = useRef(null);
+  const {ref, inView} = useInView();
+  const query: GetExercisesBuiltInData['query'] = {
+    filter: searchParams.filter,
+    muscle: searchParams.muscles, // <=diff and I want to keep it like that!
+  };
   const getResponse = () => {
-    const query: GetExercisesBuiltInData['query'] = {
-      filter: searchParams.filter,
-      muscle: searchParams.muscles,
-    };
-    // if (auth.user) {
-    //   return useOpenApiQuery(getExercisesOptions, {query, queryKey: [searchParams]});
-    // }
-    const response = useQuery({
-      queryFn: () => getExercisesBuiltIn({query}),
-      queryKey: [searchParams],
+    const response = useInfiniteQuery({
+      queryFn: ({pageParam}) => getExercisesBuiltIn({
+        query: {
+          ...query,
+          page: pageParam,
+        },
+      }),
+      queryKey: [searchParams, 'exercises'],
+      getNextPageParam: (lastPage) => {
+        if (!lastPage.data) {
+          return null;
+        }
+        const left = lastPage.data.info.count - lastPage.data.info.page * lastPage.data.info.pageSize;
+        if (left <= 0) {
+          return null;
+        }
+        return lastPage.data.info.page + 1;
+      },
+      initialPageParam: 1,
     });
     return response;
   };
   const response = getResponse();
-  const rowVirtualizer = useVirtualizer({
-    count: response.data?.data?.items.length ?? 0,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 144,
-    overscan: 10,
-  });
+  useEffect(() => {
+    if (inView && response.hasNextPage && !response.isFetchingNextPage) {
+      response.fetchNextPage();
+    }
+  }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
+
   const filterByMuscle = (muscle: Muscle, checked: boolean) => {
     const existing = searchParams.muscles?.filter((x) => x !== muscle) ?? [];
     if (checked) {
@@ -65,15 +79,15 @@ export const ExerciseLibraryPage: FC = () => {
     }});
   };
 
-  if (response.isError || response.data?.error) {
-    const error = response.data?.error?.error;
+  const apiError = response.data?.pages.find((x) => x.error !== undefined)?.error;
+  if (response.isError || apiError) {
     return (
       <PageContainer>
-        <AppApiErrorDisplay error={error} />
+        <AppApiErrorDisplay error={apiError?.error} />
       </PageContainer>
     );
   }
-  const items = response.data?.data?.items ?? [];
+  const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   return (
     <PageContainer >
       <div className="max-w-5xl w-full flex flex-row gap-5 items-start " ref={parentRef}>
@@ -104,18 +118,15 @@ export const ExerciseLibraryPage: FC = () => {
             </Conditional>
           </div>
           <div className="flex flex-col gap-5">
-            {response.isFetching && <AppSpinner />}
-            {!response.isFetching && (
               <div className="flex flex-col gap-5">
-                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                  const item = items[virtualRow.index];
-                  if (!item) {
-                    throw new Error('Something went wrong');
-                  }
-                  return <ExerciseBlock key={item.id} item={item} />;
-                })}
-               </div>
-            )}
+                  {response.isLoading && <AppSpinner />}
+                  {items.map((item) => (
+                    <ExerciseBlock key={item.id} item={item} params={searchParams} />
+                  ))}
+                  <div ref={ref}>
+                  {response.isFetchingNextPage ? <AppSpinner/> : null}
+                  </div>
+              </div>
             {!response.isFetching && items.length === 0 && (
               <AppToast variant={Color.Danger}>No exercises found</AppToast>
             )}

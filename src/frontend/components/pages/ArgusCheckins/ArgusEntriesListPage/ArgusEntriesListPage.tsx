@@ -10,12 +10,20 @@ import {ArgusWeatherCheckinBlock} from './components/ArgusWeatherCheckinBlock/Ar
 import {ArgusWorkoutCheckinBlock} from './components/ArgusWorkoutCheckinBlock/ArgusWorkoutCheckinBlock';
 import {ArgusWeightCheckinBlock} from './components/ArgusWeightCheckinBlock/ArgusWeightCheckinBlock';
 import {getArgusCheckinOptions, getArgusCheckinTypesOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
+import {AppButton} from '../../../atoms/AppButton/AppButton';
+import {AppToast} from '../../../atoms/AppToast/AppToast';
+import {Color} from '../../../../utils/design-system/types/Color';
+import {useState} from 'react';
+import {Animated} from '../../../atoms/Animated/Animated';
+
 
 const routeApi = getRouteApi('/argus/');
+
 
 export function ArgusEntriesListPage() {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
+  const [showToast, setShowToast] = useState(false);
   const entriesResponse = useOpenApiQuery(getArgusCheckinOptions, {
     query: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,8 +54,22 @@ export function ArgusEntriesListPage() {
         page,
       }});
   };
+  const onShowToastClick = () => {
+    setShowToast(!showToast);
+  };
   return (
     <PageContainer>
+      <Animated
+      show={showToast}
+      animation="opacity-100 translate-y-0"
+      className="absolute right-10 transition-all duration-500 ease-in-out opacity-0 translate-y-4"
+      >
+        <AppToast variant={Color.Success}>
+          Toast has beeen successfully created
+        </AppToast>
+      </Animated>
+      <AppButton onClick={onShowToastClick}>{showToast ? 'Hide Toast' : 'Show Toast'}</AppButton>
+
       <h2>Your entries:</h2>
       <div>
         <h3>Types:</h3>

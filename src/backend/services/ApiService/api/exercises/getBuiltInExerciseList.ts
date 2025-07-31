@@ -1,4 +1,3 @@
-import {object} from 'zod';
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {getExerciseListQueryValidator} from './validators/getExerciseListQueryValidator';
@@ -12,17 +11,13 @@ export const getBuiltInExerciseList = RouteFactory.createRoute({
   path: '/built-in',
   validators: {
     query: getExerciseListQueryValidator,
-    response: object({
-      items: exerciseValidator.array(),
-    }),
+    response: RouteFactory.validators.paginatedResponse(exerciseValidator),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.exercise.getAll({
       ...ctx.params.query,
       userId: null,
     });
-    return {
-      items: result,
-    };
+    return result;
   },
 });

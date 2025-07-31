@@ -2,6 +2,7 @@ import {createRootRoute} from '@tanstack/react-router';
 import {Layout} from '../frontend/components/layout/Layout/Layout';
 import {NotFoundPage} from '../frontend/components/pages/NotFound/NotFoundPage';
 import appCss from '../frontend/utils/css/app.css?url';
+import {ErrorPage} from '../frontend/components/pages/ErrorPage/ErrorPage';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -23,6 +24,7 @@ export const Route = createRootRoute({
   }),
   component: Layout,
   notFoundComponent: NotFoundPage,
+  errorComponent: ErrorPage,
 });
 
 

@@ -11,8 +11,7 @@ export class QueryLogger implements Logger {
     this.dbType = dbType;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  logQuery(query: string, parameters?: any[]): void {
+  logQuery(query: string, parameters?: unknown[]): void {
     if (this.isProductionLike) {
       return;
     }
@@ -38,11 +37,9 @@ export class QueryLogger implements Logger {
         }
         if (value === undefined) {
           sql = sql.replace(paramName, 'DEFAULT');
-        } else {
-          sql = sql.replace(paramName, value);
         }
       }
-      if (['number', 'boolean'].includes(typeof value)) {
+      if (typeof value === 'number' || typeof value === 'boolean') {
         sql = sql.replace(paramName, `${value.toString()}`);
       }
     });
@@ -50,9 +47,9 @@ export class QueryLogger implements Logger {
     const reset = useColors ? '\x1b[0m' : '';
     sql = sql.replace(/ +(?= )/g, '') // removing spaces
              .replace(/\n/g, '') // line brakes
-            //  .replace(/"/g, '`')
              .replace(
-              /(select |where |inner join |left join |join |from|order by |limit |values |returning |insert into |on conflict |delete )/g,
+              // eslint-disable-next-line max-len
+              /(select |where |inner join |left join |join |from|order by |limit |offset |values |returning |insert into |on conflict |delete )/g,
                `\n${cyan}$1${reset}`);
     // easier identification of specific queries if params are still displayed beneath.
     const paramString = `${cyan}sql params:${reset} [${parameters?.map((x) => {
@@ -70,6 +67,6 @@ export class QueryLogger implements Logger {
       }
       return x;
     }).join(',')}]`;
-    console.log(`\n${paramString}${sql}`);
+    console.log(`${paramString}${sql}\n`);
   }
 }

@@ -24,7 +24,7 @@ export function WorkoutListPage() {
         page: searchParams.page,
       },
     }),
-    queryKey: [searchParams],
+    queryKey: ['workouts', searchParams],
     placeholderData: keepPreviousData,
   });
 

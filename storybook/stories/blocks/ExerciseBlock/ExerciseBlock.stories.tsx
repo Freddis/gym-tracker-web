@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {ExerciseBlock} from '../../../../src/frontend/components/pages/Exercises/ExerciseLibraryPage/ExerciseBlock';
+import {ExerciseBlock} from '../../../../src/frontend/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils';
 
 const meta = {

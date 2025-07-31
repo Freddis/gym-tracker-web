@@ -1,4 +1,6 @@
-import {RouterProvider, createRouter, createMemoryHistory, createRootRoute} from '@tanstack/react-router';
+import {RouterProvider, createMemoryHistory,
+  createRouter as tnCreateRouter,
+  } from '@tanstack/react-router';
 import {FC, useState} from 'react';
 import {AuthContext} from '../../../src/frontend/components/layout/AuthProvider/AuthContext';
 import {AuthContextValue} from '../../../src/frontend/components/layout/AuthProvider/types/AuthContextValue';
@@ -19,7 +21,7 @@ import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBoo
 import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
 import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
-
+import {routeTree} from '../../../src/routeTree.gen';
 const queryClient = new QueryClient();
 
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
@@ -96,9 +98,9 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       </LanguageContext.Provider>
     );
   };
-  const router = createRouter({
+  const router = tnCreateRouter({
     history: createMemoryHistory(),
-    routeTree: createRootRoute({
+    routeTree: routeTree.update({
       component: InternalDisplay,
     }),
   });
