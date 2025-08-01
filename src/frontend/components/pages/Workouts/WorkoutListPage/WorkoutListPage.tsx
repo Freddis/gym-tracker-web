@@ -75,7 +75,7 @@ export function WorkoutListPage() {
             <div className="flex justify-center mb-3">
               <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
             </div>
-            {response.data?.data.items.slice(0, 10).map((item) => <WorkoutBlock key={item.id} item={item}/>)}
+            {response.data?.data.items.map((item) => <WorkoutBlock key={item.id} item={item}/>)}
             <div className="flex justify-center">
               <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
             </div>

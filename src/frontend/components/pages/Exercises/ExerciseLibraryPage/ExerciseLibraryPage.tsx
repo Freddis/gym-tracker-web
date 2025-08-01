@@ -1,5 +1,5 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {FC, useContext, useEffect, useRef} from 'react';
+import {FC, useContext, useEffect} from 'react';
 import {ExerciseBlock} from './components/ExerciseBlock';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
@@ -17,13 +17,14 @@ import {useInfiniteQuery} from '@tanstack/react-query';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../utils/openapi-client';
 import {useInView} from 'react-intersection-observer';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
   const auth = useContext(AuthContext);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.exercises);
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
-  const parentRef = useRef(null);
   const {ref, inView} = useInView({
     rootMargin: '50%',
   });
@@ -92,13 +93,13 @@ export const ExerciseLibraryPage: FC = () => {
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   return (
     <PageContainer >
-      <div className="max-w-5xl w-full flex flex-row gap-5 items-start " ref={parentRef}>
+      <div className="max-w-5xl w-full flex flex-row gap-5 items-start ">
         <AppBlock className="w-70 p-5">
-          <AppLabel className="mb-2">Search:</AppLabel>
+          <AppLabel className="mb-2">{t(i18n.filter.labels.search)}</AppLabel>
           <div className="mb-5">
             <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
           </div>
-          <AppLabel className="mb-2">Muscle Groups:</AppLabel>
+          <AppLabel className="mb-2">{t(i18n.filter.labels.muscles)}</AppLabel>
           <div className="mb-5 flex flex-col gap-2">
             {Object.values(Muscle).sort().map((x) => (
               <AppSwitch
@@ -112,10 +113,10 @@ export const ExerciseLibraryPage: FC = () => {
         </AppBlock>
         <div className="max-w-2xl w-full">
           <div className="flex mb-5">
-            <h1 className="text-xl">Built-In Library</h1>
+            <h1 className="text-xl">{t(i18n.heading)}</h1>
             <Conditional condition={!!auth.user}>
               <div className="grow flex flex-row-reverse">
-                <AppLink to="/exercises/create">Add Exercise</AppLink>
+                <AppLink to="/exercises/create">{t(i18n.buttons.addExercise)}</AppLink>
               </div>
             </Conditional>
           </div>
@@ -129,7 +130,7 @@ export const ExerciseLibraryPage: FC = () => {
                   {response.isFetchingNextPage ? <AppSpinner/> : null}
               </div>
             {!response.isFetching && items.length === 0 && (
-              <AppToast variant={Color.Danger}>No exercises found</AppToast>
+              <AppToast variant={Color.Danger}>{t(i18n.toasts.noExercisesFound)}</AppToast>
             )}
           </div>
         </div>

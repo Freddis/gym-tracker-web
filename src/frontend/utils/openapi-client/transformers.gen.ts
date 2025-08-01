@@ -10,6 +10,7 @@ import type {
   GetWorkoutsByIdResponse,
   PostWeightResponse,
   GetArgusCheckinResponse,
+  GetEntriesResponse,
 } from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -187,6 +188,25 @@ export const getArgusCheckinResponseTransformer = async (
       item.updatedAt = new Date(item.updatedAt);
     }
     return item;
+  });
+  return data;
+};
+
+const entrySchemaResponseTransformer = (data: any) => {
+  if (data.weight) {
+    data.weight = weightSchemaResponseTransformer(data.weight);
+  }
+  if (data.workout) {
+    data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  return data;
+};
+
+export const getEntriesResponseTransformer = async (
+  data: any,
+): Promise<GetEntriesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return entrySchemaResponseTransformer(item);
   });
   return data;
 };

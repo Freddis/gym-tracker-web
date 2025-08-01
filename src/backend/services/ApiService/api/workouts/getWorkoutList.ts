@@ -17,8 +17,9 @@ export const getWorkoutList = RouteFactory.createRoute({
     response: RouteFactory.validators.paginatedResponse(workoutValidator),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.workout.getAll(ctx.viewer.id, {
+    const result = await ctx.services.models.workout.getAll({
       ...ctx.params.query,
+      userId: ctx.viewer.id,
       perPage: 10,
     });
 

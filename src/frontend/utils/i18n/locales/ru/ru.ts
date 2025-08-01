@@ -160,5 +160,23 @@ export const dictionary: Translation = {
         },
       },
     },
+    feed: {
+      heading: 'Следи За Другими',
+    },
+    exercises: {
+      heading: 'Встроенная Библиотека',
+      buttons: {
+        addExercise: 'Добавить',
+      },
+      filter: {
+        labels: {
+          muscles: 'Мышцы:',
+          search: 'Поиск:',
+        },
+      },
+      toasts: {
+        noExercisesFound: 'Упражнения не найдены',
+      },
+    },
   },
 };

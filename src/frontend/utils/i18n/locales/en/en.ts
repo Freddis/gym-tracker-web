@@ -99,6 +99,24 @@ export const dictionary = {
         },
       },
     },
+    feed: {
+      heading: 'Explore What Others Do',
+    },
+    exercises: {
+      heading: 'Built-In Library',
+      buttons: {
+        addExercise: 'Add Exercise',
+      },
+      filter: {
+        labels: {
+          muscles: 'Muscles:',
+          search: 'Search:',
+        },
+      },
+      toasts: {
+        noExercisesFound: 'No exercises found',
+      },
+    },
     activities: {
       list: {
         buttons: {

@@ -20,6 +20,7 @@ import {
   postWeight,
   getArgusCheckin,
   getArgusCheckinTypes,
+  getEntries,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -76,6 +77,9 @@ import type {
   GetArgusCheckinError,
   GetArgusCheckinResponse,
   GetArgusCheckinTypesData,
+  GetEntriesData,
+  GetEntriesError,
+  GetEntriesResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -919,4 +923,76 @@ export const getArgusCheckinTypesOptions = (
     },
     queryKey: getArgusCheckinTypesQueryKey(options),
   });
+};
+
+export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
+  createQueryKey("getEntries", options);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOptions = (options?: Options<GetEntriesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntries({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesQueryKey(options),
+  });
+};
+
+export const getEntriesInfiniteQueryKey = (
+  options?: Options<GetEntriesData>,
+): QueryKey<Options<GetEntriesData>> =>
+  createQueryKey("getEntries", options, true);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesInfiniteOptions = (
+  options?: Options<GetEntriesData>,
+) => {
+  return infiniteQueryOptions<
+    GetEntriesResponse,
+    AxiosError<GetEntriesError>,
+    InfiniteData<GetEntriesResponse>,
+    QueryKey<Options<GetEntriesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetEntriesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetEntriesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getEntries({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getEntriesInfiniteQueryKey(options),
+    },
+  );
 };

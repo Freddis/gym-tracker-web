@@ -253,9 +253,10 @@ export class WorkoutService {
     return ordered;
   }
 
-  async getAll(userId: number, params?: {
-    page: number,
-    perPage: number,
+  async getAll(params?: {
+    userId?: number,
+    page?: number,
+    perPage?: number,
     updatedAfter?: Date
   }): Promise<PaginatedResult<Workout>> {
     const db = await this.db.getDb();
@@ -263,7 +264,7 @@ export class WorkoutService {
     const limit = params?.perPage ?? 10;
     const offset = (page - 1) * limit;
     const where = and(
-        eq(dbSchema.workouts.userId, userId),
+        params?.userId ? eq(dbSchema.workouts.userId, params.userId) : undefined,
         isNull(dbSchema.workouts.deletedAt),
         params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
       );

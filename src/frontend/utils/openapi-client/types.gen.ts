@@ -453,6 +453,20 @@ export const ArgusCheckinType = {
   FITNESSTEST: "fitnesstest",
 } as const;
 
+export type Entry = {
+  id: number;
+  user: User;
+  type: "Weight" | "Workout";
+  weight?: Weight;
+  workout?: Workout;
+};
+
+export type User = {
+  id: number;
+  name: string;
+  avatar: string;
+};
+
 export type PostAuthRegisterData = {
   body?: {
     name: string;
@@ -2826,6 +2840,120 @@ export type GetArgusCheckinTypesResponses = {
 
 export type GetArgusCheckinTypesResponse =
   GetArgusCheckinTypesResponses[keyof GetArgusCheckinTypesResponses];
+
+export type GetEntriesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+  };
+  url: "/entries";
+};
+
+export type GetEntriesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unknown Error
+   */
+  500: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "UnknownError";
+    };
+  };
+};
+
+export type GetEntriesError = GetEntriesErrors[keyof GetEntriesErrors];
+
+export type GetEntriesResponses = {
+  /**
+   * Good Response
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Entry>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetEntriesResponse = GetEntriesResponses[keyof GetEntriesResponses];
 
 export type ClientOptions = {
   baseURL: `${string}://${string}/api` | (string & {});

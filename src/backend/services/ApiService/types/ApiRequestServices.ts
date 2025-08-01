@@ -3,6 +3,8 @@ import {ArgusCheckinService} from 'src/backend/services/ArgusCheckinService/Argu
 import {ExerciseService} from 'src/backend/services/ExerciseService/ExerciseService';
 import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
 import {WeightService} from '../../WeightService/WeightService';
+import {EntryService} from '../../EntryService/EntryService';
+import {UserService} from '../../UserService/UserService';
 
 export interface ApiRequestServices {
   auth: AuthService
@@ -11,5 +13,7 @@ export interface ApiRequestServices {
     exercise: ExerciseService
     workout: WorkoutService
     weight: WeightService
+    entry: EntryService
+    user: UserService
   }
 }

@@ -56,6 +56,9 @@ import type {
   GetArgusCheckinTypesData,
   GetArgusCheckinTypesResponses,
   GetArgusCheckinTypesErrors,
+  GetEntriesData,
+  GetEntriesResponses,
+  GetEntriesErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -68,6 +71,7 @@ import {
   getWorkoutsByIdResponseTransformer,
   postWeightResponseTransformer,
   getArgusCheckinResponseTransformer,
+  getEntriesResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -520,6 +524,24 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
   >({
     responseType: "json",
     url: "/argus/checkin/types",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesResponses,
+    GetEntriesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getEntriesResponseTransformer,
+    url: "/entries",
     ...options,
   });
 };

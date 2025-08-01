@@ -13,6 +13,8 @@ import {DrizzleService} from '../../DrizzleService/DrizzleService';
 import {ApiError} from '../errors/ApiError';
 import {UserRouteContext} from './UserRouteContext';
 import {PublicRouteContext} from './PublicRouteContext';
+import {EntryService} from '../../EntryService/EntryService';
+import {UserService} from '../../UserService/UserService';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
   protected drizzle: DrizzleService;
@@ -67,14 +69,21 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
   }
   protected async createRequestServices(): Promise<ApiRequestServices> {
     const drizzle = this.drizzle;
-    const exerciseService = new ExerciseService(drizzle);
+    const exercise = new ExerciseService(drizzle);
+    const user = new UserService(drizzle);
+    const workout = new WorkoutService(drizzle, exercise);
+    const entry = new EntryService(user, workout);
+    const argusCheckin = new ArgusCheckinService(drizzle);
+    const weight = new WeightService(drizzle);
     const services: ApiRequestServices = {
       auth: new AuthService(serverConfig.services.auth, drizzle),
       models: {
-        argusCheckin: new ArgusCheckinService(drizzle),
-        workout: new WorkoutService(drizzle, exerciseService),
-        exercise: exerciseService,
-        weight: new WeightService(drizzle),
+        argusCheckin,
+        workout,
+        exercise,
+        weight,
+        entry,
+        user,
       },
     };
     return services;
