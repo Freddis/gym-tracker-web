@@ -140,7 +140,7 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
           <AppLabel>Exercises:</AppLabel>
         </div>
       </Conditional>
-      <div style={{marginTop: 10}}>
+      <div className="mt-3">
         {exercises.map((row, i) => (
           <UpdateWorkoutExerciseForm key={i} item={row} onDelete={deleteExercise} />
           ))}

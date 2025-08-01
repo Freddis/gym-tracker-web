@@ -1,11 +1,17 @@
 import {FC} from 'react';
 import {AppButton} from 'src/frontend/components/atoms/AppButton/AppButton';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 
 export const HeroBlock: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.static.home.hero);
+  const toasts = useToasts();
   const imgUrl = '/images/pages/home/hero-1.jpg';
   const backgroundImage = `url(${imgUrl})`;
+
+  const onCtaClick = () => {
+    toasts.addWarning(t(i18n.toasts.appNotYetPublished));
+  };
   return (
       <div style={{backgroundImage}} className="h-180 bg-cover">
         <div className="bg-black/50 w-full h-full flex items-center justify-center">
@@ -17,7 +23,7 @@ export const HeroBlock: FC = () => {
               </h1>
               <p className="text-white text-lg mt-5">{t(i18n.subheading)}
               </p>
-              <AppButton variant="lg" className="mt-10">{t(i18n.button)}</AppButton>
+              <AppButton variant="lg" className="mt-10" onClick={onCtaClick}>{t(i18n.button)}</AppButton>
             </div>
         </div>
       </div>

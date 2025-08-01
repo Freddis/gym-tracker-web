@@ -17,10 +17,15 @@ export const dictionary: Translation = {
   layout: {
     header: {
       profileMenu: {
-        name: 'Мой Профиль',
-        signOut: 'Выйти',
-        language: 'Язык',
-        darkTheme: 'Темная Тема',
+        menu: {
+          name: 'Мой Профиль',
+          signOut: 'Выйти',
+          language: 'Язык',
+          darkTheme: 'Темная Тема',
+        },
+        toasts: {
+          logoutSuccess: 'Вы успешно вышли',
+        },
       },
       menu: {
         signIn: 'Войти',
@@ -72,6 +77,9 @@ export const dictionary: Translation = {
           subheading: `В спорте и фитнесе далеко не продвинешся без фиксации прогресса. 
         Трекер Dicsipline - твой верный помощник.`,
           button: 'Скачать',
+          toasts: {
+            appNotYetPublished: 'К сожалению приложение еще не опубликовано в AppStore',
+          },
         },
         features: {
           heading: {
@@ -120,6 +128,10 @@ export const dictionary: Translation = {
       login: {
         heading: 'Войти в существующий аккаунт',
         registerCta: 'Нет аккаунта?',
+        toasts: {
+          loginSuccess: 'Вы успешно вошли',
+          unknownApiError: 'Что-то пошло не так.',
+        },
         form: {
           labels: {
             email: 'Почта',

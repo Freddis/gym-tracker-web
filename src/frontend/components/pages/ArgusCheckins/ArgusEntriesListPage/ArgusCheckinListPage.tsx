@@ -11,19 +11,14 @@ import {ArgusWorkoutCheckinBlock} from './components/ArgusWorkoutCheckinBlock/Ar
 import {ArgusWeightCheckinBlock} from './components/ArgusWeightCheckinBlock/ArgusWeightCheckinBlock';
 import {getArgusCheckinOptions, getArgusCheckinTypesOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
-import {AppToast} from '../../../atoms/AppToast/AppToast';
-import {Color} from '../../../../utils/design-system/types/Color';
-import {useState} from 'react';
-import {Animated} from '../../../atoms/Animated/Animated';
+import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 
 
 const routeApi = getRouteApi('/argus/');
 
-
-export function ArgusEntriesListPage() {
+export function ArgusCheckinListPage() {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
-  const [showToast, setShowToast] = useState(false);
   const entriesResponse = useOpenApiQuery(getArgusCheckinOptions, {
     query: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,32 +49,18 @@ export function ArgusEntriesListPage() {
         page,
       }});
   };
-  const onShowToastClick = () => {
-    setShowToast(!showToast);
-  };
+
   return (
     <PageContainer>
-      <Animated
-      show={showToast}
-      animation="opacity-100 translate-y-0"
-      className="absolute right-10 transition-all duration-500 ease-in-out opacity-0 translate-y-4"
-      >
-        <AppToast variant={Color.Success}>
-          Toast has beeen successfully created
-        </AppToast>
-      </Animated>
-      <AppButton onClick={onShowToastClick}>{showToast ? 'Hide Toast' : 'Show Toast'}</AppButton>
-
-      <h2>Your entries:</h2>
-      <div>
-        <h3>Types:</h3>
-        {<button key="all" onClick={() => filterByType()} style={{cursor: 'pointer'}}>All</button>}
-        {typesResponse.data?.items.map((item) => (
-          <button key={item} onClick={() => filterByType(item)} style={{margin: 5, cursor: 'pointer'}}>{item}</button>
-        ))}
-      </div>
-      <h3>Data:</h3>
-      <div style={{marginTop: '20px'}}>
+      <h1>Argus Entries</h1>
+      <div className="flex flex-col gap-5 max-w-full w-2xl">
+        <AppBlock className="">
+          <h3>Types:</h3>
+          <AppButton key="all" onClick={() => filterByType()} className="mr-2" >All</AppButton>
+          {typesResponse.data?.items.map((item) => (
+            <AppButton key={item} onClick={() => filterByType(item)} className="capitalize mr-2 mb-2">{item}</AppButton>
+          ))}
+        </AppBlock>
         {entriesResponse.data?.items.map((item) => {
           switch (item.type) {
             case ArgusCheckinType.Weather:
@@ -97,8 +78,10 @@ export function ArgusEntriesListPage() {
               }
           }
         })}
+        <div className="flex justify-center">
+        {entriesResponse.data && <Pagination onPageChanged={onPageChanged} info={entriesResponse.data?.info} />}
+        </div>
       </div>
-      {entriesResponse.data && <Pagination onPageChanged={onPageChanged} info={entriesResponse.data?.info} />}
     </PageContainer>
   );
 }

@@ -16,18 +16,21 @@ import {ThemeContext} from '../../../ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../ThemeProvider/enums/Theme';
 import {AppLanguageDropdown} from '../../../../atoms/AppLanguageDropdown/AppLanguageDropdown';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
+import {useToasts} from '../../../../atoms/AppToast/hooks/useToasts';
 
 
 export const ProfileDropdownMenu: FC = () => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.layout.header);
+  const {t, i18n} = useAppPartialTranslation((x) => x.layout.header.profileMenu);
   const auth = useContext(AuthContext);
   const theme = useContext(ThemeContext);
   const themeContext = useContext(EditThemeContext);
   const navigate = useNavigate();
+  const toasts = useToasts();
   const logout: MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
     auth.logout();
     navigate({to: '/'});
+    toasts.addSuccess(t(i18n.toasts.logoutSuccess));
   };
   const toggleDarkTheme = () => {
     const newTheme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
@@ -46,11 +49,11 @@ export const ProfileDropdownMenu: FC = () => {
     </div>
     </AppDropdownMenuTrigger>
     <AppDropdownMenuContent sideOffset={-2} className={`w-50 ${theme.toLowerCase()}`}>
-      <AppDropdownMenuLabel>{t(i18n.profileMenu.name)}</AppDropdownMenuLabel>
+      <AppDropdownMenuLabel>{t(i18n.menu.name)}</AppDropdownMenuLabel>
       <AppDropdownMenuSeparator />
       <AppDropdownMenuItem onClick={(e) => e.preventDefault()} className="focus:bg-inherit">
         <div className="flex flex-row items-center w-full">
-          <span>{t(i18n.profileMenu.darkTheme)}</span>
+          <span>{t(i18n.menu.darkTheme)}</span>
           <div className="flex-grow flex flex-row-reverse">
           <AppSwitch onClick={toggleDarkTheme} checked={theme === Theme.Dark}/>
           </div>
@@ -58,14 +61,14 @@ export const ProfileDropdownMenu: FC = () => {
       </AppDropdownMenuItem>
       <AppDropdownMenuItem onClick={(e) => e.preventDefault()} className="focus:bg-inherit">
         <div className="flex flex-row items-center w-full">
-          <span>{t(i18n.profileMenu.language)}</span>
+          <span>{t(i18n.menu.language)}</span>
           <div className="flex-grow flex flex-row-reverse">
             <AppLanguageDropdown />
           </div>
         </div>
       </AppDropdownMenuItem>
       <AppDropdownMenuItem onClick={logout} className="cursor-pointer focus:bg-inherit focus:text-accent">
-        <span>{t(i18n.profileMenu.signOut)}</span>
+        <span>{t(i18n.menu.signOut)}</span>
       </AppDropdownMenuItem>
     </AppDropdownMenuContent>
   </AppDropdownMenu>

@@ -107,7 +107,7 @@ export class ExerciseService {
   }): Promise<PaginatedResult<Exercise>> {
     const db = await this.db.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
+    const limit = params?.perPage ?? 50;
     const offset = (page - 1) * limit;
 
     // For each muscle we need subquery to find if the muscle is attached to this exercise
@@ -160,9 +160,6 @@ export class ExerciseService {
   }
 
   protected async nestExercises(exercises: ExerciseRow[]): Promise<Exercise[]> {
-    const primaryExercises: (ExerciseRow)[] = [];
-    const personalExercises: (ExerciseRow)[] = [];
-    const map = new Map<number, ExerciseRow[]>();
     const exerciseIds = exercises.map((x) => x.id);
     const db = await this.db.getDb();
     const muscles = await db.select({
@@ -181,36 +178,42 @@ export class ExerciseService {
       arr.push(muscle);
       muscleMap.set(muscle.exersizeId, arr);
     }
+
+    const exerciseMap = new Map<number, ExerciseRow>();
+    const variationMap = new Map<number, ExerciseRow[]>();
     for (const exercise of exercises) {
-      if (exercise.userId !== null) {
-        personalExercises.push(exercise);
+      exerciseMap.set(exercise.id, exercise);
+      if (!exercise.userId || !exercise.parentExerciseId) {
         continue;
       }
 
-      if (exercise.parentExerciseId == null) {
-        primaryExercises.push(exercise);
-        continue;
-      }
-
-      const existing = map.get(exercise.parentExerciseId) ?? [];
+      const existing = variationMap.get(exercise.parentExerciseId) ?? [];
       existing.push(exercise);
-      map.set(exercise.parentExerciseId, existing);
+      variationMap.set(exercise.parentExerciseId, existing);
+    }
+    const items: Exercise[] = [];
+    for (const item of exercises) {
+      const isItemParentInExercises = item.parentExerciseId && exerciseMap.has(item.parentExerciseId);
+      if (isItemParentInExercises) {
+        continue;
+      }
+      const nested: Exercise = {
+        ...item,
+        variations: variationMap.get(item.id)?.map((variation) => ({
+          ...variation,
+          muscles: {
+            primary: (muscleMap.get(variation.id) ?? []).filter((x) => x.isPrimary).map((x) => x.muscle),
+            secondary: (muscleMap.get(variation.id) ?? []).filter((x) => !x.isPrimary).map((x) => x.muscle),
+          },
+        })) ?? [],
+        muscles: {
+          primary: (muscleMap.get(item.id) ?? []).filter((x) => x.isPrimary).map((x) => x.muscle),
+          secondary: (muscleMap.get(item.id) ?? []).filter((x) => !x.isPrimary).map((x) => x.muscle),
+        },
+      };
+      items.push(nested);
     }
 
-    const items: Exercise[] = exercises.map((item) => ({
-      ...item,
-      variations: map.get(item.id)?.map((variation) => ({
-        ...variation,
-        muscles: {
-          primary: (muscleMap.get(variation.id) ?? []).filter((x) => x.isPrimary).map((x) => x.muscle),
-          secondary: (muscleMap.get(variation.id) ?? []).filter((x) => !x.isPrimary).map((x) => x.muscle),
-        },
-      })) ?? [],
-      muscles: {
-        primary: (muscleMap.get(item.id) ?? []).filter((x) => x.isPrimary).map((x) => x.muscle),
-        secondary: (muscleMap.get(item.id) ?? []).filter((x) => !x.isPrimary).map((x) => x.muscle),
-      },
-    }));
     return items;
   }
 

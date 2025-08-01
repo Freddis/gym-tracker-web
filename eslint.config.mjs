@@ -71,7 +71,7 @@ export default tseslint.config(
       'no-duplicate-imports': 2,
       'no-empty': 2,
       'no-empty-character-class': 2,
-      'no-empty-function': 2,
+      // 'no-empty-function': 2, todo: delete after a while
       'no-empty-pattern': 2,
       'no-eval': 2,
       'no-ex-assign': 2,

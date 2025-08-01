@@ -6,7 +6,7 @@ import {RouteFactory} from '../../utils/RouteFactory';
 
 export const getArgusCheckinTypes = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
-  type: ApiRouteType.User,
+  type: ApiRouteType.Public,
   description: 'Returns possible checkin types for Argus',
   path: '/checkin/types',
   validators: {

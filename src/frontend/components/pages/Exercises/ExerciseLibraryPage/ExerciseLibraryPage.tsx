@@ -24,7 +24,9 @@ export const ExerciseLibraryPage: FC = () => {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const parentRef = useRef(null);
-  const {ref, inView} = useInView();
+  const {ref, inView} = useInView({
+    rootMargin: '50%',
+  });
   const query: GetExercisesBuiltInData['query'] = {
     filter: searchParams.filter,
     muscle: searchParams.muscles, // <=diff and I want to keep it like that!
@@ -123,9 +125,8 @@ export const ExerciseLibraryPage: FC = () => {
                   {items.map((item) => (
                     <ExerciseBlock key={item.id} item={item} params={searchParams} />
                   ))}
-                  <div ref={ref}>
+                  <div ref={ref}></div>
                   {response.isFetchingNextPage ? <AppSpinner/> : null}
-                  </div>
               </div>
             {!response.isFetching && items.length === 0 && (
               <AppToast variant={Color.Danger}>No exercises found</AppToast>

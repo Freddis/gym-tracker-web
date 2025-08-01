@@ -64,6 +64,9 @@ export const dictionary = {
             middle: ' the way to achieve your ',
             end: 'Goals',
           },
+          toasts: {
+            appNotYetPublished: 'Unfortunately the app is not yet published in stores',
+          },
           subheading: `In sports and fitness you don't get far if you can't track your progress. 
                     Dicsipline tracker is your trustworthy companion.`,
           button: 'Download App',
@@ -114,6 +117,10 @@ export const dictionary = {
       login: {
         heading: 'Login with existing Account',
         registerCta: 'New to Discipline?',
+        toasts: {
+          loginSuccess: "You've successfully logged in",
+          unknownApiError: "Something went wrong. We can't log you in",
+        },
         form: {
           labels: {
             email: 'Email',

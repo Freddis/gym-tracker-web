@@ -3,6 +3,7 @@ import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 import {Workout} from '../../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
+import {AppImage} from '../../../../atoms/AppImage/AppImage';
 
 export const WorkoutBlock: FC<{item: Workout}> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
@@ -23,17 +24,17 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
         <AppLink to="/workouts/update/$workoutId" params={{workoutId: item.id.toString()}}>
           <b>{t(i18n.type)}: {item.id}</b>
         </AppLink>
-        <div style={{float: 'right'}}>{weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}</div>
+        <div className="float-right">{weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}</div>
       </div>
-      <div style={{marginTop: 10}}>{t(i18n.duration)}: {time}</div>
+      <div className="mt-5">{t(i18n.duration)}: {time}</div>
       <div>{t(i18n.calories)}: {item.calories}</div>
-      <div style={{marginTop: 10}}>
+      <div className="mt-5">
         {item.exercises.map((exercise, i) => (
-          <div key={i} style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>
-          <img className="object-cover rounded-md w-20 h-20" src={exercise.exercise.images[0]}/>
-          <div style={{paddingLeft: 20}}>
+          <div key={i} className="flex flex-row">
+          <AppImage src={exercise.exercise.images[0]} className="mt-1" />
+          <div className="pl-5">
             <b>{exercise.exercise.name}</b>
-            <div style={{marginTop: 10}}>
+            <div className="pb-3">
               {exercise.sets.map((set, i) => (
                 <div key={i}>{i + 1}:{set.weight} x {set.reps}</div>
               ))}

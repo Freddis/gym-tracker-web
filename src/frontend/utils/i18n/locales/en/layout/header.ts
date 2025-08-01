@@ -1,9 +1,14 @@
 export const header = {
   profileMenu: {
-    name: 'My Profile',
-    signOut: 'Sign Out',
-    language: 'Language',
-    darkTheme: 'Dark Theme',
+    menu: {
+      name: 'My Profile',
+      signOut: 'Sign Out',
+      language: 'Language',
+      darkTheme: 'Dark Theme',
+    },
+    toasts: {
+      logoutSuccess: "You've successfully logged out",
+    },
   },
   menu: {
     signIn: 'Sign In',

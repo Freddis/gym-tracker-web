@@ -12,6 +12,7 @@ import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {postAuthLogin, PostAuthLoginError} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -21,6 +22,8 @@ export const LoginPage: FC = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [errorMessage, setErrors] = useResponseErrors();
+  const toasts = useToasts();
+
   const loginButtonPress = async () => {
     setLoggingIn(true);
     setTimeout(login, 0);
@@ -35,6 +38,7 @@ export const LoginPage: FC = () => {
     setLoggingIn(false);
     if (!result.error) {
       auth.login(result.data);
+      toasts.addSuccess('You successfully logged in');
       navigate({to: '/workouts'});
       return;
     }
@@ -42,11 +46,9 @@ export const LoginPage: FC = () => {
     if (err.error.code === 'ValidationFailed') {
       setErrors(err.error.fieldErrors ?? []);
     } else if (err.error.code === 'ActionError') {
-      // eslint-disable-next-line no-alert
-      alert(err.error.humanReadable);
+      toasts.addDanger(err.error.humanReadable);
     } else {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong:');
+      toasts.addDanger(t(i18n.toasts.unknownApiError));
     }
   };
   return (

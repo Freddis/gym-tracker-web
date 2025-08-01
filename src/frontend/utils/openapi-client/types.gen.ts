@@ -2797,20 +2797,6 @@ export type GetArgusCheckinTypesErrors = {
         };
       };
   /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "Unauthorized";
-    };
-  };
-  /**
    * Unknown Error
    */
   500: {

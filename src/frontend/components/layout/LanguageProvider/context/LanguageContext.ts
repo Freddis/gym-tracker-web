@@ -7,6 +7,5 @@ export interface LanguageContextValue {
 }
 export const LanguageContext = createContext<LanguageContextValue>({
   language: Language.English,
-  // eslint-disable-next-line no-empty-function
   setLanguage: () => {},
 });

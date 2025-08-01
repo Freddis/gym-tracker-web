@@ -2,10 +2,11 @@ import {FC, ReactNode} from 'react';
 import {Color} from '../../../utils/design-system/types/Color';
 import {twMerge} from 'tailwind-merge';
 import {FaCircleXmark} from 'react-icons/fa6';
-import {FaExclamationTriangle} from 'react-icons/fa';
+import {FaCheck, FaExclamationTriangle, FaInfo} from 'react-icons/fa';
+import {ToastColor} from './types/ToastColor';
 
 interface AppToastProps {
-  variant: Color.Warning | Color.Success | Color.Danger | Color.Info,
+  variant: ToastColor
   children: string,
   className?: string
 }
@@ -14,8 +15,8 @@ export const AppToast: FC<AppToastProps> = (props) => {
   const iconMap: Record<typeof props['variant'], ReactNode> = {
     [Color.Danger]: <FaCircleXmark className="inline mr-2 -mt-0.5"/>,
     [Color.Warning]: <FaExclamationTriangle className="inline mr-2 -mt-0.5"/>,
-    [Color.Info]: null,
-    [Color.Success]: null,
+    [Color.Info]: <FaInfo className="inline mr-2 -mt-0.5"/>,
+    [Color.Success]: <FaCheck className="inline mr-2 -mt-0.5"/>,
   };
   const icon = iconMap[props.variant];
   const parts = props.children.split('\n');

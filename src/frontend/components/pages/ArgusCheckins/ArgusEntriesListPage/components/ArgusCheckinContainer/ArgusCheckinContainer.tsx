@@ -1,11 +1,12 @@
 import {ReactNode} from 'react';
 import {ArgusCheckinRow} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/ArgusCheckinRow';
+import {AppBlock} from '../../../../../atoms/AppBlock/AppBlock';
 
 export function ArgusCheckinContainer(props: {children: ReactNode, item: ArgusCheckinRow}) {
 
   const date = new Date(props.item.createdAt);
 
-  return <div style={{marginBottom: 20, border: '1px solid white', padding: 10, borderRadius: 5}} key={props.item.id}>
+  return <AppBlock >
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <h3 style={{margin: 0}}>{props.item.subtype ? props.item.subtype : props.item.type}</h3>
             <div style={{marginLeft: 'auto'}}>
@@ -15,5 +16,5 @@ export function ArgusCheckinContainer(props: {children: ReactNode, item: ArgusCh
           </div>
           {props.children}
 
-        </div>;
+        </AppBlock>;
 }

@@ -22,12 +22,12 @@ export class ArgusService {
   protected drizzle: DrizzleService;
   protected config: ArgusServiceConfig;
   protected logger = new Logger(ArgusService.name);
-  protected excerciseService: ExerciseService;
+  protected exerciseService: ExerciseService;
 
   constructor(exercises: ExerciseService, drizzle: DrizzleService, config: ArgusServiceConfig) {
     this.drizzle = drizzle;
     this.config = config;
-    this.excerciseService = exercises;
+    this.exerciseService = exercises;
   }
 
   async wipeData() {
@@ -115,7 +115,7 @@ export class ArgusService {
       isNotNull(db._.fullSchema.exercises.parentExerciseId),
     );
     const parentIds = Array.from(new Set(rows.map((x) => x.id))).filter((x) => x !== null);
-    const parents = await this.excerciseService.getAll({ids: parentIds, perPage: 10000});
+    const parents = await this.exerciseService.getAll({ids: parentIds, perPage: 10000});
 
     for (const parent of parents.items) {
       const variationRows = await db.select({
@@ -123,7 +123,7 @@ export class ArgusService {
       })
       .from(db._.fullSchema.exercises)
       .where(eq(db._.fullSchema.exercises.parentExerciseId, parent.id));
-      const children = await this.excerciseService.getAll({ids: variationRows.map((x) => x.id).slice(0, 1), perPage: 10000});
+      const children = await this.exerciseService.getAll({ids: variationRows.map((x) => x.id).slice(0, 1), perPage: 10000});
       const child = children.items[0];
       if (!child) {
         logger.info(`Skipping ${parent.name}, no children`);

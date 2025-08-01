@@ -519,12 +519,6 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
-    security: [
-      {
-        name: "authorization",
-        type: "apiKey",
-      },
-    ],
     url: "/argus/checkin/types",
     ...options,
   });

@@ -13,7 +13,6 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkoutsIndexRouteImport } from './routes/workouts/index'
-import { Route as FeedIndexRouteImport } from './routes/feed/index'
 import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
 import { Route as ArgusIndexRouteImport } from './routes/argus/index'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
@@ -36,11 +35,6 @@ const IndexRoute = IndexRouteImport.update({
 const WorkoutsIndexRoute = WorkoutsIndexRouteImport.update({
   id: '/workouts/',
   path: '/workouts/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedIndexRoute = FeedIndexRouteImport.update({
-  id: '/feed/',
-  path: '/feed/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesIndexRoute = ExercisesIndexRouteImport.update({
@@ -107,7 +101,6 @@ export interface FileRoutesByFullPath {
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
-  '/feed': typeof FeedIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
@@ -119,7 +112,6 @@ export interface FileRoutesByTo {
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
-  '/feed': typeof FeedIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
@@ -132,7 +124,6 @@ export interface FileRoutesById {
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus/': typeof ArgusIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
-  '/feed/': typeof FeedIndexRoute
   '/workouts/': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
@@ -146,7 +137,6 @@ export interface FileRouteTypes {
     | '/exercises/create'
     | '/argus'
     | '/exercises'
-    | '/feed'
     | '/workouts'
     | '/exercises/update/$exerciseId'
     | '/workouts/update/$workoutId'
@@ -158,7 +148,6 @@ export interface FileRouteTypes {
     | '/exercises/create'
     | '/argus'
     | '/exercises'
-    | '/feed'
     | '/workouts'
     | '/exercises/update/$exerciseId'
     | '/workouts/update/$workoutId'
@@ -170,7 +159,6 @@ export interface FileRouteTypes {
     | '/exercises/create'
     | '/argus/'
     | '/exercises/'
-    | '/feed/'
     | '/workouts/'
     | '/exercises/update/$exerciseId'
     | '/workouts/update/$workoutId'
@@ -183,7 +171,6 @@ export interface RootRouteChildren {
   ExercisesCreateRoute: typeof ExercisesCreateRoute
   ArgusIndexRoute: typeof ArgusIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
-  FeedIndexRoute: typeof FeedIndexRoute
   WorkoutsIndexRoute: typeof WorkoutsIndexRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
   WorkoutsUpdateWorkoutIdRoute: typeof WorkoutsUpdateWorkoutIdRoute
@@ -236,13 +223,6 @@ declare module '@tanstack/react-router' {
       path: '/workouts'
       fullPath: '/workouts'
       preLoaderRoute: typeof WorkoutsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feed/': {
-      id: '/feed/'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/': {
@@ -336,7 +316,6 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesCreateRoute: ExercisesCreateRoute,
   ArgusIndexRoute: ArgusIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
-  FeedIndexRoute: FeedIndexRoute,
   WorkoutsIndexRoute: WorkoutsIndexRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
   WorkoutsUpdateWorkoutIdRoute: WorkoutsUpdateWorkoutIdRoute,

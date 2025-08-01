@@ -5,6 +5,7 @@ import {AppTextInput} from '../../../../../atoms/AppTextInput/AppTextInput';
 import {ExerciseSelectionPopup} from '../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {PopupContext} from '../../../../../atoms/Popup/PopupContext';
 import {Exercise, WorkoutUpdateDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../utils/openapi-client';
+import {AppImage} from '../../../../../atoms/AppImage/AppImage';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
@@ -72,7 +73,7 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
   return (
     <div>
       <div className="pb-5 flex flex-row">
-        <img className="w-25 h-25 rounded-md object-cover " key={exercise.images[0]} src={exercise.images[0]}/>
+        <AppImage className="w-25 h-25 mt-1" key={exercise.images[0]} src={exercise.images[0]} />
         <div className="pl-5 grow">
           <div className="flex flex-row">
             <b>{exercise.name}</b>

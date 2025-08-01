@@ -7,6 +7,7 @@ import {Footer} from '../Footer/Footer';
 import {ThemeProvider} from '../ThemeProvider/ThemeProvider';
 import {StrictMode} from 'react';
 import {LanguageProvider} from '../LanguageProvider/LanguageProvider';
+import {ToastProvider} from '../../atoms/AppToast/ToastProvider';
 
 const queryClient = new QueryClient();
 export function Layout() {
@@ -20,15 +21,17 @@ export function Layout() {
           <LanguageProvider>
             <ThemeProvider>
               <AuthProvider>
+                <ToastProvider>
                   <PopupProvider>
                     <div className="flex min-h-screen flex-col font-extralight palette-neutral">
                       <Header/>
                       <div className="flex flex-col grow">
-                      <Outlet />
+                        <Outlet />
                       </div>
                       <Footer />
                     </div>
                   </PopupProvider>
+                </ToastProvider>
               </AuthProvider>
               <Scripts />
             </ThemeProvider>

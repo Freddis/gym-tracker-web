@@ -3,7 +3,6 @@ import {Popup} from './Popup';
 import {PopupContext} from './PopupContext';
 import {PopupContextValue} from './types/PopupContextValue';
 
-
 export const PopupProvider: FC<{children: ReactNode[] | ReactNode}> = (props) => {
   let currentSubscriber: ((node: ReactNode| null) => void) | null = null;
   const contentProvider = (subscriber: (node: ReactNode| null) => void) => {
