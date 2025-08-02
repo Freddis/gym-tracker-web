@@ -192,10 +192,9 @@ export class ExerciseService {
     const variationMap = new Map<number, ExerciseRow[]>();
     for (const exercise of exercises) {
       exerciseMap.set(exercise.id, exercise);
-      if (!exercise.userId || !exercise.parentExerciseId) {
+      if (exercise.userId || !exercise.parentExerciseId) {
         continue;
       }
-
       const existing = variationMap.get(exercise.parentExerciseId) ?? [];
       existing.push(exercise);
       variationMap.set(exercise.parentExerciseId, existing);
