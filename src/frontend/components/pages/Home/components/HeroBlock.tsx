@@ -23,7 +23,7 @@ export const HeroBlock: FC = () => {
               </h1>
               <p className="text-white text-lg mt-5">{t(i18n.subheading)}
               </p>
-              <AppButton variant="lg" className="mt-10" onClick={onCtaClick}>{t(i18n.button)}</AppButton>
+              <AppButton id="hero-cta-button" variant="lg" className="mt-10" onClick={onCtaClick}>{t(i18n.button)}</AppButton>
             </div>
         </div>
       </div>
