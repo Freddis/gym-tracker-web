@@ -11,3 +11,9 @@ temp
 .env
 *storybook.log
 html
+
+# Playwright
+/test-results/
+/playwright-report
+/blob-report
+/playwright/.cache/
