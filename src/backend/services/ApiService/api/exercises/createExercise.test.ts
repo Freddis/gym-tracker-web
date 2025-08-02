@@ -1,5 +1,4 @@
-import {expect} from 'chai';
-import {describe, test} from 'vitest';
+import {describe, test, expect} from 'vitest';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {TestUtils} from '../../../../utils/TestUtils/TestUtils';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
@@ -14,7 +13,7 @@ describe('createExercise', () => {
     const response = await TestUtils.openApi.postWithUser('/exercises', user, {name: 'New exercise'});
     console.log('Check');
     expect(response.status).to.eq(200);
-    expect(response.body.success).to.eq(true);
+    expect(response.body.id).not.toBeFalsy();
   });
 
   test('Only users can create exercises', async () => {
