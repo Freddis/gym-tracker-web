@@ -34,6 +34,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       [ApiErrorCode.UnknownError]: true,
       [ApiErrorCode.ValidationFailed]: true,
       [ApiErrorCode.ActionError]: true,
+      [ApiErrorCode.NotFound]: true,
     },
     contextFactory: async () => ({services: await this.createRequestServices()}),
   };
@@ -45,6 +46,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       [ApiErrorCode.ValidationFailed]: true,
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.Unauthorized]: true,
+      [ApiErrorCode.NotFound]: true,
     },
     contextFactory: async (ctx) => {
       const services = await this.createRequestServices();

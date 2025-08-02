@@ -6,8 +6,13 @@ import {unknownErrorResponseValidator} from '../validators/UnknownErrorResponse'
 import {validationErrorResponseValidator} from '../validators/ValidationErrorResponse';
 import {responseValidationErrorResponseValidator} from '../validators/ReponseValidationErrorResponse';
 import {unauthorizedErrorResponseValidator} from '../validators/UnauthorizedErrorResponse';
-
+import {notFoundErrorResponseValidator} from '../validators/NotFoundErrorResponse';
 export class ApiErrorConfigMap implements OpenApiErrorConfigMap<ApiErrorCode> {
+  [ApiErrorCode.NotFound] = {
+    status: '404',
+    description: 'Entity not found',
+    responseValidator: notFoundErrorResponseValidator,
+  } as const;
   [ApiErrorCode.MissingPermission] = {
     status: '403',
     description: 'Missing Permission',

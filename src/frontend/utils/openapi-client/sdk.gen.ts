@@ -262,7 +262,7 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns data on an exercise available to the user
+ * Returns data on an library exercise available
  */
 export const getExercisesById = <ThrowOnError extends boolean = false>(
   options: Options<GetExercisesByIdData, ThrowOnError>,
@@ -273,12 +273,6 @@ export const getExercisesById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
-    security: [
-      {
-        name: "authorization",
-        type: "apiKey",
-      },
-    ],
     responseTransformer: getExercisesByIdResponseTransformer,
     url: "/exercises/{id}",
     ...options,

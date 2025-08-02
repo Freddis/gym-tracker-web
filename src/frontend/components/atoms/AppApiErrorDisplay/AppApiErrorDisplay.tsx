@@ -1,10 +1,10 @@
 import {FC} from 'react';
 import {AppToast} from '../AppToast/AppToast';
 import {Color} from '../../../utils/design-system/types/Color';
-import {GetExercisesBuiltInError, GetWorkoutsError} from '../../../utils/openapi-client';
+import {GetExercisesBuiltInError, GetExercisesError, GetWorkoutsError} from '../../../utils/openapi-client';
 
 interface AppApiErrorDisplayProps {
-  error?: GetExercisesBuiltInError['error'] | GetWorkoutsError['error']
+  error?: GetExercisesBuiltInError['error'] | GetWorkoutsError['error'] | GetExercisesError['error']
 }
 
 export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {
@@ -13,6 +13,9 @@ export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {
   ].join('\n');
   if (props.error && props.error.code === 'ActionError') {
     message = props.error.humanReadable;
+  }
+  if (props.error && props.error.code === 'NotFound') {
+    message = 'Requested entity not found';
   }
   if (props.error && props.error.code === 'ValidationFailed') {
     const lines: string[] = [

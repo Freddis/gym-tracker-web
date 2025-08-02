@@ -507,7 +507,7 @@ export const getExercisesByIdQueryKey = (
 ) => createQueryKey("getExercisesById", options);
 
 /**
- * Returns data on an exercise available to the user
+ * Returns data on an library exercise available
  */
 export const getExercisesByIdOptions = (
   options: Options<GetExercisesByIdData>,

@@ -3,10 +3,9 @@ import {AppImage} from '../../../../atoms/AppImage/AppImage';
 import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
-import {Muscle} from '../../../../../../common/enums/Muscle';
-import {nativeEnum} from 'zod';
 import {ExerciseLibraryQueryParams} from '../types/ExercisesLibraryQuery';
 import {ExerciseBlockProps} from './types/ExerciseBlockProps';
+import {Muscle} from '../../../../../utils/openapi-client';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;
@@ -15,9 +14,8 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     e.preventDefault();
     setShowVariations(!showVariations);
   };
-  const getSearch = (muscle: string): ExerciseLibraryQueryParams => {
-    const val = nativeEnum(Muscle).parse(muscle);
-    const newParams = {...props.params, muscles: [val]};
+  const getSearch = (muscle: Muscle): ExerciseLibraryQueryParams => {
+    const newParams = {...props.params, muscles: [muscle]};
     return newParams;
   };
   return (
@@ -26,7 +24,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
         <AppImage src={item.images[0]} className="mt-1" />
         <div className="grow">
           <div className="mb-2">
-            <AppLink to="/exercises/update/$exerciseId" params={{exerciseId: item.id.toString()}}>
+            <AppLink to="/exercises/$exerciseId" params={{exerciseId: item.id.toString()}}>
               <b>{item.name}</b>
             </AppLink>
           </div>

@@ -109,7 +109,7 @@ export function UpdateExercisePage() {
   }
   return (
     <PageContainer>
-      <EditExerciseForm item={response.data.item}/>
+      <EditExerciseForm item={response.data}/>
     </PageContainer>
   );
 }

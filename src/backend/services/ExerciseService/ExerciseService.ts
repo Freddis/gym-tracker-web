@@ -86,23 +86,9 @@ export class ExerciseService {
   }
 
   async get(exerciseId: number, userId?: number): Promise<Exercise | null> {
-    const db = await this.db.getDb();
-    const result = await db.query.exercises.findFirst({
-      where: (table, {eq, and, or, isNull}) =>
-        and(
-          eq(table.id, exerciseId),
-          isNull(table.deletedAt),
-          or(
-            isNull(table.userId),
-            eq(table.userId, userId ?? 0)
-          )
-        ),
-    });
-    if (!result) {
-      return null;
-    }
-    const nested = await this.nestExercises([result]);
-    return nested[0] ?? null;
+    const exercises = await this.getAll({ids: [exerciseId], userId});
+    const result = exercises.items[0];
+    return result ?? null;
   }
 
   async getAll(params?: {

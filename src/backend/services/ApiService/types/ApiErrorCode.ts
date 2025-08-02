@@ -5,4 +5,5 @@ export enum ApiErrorCode {
   Unauthorized = 'Unauthorized',
   MissingPermission = 'MissingPermission',
   ActionError = 'ActionError',
+  NotFound = 'NotFound',
 }

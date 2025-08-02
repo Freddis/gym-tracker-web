@@ -23,6 +23,16 @@ export type AuthUser = {
 };
 
 /**
+ * Error response
+ */
+export type UnknownErrorResponse = {
+  /**
+   * Code to handle on the frontend
+   */
+  code: "UnknownError";
+};
+
+/**
  * Exercise. Either from built-in library or created by a user.
  */
 export type Exercise = {
@@ -124,61 +134,11 @@ export type Exercise = {
     /**
      * List of primary muscles this exercise targets
      */
-    primary: Array<
-      | "Lower Back"
-      | "Soleus"
-      | "Front Deltoids"
-      | "Lats"
-      | "Forearms"
-      | "Pecs"
-      | "Hamstrings"
-      | "Wrist Flexors"
-      | "Biceps"
-      | "Triceps"
-      | "Rear Deltoids"
-      | "Rotator Cuff"
-      | "Ankle"
-      | "Abdominals"
-      | "Glutes"
-      | "Quadriceps"
-      | "Obliques"
-      | "Abductors"
-      | "Gastrocnemius"
-      | "Lateral Deltoids"
-      | "Hip Flexors"
-      | "Trapezius"
-      | "Neck"
-      | "Adductors"
-    >;
+    primary: Array<Muscle>;
     /**
      * List of secondary muscles this exercise targets
      */
-    secondary: Array<
-      | "Lower Back"
-      | "Soleus"
-      | "Front Deltoids"
-      | "Lats"
-      | "Forearms"
-      | "Pecs"
-      | "Hamstrings"
-      | "Wrist Flexors"
-      | "Biceps"
-      | "Triceps"
-      | "Rear Deltoids"
-      | "Rotator Cuff"
-      | "Ankle"
-      | "Abdominals"
-      | "Glutes"
-      | "Quadriceps"
-      | "Obliques"
-      | "Abductors"
-      | "Gastrocnemius"
-      | "Lateral Deltoids"
-      | "Hip Flexors"
-      | "Trapezius"
-      | "Neck"
-      | "Adductors"
-    >;
+    secondary: Array<Muscle>;
   };
   /**
    * List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.
@@ -282,64 +242,73 @@ export type Exercise = {
       /**
        * List of primary muscles this exercise targets
        */
-      primary: Array<
-        | "Lower Back"
-        | "Soleus"
-        | "Front Deltoids"
-        | "Lats"
-        | "Forearms"
-        | "Pecs"
-        | "Hamstrings"
-        | "Wrist Flexors"
-        | "Biceps"
-        | "Triceps"
-        | "Rear Deltoids"
-        | "Rotator Cuff"
-        | "Ankle"
-        | "Abdominals"
-        | "Glutes"
-        | "Quadriceps"
-        | "Obliques"
-        | "Abductors"
-        | "Gastrocnemius"
-        | "Lateral Deltoids"
-        | "Hip Flexors"
-        | "Trapezius"
-        | "Neck"
-        | "Adductors"
-      >;
+      primary: Array<Muscle>;
       /**
        * List of secondary muscles this exercise targets
        */
-      secondary: Array<
-        | "Lower Back"
-        | "Soleus"
-        | "Front Deltoids"
-        | "Lats"
-        | "Forearms"
-        | "Pecs"
-        | "Hamstrings"
-        | "Wrist Flexors"
-        | "Biceps"
-        | "Triceps"
-        | "Rear Deltoids"
-        | "Rotator Cuff"
-        | "Ankle"
-        | "Abdominals"
-        | "Glutes"
-        | "Quadriceps"
-        | "Obliques"
-        | "Abductors"
-        | "Gastrocnemius"
-        | "Lateral Deltoids"
-        | "Hip Flexors"
-        | "Trapezius"
-        | "Neck"
-        | "Adductors"
-      >;
+      secondary: Array<Muscle>;
     };
   }>;
 };
+
+/**
+ * Muscle
+ */
+export type Muscle =
+  | "Lower Back"
+  | "Soleus"
+  | "Front Deltoids"
+  | "Lats"
+  | "Forearms"
+  | "Pecs"
+  | "Hamstrings"
+  | "Wrist Flexors"
+  | "Biceps"
+  | "Triceps"
+  | "Rear Deltoids"
+  | "Rotator Cuff"
+  | "Ankle"
+  | "Abdominals"
+  | "Glutes"
+  | "Quadriceps"
+  | "Obliques"
+  | "Abductors"
+  | "Gastrocnemius"
+  | "Lateral Deltoids"
+  | "Hip Flexors"
+  | "Trapezius"
+  | "Neck"
+  | "Adductors";
+
+/**
+ * Muscle
+ */
+export const Muscle = {
+  LOWER_BACK: "Lower Back",
+  SOLEUS: "Soleus",
+  FRONT_DELTOIDS: "Front Deltoids",
+  LATS: "Lats",
+  FOREARMS: "Forearms",
+  PECS: "Pecs",
+  HAMSTRINGS: "Hamstrings",
+  WRIST_FLEXORS: "Wrist Flexors",
+  BICEPS: "Biceps",
+  TRICEPS: "Triceps",
+  REAR_DELTOIDS: "Rear Deltoids",
+  ROTATOR_CUFF: "Rotator Cuff",
+  ANKLE: "Ankle",
+  ABDOMINALS: "Abdominals",
+  GLUTES: "Glutes",
+  QUADRICEPS: "Quadriceps",
+  OBLIQUES: "Obliques",
+  ABDUCTORS: "Abductors",
+  GASTROCNEMIUS: "Gastrocnemius",
+  LATERAL_DELTOIDS: "Lateral Deltoids",
+  HIP_FLEXORS: "Hip Flexors",
+  TRAPEZIUS: "Trapezius",
+  NECK: "Neck",
+  ADDUCTORS: "Adductors",
+} as const;
 
 /**
  * Exercise. Either from built-in library or created by a user.
@@ -919,9 +888,9 @@ export type PostAuthRegisterErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -929,8 +898,14 @@ export type PostAuthRegisterErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1020,9 +995,9 @@ export type PostAuthLoginErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1030,8 +1005,14 @@ export type PostAuthLoginErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1188,9 +1169,9 @@ export type GetExercisesErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1198,8 +1179,14 @@ export type GetExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1320,9 +1307,9 @@ export type PostExercisesErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1330,8 +1317,14 @@ export type PostExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1430,9 +1423,9 @@ export type PutExercisesErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1440,8 +1433,14 @@ export type PutExercisesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1589,9 +1588,9 @@ export type GetExercisesBuiltInErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1599,8 +1598,14 @@ export type GetExercisesBuiltInErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1722,9 +1727,9 @@ export type DeleteExercisesByIdErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1732,8 +1737,14 @@ export type DeleteExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1824,9 +1835,9 @@ export type GetExercisesByIdErrors = {
         };
       };
   /**
-   * Unauthorized
+   * Entity not found
    */
-  401: {
+  404: {
     /**
      * Error response
      */
@@ -1834,22 +1845,14 @@ export type GetExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "Unauthorized";
+      code: "NotFound";
     };
   };
   /**
    * Unknown Error
    */
   500: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "UnknownError";
-    };
+    error: UnknownErrorResponse;
   };
 };
 
@@ -1858,11 +1861,9 @@ export type GetExercisesByIdError =
 
 export type GetExercisesByIdResponses = {
   /**
-   * Excercise
+   * Good Response
    */
-  200: {
-    item: Exercise;
-  };
+  200: Exercise;
 };
 
 export type GetExercisesByIdResponse =
@@ -1960,9 +1961,9 @@ export type PatchExercisesByIdErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -1970,8 +1971,14 @@ export type PatchExercisesByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2080,9 +2087,9 @@ export type GetWorkoutsErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2090,8 +2097,14 @@ export type GetWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2209,9 +2222,9 @@ export type PostWorkoutsErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2219,8 +2232,14 @@ export type PostWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2319,9 +2338,9 @@ export type PutWorkoutsErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2329,8 +2348,14 @@ export type PutWorkoutsErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2434,9 +2459,9 @@ export type DeleteWorkoutsByIdErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2444,8 +2469,14 @@ export type DeleteWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2550,9 +2581,9 @@ export type GetWorkoutsByIdErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2560,8 +2591,14 @@ export type GetWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2663,9 +2700,9 @@ export type PatchWorkoutsByIdErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2673,8 +2710,14 @@ export type PatchWorkoutsByIdErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2774,9 +2817,9 @@ export type PostWeightErrors = {
     };
   };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2784,8 +2827,14 @@ export type PostWeightErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -2887,9 +2936,9 @@ export type GetArgusCheckinErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -2897,8 +2946,14 @@ export type GetArgusCheckinErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -3202,9 +3257,9 @@ export type GetArgusCheckinTypesErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -3212,8 +3267,14 @@ export type GetArgusCheckinTypesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 
@@ -3304,9 +3365,9 @@ export type GetEntriesErrors = {
         };
       };
   /**
-   * Unknown Error
+   * Entity not found
    */
-  500: {
+  404: {
     /**
      * Error response
      */
@@ -3314,8 +3375,14 @@ export type GetEntriesErrors = {
       /**
        * Code to handle on the frontend
        */
-      code: "UnknownError";
+      code: "NotFound";
     };
+  };
+  /**
+   * Unknown Error
+   */
+  500: {
+    error: UnknownErrorResponse;
   };
 };
 

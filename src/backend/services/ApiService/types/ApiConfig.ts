@@ -18,6 +18,7 @@ import {ResponseValidationErrorResponse} from '../validators/ReponseValidationEr
 import {UnauthorizedErrorResponse} from '../validators/UnauthorizedErrorResponse';
 import {UnknownErrorResponse} from '../validators/UnknownErrorResponse';
 import {ValidationErrorResponse} from '../validators/ValidationErrorResponse';
+import {NotFoundErrorResponse} from '../validators/NotFoundErrorResponse';
 
 export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
   basePath = '/api' as const;
@@ -86,6 +87,14 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
           },
         };
         return {code: ApiErrorCode.Unauthorized, body: error};
+      }
+      if (e.getCode() === ApiErrorCode.NotFound) {
+        const error: NotFoundErrorResponse = {
+          error: {
+            code: ApiErrorCode.NotFound,
+          },
+        };
+        return {code: ApiErrorCode.NotFound, body: error};
       }
     }
 

@@ -17,6 +17,7 @@ import { Route as FeedIndexRouteImport } from './routes/feed/index'
 import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
 import { Route as ArgusIndexRouteImport } from './routes/argus/index'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
+import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
@@ -58,6 +59,11 @@ const ArgusIndexRoute = ArgusIndexRouteImport.update({
 const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
   id: '/exercises/create',
   path: '/exercises/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExercisesExerciseIdRoute = ExercisesExerciseIdRouteImport.update({
+  id: '/exercises/$exerciseId',
+  path: '/exercises/$exerciseId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/exercises': typeof ExercisesIndexRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/argus/': typeof ArgusIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/argus'
     | '/exercises'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/argus'
     | '/exercises'
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/argus/'
     | '/exercises/'
@@ -206,6 +218,7 @@ export interface RootRouteChildren {
   ArticlesTermsOfServiceRoute: typeof ArticlesTermsOfServiceRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
   ArgusIndexRoute: typeof ArgusIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/$exerciseId': {
+      id: '/exercises/$exerciseId'
+      path: '/exercises/$exerciseId'
+      fullPath: '/exercises/$exerciseId'
+      preLoaderRoute: typeof ExercisesExerciseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/auth/register'
@@ -375,6 +395,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesTermsOfServiceRoute: ArticlesTermsOfServiceRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
   ArgusIndexRoute: ArgusIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,

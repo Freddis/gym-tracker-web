@@ -8,24 +8,20 @@ import {object} from 'zod';
 
 export const getExercise = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
-  type: ApiRouteType.User,
-  description: 'Returns data on an exercise available to the user',
+  type: ApiRouteType.Public,
+  description: 'Returns data on an library exercise available',
   path: '/{id}',
   validators: {
     path: object({
       id: RouteFactory.validators.strings.number.openapi({description: 'Id of the excercise'}),
     }),
-    response: object({
-      item: exerciseValidator,
-    }).openapi({description: 'Excercise'}),
+    response: exerciseValidator,
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.exercise.get(ctx.params.path.id, ctx.viewer.id);
+    const result = await ctx.services.models.exercise.get(ctx.params.path.id);
     if (!result) {
-      throw new ApiError(ApiErrorCode.UnknownError);
+      throw new ApiError(ApiErrorCode.NotFound);
     }
-    return {
-      item: result,
-    };
+    return result;
   },
 });

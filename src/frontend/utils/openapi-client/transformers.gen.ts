@@ -74,7 +74,7 @@ export const getExercisesBuiltInResponseTransformer = async (
 export const getExercisesByIdResponseTransformer = async (
   data: any,
 ): Promise<GetExercisesByIdResponse> => {
-  data.item = exerciseSchemaResponseTransformer(data.item);
+  data = exerciseSchemaResponseTransformer(data);
   return data;
 };
 
