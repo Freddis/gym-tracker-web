@@ -2,7 +2,7 @@ import {Link, LinkComponentProps} from '@tanstack/react-router';
 import {FC} from 'react';
 import {twMerge} from 'tailwind-merge';
 
-type AppLinkProps = LinkComponentProps & { variant?: 'bold' | 'normal', accented?: boolean };
+export type AppLinkProps = LinkComponentProps & { variant?: 'bold' | 'normal', accented?: boolean };
 
 export const AppLink: FC<AppLinkProps> = (props) => {
   const accented = props.accented === undefined ? true : props.accented;

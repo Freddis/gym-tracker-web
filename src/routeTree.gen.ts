@@ -19,6 +19,8 @@ import { Route as ArgusIndexRouteImport } from './routes/argus/index'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
+import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/privacy-policy'
 import { Route as WorkoutsUpdateWorkoutIdRouteImport } from './routes/workouts/update/$workoutId'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
@@ -68,6 +70,16 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesTermsOfServiceRoute = ArticlesTermsOfServiceRouteImport.update({
+  id: '/articles/terms-of-service',
+  path: '/articles/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesPrivacyPolicyRoute = ArticlesPrivacyPolicyRouteImport.update({
+  id: '/articles/privacy-policy',
+  path: '/articles/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkoutsUpdateWorkoutIdRoute = WorkoutsUpdateWorkoutIdRouteImport.update({
   id: '/workouts/update/$workoutId',
   path: '/workouts/update/$workoutId',
@@ -102,6 +114,8 @@ const ApiServerRoute = ApiServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
+  '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
@@ -114,6 +128,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
+  '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
@@ -127,6 +143,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
+  '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/exercises/create': typeof ExercisesCreateRoute
@@ -141,6 +159,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/articles/privacy-policy'
+    | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
@@ -153,6 +173,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/articles/privacy-policy'
+    | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
@@ -165,6 +187,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/articles/privacy-policy'
+    | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
     | '/exercises/create'
@@ -178,6 +202,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArticlesPrivacyPolicyRoute: typeof ArticlesPrivacyPolicyRoute
+  ArticlesTermsOfServiceRoute: typeof ArticlesTermsOfServiceRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
@@ -280,6 +306,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/terms-of-service': {
+      id: '/articles/terms-of-service'
+      path: '/articles/terms-of-service'
+      fullPath: '/articles/terms-of-service'
+      preLoaderRoute: typeof ArticlesTermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/privacy-policy': {
+      id: '/articles/privacy-policy'
+      path: '/articles/privacy-policy'
+      fullPath: '/articles/privacy-policy'
+      preLoaderRoute: typeof ArticlesPrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workouts/update/$workoutId': {
       id: '/workouts/update/$workoutId'
       path: '/workouts/update/$workoutId'
@@ -331,6 +371,8 @@ declare module '@tanstack/react-start/server' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArticlesPrivacyPolicyRoute: ArticlesPrivacyPolicyRoute,
+  ArticlesTermsOfServiceRoute: ArticlesTermsOfServiceRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,

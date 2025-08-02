@@ -50,16 +50,19 @@ export const dictionary: Translation = {
       copyright: '© Home Studio 2025. Все права защищены. Разработано Alex S.',
       about: {
         heading: 'О Нас',
-        content: `Мы любим животных и стараемся поддерживать тех из них, кому не посчастливилось иметь 
-        ласковых хозяев и тёплый кров. Один из проверенных 
-        способов это сделать — помочь благотворительному фонду`,
+        content: `Это личный проект, созданный атлетом, которые влюбился в программирование. 
+        Он сделан, чтобы отслеживать тренировки было просто и эффективно.`,
       },
       contacts: {
         heading: 'Контакты',
         address: 'Сочи, пгт. Сириус, Войтенко 27',
       },
-      social: {
-        heading: 'Социальные Сети',
+      links: {
+        heading: 'Ссылки',
+        links: {
+          termsOfService: 'Условия Использования',
+          privacyPolicy: 'Политика Конфеденциальности',
+        },
       },
     },
   },
@@ -67,6 +70,16 @@ export const dictionary: Translation = {
   },
   pages: {
     static: {
+      articles: {
+        header: 'Статьи',
+        labels: {
+          categories: 'Категории:',
+        },
+        articles: {
+          termsOfService: 'Условия Использования',
+          privacyPolicy: 'Политика Конфеденциальности',
+        },
+      },
       home: {
         hero: {
           heading: {

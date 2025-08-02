@@ -3,7 +3,23 @@
 @import "./colors.gen.css";
 @import "./storybook.css";
 @import "./shadcn.css";
-
+@plugin "@tailwindcss/typography";
+.prose {
+  --tw-prose-body: inherit;
+  --tw-prose-headings: inherit;
+  --tw-prose-links: inherit;
+  --tw-prose-bold: inherit;
+  --tw-prose-quotes: inherit;
+  h1,h2,h3 {
+    font-weight: lighter
+  }
+  h1 {
+    font-size: 20rem;
+  }
+  :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    font-weight: normal!important
+  }
+}
 @theme  inline {
 
 }

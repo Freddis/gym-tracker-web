@@ -29,16 +29,19 @@ export const dictionary = {
     footer: {
       about: {
         heading: 'About Us',
-        content: `Praesent vel rutrum purus. Nam vel dui eu risus duis dignissim dignissim. 
-        Suspen disse at eros tempus, congueconsequat.
-        Fusce sit amet urna feugiat.Praesent vel rutrum purus. Nam vel dui eu risus.`,
+        content: `This app is a personal passion project, built by a gym rat who also happens to love coding. 
+        It’s designed to make tracking workouts simple and effective`,
       },
       contacts: {
         heading: 'Contacts',
-        address: '44 New Design Street, rne 005',
+        address: 'Georgia, Kakheti, Ozaani vlg, 1',
       },
-      social: {
-        heading: 'Social Networks',
+      links: {
+        heading: 'Links',
+        links: {
+          termsOfService: 'Terms Of Service',
+          privacyPolicy: 'Privacy Policy',
+        },
       },
       copyright: '© Copyright Home Studio 2025. All Right Reserved. Designed and Developed by Alex S.',
     },
@@ -57,6 +60,16 @@ export const dictionary = {
   },
   pages: {
     static: {
+      articles: {
+        header: 'Articles',
+        labels: {
+          categories: 'Categories:',
+        },
+        articles: {
+          termsOfService: 'Terms Of Service',
+          privacyPolicy: 'Privacy Policy',
+        },
+      },
       home: {
         hero: {
           heading: {

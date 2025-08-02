@@ -1,9 +1,10 @@
 import {FC} from 'react';
+import {cn} from '../../../utils/cn';
 
-export const AppLogo: FC<{withText?: boolean}> = (props) => {
+export const AppLogo: FC<{withText?: boolean, className: string}> = (props) => {
   const withText = props.withText ?? true;
   return (
-    <div className="flex flex-row items-center">
+    <div className={cn('flex flex-row items-center', props.className)}>
       <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
