@@ -270,17 +270,17 @@ Lints the project according to the eslint rules. Linting is a process of putting
 ### TODO
 
 #### Frontend
-1. Figure out error display on the frontend.
+1. <s>Figure out error display on the frontend.</s>
 2. <s> Finish the interface for palettes in the design system. Right now I think there are not enough tokens in the palette. Need to have a simplistic and complete way to describe colors for any given block/page.</s>
 3. Switch to such development fashion that everything that the user/tester sees is working. No links that lead nowhere or buttons that don't work.
-4. Add browser tests and GHA workflow for them
-5. Add endless feed case
+4. <s>Add browser tests and GHA workflow for them</s>
+5. <s>Add endless feed case</s>
 
 ### Backend
 1. <s>Figure out decorator system for DTOs. How many layers needed to eliminate any conflicts between db, services and api</s>
 2. Do we need a transaction opened for every request?
-3. Figure out layers for primary
-4. Connect email server
+3. Connect email server
+4. Figure out translations for data stored in DB
 
 
 ### Project
