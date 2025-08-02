@@ -29,7 +29,7 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
       error: ApiErrorCode.UnknownError,
     },
   } as const;
-  skipDescriptionsCheck?: boolean = true;
+  // skipDescriptionsCheck?: boolean = true;
 
   constructor(service: DrizzleService) {
     this.routes = new ApiRouteConfig(service);

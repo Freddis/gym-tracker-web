@@ -13,11 +13,11 @@ export const getWorkout = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number,
+      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the workout'}),
     }),
     response: object({
       item: workoutValidator,
-    }),
+    }).openapi({description: 'Workout'}),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.workout.get(ctx.params.path.id, ctx.viewer.id);

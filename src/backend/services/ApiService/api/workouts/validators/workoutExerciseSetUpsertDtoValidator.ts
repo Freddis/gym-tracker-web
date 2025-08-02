@@ -1,8 +1,9 @@
 import {number} from 'zod';
 import {workoutExerciseSetRowValidator} from '../../../../DrizzleService/types/WorkoutExerciseSetRow';
 import {RouteFactory} from '../../../utils/RouteFactory';
+import {workoutExerciseSetValidatorDescriptions} from './workoutExerciseSetValidator';
 
-export const workoutExerciseSetUpsertDtoValidator = workoutExerciseSetRowValidator.omit({
+const validator = workoutExerciseSetRowValidator.omit({
   userId: true,
   workoutId: true,
   workoutExerciseId: true,
@@ -15,3 +16,8 @@ export const workoutExerciseSetUpsertDtoValidator = workoutExerciseSetRowValidat
   end: RouteFactory.validators.strings.datetime.nullable(),
   start: RouteFactory.validators.strings.datetime.nullable(),
 });
+
+export const workoutExerciseSetUpsertDtoValidator = RouteFactory.validators.describeShape(
+  validator,
+  workoutExerciseSetValidatorDescriptions
+);

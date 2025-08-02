@@ -11,7 +11,7 @@ export const getExerciseList = RouteFactory.createRoute({
   path: '/',
   validators: {
     query: getExerciseListQueryValidator,
-    response: RouteFactory.validators.paginatedResponse(exerciseValidator),
+    response: RouteFactory.validators.paginatedResponse(exerciseValidator).openapi({description: 'List of excercises'}),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.exercise.getAll({

@@ -1,8 +1,8 @@
-
+import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutExerciseSetUpdateDtoValidator} from './workoutExerciseSetUpdateDtoValidator';
-import {workoutExerciseValidator} from './workoutExerciseValidator';
+import {workoutExerciseValidator, workoutExerciseValidatorDescriptions} from './workoutExerciseValidator';
 
-export const workoutExerciseUpdateDtoValidator = workoutExerciseValidator.omit({
+const validator = workoutExerciseValidator.omit({
   workoutId: true,
   userId: true,
   exercise: true,
@@ -14,3 +14,7 @@ export const workoutExerciseUpdateDtoValidator = workoutExerciseValidator.omit({
   sets: workoutExerciseSetUpdateDtoValidator.array(),
 });
 
+export const workoutExerciseUpdateDtoValidator = RouteFactory.validators.describeShape(
+  validator,
+  workoutExerciseValidatorDescriptions,
+);

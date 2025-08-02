@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {FC, useState, useContext} from 'react';
 import {UpdateWorkoutExerciseForm} from '../UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
@@ -12,18 +12,11 @@ import {AppBlockHeader} from '../../../../../atoms/AppBlock/components/AppBlockH
 import {Conditional} from '../../../../../layout/Header/Header';
 import {AppLink} from '../../../../../atoms/AppLink/AppLink';
 import {AppLabel} from '../../../../../atoms/AppLabel/AppLabel';
-import {Workout, WorkoutUpdateDto, Exercise} from '../../../../../../utils/openapi-client';
-import {patchWorkoutsByIdMutation, deleteWorkoutsByIdMutation} from '../../../../../../utils/openapi-client/@tanstack/react-query.gen';
+import {Workout, WorkoutUpdateDto, Exercise, patchWorkoutsById, deleteWorkoutsById} from '../../../../../../utils/openapi-client';
 
 export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   const client = useQueryClient();
   const navigation = useNavigate();
-  const updateMutation = useMutation({
-    ...patchWorkoutsByIdMutation(),
-  });
-  const deleteMutation = useMutation({
-    ...deleteWorkoutsByIdMutation(),
-  });
   const popupContext = useContext(PopupContext);
   const updateDTO: WorkoutUpdateDto = props.item;
   const [item, setItem] = useState(updateDTO);
@@ -59,13 +52,13 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     };
-    const result = await updateMutation.mutateAsync({
+    const result = await patchWorkoutsById({
       path: {
         id: props.item.id,
       },
       body: newItem,
     });
-    if (!result.success) {
+    if (!result.data) {
       // eslint-disable-next-line no-alert
       alert('Something went wrong');
       return;
@@ -78,12 +71,12 @@ export const UpdateWorkoutForm: FC<{item: Workout}> = (props) => {
   };
 
   const deleteItem = async () => {
-    const result = await deleteMutation.mutateAsync({
+    const result = await deleteWorkoutsById({
       path: {
         id: props.item.id,
       },
     });
-    if (!result.success) {
+    if (!result.data) {
       // eslint-disable-next-line no-alert
       alert('Something went wrong');
       return;

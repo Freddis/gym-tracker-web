@@ -1,9 +1,9 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
-import {exerciseRowValidator} from '../../../DrizzleService/types/ExerciseRow';
 import {exerciseUpsertDtoValidator} from './validators/exerciseUpsertDtoValidator';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {object} from 'zod';
+import {exerciseValidator} from './validators/exerciseValidator';
 
 export const upsertExercises = RouteFactory.createRoute({
   method: OpenApiMethod.PUT,
@@ -12,11 +12,11 @@ export const upsertExercises = RouteFactory.createRoute({
   path: '/',
   validators: {
     body: object({
-      items: exerciseUpsertDtoValidator.array(),
+      items: exerciseUpsertDtoValidator.array().openapi({description: 'List of exercises that contain updated fields'}),
     }),
     response: object({
-      items: exerciseRowValidator.array(),
-    }),
+      items: exerciseValidator.array().openapi({description: 'List of updated exercises'}),
+    }).openapi({description: "List of updated exercises containing internal ids to match on device's database"}),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.exercise.upsert(ctx.viewer.id, ctx.params.body.items);

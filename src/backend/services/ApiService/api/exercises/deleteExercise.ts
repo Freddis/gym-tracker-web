@@ -12,11 +12,13 @@ export const deleteExercise = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number,
+      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the exercise'}),
     }),
     response: object({
-      success: boolean(),
-    }),
+      success: boolean().openapi({
+        description: 'Stub for response. Always true since otherwise error is thrown.',
+      }),
+    }).openapi({description: 'Indicator of successfult operation'}),
   },
   handler: async (ctx) => {
     if (!ctx.services.models.exercise.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {

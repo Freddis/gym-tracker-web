@@ -1,7 +1,8 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
-import {object, number} from 'zod';
+import {object} from 'zod';
 import {RouteFactory} from '../../utils/RouteFactory';
+import {workoutValidator} from './validators/workoutValidator';
 
 export const createWorkout = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
@@ -11,9 +12,7 @@ export const createWorkout = RouteFactory.createRoute({
   validators: {
     body: object({
     }),
-    response: object({
-      id: number(),
-    }),
+    response: workoutValidator,
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.workout.create(ctx.viewer.id);

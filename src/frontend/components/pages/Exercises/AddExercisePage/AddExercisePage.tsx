@@ -1,22 +1,19 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useState} from 'react';
-import {useMutation} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
-import {postExercisesMutation} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
+import {postExercises} from '../../../../utils/openapi-client';
 
 export function AddExercisePage() {
   const [name, setName] = useState('');
-  const mutation = useMutation({
-    ...postExercisesMutation(),
-  });
+
   const navigation = useNavigate();
   const addExercise = async () => {
-    const result = await mutation.mutateAsync({
+    const result = await postExercises({
       body: {
         name,
       },
     });
-    if (!result.success) {
+    if (!result.data) {
       // eslint-disable-next-line no-alert
       alert('Something went wrong');
       return;

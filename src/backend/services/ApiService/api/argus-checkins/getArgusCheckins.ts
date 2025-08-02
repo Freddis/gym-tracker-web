@@ -12,10 +12,12 @@
    path: '/checkin',
    validators: {
      query: object({
-       page: RouteFactory.validators.strings.number.optional().default('1'),
-       type: nativeEnum(ArgusCheckinType).optional(),
+       page: RouteFactory.validators.strings.number.optional().default('1').openapi({description: 'Page'}),
+       type: nativeEnum(ArgusCheckinType).optional().openapi({description: 'Filter by type of checkin'}),
      }),
-     response: RouteFactory.validators.paginatedResponse(argusCheckinValidator),
+     response: RouteFactory.validators.paginatedResponse(argusCheckinValidator).openapi({
+       description: 'List of Argus checkins',
+     }),
    },
    handler: async (ctx) => {
      const response = await ctx.services.models.argusCheckin.getLatest({

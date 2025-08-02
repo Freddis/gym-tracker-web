@@ -13,7 +13,7 @@ export class ExerciseService {
     this.db = db;
   }
 
-  async create(data: {userId?: number, name: string;}): Promise<ExerciseRow> {
+  async create(data: {userId?: number, name: string;}): Promise<Exercise> {
     const db = await this.db.getDb();
     const dbSchema = this.db.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
@@ -28,7 +28,15 @@ export class ExerciseService {
     if (!firstRow) {
       throw new Error('Unable to get inserted user');
     }
-    return firstRow;
+    const exercise: Exercise = {
+      ...firstRow,
+      variations: [],
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
+    };
+    return exercise;
   }
 
   async update(id: number, data: {name: string; description: string;}): Promise<void> {
@@ -57,7 +65,7 @@ export class ExerciseService {
       );
   }
 
-  async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<ExerciseRow[]> {
+  async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<Exercise[]> {
     const db = await this.db.getDb();
     const schema = this.db.getSchema();
     if (data.length === 0) {
@@ -69,11 +77,12 @@ export class ExerciseService {
       userId: userId,
       parentExerciseId: null,
     }));
-    const result = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
+    const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
       target: schema.exercises.id,
       set: this.db.generateConflictUpdateSetAllColumns(schema.exercises),
     }).returning();
-    return result;
+    const items = this.nestExercises(inserted);
+    return items;
   }
 
   async get(exerciseId: number, userId?: number): Promise<Exercise | null> {

@@ -33,7 +33,7 @@ export class UserService {
       id: row.id,
       email: row.email,
       name: row.name,
-      avatar: '',
+      profilePicture: '',
     }));
     const result: PaginatedResult<User> = {
       items,

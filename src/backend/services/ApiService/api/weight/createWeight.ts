@@ -11,7 +11,9 @@ export const createWeight = RouteFactory.createRoute({
   path: '/',
   validators: {
     body: object({
-      weight: number(),
+      weight: number().openapi({
+        description: 'Weight value',
+      }),
     }),
     response: weightValidator,
   },

@@ -11,7 +11,14 @@ export const getArgusCheckinTypes = RouteFactory.createRoute({
   path: '/checkin/types',
   validators: {
     response: z.object({
-      items: z.nativeEnum(ArgusCheckinType).openapi({ref: 'ArgusCheckinType'}).array(),
+      items: z.nativeEnum(ArgusCheckinType).openapi({
+        ref: 'ArgusCheckinType',
+        description: 'Possible types that Argus checkins can have.',
+      }).array().openapi({
+        description: 'Possible types that Argus checkins can have.',
+      }),
+    }).openapi({
+      description: 'Possible types that Argus checkins can have.',
     }),
   },
   handler: async (ctx) => {

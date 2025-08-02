@@ -5,7 +5,7 @@ import {workoutValidator} from '../../workouts/validators/workoutValidator';
 import {weightValidator} from '../../weight/validators/weightValidator';
 
 const baseEntryValidator = object({
-  id: number(),
+  id: number().openapi({description: 'Id of an entry'}),
   user: userValidator,
 });
 
@@ -30,7 +30,7 @@ export const entryValidator = baseEntryValidator.extend({
   type: union([
     literal(EntryType.Weight),
     literal(EntryType.Workout),
-  ]),
-  weight: weightValidator.optional(),
-  workout: workoutValidator.optional(),
+  ]).openapi({description: 'Entry type'}),
+  weight: weightValidator.optional().openapi({description: 'Weight. Only for weight entries'}),
+  workout: workoutValidator.optional().openapi({description: 'Workout. Only for workout entries.'}),
 }).openapi({ref: 'Entry'});

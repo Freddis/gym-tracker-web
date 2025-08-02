@@ -2,12 +2,15 @@
 
 import type {
   GetExercisesResponse,
+  PostExercisesResponse,
   PutExercisesResponse,
   GetExercisesBuiltInResponse,
   GetExercisesByIdResponse,
   GetWorkoutsResponse,
+  PostWorkoutsResponse,
   PutWorkoutsResponse,
   GetWorkoutsByIdResponse,
+  PatchWorkoutsByIdResponse,
   PostWeightResponse,
   GetArgusCheckinResponse,
   GetEntriesResponse,
@@ -43,18 +46,18 @@ export const getExercisesResponseTransformer = async (
   return data;
 };
 
+export const postExercisesResponseTransformer = async (
+  data: any,
+): Promise<PostExercisesResponse> => {
+  data = exerciseSchemaResponseTransformer(data);
+  return data;
+};
+
 export const putExercisesResponseTransformer = async (
   data: any,
 ): Promise<PutExercisesResponse> => {
   data.items = data.items.map((item: any) => {
-    item.createdAt = new Date(item.createdAt);
-    if (item.updatedAt) {
-      item.updatedAt = new Date(item.updatedAt);
-    }
-    if (item.deletedAt) {
-      item.deletedAt = new Date(item.deletedAt);
-    }
-    return item;
+    return exerciseSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -94,13 +97,7 @@ const workoutExerciseSchemaResponseTransformer = (data: any) => {
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
-  data.exercise.createdAt = new Date(data.exercise.createdAt);
-  if (data.exercise.updatedAt) {
-    data.exercise.updatedAt = new Date(data.exercise.updatedAt);
-  }
-  if (data.exercise.deletedAt) {
-    data.exercise.deletedAt = new Date(data.exercise.deletedAt);
-  }
+  data.exercise = exerciseSchemaResponseTransformer(data.exercise);
   data.sets = data.sets.map((item: any) => {
     return workoutExerciseSetSchemaResponseTransformer(item);
   });
@@ -134,22 +131,18 @@ export const getWorkoutsResponseTransformer = async (
   return data;
 };
 
+export const postWorkoutsResponseTransformer = async (
+  data: any,
+): Promise<PostWorkoutsResponse> => {
+  data = workoutSchemaResponseTransformer(data);
+  return data;
+};
+
 export const putWorkoutsResponseTransformer = async (
   data: any,
 ): Promise<PutWorkoutsResponse> => {
   data.items = data.items.map((item: any) => {
-    item.start = new Date(item.start);
-    if (item.end) {
-      item.end = new Date(item.end);
-    }
-    item.createdAt = new Date(item.createdAt);
-    if (item.updatedAt) {
-      item.updatedAt = new Date(item.updatedAt);
-    }
-    if (item.deletedAt) {
-      item.deletedAt = new Date(item.deletedAt);
-    }
-    return item;
+    return workoutSchemaResponseTransformer(item);
   });
   return data;
 };
@@ -158,6 +151,13 @@ export const getWorkoutsByIdResponseTransformer = async (
   data: any,
 ): Promise<GetWorkoutsByIdResponse> => {
   data.item = workoutSchemaResponseTransformer(data.item);
+  return data;
+};
+
+export const patchWorkoutsByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchWorkoutsByIdResponse> => {
+  data = workoutSchemaResponseTransformer(data);
   return data;
 };
 

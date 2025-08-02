@@ -13,9 +13,11 @@ export const getEntryList = RouteFactory.createRoute({
   description: 'Returns the list of public entries',
   validators: {
     query: object({
-      page: RouteFactory.validators.strings.number.optional(),
+      page: RouteFactory.validators.strings.number.optional().openapi({description: 'Page'}),
     }),
-    response: RouteFactory.validators.paginatedResponse(entryValidator),
+    response: RouteFactory.validators.paginatedResponse(entryValidator).openapi({
+      description: 'List of entries',
+    }),
   },
   handler: async (ctx): Promise<PaginatedResult<Entry>> => {
     const result = await ctx.services.models.entry.getAll(ctx.params.query);

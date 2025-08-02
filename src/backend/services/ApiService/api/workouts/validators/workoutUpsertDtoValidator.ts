@@ -1,8 +1,8 @@
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutExerciseUpsertDtoValidator} from './workoutExerciseUpsertDtoValidator';
-import {workoutValidator} from './workoutValidator';
+import {workoutValidator, workoutValidatorDescriptions} from './workoutValidator';
 
-export const workoutUpsertDtoValidator = workoutValidator.omit({
+const validator = workoutValidator.omit({
   userId: true,
   exercises: true,
 }).extend({
@@ -12,6 +12,13 @@ export const workoutUpsertDtoValidator = workoutValidator.omit({
   end: RouteFactory.validators.strings.datetime.nullable(),
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
-}).openapi({ref: 'WorkoutUpsertDto'});
+});
+export const workoutUpsertDtoValidator = RouteFactory.validators.describeShape(
+  validator,
+  workoutValidatorDescriptions
+).openapi({
+  ref: 'WorkoutUpsertDto',
+  description: 'Fields needed to update a workout',
+});
 
 

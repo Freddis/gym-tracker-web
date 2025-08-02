@@ -1,8 +1,8 @@
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutExerciseSetUpsertDtoValidator} from './workoutExerciseSetUpsertDtoValidator';
-import {workoutExerciseValidator} from './workoutExerciseValidator';
+import {workoutExerciseValidator, workoutExerciseValidatorDescriptions} from './workoutExerciseValidator';
 
-export const workoutExerciseUpsertDtoValidator = workoutExerciseValidator.omit({
+const validator = workoutExerciseValidator.omit({
   workoutId: true,
   userId: true,
   exercise: true,
@@ -13,3 +13,8 @@ export const workoutExerciseUpsertDtoValidator = workoutExerciseValidator.omit({
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
 });
+
+export const workoutExerciseUpsertDtoValidator = RouteFactory.validators.describeShape(
+  validator,
+  workoutExerciseValidatorDescriptions,
+);

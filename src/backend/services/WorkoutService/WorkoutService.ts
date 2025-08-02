@@ -40,13 +40,13 @@ export class WorkoutService {
     return firstRow;
   }
 
-  async update(id: number, data: WorkoutUpdateDto): Promise<void> {
+  async update(id: number, data: WorkoutUpdateDto): Promise<Workout> {
     const db = await this.db.getDb();
     const workout = await this.get(id);
     if (!workout) {
       throw new Error('Workout not found');
     }
-    await db.transaction(async (db) => {
+    const updatedWorkout = await db.transaction(async (db) => {
       await db.update(this.table)
       .set({
         ...data,
@@ -61,7 +61,6 @@ export class WorkoutService {
       eq(dbSchema.workoutExercises.workoutId, id)
     );
       for (const exercise of data.exercises) {
-
         const newExercise: NewModel<WorkoutExerciseRow> = {
           ...exercise,
           id: undefined,
@@ -92,9 +91,16 @@ export class WorkoutService {
           await db.insert(dbSchema.workoutExerciseSets).values(newSet);
         }
       }
+      const updatedWorkout = await this.get(id);
+      if (!updatedWorkout) {
+        throw new Error("Can't fetch updated workout");
+      }
+      return updatedWorkout;
     });
+    return updatedWorkout;
   }
-  async upsert(userId: number, data: WorkoutUpsertDto[]): Promise<WorkoutRow[]> {
+
+  async upsert(userId: number, data: WorkoutUpsertDto[]): Promise<Workout[]> {
     const db = await this.db.getDb();
     const schema = this.db.getSchema();
     if (data.length === 0) {
@@ -162,7 +168,8 @@ export class WorkoutService {
     });
     // todo: should I go out of my way to insure ordering of result rows in returning()?
     // going with the flow for now and relying on posgress returning() implementation, which for now preserves the order
-    return result;
+    const workouts = this.load(result.map((x) => x.id));
+    return workouts;
   }
 
 

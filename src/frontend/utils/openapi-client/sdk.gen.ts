@@ -63,12 +63,15 @@ import type {
 import { client as _heyApiClient } from "./client.gen";
 import {
   getExercisesResponseTransformer,
+  postExercisesResponseTransformer,
   putExercisesResponseTransformer,
   getExercisesBuiltInResponseTransformer,
   getExercisesByIdResponseTransformer,
   getWorkoutsResponseTransformer,
+  postWorkoutsResponseTransformer,
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
+  patchWorkoutsByIdResponseTransformer,
   postWeightResponseTransformer,
   getArgusCheckinResponseTransformer,
   getEntriesResponseTransformer,
@@ -175,6 +178,7 @@ export const postExercises = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
+    responseTransformer: postExercisesResponseTransformer,
     url: "/exercises",
     ...options,
     headers: {
@@ -350,6 +354,7 @@ export const postWorkouts = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
+    responseTransformer: postWorkoutsResponseTransformer,
     url: "/workouts",
     ...options,
     headers: {
@@ -456,6 +461,7 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
         type: "apiKey",
       },
     ],
+    responseTransformer: patchWorkoutsByIdResponseTransformer,
     url: "/workouts/{id}",
     ...options,
     headers: {

@@ -1,7 +1,8 @@
-import {boolean, object, string} from 'zod';
+import {object, string} from 'zod';
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'strap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
+import {exerciseValidator} from './validators/exerciseValidator';
 
 
 export const createExercise = RouteFactory.createRoute({
@@ -11,17 +12,15 @@ export const createExercise = RouteFactory.createRoute({
   path: '/',
   validators: {
     body: object({
-      name: string(),
+      name: string().openapi({description: 'Name of the exercise'}),
     }),
-    response: object({
-      success: boolean(),
-    }),
+    response: exerciseValidator,
   },
   handler: async (ctx) => {
-    await ctx.services.models.exercise.create({
+    const exercise = await ctx.services.models.exercise.create({
       userId: ctx.viewer.id,
       name: ctx.params.body.name,
     });
-    return {success: true};
+    return exercise;
   },
 });
