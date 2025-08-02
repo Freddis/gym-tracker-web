@@ -27,7 +27,8 @@ export const Header: FC = () => {
     <div className="bg-surface text-on-surface p-2 text-2xl border-b-2 border-b-accent flex justify-center w-full">
       <div className="w-full max-w-5xl flex items-center m-auto">
         <Link to="/" className="flex items-center justify-center mr-20">
-          <AppLogo />
+          <AppLogo className="md:block" withText={false}/>
+          <AppLogo className="hidden" withText/>
         </Link>
         <div className="space-x-5 hidden md:flex items-center grow gap-3">
           <HeaderLink to="/">{t(i18n.menu.home)}</HeaderLink>
@@ -41,7 +42,9 @@ export const Header: FC = () => {
           </Conditional>
         </div>
         <Conditional condition={!!auth.user}>
+          <div className="grow flex flex-row-reverse">
           <ProfileDropdownMenu />
+          </div>
         </Conditional>
         <Conditional condition={!auth.user}>
           <DarkModeSwitch onClick={toggleTheme} checked={theme === Theme.Dark} />

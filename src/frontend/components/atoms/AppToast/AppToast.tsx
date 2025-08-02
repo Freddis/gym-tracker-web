@@ -1,9 +1,9 @@
 import {FC, ReactNode} from 'react';
 import {Color} from '../../../utils/design-system/types/Color';
-import {twMerge} from 'tailwind-merge';
 import {FaCircleXmark} from 'react-icons/fa6';
 import {FaCheck, FaExclamationTriangle, FaInfo} from 'react-icons/fa';
 import {ToastColor} from './types/ToastColor';
+import {cn} from '../../../utils/cn';
 
 interface AppToastProps {
   variant: ToastColor
@@ -11,7 +11,6 @@ interface AppToastProps {
   className?: string
 }
 export const AppToast: FC<AppToastProps> = (props) => {
-  const classes = `palette-${props.variant} flex items-center bg-main text-on-main py-3 px-5 rounded-sm min-w-100 text-left toast`;
   const iconMap: Record<typeof props['variant'], ReactNode> = {
     [Color.Danger]: <FaCircleXmark className="inline mr-2 -mt-0.5"/>,
     [Color.Warning]: <FaExclamationTriangle className="inline mr-2 -mt-0.5"/>,
@@ -21,7 +20,8 @@ export const AppToast: FC<AppToastProps> = (props) => {
   const icon = iconMap[props.variant];
   const parts = props.children.split('\n');
   return (
-    <div className={twMerge(classes, props.className)}>
+    // eslint-disable-next-line max-len
+    <div className={cn(`palette-${props.variant} flex items-center bg-main text-on-main py-3 px-5 rounded-sm min-w-full md:min-w-100 text-left toast`, props.className)}>
       <div>{icon}</div>
       <div className="flex flex-col grow">
         {parts.map((x) => <div key={x}>{x}</div>)}

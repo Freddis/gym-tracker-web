@@ -3,11 +3,11 @@ import {ImCheckboxUnchecked, ImCheckboxChecked} from 'react-icons/im';
 
 export const PricingBlock: FC = () => {
   return (
-    <div className=" justify-center p-20 flex bg-main text-on-main">
-      <div className="max-w-5xl">
+    <div className=" justify-center py-20 px-5 flex bg-main text-on-main">
+      <div className="w-5xl max-w-full">
         <div className="text-center mb-20">
           <h2 className="text-2xl text-center uppercase mb-5">Our prcing plan</h2>
-          <div className="border-b-2 border-accent w-100 mb-5 m-auto"></div>
+          <div className="border-b-2 border-accent w-100 max-w-full mb-5 m-auto"></div>
           <p>As we mentioned it already, our pricing policy is simple as a stick.
              You get everything you can do in excel spreadsheets for <span className="text-accent">free! </span>
             We only charge for things that requires active suppoort and expenses.</p>

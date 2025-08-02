@@ -55,7 +55,7 @@ export const ToastProvider: FC<{children: ReactNode}> = ({children}) => {
         <Animated
           show={showToast}
           animation="opacity-100 translate-y-0"
-          className={'fixed mt-23 right-10 duration-500 ease-in-out opacity-0 translate-y-4 transition-all'}
+          className={'px-2 max-w-full right-auto md:right-10 fixed mt-21 duration-500 ease-in-out opacity-0 translate-y-4 transition-all'}
         >
           <AppToast variant={toast.color}>{toast.text}</AppToast>
         </Animated>

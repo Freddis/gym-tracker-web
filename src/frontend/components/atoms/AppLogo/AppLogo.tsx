@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {cn} from '../../../utils/cn';
 
-export const AppLogo: FC<{withText?: boolean, className: string}> = (props) => {
+export const AppLogo: FC<{withText?: boolean, className?: string}> = (props) => {
   const withText = props.withText ?? true;
   return (
     <div className={cn('flex flex-row items-center', props.className)}>

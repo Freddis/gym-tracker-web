@@ -2,11 +2,11 @@ import {FC} from 'react';
 
 export const CoreConceptBlock: FC = () => {
   return (
-    <div className="bg-main text-on-main justify-center p-20 flex">
-      <div className="max-w-5xl ">
+    <div className="bg-main text-on-main justify-center py-20 px-5 flex">
+      <div className="w-5xl max-w-full">
       <div className="text-center mb-20">
           <h2 className="text-2xl text-center uppercase mb-5">Let's get up close and personal</h2>
-          <div className="border-b-2 border-accent w-100 mb-5 m-auto"></div>
+          <div className="border-b-2 border-accent w-100 max-w-full mb-5 m-auto"></div>
           <p>There is a very good reason <span className="text-accent">Discipline</span> exists</p>
         </div>
 
