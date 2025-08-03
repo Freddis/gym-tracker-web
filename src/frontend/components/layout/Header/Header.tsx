@@ -24,7 +24,7 @@ export const Header: FC = () => {
   };
 
   return (
-    <div className="bg-surface text-on-surface p-2 text-2xl border-b-2 border-b-accent flex justify-center w-full">
+    <div className="bg-surface text-on-surface p-4 text-2xl border-b-2 border-b-accent flex justify-center w-full">
       <div className="w-full max-w-5xl flex items-center m-auto">
         <Link to="/" className="flex items-center justify-center mr-20">
           <AppLogo className="" withText/>
