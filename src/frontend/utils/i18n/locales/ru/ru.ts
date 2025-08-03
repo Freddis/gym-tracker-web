@@ -84,7 +84,7 @@ export const dictionary: Translation = {
         hero: {
           heading: {
             start: 'Discipline.',
-            middle: ' Средство достижения ',
+            middle: ' Путь к достижению ',
             end: 'целей',
           },
           subheading: `В спорте и фитнесе далеко не продвинешся без фиксации прогресса. 

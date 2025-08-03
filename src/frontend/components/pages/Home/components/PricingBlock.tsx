@@ -1,19 +1,18 @@
 import {FC} from 'react';
 import {ImCheckboxUnchecked, ImCheckboxChecked} from 'react-icons/im';
+import {HeadingBlock} from './HeadingBlock/HeadingBlock';
 
 export const PricingBlock: FC = () => {
   return (
     <div className=" justify-center py-20 px-5 flex bg-main text-on-main">
-      <div className="w-5xl max-w-full">
-        <div className="text-center mb-20">
-          <h2 className="text-2xl text-center uppercase mb-5">Our prcing plan</h2>
-          <div className="border-b-2 border-accent w-100 max-w-full mb-5 m-auto"></div>
-          <p>As we mentioned it already, our pricing policy is simple as a stick.
-             You get everything you can do in excel spreadsheets for <span className="text-accent">free! </span>
-            We only charge for things that requires active suppoort and expenses.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="bg-surface text-on-surface p-10">
+      <div className="w-4xl max-w-full">
+        <HeadingBlock title= {'Our prcing plan'}>
+          As we mentioned it already, our pricing policy is simple as a stick.
+          You get everything you can do in excel spreadsheets for <span className="text-accent">free! </span>
+          We only charge for things that requires active suppoort and expenses.
+        </HeadingBlock>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div className="bg-surface text-on-surface p-10 rounded-xl">
               <h3 className="uppercase block text-center font-bold text-lg mb-5">Free Plan</h3>
               <div className="text-green-800 text-center text-lg mb-5 font-bold">Free</div>
               <ul>
@@ -63,7 +62,7 @@ export const PricingBlock: FC = () => {
                 </li>
               </ul>
             </div>
-            <div className="bg-surface text-on-surface p-10">
+            <div className="bg-surface text-on-surface p-10 rounded-xl">
             <h3 className="uppercase block text-center font-bold text-lg mb-5">Pro</h3>
             <div className="text-green-800 text-center text-lg mb-5 font-bold">$30 / year</div>
               <ul>

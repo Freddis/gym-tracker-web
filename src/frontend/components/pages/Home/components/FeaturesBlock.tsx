@@ -18,12 +18,12 @@ export const FeaturesBlock: FC = () => {
             <p>{t(i18n.workouts.description)}</p>
           </div>
           <div>
-            <IoFastFood size={60} className="m-auto" />
+            <MdOutlineSportsHandball size={60} className="m-auto" />
             <h3 className="text-accent text-center uppercase mt-2">{t(i18n.activities.title)}</h3>
             <p>{t(i18n.activities.description)}</p>
           </div>
           <div>
-            <MdOutlineSportsHandball size={60} className="m-auto" />
+            <IoFastFood size={60} className="m-auto" />
             <h3 className="text-accent text-center uppercase mt-2">{t(i18n.calories.title)}</h3>
             <p>{t(i18n.calories.description)}</p>
           </div>
