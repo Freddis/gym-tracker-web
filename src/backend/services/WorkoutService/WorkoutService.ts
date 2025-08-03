@@ -222,7 +222,7 @@ export class WorkoutService {
       },
     });
     const exerciseIds = rows.flatMap((r) => r.exercises.map((e) => e.exerciseId));
-    const exercises = await this.exerciseService.getAll({ids: exerciseIds, perPage: 1000});
+    const exercises = await this.exerciseService.getPage({ids: exerciseIds, perPage: 1000});
     const eMap = new Map<number, Exercise>();
     for (const exercise of exercises.items) {
       eMap.set(exercise.id, exercise);

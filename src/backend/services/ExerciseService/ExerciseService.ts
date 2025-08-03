@@ -81,17 +81,51 @@ export class ExerciseService {
       target: schema.exercises.id,
       set: this.db.generateConflictUpdateSetAllColumns(schema.exercises),
     }).returning();
-    const items = this.nestExercises(inserted);
+    const items = this.nestExercises(inserted, []);
     return items;
   }
 
   async get(exerciseId: number, userId?: number): Promise<Exercise | null> {
-    const exercises = await this.getAll({ids: [exerciseId], userId});
+    const exercises = await this.getPage({ids: [exerciseId], userId});
     const result = exercises.items[0];
     return result ?? null;
   }
 
-  async getAll(params?: {
+  /**
+   * Gets list of exercises. If exercises have variations they're going to be nested.
+   * <b>Variations are going to be present in the list on top level as well, unless parentsOnly = true</b>
+   */
+  async getPage(params?: {
+    page?: number,
+    perPage?: number,
+    ids?: number[],
+    filter?: string,
+    userId?: number | null,
+    muscle?: Muscle[],
+    updatedAfter?: Date,
+    /** Only include parent exercises in items. Children only going to be nested in that case */
+    parentsOnly?: boolean
+  }): Promise<PaginatedResult<Exercise>> {
+    // todo: this algorithm is flawed. Ideally we want include parents that don't match the criteria if their children match
+    const parents = await this.paginateRows({
+      ...params,
+      parentIds: params?.parentsOnly ? null : undefined,
+    });
+    const children = await this.paginateRows({
+      ...params,
+      ids: undefined,
+      parentIds: parents.items.map((x) => x.id),
+      perPage: 1000, // no limit
+    });
+    const items = await this.nestExercises(parents.items, children.items);
+    const result: PaginatedResult<Exercise> = {
+      items,
+      info: parents.info,
+    };
+    return result;
+  }
+
+  protected async paginateRows(params?: {
     page?: number,
     perPage?: number,
     ids?: number[],
@@ -99,10 +133,11 @@ export class ExerciseService {
     userId?: number | null,
     muscle?: Muscle[],
     updatedAfter?: Date
-  }): Promise<PaginatedResult<Exercise>> {
+    parentIds?: number[] | null
+  }): Promise<PaginatedResult<ExerciseRow>> {
     const db = await this.db.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 50;
+    const limit = params?.perPage ?? 20;
     const offset = (page - 1) * limit;
 
     // For each muscle we need subquery to find if the muscle is attached to this exercise
@@ -130,6 +165,10 @@ export class ExerciseService {
       ) : undefined,
       params?.ids ? inArray(db._.fullSchema.exercises.id, params.ids) : undefined,
       params?.muscle ? and(...muscleSubsqueries) : undefined,
+      and(
+        params?.parentIds === null ? isNull(db._.fullSchema.exercises.parentExerciseId) : undefined,
+        params?.parentIds ? inArray(db._.fullSchema.exercises.parentExerciseId, params.parentIds) : undefined,
+      ),
       isNull(db._.fullSchema.exercises.deletedAt)
     );
     const rows = await db.select()
@@ -142,9 +181,8 @@ export class ExerciseService {
     .offset(offset);
 
     const count = await db.$count(db._.fullSchema.exercises, where);
-    const items = await this.nestExercises(rows);
-    const result: PaginatedResult<Exercise> = {
-      items,
+    const result: PaginatedResult<ExerciseRow> = {
+      items: rows,
       info: {
         page,
         count,
@@ -154,8 +192,8 @@ export class ExerciseService {
     return result;
   }
 
-  protected async nestExercises(exercises: ExerciseRow[]): Promise<Exercise[]> {
-    const exerciseIds = exercises.map((x) => x.id);
+  protected async nestExercises(exercises: ExerciseRow[], variations: ExerciseRow[]): Promise<Exercise[]> {
+    const exerciseIds = [...exercises.map((x) => x.id), ...variations.map((x) => x.id)];
     const db = await this.db.getDb();
     const muscles = await db.select({
       exersizeId: db._.fullSchema.muscles.exerciseId,
@@ -176,9 +214,9 @@ export class ExerciseService {
 
     const exerciseMap = new Map<number, ExerciseRow>();
     const variationMap = new Map<number, ExerciseRow[]>();
-    for (const exercise of exercises) {
+    for (const exercise of variations) {
       exerciseMap.set(exercise.id, exercise);
-      if (exercise.userId || !exercise.parentExerciseId) {
+      if (!exercise.parentExerciseId) {
         continue;
       }
       const existing = variationMap.get(exercise.parentExerciseId) ?? [];
@@ -187,10 +225,6 @@ export class ExerciseService {
     }
     const items: Exercise[] = [];
     for (const item of exercises) {
-      const isItemParentInExercises = item.parentExerciseId && exerciseMap.has(item.parentExerciseId);
-      if (isItemParentInExercises) {
-        continue;
-      }
       const nested: Exercise = {
         ...item,
         variations: variationMap.get(item.id)?.map((variation) => ({
@@ -207,7 +241,6 @@ export class ExerciseService {
       };
       items.push(nested);
     }
-
     return items;
   }
 

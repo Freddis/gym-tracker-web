@@ -90,22 +90,22 @@ export const ViewExercisePage:FC = () => {
                     {item.muscles.secondary.length > 3 && <span className="text-xs">and more...</span>}
                   </div>
                 </div>
-                <div className="flex flex-row-reverse min-w-25">
-                {item.variations.length > 0 && (
-                  <AppLink className="font-normal" onClick={toggleVariationsDisplay}>
-                    <span>
-                      <span>Variations</span>
-                      {!showVariations && <FaChevronDown className="ml-1 inline" />}
-                      {showVariations && <FaChevronUp className="ml-1 inline" />}
-                    </span>
-                  </AppLink>
-                )}
-                </div>
               </div>
             </div>
           </div>
           <div>
             {descriptionParagraphs.map((x) => <p className="mb-5">{x}</p>)}
+          </div>
+          <div className="flex flex-row-reverse min-w-25">
+            {item.variations.length > 0 && (
+              <AppLink className="font-normal" onClick={toggleVariationsDisplay}>
+                <span>
+                  <span>Variations</span>
+                  {!showVariations && <FaChevronDown className="ml-1 inline" />}
+                  {showVariations && <FaChevronUp className="ml-1 inline" />}
+                </span>
+              </AppLink>
+            )}
           </div>
           {showVariations && (
             <div className={'bg-cavity flex flex-col gap-3 p-3 mt-3 rounded-sm transition-opacity duration-500'}>

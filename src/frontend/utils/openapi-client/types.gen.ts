@@ -27,9 +27,14 @@ export type AuthUser = {
  */
 export type UnknownErrorResponse = {
   /**
-   * Code to handle on the frontend
+   * Error envelope
    */
-  code: "UnknownError";
+  error: {
+    /**
+     * Code to handle on the frontend
+     */
+    code: "UnknownError";
+  };
 };
 
 /**
@@ -904,9 +909,7 @@ export type PostAuthRegisterErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PostAuthRegisterError =
@@ -1011,9 +1014,7 @@ export type PostAuthLoginErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PostAuthLoginError = PostAuthLoginErrors[keyof PostAuthLoginErrors];
@@ -1185,9 +1186,7 @@ export type GetExercisesErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetExercisesError = GetExercisesErrors[keyof GetExercisesErrors];
@@ -1323,9 +1322,7 @@ export type PostExercisesErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PostExercisesError = PostExercisesErrors[keyof PostExercisesErrors];
@@ -1439,9 +1436,7 @@ export type PutExercisesErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PutExercisesError = PutExercisesErrors[keyof PutExercisesErrors];
@@ -1604,9 +1599,7 @@ export type GetExercisesBuiltInErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetExercisesBuiltInError =
@@ -1743,9 +1736,7 @@ export type DeleteExercisesByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type DeleteExercisesByIdError =
@@ -1851,9 +1842,7 @@ export type GetExercisesByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetExercisesByIdError =
@@ -1977,9 +1966,7 @@ export type PatchExercisesByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PatchExercisesByIdError =
@@ -2103,9 +2090,7 @@ export type GetWorkoutsErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetWorkoutsError = GetWorkoutsErrors[keyof GetWorkoutsErrors];
@@ -2238,9 +2223,7 @@ export type PostWorkoutsErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PostWorkoutsError = PostWorkoutsErrors[keyof PostWorkoutsErrors];
@@ -2354,9 +2337,7 @@ export type PutWorkoutsErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PutWorkoutsError = PutWorkoutsErrors[keyof PutWorkoutsErrors];
@@ -2475,9 +2456,7 @@ export type DeleteWorkoutsByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type DeleteWorkoutsByIdError =
@@ -2597,9 +2576,7 @@ export type GetWorkoutsByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetWorkoutsByIdError =
@@ -2716,9 +2693,7 @@ export type PatchWorkoutsByIdErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PatchWorkoutsByIdError =
@@ -2833,9 +2808,7 @@ export type PostWeightErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type PostWeightError = PostWeightErrors[keyof PostWeightErrors];
@@ -2952,9 +2925,7 @@ export type GetArgusCheckinErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetArgusCheckinError =
@@ -3273,9 +3244,7 @@ export type GetArgusCheckinTypesErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetArgusCheckinTypesError =
@@ -3381,9 +3350,7 @@ export type GetEntriesErrors = {
   /**
    * Unknown Error
    */
-  500: {
-    error: UnknownErrorResponse;
-  };
+  500: UnknownErrorResponse;
 };
 
 export type GetEntriesError = GetEntriesErrors[keyof GetEntriesErrors];
