@@ -8,16 +8,13 @@ export const HomePage: FC = () => {
   return (
     <>
     <HeroBlock/>
-    <div className="palette-lightest">
-      <ShowCaseBlock/>
-    {/* <FeaturesBlock /> */}
-    </div>
-    {/* <CoreConceptBlock />
-    <LatestNews /> */}
+    <ShowCaseBlock/>
     <div className="palette-darkest">
     <PricingBlock />
     </div>
-    <DownloadAppsBlock />
+    <div className="palette-lightest">
+      <DownloadAppsBlock />
+    </div>
     </>
   );
 };

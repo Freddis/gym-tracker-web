@@ -88,7 +88,7 @@ export const dictionary: Translation = {
             end: 'целей',
           },
           subheading: `В спорте и фитнесе далеко не продвинешся без фиксации прогресса. 
-        Трекер Dicsipline - твой верный помощник.`,
+        Трекер Discipline - твой верный помощник.`,
           button: 'Скачать',
           toasts: {
             appNotYetPublished: 'К сожалению приложение еще не опубликовано в AppStore',

@@ -3,6 +3,6 @@ import {Palette} from '../types/Palette';
 
 export const lightestPalette: Palette<Color.Lightest> = {
   color: 'white',
-  text: '#333',
+  text: '#444',
   name: Color.Lightest,
 };

@@ -113,11 +113,11 @@
 --color-success: var(--color-emerald-100);
 --color-accent: var(--color-red-600);
 --color-main: #f8f8f8;
---color-on-main: #666;
+--color-on-main: #222;
 --color-surface: white;
---color-on-surface: #333;
+--color-on-surface: #444;
 --color-cavity: #f8f8f8;
---color-on-cavity: #666;
+--color-on-cavity: #222;
 }
 .theme-dark .palette-neutral {
 --color-neutral: var(--color-neutral-800);
@@ -145,11 +145,11 @@
 --color-success: var(--color-emerald-100);
 --color-accent: var(--color-red-600);
 --color-main: white;
---color-on-main: #333;
+--color-on-main: #444;
 --color-surface: #f8f8f8;
---color-on-surface: #666;
+--color-on-surface: #222;
 --color-cavity: white;
---color-on-cavity: #333;
+--color-on-cavity: #444;
 }
 .theme-dark .palette-lightest {
 --color-neutral: var(--color-neutral-800);
@@ -179,7 +179,7 @@
 --color-main: black;
 --color-on-main: white;
 --color-surface: white;
---color-on-surface: #333;
+--color-on-surface: #444;
 --color-cavity: black;
 --color-on-cavity: white;
 }

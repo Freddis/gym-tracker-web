@@ -9,7 +9,7 @@ export const LaptopShowCaseRight: FC = () => {
     (x) => x.pages.static.home.features
   );
   return (
-    <div className="flex flex-col-reverse md:grid md:grid-cols-2 w-full">
+    <div className="flex flex-col-reverse md:grid md:grid-cols-2 w-full bg-main text-on-main pb-20 px-5">
       <div className="flex flex-col items-end gap-20 md:py-40 md:pr-20">
         <div className="flex flex-col md:flex-row gap-10 items-center mb-10">
           <MdOutlineSportsHandball size={100} />

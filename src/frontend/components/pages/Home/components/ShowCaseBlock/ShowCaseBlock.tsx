@@ -9,13 +9,15 @@ export const ShowCaseBlock: FC = () => {
     (x) => x.pages.static.home.features
   );
   return (
-    <div className="justify-center pt-20 px-5 md:px-0 pb-20 flex flex-col items-center bg-main text-on-main">
+    <div className="justify-center pt-20 md:px-0 flex flex-col items-center bg-main text-on-main palette-lightest">
       <HeadingBlock title= {t(i18n.heading.start) + t(i18n.heading.end)}>
         <span>There is a very good reason </span>
         <span className="text-accent">Discipline</span> exists
       </HeadingBlock>
       <IphoneShowCase />
-      <LaptopShowCaseRight/>
+      <div className="palette-neutral w-full">
+        <LaptopShowCaseRight/>
+      </div>
     </div>
   );
 };

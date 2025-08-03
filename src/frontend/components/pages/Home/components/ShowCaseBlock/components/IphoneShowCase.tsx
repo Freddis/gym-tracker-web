@@ -9,7 +9,7 @@ export const IphoneShowCase: FC = () => {
     (x) => x.pages.static.home.features
   );
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 w-full bg-main text-on-main px-5 pb-20">
        <div
         style={{backgroundImage: 'url(/images/pages/home/iphone.png)'}}
         className="w-full min-h-screen h-full bg-contain bg-no-repeat bg-right"
