@@ -60,46 +60,7 @@ export type Exercise = {
   /**
    * Equipmnet required to perform exercise
    */
-  equipment:
-    | "rowing"
-    | "swimming"
-    | "plate loaded"
-    | "foam roller"
-    | "pullup bar"
-    | "stair climber"
-    | "selectorized"
-    | "dip bar"
-    | "preacher"
-    | "hyperextension"
-    | "sandbag"
-    | "elliptical"
-    | "chair"
-    | "cable"
-    | "captain's chair"
-    | "towel"
-    | "water bottle"
-    | "stability ball"
-    | "table"
-    | "smith"
-    | "kettlebell"
-    | "cycling"
-    | "step aerobics"
-    | "plate"
-    | "platform"
-    | "medicine ball"
-    | "running"
-    | "barbell"
-    | "backpack"
-    | "ez curl bar"
-    | "walking"
-    | "bench"
-    | "bodyweight"
-    | "resistance band"
-    | "dumbbell"
-    | "jump rope"
-    | "treadmill"
-    | "bosu ball"
-    | null;
+  equipment: Equipment | null;
   /**
    * List of images for this exercise
    */
@@ -168,46 +129,7 @@ export type Exercise = {
     /**
      * Equipmnet required to perform exercise
      */
-    equipment:
-      | "rowing"
-      | "swimming"
-      | "plate loaded"
-      | "foam roller"
-      | "pullup bar"
-      | "stair climber"
-      | "selectorized"
-      | "dip bar"
-      | "preacher"
-      | "hyperextension"
-      | "sandbag"
-      | "elliptical"
-      | "chair"
-      | "cable"
-      | "captain's chair"
-      | "towel"
-      | "water bottle"
-      | "stability ball"
-      | "table"
-      | "smith"
-      | "kettlebell"
-      | "cycling"
-      | "step aerobics"
-      | "plate"
-      | "platform"
-      | "medicine ball"
-      | "running"
-      | "barbell"
-      | "backpack"
-      | "ez curl bar"
-      | "walking"
-      | "bench"
-      | "bodyweight"
-      | "resistance band"
-      | "dumbbell"
-      | "jump rope"
-      | "treadmill"
-      | "bosu ball"
-      | null;
+    equipment: Equipment | null;
     /**
      * List of images for this exercise
      */
@@ -257,7 +179,94 @@ export type Exercise = {
 };
 
 /**
- * Muscle
+ * Gym Equipment
+ */
+export type Equipment =
+  | "rowing"
+  | "swimming"
+  | "plate loaded"
+  | "foam roller"
+  | "pullup bar"
+  | "stair climber"
+  | "selectorized"
+  | "dip bar"
+  | "preacher"
+  | "hyperextension"
+  | "sandbag"
+  | "elliptical"
+  | "chair"
+  | "cable"
+  | "captains chair"
+  | "towel"
+  | "water bottle"
+  | "stability ball"
+  | "table"
+  | "smith"
+  | "kettlebell"
+  | "cycling"
+  | "step aerobics"
+  | "plate"
+  | "platform"
+  | "medicine ball"
+  | "running"
+  | "barbell"
+  | "backpack"
+  | "ez curl bar"
+  | "walking"
+  | "bench"
+  | "bodyweight"
+  | "resistance band"
+  | "dumbbell"
+  | "jump rope"
+  | "treadmill"
+  | "bosu ball";
+
+/**
+ * Gym Equipment
+ */
+export const Equipment = {
+  ROWING: "rowing",
+  SWIMMING: "swimming",
+  PLATE_LOADED: "plate loaded",
+  FOAM_ROLLER: "foam roller",
+  PULLUP_BAR: "pullup bar",
+  STAIR_CLIMBER: "stair climber",
+  SELECTORIZED: "selectorized",
+  DIP_BAR: "dip bar",
+  PREACHER: "preacher",
+  HYPEREXTENSION: "hyperextension",
+  SANDBAG: "sandbag",
+  ELLIPTICAL: "elliptical",
+  CHAIR: "chair",
+  CABLE: "cable",
+  CAPTAINS_CHAIR: "captains chair",
+  TOWEL: "towel",
+  WATER_BOTTLE: "water bottle",
+  STABILITY_BALL: "stability ball",
+  TABLE: "table",
+  SMITH: "smith",
+  KETTLEBELL: "kettlebell",
+  CYCLING: "cycling",
+  STEP_AEROBICS: "step aerobics",
+  PLATE: "plate",
+  PLATFORM: "platform",
+  MEDICINE_BALL: "medicine ball",
+  RUNNING: "running",
+  BARBELL: "barbell",
+  BACKPACK: "backpack",
+  EZ_CURL_BAR: "ez curl bar",
+  WALKING: "walking",
+  BENCH: "bench",
+  BODYWEIGHT: "bodyweight",
+  RESISTANCE_BAND: "resistance band",
+  DUMBBELL: "dumbbell",
+  JUMP_ROPE: "jump rope",
+  TREADMILL: "treadmill",
+  BOSU_BALL: "bosu ball",
+} as const;
+
+/**
+ * Body Muscle
  */
 export type Muscle =
   | "Lower Back"
@@ -286,7 +295,7 @@ export type Muscle =
   | "Adductors";
 
 /**
- * Muscle
+ * Body Muscle
  */
 export const Muscle = {
   LOWER_BACK: "Lower Back",
@@ -338,46 +347,7 @@ export type ExerciseUpsertDto = {
   /**
    * Equipmnet required to perform exercise
    */
-  equipment:
-    | "rowing"
-    | "swimming"
-    | "plate loaded"
-    | "foam roller"
-    | "pullup bar"
-    | "stair climber"
-    | "selectorized"
-    | "dip bar"
-    | "preacher"
-    | "hyperextension"
-    | "sandbag"
-    | "elliptical"
-    | "chair"
-    | "cable"
-    | "captain's chair"
-    | "towel"
-    | "water bottle"
-    | "stability ball"
-    | "table"
-    | "smith"
-    | "kettlebell"
-    | "cycling"
-    | "step aerobics"
-    | "plate"
-    | "platform"
-    | "medicine ball"
-    | "running"
-    | "barbell"
-    | "backpack"
-    | "ez curl bar"
-    | "walking"
-    | "bench"
-    | "bodyweight"
-    | "resistance band"
-    | "dumbbell"
-    | "jump rope"
-    | "treadmill"
-    | "bosu ball"
-    | null;
+  equipment: Equipment | null;
   /**
    * List of images for this exercise
    */
@@ -1095,6 +1065,48 @@ export type GetExercisesData = {
       | "Trapezius"
       | "Neck"
       | "Adductors";
+    /**
+     * Filters excercises by equipment
+     */
+    equipment?:
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captains chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball";
   };
   url: "/exercises";
 };
@@ -1522,6 +1534,48 @@ export type GetExercisesBuiltInData = {
       | "Trapezius"
       | "Neck"
       | "Adductors";
+    /**
+     * Filters excercises by equipment
+     */
+    equipment?:
+      | "rowing"
+      | "swimming"
+      | "plate loaded"
+      | "foam roller"
+      | "pullup bar"
+      | "stair climber"
+      | "selectorized"
+      | "dip bar"
+      | "preacher"
+      | "hyperextension"
+      | "sandbag"
+      | "elliptical"
+      | "chair"
+      | "cable"
+      | "captains chair"
+      | "towel"
+      | "water bottle"
+      | "stability ball"
+      | "table"
+      | "smith"
+      | "kettlebell"
+      | "cycling"
+      | "step aerobics"
+      | "plate"
+      | "platform"
+      | "medicine ball"
+      | "running"
+      | "barbell"
+      | "backpack"
+      | "ez curl bar"
+      | "walking"
+      | "bench"
+      | "bodyweight"
+      | "resistance band"
+      | "dumbbell"
+      | "jump rope"
+      | "treadmill"
+      | "bosu ball";
   };
   url: "/exercises/built-in";
 };

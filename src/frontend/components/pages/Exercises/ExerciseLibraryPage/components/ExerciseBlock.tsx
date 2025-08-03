@@ -5,7 +5,7 @@ import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
 import {ExerciseLibraryQueryParams} from '../types/ExercisesLibraryQuery';
 import {ExerciseBlockProps} from './types/ExerciseBlockProps';
-import {Muscle} from '../../../../../utils/openapi-client';
+import {Equipment, Muscle} from '../../../../../utils/openapi-client';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;
@@ -14,7 +14,14 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     e.preventDefault();
     setShowVariations(!showVariations);
   };
-  const getSearch = (muscle: Muscle): ExerciseLibraryQueryParams => {
+  const getEquipmentSearch = (equipment: Equipment | null): ExerciseLibraryQueryParams => {
+    if (!equipment) {
+      return {};
+    }
+    const newParams: ExerciseLibraryQueryParams = {...props.params, equipment};
+    return newParams;
+  };
+  const getMuscleSearch = (muscle: Muscle): ExerciseLibraryQueryParams => {
     const newParams = {...props.params, muscles: [muscle]};
     return newParams;
   };
@@ -32,18 +39,21 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
             <div className="text-base  grow">
               <div>
                 <span className="font-normal">Equipment: </span>
-                <AppLink className="text-on-surface capitalize">{item.equipment}</AppLink>
+                {item.equipment && (
+                  <AppLink className="text-on-surface capitalize" search={getEquipmentSearch(item.equipment)}>{item.equipment}</AppLink>
+                )}
+                {!item.equipment && <span>None</span>}
               </div>
               <div>
                 <span className="font-normal">Primary: </span>
                 {props.item.muscles.primary.map((muscle, i) => (
-                  <AppLink key={i} search={getSearch(muscle)} className="text-on-surface mr-1">{muscle}</AppLink>
+                  <AppLink key={i} search={getMuscleSearch(muscle)} className="text-on-surface mr-1">{muscle}</AppLink>
                 ))}
                 </div>
               <div>
                 <span className="font-normal">Secondary: </span>
                 {props.item.muscles.secondary.slice(0, 3).map((muscle, i) => (
-                  <AppLink key={i} search={getSearch(muscle)} className="text-on-surface mr-1 ">{muscle}</AppLink>
+                  <AppLink key={i} search={getMuscleSearch(muscle)} className="text-on-surface mr-1 ">{muscle}</AppLink>
                 ))}
                 {props.item.muscles.secondary.length > 3 && <span className="text-xs">and more...</span>}
               </div>

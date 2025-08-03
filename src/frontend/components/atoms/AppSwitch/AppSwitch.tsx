@@ -32,7 +32,7 @@ export const AppSwitch: FC<SwitchProps> = ({className, label, ...props}) => {
         )}
       />
     </SwitchPrimitive.Root>
-    {label && <label className="ml-5 cursor-pointer" htmlFor={props.id} onClick={click}>{label}</label>}
+    {label && <label className={cn('ml-5 cursor-pointer', className)} htmlFor={props.id} onClick={click}>{label}</label>}
     </div>
   );
 };

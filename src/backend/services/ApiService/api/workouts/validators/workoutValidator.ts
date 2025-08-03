@@ -1,9 +1,10 @@
-import {TypeOf} from 'zod';
 import {workoutExerciseValidator} from './workoutExerciseValidator';
 import {workoutRowValidator} from '../../../../DrizzleService/types/WorkoutRow';
 import {RouteFactory} from '../../../utils/RouteFactory';
+import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
+import {Workout} from '../../../../WorkoutService/types/Workout';
 
-export const workoutValidatorDescriptions: Record<keyof typeof validator.shape, string> = {
+export const workoutValidatorDescriptions: OpenApiDescriptions<Workout> = {
   id: 'Id of the workout',
   typeId: 'Id of the workout type. Users can create their own workout types as templates for workouts.',
   userId: 'Id of the user that created this workout',
@@ -25,4 +26,4 @@ export const workoutValidator = RouteFactory.validators.describeShape(
   workoutValidatorDescriptions
 ).openapi({ref: 'Workout', description: 'Gym Workout. Consists of performed excercises and sets.'});
 export type WorkoutValidator = typeof workoutValidator
-export type Workout = TypeOf<WorkoutValidator>
+

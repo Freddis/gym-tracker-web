@@ -185,6 +185,7 @@ export const dictionary: Translation = {
         labels: {
           muscles: 'Мышцы:',
           search: 'Поиск:',
+          equipment: 'Обрудование',
         },
       },
       toasts: {

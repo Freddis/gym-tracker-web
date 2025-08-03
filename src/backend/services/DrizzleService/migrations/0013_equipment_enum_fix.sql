@@ -1,0 +1,6 @@
+ALTER TABLE "gym_tracker"."exercises" ALTER COLUMN "equipment" SET DATA TYPE text;--> statement-breakpoint
+DROP TYPE "gym_tracker"."Equipment";--> statement-breakpoint
+
+update "gym_tracker"."exercises" set "equipment" = 'captains chair' where "equipment" = 'captain''s chair';--> statement-breakpoint
+CREATE TYPE "gym_tracker"."Equipment" AS ENUM('rowing', 'swimming', 'plate loaded', 'foam roller', 'pullup bar', 'stair climber', 'selectorized', 'dip bar', 'preacher', 'hyperextension', 'sandbag', 'elliptical', 'chair', 'cable', 'captains chair', 'towel', 'water bottle', 'stability ball', 'table', 'smith', 'kettlebell', 'cycling', 'step aerobics', 'plate', 'platform', 'medicine ball', 'running', 'barbell', 'backpack', 'ez curl bar', 'walking', 'bench', 'bodyweight', 'resistance band', 'dumbbell', 'jump rope', 'treadmill', 'bosu ball');--> statement-breakpoint
+ALTER TABLE "gym_tracker"."exercises" ALTER COLUMN "equipment" SET DATA TYPE "gym_tracker"."Equipment" USING "equipment"::"gym_tracker"."Equipment";

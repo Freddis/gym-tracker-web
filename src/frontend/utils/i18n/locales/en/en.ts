@@ -122,6 +122,7 @@ export const dictionary = {
       },
       filter: {
         labels: {
+          equipment: 'Equipment:',
           muscles: 'Muscles:',
           search: 'Search:',
         },

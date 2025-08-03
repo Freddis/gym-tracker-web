@@ -2,9 +2,11 @@ import {object, nativeEnum} from 'zod';
 import {exerciseRowValidator} from '../../../../DrizzleService/types/ExerciseRow';
 import {Muscle} from '../../../../../../common/enums/Muscle';
 import {RouteFactory} from '../../../utils/RouteFactory';
+import {Equipment} from '../../../../../../common/enums/Equipment';
+import {Exercise} from '../../../../ExerciseService/types/Exercise';
+import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 
-const muscleValidator = nativeEnum(Muscle).openapi({ref: 'Muscle', description: 'Muscle'});
-const baseExerciseValidator = RouteFactory.validators.describeShape(exerciseRowValidator, {
+export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
   params: 'Types of the parameters, such as: weight, reps, duration',
   id: 'Id of the exercise',
   name: 'Exercise Name',
@@ -18,14 +20,28 @@ const baseExerciseValidator = RouteFactory.validators.describeShape(exerciseRowV
   createdAt: 'Date the creation',
   updatedAt: 'Date of last update',
   deletedAt: 'Date of deletion. Deleted exercises are not accessible to users.',
-}).extend({
+  muscles: 'List of muscles involved in this excercise',
+  variations: 'List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.',
+};
+
+const muscleValidator = nativeEnum(Muscle).openapi({ref: 'Muscle', description: 'Body Muscle'});
+const equipmentValidator = nativeEnum(Equipment).openapi({ref: 'Equipment', description: 'Gym Equipment'});
+const rawBaseExerciseValidator = exerciseRowValidator.extend({
+  equipment: equipmentValidator.nullable(),
   muscles: object({
     primary: muscleValidator.array().openapi({description: 'List of primary muscles this exercise targets'}),
     secondary: muscleValidator.array().openapi({description: 'List of secondary muscles this exercise targets'}),
   }).openapi({description: 'List of muscles involved in this excercise'}),
 });
-export const exerciseValidator = baseExerciseValidator.extend({
+const baseExerciseValidator = RouteFactory.validators.describeShape(rawBaseExerciseValidator, excerciseValidatorDescriptions);
+
+const validator = baseExerciseValidator.extend({
   variations: baseExerciseValidator.array().openapi({
     description: 'List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.',
   }),
-}).openapi({ref: 'Exercise', description: 'Exercise. Either from built-in library or created by a user.'});
+});
+export const exerciseValidator = RouteFactory.validators.describeShape(
+  validator, excerciseValidatorDescriptions
+).openapi({ref: 'Exercise', description: 'Exercise. Either from built-in library or created by a user.'});
+
+

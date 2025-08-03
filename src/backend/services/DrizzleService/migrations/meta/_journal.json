@@ -92,6 +92,13 @@
       "when": 1753788240118,
       "tag": "0012_changing_identity_settings_for_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1754221360616,
+      "tag": "0013_equipment_enum_fix",
+      "breakpoints": true
     }
   ]
 }

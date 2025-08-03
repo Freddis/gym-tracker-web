@@ -27,7 +27,7 @@ export const exercises = gymTracker.table('exercises', {
   name: varchar().notNull(),
   description: text(),
   difficulty: integer(),
-  equipment: equipmentEnum(),
+  equipment: equipmentEnum().$type<Equipment>(),
   images: varchar().array().notNull(),
   params: integer().array().notNull(),
   userId: integer(),

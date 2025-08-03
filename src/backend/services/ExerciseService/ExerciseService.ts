@@ -6,6 +6,7 @@ import {SemiPartial} from 'src/common/types/SemiPartial';
 import {Exercise} from './types/Exercise';
 import {Muscle} from '../../../common/enums/Muscle';
 import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {Equipment} from '../../../common/enums/Equipment';
 
 export class ExerciseService {
   protected db: DrizzleService;
@@ -102,6 +103,7 @@ export class ExerciseService {
     filter?: string,
     userId?: number | null,
     muscle?: Muscle[],
+    equipment?: Equipment,
     updatedAfter?: Date,
     /** Only include parent exercises in items. Children only going to be nested in that case */
     parentsOnly?: boolean
@@ -132,6 +134,7 @@ export class ExerciseService {
     filter?: string,
     userId?: number | null,
     muscle?: Muscle[],
+    equipment?: Equipment,
     updatedAfter?: Date
     parentIds?: number[] | null
   }): Promise<PaginatedResult<ExerciseRow>> {
@@ -165,6 +168,7 @@ export class ExerciseService {
       ) : undefined,
       params?.ids ? inArray(db._.fullSchema.exercises.id, params.ids) : undefined,
       params?.muscle ? and(...muscleSubsqueries) : undefined,
+      params?.equipment ? eq(db._.fullSchema.exercises.equipment, params.equipment) : undefined,
       and(
         params?.parentIds === null ? isNull(db._.fullSchema.exercises.parentExerciseId) : undefined,
         params?.parentIds ? inArray(db._.fullSchema.exercises.parentExerciseId, params.parentIds) : undefined,

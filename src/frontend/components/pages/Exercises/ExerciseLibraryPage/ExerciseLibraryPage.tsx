@@ -9,13 +9,12 @@ import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {Conditional} from '../../../layout/Header/Header';
 import {AppSearchInput} from '../../../atoms/AppSearchInput/AppSearchInput';
-import {Muscle} from '../../../../../common/enums/Muscle';
 import {getRouteApi} from '@tanstack/react-router';
 import {AppToast} from '../../../atoms/AppToast/AppToast';
 import {Color} from '../../../../utils/design-system/types/Color';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
-import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../utils/openapi-client';
+import {Equipment, getExercisesBuiltIn, GetExercisesBuiltInData, Muscle} from '../../../../utils/openapi-client';
 import {useInView} from 'react-intersection-observer';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
@@ -31,6 +30,7 @@ export const ExerciseLibraryPage: FC = () => {
   const query: GetExercisesBuiltInData['query'] = {
     filter: searchParams.filter,
     muscle: searchParams.muscles, // <=diff and I want to keep it like that!
+    equipment: searchParams.equipment,
   };
   const getResponse = () => {
     const response = useInfiniteQuery({
@@ -61,6 +61,15 @@ export const ExerciseLibraryPage: FC = () => {
       response.fetchNextPage();
     }
   }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
+
+  const filterByEquipment = (equipment: Equipment, checked: boolean) => {
+    navigate({
+      search: {
+        ...searchParams,
+        equipment: checked ? equipment : undefined,
+      },
+    });
+  };
 
   const filterByMuscle = (muscle: Muscle, checked: boolean) => {
     const existing = searchParams.muscles?.filter((x) => x !== muscle) ?? [];
@@ -98,6 +107,18 @@ export const ExerciseLibraryPage: FC = () => {
           <AppLabel className="mb-2">{t(i18n.filter.labels.search)}</AppLabel>
           <div className="mb-5">
             <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
+          </div>
+           <AppLabel className="mb-2">{t(i18n.filter.labels.equipment)}</AppLabel>
+          <div className="mb-5 flex flex-col gap-2">
+            {Object.values(Equipment).sort().map((x) => (
+              <AppSwitch
+              className="capitalize"
+              key={x}
+              label={x}
+              checked={searchParams.equipment === x}
+              onCheckedChange={(e) => filterByEquipment(x, e)}
+              />
+            ))}
           </div>
           <AppLabel className="mb-2">{t(i18n.filter.labels.muscles)}</AppLabel>
           <div className="mb-5 flex flex-col gap-2">

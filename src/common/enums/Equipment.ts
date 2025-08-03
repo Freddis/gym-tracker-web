@@ -13,7 +13,7 @@ export enum Equipment {
   Elliptical = 'elliptical',
   Chair = 'chair',
   Cable = 'cable',
-  CaptainsChair = "captain's chair",
+  CaptainsChair = 'captains chair',
   Towel = 'towel',
   WaterBottle = 'water bottle',
   StabilityBall = 'stability ball',
