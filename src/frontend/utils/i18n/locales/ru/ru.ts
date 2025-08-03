@@ -144,6 +144,7 @@ export const dictionary: Translation = {
         toasts: {
           loginSuccess: 'Вы успешно вошли',
           unknownApiError: 'Что-то пошло не так.',
+          notImplemented: 'К сожалению, функция пока не добавлена',
         },
         form: {
           labels: {

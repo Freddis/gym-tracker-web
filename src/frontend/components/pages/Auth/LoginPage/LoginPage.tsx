@@ -1,5 +1,5 @@
 import {useNavigate} from '@tanstack/react-router';
-import {FC, useContext, useState} from 'react';
+import {FC, MouseEventHandler, useContext, useState} from 'react';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
@@ -27,6 +27,10 @@ export const LoginPage: FC = () => {
   const loginButtonPress = async () => {
     setLoggingIn(true);
     setTimeout(login, 0);
+  };
+  const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
+    e.preventDefault();
+    toasts.addWarning(t(i18n.toasts.notImplemented));
   };
   const login = async () => {
     const result = await postAuthLogin({
@@ -71,7 +75,7 @@ export const LoginPage: FC = () => {
             <AppInputError error={errorMessage('password')} />
           </div>
           <div className="flex flex-row gap-10 justify-center">
-            <AppLink to="/auth/register" className="text-accent">
+            <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">
               {t(i18n.form.buttons.forgotPassword)}
             </AppLink>
           </div>

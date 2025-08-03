@@ -152,6 +152,7 @@ export const dictionary = {
         toasts: {
           loginSuccess: "You've successfully logged in",
           unknownApiError: "Something went wrong. We can't log you in",
+          notImplemented: 'Not implemented yet',
         },
         form: {
           labels: {
