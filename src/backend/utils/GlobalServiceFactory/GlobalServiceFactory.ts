@@ -12,6 +12,7 @@ import {ExerciseService} from '../../services/ExerciseService/ExerciseService';
 import {ServerConfig} from '../ServerConfig/ServerConfig';
 import {DrizzleServiceConfig} from '../../services/DrizzleService/types/DrizzleServiceConfig';
 import {DbSyncService} from '../../services/DbSyncService/DbSyncService';
+import {ManagerService} from '../../services/ManagerService/ManagerService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -45,7 +46,9 @@ export class GlobalServiceFactory {
   }
 
   async auth(): Promise<AuthService> {
-    return new AuthService(serverConfig.services.auth, await this.drizzle());
+    const drizzle = await this.drizzle();
+    const managerService = new ManagerService(drizzle);
+    return new AuthService(serverConfig.services.auth, drizzle, managerService);
   }
 
   async openApi(): Promise<ReturnType<ApiService['createOpenApi']>> {

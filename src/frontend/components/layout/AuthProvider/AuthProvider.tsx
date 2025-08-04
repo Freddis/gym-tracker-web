@@ -7,12 +7,12 @@ import {client} from '../../../utils/openapi-client/client.gen';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 
-export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
+export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: CookieName}> = (props) => {
   const cookies = new Cookie();
   const {t, i18n} = useAppPartialTranslation((x) => x.layout);
   const toasts = useToasts();
   const storedUser = useMemo(() => {
-    const user = cookies.get(CookieName.User);
+    const user = cookies.get(props.cookieName);
     if (user === null) {
       return null;
     }
@@ -43,13 +43,13 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
   client.setConfig(getClientConfig(user));
   const logout = () => {
     setUser(null);
-    cookies.delete(CookieName.User);
+    cookies.delete(props.cookieName);
     client.setConfig(getClientConfig(null));
     toasts.addSuccess(t(i18n.toasts.logoutSuccess));
   };
   const login = (user: AuthUser) => {
     setUser(user);
-    cookies.set(CookieName.User, JSON.stringify(user));
+    cookies.set(props.cookieName, JSON.stringify(user));
   };
 
   return (

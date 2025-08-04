@@ -21,6 +21,9 @@ import {
   getArgusCheckin,
   getArgusCheckinTypes,
   getEntries,
+  getCrmUsers,
+  getCrmManagers,
+  postCrmAuthLogin,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -80,6 +83,15 @@ import type {
   GetEntriesData,
   GetEntriesError,
   GetEntriesResponse,
+  GetCrmUsersData,
+  GetCrmUsersError,
+  GetCrmUsersResponse,
+  GetCrmManagersData,
+  GetCrmManagersError,
+  GetCrmManagersResponse,
+  PostCrmAuthLoginData,
+  PostCrmAuthLoginError,
+  PostCrmAuthLoginResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -557,7 +569,7 @@ export const getWorkoutsQueryKey = (options?: Options<GetWorkoutsData>) =>
   createQueryKey("getWorkouts", options);
 
 /**
- * Returns list of users workouts
+ * Returns list of user workouts
  */
 export const getWorkoutsOptions = (options?: Options<GetWorkoutsData>) => {
   return queryOptions({
@@ -580,7 +592,7 @@ export const getWorkoutsInfiniteQueryKey = (
   createQueryKey("getWorkouts", options, true);
 
 /**
- * Returns list of users workouts
+ * Returns list of user workouts
  */
 export const getWorkoutsInfiniteOptions = (
   options?: Options<GetWorkoutsData>,
@@ -995,4 +1007,201 @@ export const getEntriesInfiniteOptions = (
       queryKey: getEntriesInfiniteQueryKey(options),
     },
   );
+};
+
+export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>
+  createQueryKey("getCrmUsers", options);
+
+/**
+ * Returns list of users
+ */
+export const getCrmUsersOptions = (options?: Options<GetCrmUsersData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmUsers({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmUsersQueryKey(options),
+  });
+};
+
+export const getCrmUsersInfiniteQueryKey = (
+  options?: Options<GetCrmUsersData>,
+): QueryKey<Options<GetCrmUsersData>> =>
+  createQueryKey("getCrmUsers", options, true);
+
+/**
+ * Returns list of users
+ */
+export const getCrmUsersInfiniteOptions = (
+  options?: Options<GetCrmUsersData>,
+) => {
+  return infiniteQueryOptions<
+    GetCrmUsersResponse,
+    AxiosError<GetCrmUsersError>,
+    InfiniteData<GetCrmUsersResponse>,
+    QueryKey<Options<GetCrmUsersData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmUsersData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmUsersData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getCrmUsers({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmUsersInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const getCrmManagersQueryKey = (options?: Options<GetCrmManagersData>) =>
+  createQueryKey("getCrmManagers", options);
+
+/**
+ * Returns list of managers
+ */
+export const getCrmManagersOptions = (
+  options?: Options<GetCrmManagersData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmManagers({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmManagersQueryKey(options),
+  });
+};
+
+export const getCrmManagersInfiniteQueryKey = (
+  options?: Options<GetCrmManagersData>,
+): QueryKey<Options<GetCrmManagersData>> =>
+  createQueryKey("getCrmManagers", options, true);
+
+/**
+ * Returns list of managers
+ */
+export const getCrmManagersInfiniteOptions = (
+  options?: Options<GetCrmManagersData>,
+) => {
+  return infiniteQueryOptions<
+    GetCrmManagersResponse,
+    AxiosError<GetCrmManagersError>,
+    InfiniteData<GetCrmManagersResponse>,
+    QueryKey<Options<GetCrmManagersData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmManagersData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmManagersData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getCrmManagers({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmManagersInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const postCrmAuthLoginQueryKey = (
+  options?: Options<PostCrmAuthLoginData>,
+) => createQueryKey("postCrmAuthLogin", options);
+
+/**
+ * Logins a manager into CRM
+ */
+export const postCrmAuthLoginOptions = (
+  options?: Options<PostCrmAuthLoginData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postCrmAuthLogin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postCrmAuthLoginQueryKey(options),
+  });
+};
+
+/**
+ * Logins a manager into CRM
+ */
+export const postCrmAuthLoginMutation = (
+  options?: Partial<Options<PostCrmAuthLoginData>>,
+): UseMutationOptions<
+  PostCrmAuthLoginResponse,
+  AxiosError<PostCrmAuthLoginError>,
+  Options<PostCrmAuthLoginData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostCrmAuthLoginResponse,
+    AxiosError<PostCrmAuthLoginError>,
+    Options<PostCrmAuthLoginData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postCrmAuthLogin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };

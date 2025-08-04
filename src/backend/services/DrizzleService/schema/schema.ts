@@ -137,3 +137,14 @@ export const images = gymTracker.table('images', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
+
+export const managers = gymTracker.table('managers', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar().notNull(),
+  email: varchar().notNull(),
+  profilePicture: varchar(),
+  password: varchar().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});

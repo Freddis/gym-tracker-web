@@ -5,6 +5,7 @@ import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService
 import {WeightService} from '../../WeightService/WeightService';
 import {EntryService} from '../../EntryService/EntryService';
 import {UserService} from '../../UserService/UserService';
+import {ManagerService} from '../../ManagerService/ManagerService';
 
 export interface ApiRequestServices {
   auth: AuthService
@@ -15,5 +16,6 @@ export interface ApiRequestServices {
     weight: WeightService
     entry: EntryService
     user: UserService
+    manager: ManagerService
   }
 }

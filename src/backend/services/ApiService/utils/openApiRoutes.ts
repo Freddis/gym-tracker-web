@@ -19,6 +19,9 @@ import {getWorkoutList} from '../api/workouts/getWorkoutList';
 import {updateWorkout} from '../api/workouts/updateWorkout';
 import {upsertWorkouts} from '../api/workouts/upsertWorkouts';
 import {getEntryList} from '../api/entries/validators/getEntryList';
+import {getUserList} from '../api/users/getUserList';
+import {loginManager} from '../api/auth/loginManager';
+import {getManagerList} from '../api/crm/managers/getManagerList';
 
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
@@ -52,5 +55,14 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/entries': [
     getEntryList,
+  ],
+  '/crm/users': [
+    getUserList,
+  ],
+  '/crm/managers': [
+    getManagerList,
+  ],
+  '/crm/auth': [
+    loginManager,
   ],
 };

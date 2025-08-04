@@ -14,6 +14,7 @@ import type {
   PostWeightResponse,
   GetArgusCheckinResponse,
   GetEntriesResponse,
+  GetCrmManagersResponse,
 } from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -207,6 +208,26 @@ export const getEntriesResponseTransformer = async (
 ): Promise<GetEntriesResponse> => {
   data.items = data.items.map((item: any) => {
     return entrySchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const managerSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getCrmManagersResponseTransformer = async (
+  data: any,
+): Promise<GetCrmManagersResponse> => {
+  data.items = data.items.map((item: any) => {
+    return managerSchemaResponseTransformer(item);
   });
   return data;
 };

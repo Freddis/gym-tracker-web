@@ -59,6 +59,15 @@ import type {
   GetEntriesData,
   GetEntriesResponses,
   GetEntriesErrors,
+  GetCrmUsersData,
+  GetCrmUsersResponses,
+  GetCrmUsersErrors,
+  GetCrmManagersData,
+  GetCrmManagersResponses,
+  GetCrmManagersErrors,
+  PostCrmAuthLoginData,
+  PostCrmAuthLoginResponses,
+  PostCrmAuthLoginErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -75,6 +84,7 @@ import {
   postWeightResponseTransformer,
   getArgusCheckinResponseTransformer,
   getEntriesResponseTransformer,
+  getCrmManagersResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -307,7 +317,7 @@ export const patchExercisesById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Returns list of users workouts
+ * Returns list of user workouts
  */
 export const getWorkouts = <ThrowOnError extends boolean = false>(
   options?: Options<GetWorkoutsData, ThrowOnError>,
@@ -543,5 +553,61 @@ export const getEntries = <ThrowOnError extends boolean = false>(
     responseTransformer: getEntriesResponseTransformer,
     url: "/entries",
     ...options,
+  });
+};
+
+/**
+ * Returns list of users
+ */
+export const getCrmUsers = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmUsersData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmUsersResponses,
+    GetCrmUsersErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    url: "/crm/users",
+    ...options,
+  });
+};
+
+/**
+ * Returns list of managers
+ */
+export const getCrmManagers = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmManagersData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmManagersResponses,
+    GetCrmManagersErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getCrmManagersResponseTransformer,
+    url: "/crm/managers",
+    ...options,
+  });
+};
+
+/**
+ * Logins a manager into CRM
+ */
+export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<PostCrmAuthLoginData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostCrmAuthLoginResponses,
+    PostCrmAuthLoginErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    url: "/crm/auth/login",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };

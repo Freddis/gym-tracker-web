@@ -1,37 +1,21 @@
-import {CSSProperties, JSX} from 'react';
+import {FC} from 'react';
+import {PaginationProps} from './types/PaginationProps';
+import {cn} from '../../../utils/cn';
 
-interface PaginationProps {
-  info: {
-    pageSize: number,
-    count: number,
-    page: number
-  },
-  onPageChanged: (page: number) => void,
-}
-export function Pagination(props: PaginationProps) {
-  const style: CSSProperties = {
-
-  };
+export const Pagination: FC<PaginationProps> = (props) => {
+  const className = props.className;
   const maxPages = Math.ceil(props.info.count / props.info.pageSize);
-  const buttons: JSX.Element[] = [];
+  type Button = {label: string, selected: boolean, page: number, click: () => void};
+  const buttons: Button[] = [];
 
-  const pageClicked = (page: number) => {
-    props.onPageChanged(page);
-  };
-
-  const createButton = (page: number, label?: string, ignoreActive?: boolean): JSX.Element => {
-    const aStyle: CSSProperties = {
-      cursor: 'pointer',
-      marginRight: 10,
-      fontWeight: 'bold',
-      width: 35,
-    };
-    if (!ignoreActive && props.info.page === page) {
-      aStyle.color = 'red';
-    }
+  const createButton = (page: number, label?: string, ignoreActive?: boolean): Button => {
     const newLabel = label ?? page.toString();
-    const button = <button key={newLabel} onClick={() => pageClicked(page)} style={aStyle}>{newLabel}</button>;
-    return button;
+    return {
+      label: newLabel,
+      selected: !ignoreActive && props.info.page === page,
+      page,
+      click: () => pageClicked(page),
+    };
   };
 
   buttons.push(createButton(1, '<<', true));
@@ -54,5 +38,18 @@ export function Pagination(props: PaginationProps) {
     buttons.push(createButton(i));
   }
   buttons.push(createButton(maxPages, '>>', true));
-  return <div style={style}>{buttons}</div>;
-}
+
+  const pageClicked = (page: number) => {
+    props.onPageChanged(page);
+  };
+
+  return (
+  <div className="flex justify-center gap-3">
+      {buttons.map((b) => (
+        <button key={b.label} className={cn('min-w-5 cursor-pointer', b.selected ? 'text-accent' : '', className)} onClick={b.click}>
+          {b.label}
+        </button>
+      ))}
+    </div>
+  );
+};

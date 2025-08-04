@@ -7,7 +7,7 @@ import {RouteFactory} from '../../utils/RouteFactory';
 export const getWorkoutList = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
   type: ApiRouteType.User,
-  description: 'Returns list of users workouts',
+  description: 'Returns list of user workouts',
   path: '/',
   validators: {
     query: object({

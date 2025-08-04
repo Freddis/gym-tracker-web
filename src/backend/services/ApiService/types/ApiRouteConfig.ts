@@ -15,6 +15,8 @@ import {UserRouteContext} from './UserRouteContext';
 import {PublicRouteContext} from './PublicRouteContext';
 import {EntryService} from '../../EntryService/EntryService';
 import {UserService} from '../../UserService/UserService';
+import {ManagerService} from '../../ManagerService/ManagerService';
+import {ManagerRouteContext} from './ManagerRouteContext';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
   protected drizzle: DrizzleService;
@@ -22,10 +24,20 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     this.drizzle = service;
   }
 
-  Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, undefined> = {
+  Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, ManagerRouteContext> = {
     authorization: false,
     extraProps: undefined,
-    contextFactory: async () => (undefined),
+    contextFactory: async (ctx) => {
+      const services = await this.createRequestServices();
+      const viewer = await services.auth.getManagerFromRequest(ctx.request);
+      if (!viewer) {
+        throw new ApiError(ApiErrorCode.Unauthorized);
+      }
+      return {
+        services: services,
+        viewer,
+      };
+    },
   };
   Public: OpenApiRouteConfig<ApiRouteType.Public, ApiErrorCode, undefined, PublicRouteContext> = {
     authorization: false,
@@ -77,8 +89,10 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     const entry = new EntryService(user, workout);
     const argusCheckin = new ArgusCheckinService(drizzle);
     const weight = new WeightService(drizzle);
+    const manager = new ManagerService(drizzle);
+    const auth = new AuthService(serverConfig.services.auth, drizzle, manager);
     const services: ApiRequestServices = {
-      auth: new AuthService(serverConfig.services.auth, drizzle),
+      auth,
       models: {
         argusCheckin,
         workout,
@@ -86,6 +100,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
         weight,
         entry,
         user,
+        manager,
       },
     };
     return services;

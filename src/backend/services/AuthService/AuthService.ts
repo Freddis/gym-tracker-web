@@ -8,40 +8,33 @@ import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AuthUser} from './types/AuthUser';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ActionError} from '../ApiService/errors/ActionError';
+import {ManagerService} from '../ManagerService/ManagerService';
+import {Manager} from '../ManagerService/types/Manager';
 
 export class AuthService {
   protected dbService: DrizzleService;
   protected config: AuthServiceConfig;
   protected logger = new Logger(AuthService.name);
+  protected managerService: ManagerService;
 
-  constructor(config: AuthServiceConfig, drizzleService: DrizzleService) {
+  constructor(
+    config: AuthServiceConfig,
+    drizzleService: DrizzleService,
+    managerService: ManagerService
+  ) {
     this.config = config;
     this.dbService = drizzleService;
+    this.managerService = managerService;
   }
 
   async getUserFromRequest(request: Request): Promise<UserRow | null> {
-    const authHeader = request.headers.get('Authorization');
-    if (!authHeader) {
-      return null;
-    }
-    const jwtToken = authHeader.replaceAll('Bearer', '').trim();
-    try {
-      jwt.verify(jwtToken, this.config.jwtSecret);
-    } catch (e: unknown) {
-      this.logger.error("Can't verify JWT tokern", e);
-      return null;
-    }
-    const value = jwt.decode(jwtToken);
-    if (!value) {
-      return null;
-    }
-    const validatedData = z.object({id: z.number()}).safeParse(value);
-    if (!validatedData.success) {
+    const id = this.getRoleIdFromRequest(request);
+    if (!id) {
       return null;
     }
     const db = await this.dbService.getDb();
     const user = await db.query.users.findFirst({
-      where: (table, {eq}) => eq(table.id, validatedData.data.id),
+      where: (table, {eq}) => eq(table.id, id),
     });
     if (!user) {
       return null;
@@ -49,11 +42,31 @@ export class AuthService {
     return user;
   }
 
+  async getManagerFromRequest(request: Request): Promise<Manager | null> {
+    const id = this.getRoleIdFromRequest(request);
+    if (!id) {
+      return null;
+    }
+    return this.managerService.getById(id);
+  }
   async login(email: string, password: string): Promise<AuthUser> {
     const db = await this.dbService.getDb();
     const user = await db.query.users.findFirst({
       where: (users, {eq}) => eq(users.email, email),
     });
+    if (!user) {
+      throw new ActionError(ActionErrorCode.InvalidPassword);
+    }
+    const passwordsMatch = await compare(password, user.password);
+    if (!passwordsMatch) {
+      throw new ActionError(ActionErrorCode.InvalidPassword);
+    }
+    const token = this.createToken(user);
+    return {...user, jwt: token};
+  }
+
+  async loginManager(email: string, password: string): Promise<AuthUser> {
+    const user = await this.managerService.getByEmail(email);
     if (!user) {
       throw new ActionError(ActionErrorCode.InvalidPassword);
     }
@@ -104,6 +117,7 @@ export class AuthService {
     const token = this.createToken(user);
     return {...user, jwt: token};
   }
+
   async hashString(str: string): Promise<string> {
     return await hash(str, this.config.hashSalt);
   }
@@ -122,5 +136,28 @@ export class AuthService {
       }
     );
     return token;
+  }
+
+  protected getRoleIdFromRequest(request: Request): number | null {
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader) {
+      return null;
+    }
+    const jwtToken = authHeader.replaceAll('Bearer', '').trim();
+    try {
+      jwt.verify(jwtToken, this.config.jwtSecret);
+    } catch (e: unknown) {
+      this.logger.error("Can't verify JWT tokern", e);
+      return null;
+    }
+    const value = jwt.decode(jwtToken);
+    if (!value) {
+      return null;
+    }
+    const validatedData = z.object({id: z.number()}).safeParse(value);
+    if (!validatedData.success) {
+      return null;
+    }
+    return validatedData.data.id;
   }
 }

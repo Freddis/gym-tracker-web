@@ -782,6 +782,44 @@ export type User = {
   profilePicture: string;
 };
 
+/**
+ * Manager. Managers that work with CRM
+ */
+export type Manager = {
+  /**
+   * Id of the manager
+   */
+  id: number;
+  /**
+   * Name
+   */
+  name: string;
+  /**
+   * Work Email. Used for CRM login
+   */
+  email: string;
+  /**
+   * Profile picture
+   */
+  profilePicture: string | null;
+  /**
+   * Hashed Password
+   */
+  password: string;
+  /**
+   * Date manager was added to CRM
+   */
+  createdAt: Date;
+  /**
+   * Last time manager was updated
+   */
+  updatedAt: Date | null;
+  /**
+   * The date manager deleted from CRM. Deleted managers don't appear on most pages
+   */
+  deletedAt: Date | null;
+};
+
 export type PostAuthRegisterData = {
   body?: {
     /**
@@ -3439,6 +3477,218 @@ export type GetEntriesResponses = {
 };
 
 export type GetEntriesResponse = GetEntriesResponses[keyof GetEntriesResponses];
+
+export type GetCrmUsersData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/crm/users";
+};
+
+export type GetCrmUsersErrors = {
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmUsersError = GetCrmUsersErrors[keyof GetCrmUsersErrors];
+
+export type GetCrmUsersResponses = {
+  /**
+   * List of users
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<User>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetCrmUsersResponse =
+  GetCrmUsersResponses[keyof GetCrmUsersResponses];
+
+export type GetCrmManagersData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/crm/managers";
+};
+
+export type GetCrmManagersErrors = {
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmManagersError =
+  GetCrmManagersErrors[keyof GetCrmManagersErrors];
+
+export type GetCrmManagersResponses = {
+  /**
+   * List of Managers
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Manager>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetCrmManagersResponse =
+  GetCrmManagersResponses[keyof GetCrmManagersResponses];
+
+export type PostCrmAuthLoginData = {
+  body?: {
+    /**
+     * Email for the manager account
+     */
+    email: string;
+    /**
+     * Password for the manager account
+     */
+    password: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/crm/auth/login";
+};
+
+export type PostCrmAuthLoginErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostCrmAuthLoginError =
+  PostCrmAuthLoginErrors[keyof PostCrmAuthLoginErrors];
+
+export type PostCrmAuthLoginResponses = {
+  /**
+   * Good Response
+   */
+  200: AuthUser;
+};
+
+export type PostCrmAuthLoginResponse =
+  PostCrmAuthLoginResponses[keyof PostCrmAuthLoginResponses];
 
 export type ClientOptions = {
   baseURL: `${string}://${string}/api` | (string & {});
