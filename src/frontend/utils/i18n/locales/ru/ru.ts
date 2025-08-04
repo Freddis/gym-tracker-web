@@ -23,9 +23,6 @@ export const dictionary: Translation = {
           language: 'Язык',
           darkTheme: 'Темная Тема',
         },
-        toasts: {
-          logoutSuccess: 'Вы успешно вышли',
-        },
       },
       menu: {
         signIn: 'Войти',
@@ -35,6 +32,9 @@ export const dictionary: Translation = {
         activities: 'Активность',
         exerciseLibrary: 'Упражнения',
       },
+    },
+    toasts: {
+      logoutSuccess: 'Вы успешно вышли',
     },
     popups: {
       exerciseSelection: {

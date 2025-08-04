@@ -31,7 +31,6 @@ export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
     setThemeState(theme);
   };
   const themeStr = theme === Theme.Light ? 'theme-light' : 'theme-dark';
-  // console.log(theme, themeStr); // uncoment to debug
   return (
   <ThemeContext.Provider value={theme}>
     <EditThemeContext.Provider value={{setTheme}}>

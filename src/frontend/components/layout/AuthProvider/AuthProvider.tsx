@@ -4,9 +4,13 @@ import {authUserValidator, AuthUser} from './types/AuthUser';
 import {Cookie} from '../../../../common/utils/Cookie/Cookie';
 import {CookieName} from '../../../../common/enums/CookieName';
 import {client} from '../../../utils/openapi-client/client.gen';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => {
   const cookies = new Cookie();
+  const {t, i18n} = useAppPartialTranslation((x) => x.layout);
+  const toasts = useToasts();
   const storedUser = useMemo(() => {
     const user = cookies.get(CookieName.User);
     if (user === null) {
@@ -41,6 +45,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[]}> = (props) => 
     setUser(null);
     cookies.delete(CookieName.User);
     client.setConfig(getClientConfig(null));
+    toasts.addSuccess(t(i18n.toasts.logoutSuccess));
   };
   const login = (user: AuthUser) => {
     setUser(user);

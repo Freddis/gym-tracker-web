@@ -16,7 +16,7 @@ import {ThemeContext} from '../../../ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../ThemeProvider/enums/Theme';
 import {AppLanguageDropdown} from '../../../../atoms/AppLanguageDropdown/AppLanguageDropdown';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
-import {useToasts} from '../../../../atoms/AppToast/hooks/useToasts';
+import {AppAvatar} from '../../../../atoms/AppAvatar/AppAvatar';
 
 
 export const ProfileDropdownMenu: FC = () => {
@@ -25,12 +25,10 @@ export const ProfileDropdownMenu: FC = () => {
   const theme = useContext(ThemeContext);
   const themeContext = useContext(EditThemeContext);
   const navigate = useNavigate();
-  const toasts = useToasts();
   const logout: MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
     auth.logout();
     navigate({to: '/'});
-    toasts.addSuccess(t(i18n.toasts.logoutSuccess));
   };
   const toggleDarkTheme = () => {
     const newTheme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
@@ -43,9 +41,7 @@ export const ProfileDropdownMenu: FC = () => {
     <div className="flex items-center cursor-pointer">
       <span className="text-base ">{auth.user?.name}</span>
       <FiChevronDown className=" relative" />
-      <div className="text-white ml-2 font-bold border-light rounded-full w-12 h-12 flex items-center justify-center bg-cyan-600">
-      {auth.user?.name.substring(0, 1)}
-      </div>
+      {auth.user && <AppAvatar user={auth.user} className="ml-2"/>}
     </div>
     </AppDropdownMenuTrigger>
     <AppDropdownMenuContent sideOffset={-2} className={`w-50 ${theme.toLowerCase()}`}>

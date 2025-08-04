@@ -6,9 +6,6 @@ export const header = {
       language: 'Language',
       darkTheme: 'Dark Theme',
     },
-    toasts: {
-      logoutSuccess: "You've successfully logged out",
-    },
   },
   menu: {
     signIn: 'Sign In',

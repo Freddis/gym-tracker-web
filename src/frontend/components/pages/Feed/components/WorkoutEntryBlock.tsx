@@ -44,7 +44,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry}> = ({workout
         <div className="grow flex flex-row-reverse">
           <div className="flex flex-row  items-center">
             <span className="text-accent">{entry.user.name}</span>
-            <AppAvatar user={entry.user} />
+            <AppAvatar user={entry.user} className="ml-2"/>
           </div>
         </div>
     </AppBlock>

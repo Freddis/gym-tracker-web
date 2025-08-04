@@ -17,6 +17,9 @@ export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {
   if (props.error && props.error.code === 'NotFound') {
     message = 'Requested entity not found';
   }
+  if (props.error && props.error.code === 'Unauthorized') {
+    message = 'You have to be logged in to view this page';
+  }
   if (props.error && props.error.code === 'ValidationFailed') {
     const lines: string[] = [
       'Validation errors in API request:',

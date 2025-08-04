@@ -20,10 +20,10 @@ export function Layout() {
         <QueryClientProvider client={queryClient}>
           <LanguageProvider>
             <ThemeProvider>
-              <AuthProvider>
-                <ToastProvider>
+              <ToastProvider>
+                <AuthProvider>
                   <PopupProvider>
-                    <div className="flex min-h-screen flex-col font-extralight palette-neutral">
+                    <div className="flex min-h-screen flex-col font-extralight palette-neutral bg-main">
                       <Header/>
                       <div className="flex flex-col grow">
                         <Outlet />
@@ -31,8 +31,8 @@ export function Layout() {
                       <Footer />
                     </div>
                   </PopupProvider>
-                </ToastProvider>
-              </AuthProvider>
+                </AuthProvider>
+              </ToastProvider>
               <Scripts />
             </ThemeProvider>
           </LanguageProvider>

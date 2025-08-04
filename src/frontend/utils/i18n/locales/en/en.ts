@@ -55,6 +55,9 @@ export const dictionary = {
         },
       },
     },
+    toasts: {
+      logoutSuccess: "You've successfully logged out",
+    },
   },
   components: {
   },
