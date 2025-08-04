@@ -10,6 +10,8 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
 import {postAuthRegister, PostAuthRegisterError} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
+import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 
 export const RegistrationPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);
@@ -48,36 +50,36 @@ export const RegistrationPage: FC = () => {
   };
 
   return (
-    <PageContainer className="justify-center bg-main">
-      <div className="bg-surface text-on-surface p-10 min-w-xl rounded-sm">
-        <h1 className="text-center text-xl">{t(i18n.heading)}</h1>
-        <div className="flex flex-col gap-3">
-          <AppLabel>{t(i18n.form.labels.name)}</AppLabel>
-          <AppTextInput onChange={(e) => setName(e.target.value)} value={name}/>
-          <AppInputError error={errorMessage('name')} />
-        </div>
-        <div className="flex flex-col gap-3">
-          <AppLabel>{t(i18n.form.labels.email)}</AppLabel>
-          <AppTextInput onChange={(e) => setEmail(e.target.value)} value={email}/>
-          <AppInputError error={errorMessage('email')} />
-        </div>
-        <div className="flex flex-col gap-3">
-          <AppLabel>{t(i18n.form.labels.password)}</AppLabel>
-          <AppTextInput type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
-          <AppInputError error={errorMessage('password')} />
-        </div>
-        <div className="flex flex-col gap-3">
-          <AppLabel>{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
-          <AppTextInput type="password" onChange={(e) => setPasswordConfirmation(e.target.value)} value={passwordConfirmation} />
-            <AppInputError error={errorMessage('passwordConfirmation')} />
-        </div>
-          <div className="flex flex-row mt-5">
-            <AppLink to="/auth/login" style={{marginLeft: 20}}>{t(i18n.form.buttons.signIn)}</AppLink>
-            <div className="grow flex flex-row-reverse">
-              <AppButton onClick={register}>{t(i18n.form.buttons.register)}</AppButton>
-            </div>
+    <PageContainer className="justify-center bg-main text-main">
+      <AppBlock className="p-10 w-full max-w-xl rounded-sm">
+        <AppBlockHeader >{t(i18n.heading)}</AppBlockHeader>
+        <AppLabel className="mb-2">{t(i18n.form.labels.name)}</AppLabel>
+        <AppTextInput onChange={(e) => setName(e.target.value)} value={name}/>
+        <AppInputError error={errorMessage('name')} />
+        <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
+        <AppTextInput
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <AppInputError error={errorMessage('email')} />
+        <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
+        <AppTextInput
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+        <AppInputError error={errorMessage('password')} />
+        <AppLabel className="mb-2">{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
+        <AppTextInput type="password" onChange={(e) => setPasswordConfirmation(e.target.value)} value={passwordConfirmation} />
+        <AppInputError error={errorMessage('passwordConfirmation')} />
+
+        <div className="flex flex-col sm:flex-row items-center gap-5 mt-5 ">
+          <AppLink to="/auth/login">{t(i18n.form.buttons.signIn)}</AppLink>
+          <div className="grow flex flex-row-reverse">
+            <AppButton onClick={register}>{t(i18n.form.buttons.register)}</AppButton>
           </div>
-      </div>
+        </div>
+      </AppBlock>
     </PageContainer>
   );
 };

@@ -13,6 +13,7 @@ import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {postAuthLogin, PostAuthLoginError} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
+import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -58,8 +59,8 @@ export const LoginPage: FC = () => {
   return (
     <PageContainer className="justify-center bg-main text-main">
         <AppBlock className="p-10 w-full max-w-xl rounded-sm">
-          <h1 className="text-center text-xl mb-5">{t(i18n.heading)}</h1>
-          <div className="flex flex-col surface bg-">
+          <AppBlockHeader className="text-center text-xl mb-5">{t(i18n.heading)}</AppBlockHeader>
+          <div className="flex flex-col">
             <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
             <AppTextInput
               onChange={(e) => setEmail(e.target.value)}
