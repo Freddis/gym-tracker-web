@@ -73,8 +73,8 @@ export const FeedPage: FC = () => {
         <div className="w-full text-left mb-5">
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
-        <div className="flex gap-5 items-start">
-          <AppBlock className="w-70">
+        <div className="flex flex-col md:flex-row gap-5 items-start">
+          <AppBlock className="w-full md:w-70">
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.type)}</AppLabel>
             <div className="mb-5 flex flex-col gap-2">
               {Object.values(EntryType).map((x) => (
@@ -88,7 +88,7 @@ export const FeedPage: FC = () => {
               ))}
             </div>
           </AppBlock>
-          <div className="flex flex-col gap-5 grow">
+          <div className="flex flex-col gap-5 grow w-full">
             {response.isLoading && <AppSpinner />}
             {items.map((item) => <EntryBlock key={item.id} entry={item}/>)}
             {response.isFetchingNextPage ? <AppSpinner/> : null}

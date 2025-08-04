@@ -6,6 +6,7 @@ import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
 import {ExerciseLibraryQueryParams} from '../types/ExercisesLibraryQuery';
 import {ExerciseBlockProps} from './types/ExerciseBlockProps';
 import {Equipment, Muscle} from '../../../../../utils/openapi-client';
+import {cn} from '../../../../../utils/cn';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;
@@ -26,17 +27,19 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
     return newParams;
   };
   return (
-    <AppBlock>
-      <div className="flex  gap-2 items-start">
-        <AppImage src={item.images[0]} className="mt-1" />
+    <AppBlock className={cn(props.className)}>
+      <div className="flex flex-col sm:flex-row gap-2 items-start">
+        <div className="flex w-full justify-center sm:block sm:w-auto">
+        <AppImage src={item.images[0]} className="md:mt-1 w-auto h-auto max-h-80 sm:w-20 sm:h-20" />
+        </div>
         <div className="grow">
           <div className="mb-2">
             <AppLink to="/exercises/$exerciseId" params={{exerciseId: item.id.toString()}}>
               <b>{item.name}</b>
             </AppLink>
           </div>
-          <div className="flex items-end">
-            <div className="text-base  grow">
+          <div className="flex flex-col sm:flex-row sm:items-end">
+            <div className="text-base grow">
               <div>
                 <span className="font-normal">Equipment: </span>
                 {item.equipment && (
@@ -60,7 +63,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
             </div>
             <div className="flex flex-row-reverse min-w-25">
             {item.variations.length > 0 && (
-              <AppLink className="font-normal" onClick={toggleVariationsDisplay}>
+              <AppLink className="font-normal hidden md:inline-block" onClick={toggleVariationsDisplay}>
                 <span>
                   <span>Variations</span>
                   {!showVariations && <FaChevronDown className="ml-1 inline" />}

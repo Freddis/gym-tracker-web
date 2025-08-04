@@ -98,55 +98,53 @@ export const ExerciseLibraryPage: FC = () => {
   }
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   return (
-    <PageContainer >
+    <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
         <div className="w-full text-left mb-5">
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
-        <div className="flex gap-5 items-start">
-        <AppBlock className="w-70 p-5">
-          <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
-          <div className="mb-5">
-            <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
-          </div>
-           <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
-          <div className="mb-5 flex flex-col gap-2">
-            {Object.values(Equipment).sort().map((x) => (
-              <AppSwitch
-              className="capitalize"
-              key={x}
-              label={x}
-              checked={searchParams.equipment === x}
-              onCheckedChange={(e) => filterByEquipment(x, e)}
-              />
-            ))}
-          </div>
-          <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
-          <div className="mb-5 flex flex-col gap-2">
-            {Object.values(Muscle).sort().map((x) => (
-              <AppSwitch
-              key={x}
-              label={x}
-              checked={searchParams.muscles?.includes(x) ?? false}
-              onCheckedChange={(e) => filterByMuscle(x, e)}
-              />
-            ))}
-          </div>
-        </AppBlock>
-          <div className="flex flex-col gap-5 grow">
-              <div className="flex flex-col gap-5">
-                  {response.isLoading && <AppSpinner />}
-                  {items.map((item) => (
-                    <ExerciseBlock key={item.id} item={item} params={searchParams} />
-                  ))}
-                  <div ref={ref}></div>
-                  {response.isFetchingNextPage ? <AppSpinner/> : null}
-              </div>
+        <div className="flex flex-col md:flex-row gap-5 items-start">
+          <AppBlock className="hidden md:block w-full md:w-70 p-5">
+            <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
+            <div className="mb-5">
+              <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
+            </div>
+            <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
+            <div className="mb-5 flex flex-col gap-2">
+              {Object.values(Equipment).sort().map((x) => (
+                <AppSwitch
+                className="capitalize"
+                key={x}
+                label={x}
+                checked={searchParams.equipment === x}
+                onCheckedChange={(e) => filterByEquipment(x, e)}
+                />
+              ))}
+            </div>
+            <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
+            <div className="mb-5 flex flex-col gap-2">
+              {Object.values(Muscle).sort().map((x) => (
+                <AppSwitch
+                key={x}
+                label={x}
+                checked={searchParams.muscles?.includes(x) ?? false}
+                onCheckedChange={(e) => filterByMuscle(x, e)}
+                />
+              ))}
+            </div>
+          </AppBlock>
+          <div className="flex flex-col gap-5 grow w-full">
             {!response.isFetching && items.length === 0 && (
               <AppToast variant={Color.Danger}>{t(i18n.toasts.noExercisesFound)}</AppToast>
             )}
+            {response.isLoading && <AppSpinner />}
+            {items.map((item) => (
+              <ExerciseBlock className="w-full" key={item.id} item={item} params={searchParams} />
+            ))}
+            <div ref={ref}></div>
+            {response.isFetchingNextPage ? <AppSpinner/> : null}
           </div>
-      </div>
+        </div>
       </div>
     </PageContainer>
   );
