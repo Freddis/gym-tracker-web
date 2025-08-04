@@ -750,10 +750,7 @@ export type Entry = {
    */
   id: number;
   user: User;
-  /**
-   * Entry type
-   */
-  type: "Weight" | "Workout";
+  type: EntryType;
   /**
    * Weight. Only for weight entries
    */
@@ -781,6 +778,19 @@ export type User = {
    */
   profilePicture: string;
 };
+
+/**
+ * Entry type
+ */
+export type EntryType = "Workout" | "Weight";
+
+/**
+ * Entry type
+ */
+export const EntryType = {
+  WORKOUT: "Workout",
+  WEIGHT: "Weight",
+} as const;
 
 /**
  * Manager. Managers that work with CRM
@@ -3365,6 +3375,10 @@ export type GetEntriesData = {
      * Page
      */
     page?: number;
+    /**
+     * Filters excercises by type.
+     */
+    type?: "Workout" | "Weight";
   };
   url: "/entries";
 };

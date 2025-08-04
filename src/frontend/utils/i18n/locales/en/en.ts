@@ -1,3 +1,4 @@
+import {EntryType} from '../../../openapi-client';
 import {header} from './layout/header';
 
 // todo: figure out proper approach
@@ -22,6 +23,12 @@ export const dictionary = {
         5: 'Saturday',
         6: 'Sunday',
       } as WeekDaysTranslation,
+    },
+    objects: {
+      entryType: {
+        Workout: 'Workout',
+        Weight: 'Weight',
+      } satisfies Record<EntryType, string>,
     },
   },
   layout: {
@@ -117,6 +124,14 @@ export const dictionary = {
     },
     feed: {
       heading: 'Explore What Others Do',
+      filter: {
+        labels: {
+          type: 'Entry type:',
+        },
+      },
+      toasts: {
+        noActivitiesFound: 'No activities found',
+      },
     },
     exercises: {
       heading: 'Built-In Library',

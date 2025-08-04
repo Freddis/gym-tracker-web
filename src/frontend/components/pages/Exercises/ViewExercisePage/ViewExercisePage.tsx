@@ -59,9 +59,6 @@ export const ViewExercisePage:FC = () => {
           <span className="ml-2">{item.name}</span>
         </div>
         <AppBlock>
-          <div>
-
-          </div>
           <div className="flex flex-col gap-2 items-start">
             <AppBlockHeader>{item.name}</AppBlockHeader>
             <div className="flex justify-center w-full gap-5">
@@ -72,19 +69,17 @@ export const ViewExercisePage:FC = () => {
             <div >
               <div className="flex items-end">
                 <div className="text-base  grow">
-
-                    <div>
-                      <span className="font-normal">Equipment: </span>
-                      {item.equipment && (
-                      <AppLink
-                      className="text-on-surface capitalize"
-                      to="/exercises"
-                      search={{equipment: item.equipment}}
-                      >{item.equipment}</AppLink>
-                      )}
-                      <span>None</span>
-                    </div>
-
+                  <div>
+                    <span className="font-normal">Equipment: </span>
+                    {item.equipment && (
+                    <AppLink
+                    className="text-on-surface capitalize"
+                    to="/exercises"
+                    search={{equipment: item.equipment}}
+                    >{item.equipment}</AppLink>
+                    )}
+                    {!item.equipment && <span>None</span>}
+                  </div>
                   <div>
                     <span className="font-normal">Primary: </span>
                     {item.muscles.primary.map((muscle, i) => (

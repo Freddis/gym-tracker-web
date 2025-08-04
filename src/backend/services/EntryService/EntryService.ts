@@ -14,13 +14,11 @@ export class EntryService {
     this.userService = userService;
   }
 
-  async getAll(params?: {page?: number, perPage?: number}): Promise<PaginatedResult<Entry>> {
+  async getAll(params?: {page?: number, perPage?: number, type?: EntryType}): Promise<PaginatedResult<Entry>> {
     const workouts = await this.workoutService.getAll(params);
     const userIds = workouts.items.map((x) => x.userId);
     const users = await this.userService.getAll({ids: userIds});
-
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
-
     const getOrThrow = <T>(map: Map<number, T>, key: number): T => {
       const x = map.get(key);
       if (!x) {
@@ -28,7 +26,18 @@ export class EntryService {
       }
       return x;
     };
-
+    //todo: placeholder
+    if (params?.type === EntryType.Weight) {
+      const result: PaginatedResult<Entry> = {
+        items: [],
+        info: {
+          page: 1,
+          count: 0,
+          pageSize: 10,
+        },
+      };
+      return result;
+    }
     const items: Entry[] = workouts.items.map((workout) => ({
       id: workout.id,
       type: EntryType.Workout,

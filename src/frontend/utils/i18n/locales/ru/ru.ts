@@ -13,6 +13,12 @@ export const dictionary: Translation = {
         6: 'Воскресенье',
       },
     },
+    objects: {
+      entryType: {
+        Workout: 'Тренировка',
+        Weight: 'Вес',
+      },
+    },
   },
   layout: {
     header: {
@@ -176,6 +182,14 @@ export const dictionary: Translation = {
     },
     feed: {
       heading: 'Следи За Другими',
+      filter: {
+        labels: {
+          type: 'Тип Записи',
+        },
+      },
+      toasts: {
+        noActivitiesFound: 'Записи не найдены',
+      },
     },
     exercises: {
       heading: 'Встроенная Библиотека',

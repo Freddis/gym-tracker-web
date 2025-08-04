@@ -1,4 +1,4 @@
-import {literal, number, object, union} from 'zod';
+import {nativeEnum, number, object} from 'zod';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {userValidator} from '../../users/validators/userValidator';
 import {workoutValidator} from '../../workouts/validators/workoutValidator';
@@ -27,10 +27,7 @@ const baseEntryValidator = object({
 
 
 export const entryValidator = baseEntryValidator.extend({
-  type: union([
-    literal(EntryType.Weight),
-    literal(EntryType.Workout),
-  ]).openapi({description: 'Entry type'}),
+  type: nativeEnum(EntryType).openapi({description: 'Entry type', ref: 'Entry Type'}),
   weight: weightValidator.optional().openapi({description: 'Weight. Only for weight entries'}),
   workout: workoutValidator.optional().openapi({description: 'Workout. Only for workout entries.'}),
 }).openapi({ref: 'Entry'});

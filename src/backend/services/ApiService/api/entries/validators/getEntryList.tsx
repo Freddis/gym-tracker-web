@@ -4,7 +4,8 @@ import {RouteFactory} from '../../../utils/RouteFactory';
 import {PaginatedResult} from '../../../types/PaginatedResponse';
 import {Entry} from '../../../../EntryService/types/Entry';
 import {entryValidator} from './entryValidator';
-import {object} from 'zod';
+import {nativeEnum, object} from 'zod';
+import {EntryType} from '../../../../EntryService/types/EntryType';
 
 export const getEntryList = RouteFactory.createRoute({
   type: ApiRouteType.Public,
@@ -14,6 +15,7 @@ export const getEntryList = RouteFactory.createRoute({
   validators: {
     query: object({
       page: RouteFactory.validators.strings.number.optional().openapi({description: 'Page'}),
+      type: nativeEnum(EntryType).optional().openapi({description: 'Filters excercises by type.'}),
     }),
     response: RouteFactory.validators.paginatedResponse(entryValidator).openapi({
       description: 'List of entries',
