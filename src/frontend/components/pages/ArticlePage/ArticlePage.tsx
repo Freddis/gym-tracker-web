@@ -21,12 +21,12 @@ export const ArticlePage: FC<{article: Article}> = ({article}) => {
   };
   return (
     <PageContainer>
-      <div className="w-full max-w-5xl">
+      <div className="flex flex-col max-w-5xl w-full">
         <div className="w-full text-left mb-5">
           <AppPageHeading>{t(i18n.header)}</AppPageHeading>
         </div>
-        <div className="grid grid-cols-8 gap-5">
-          <AppBlock className="w-full p-5 col-span-2">
+        <div className="flex flex-col md:flex-row gap-5 items-justified">
+          <AppBlock className="w-full md:w-80">
             <h2 className="text-left text-lg  mb-3">{t(i18n.labels.categories)}</h2>
             <div className="flex flex-col gap-2">
             {Object.keys(links).map((x) => (
@@ -34,7 +34,7 @@ export const ArticlePage: FC<{article: Article}> = ({article}) => {
             ))}
             </div>
           </AppBlock>
-          <div className="prose-sm col-span-6">
+          <div className="flex flex-col gap-5 grow w-full prose-sm">
           {articleMap[article]}
           </div>
         </div>
