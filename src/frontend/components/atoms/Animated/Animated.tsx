@@ -1,20 +1,21 @@
-import {ReactNode, FC, useState, useEffect, TransitionEventHandler} from 'react';
+import {ReactNode, FC, useState, useEffect, TransitionEventHandler, DOMAttributes} from 'react';
 import {cn} from '../../../utils/cn';
 
 interface AnimatedProps {
  show: boolean
- className: string
+ className?: string
  animation: string
  children: ReactNode
+ onHide?: () => void
 }
-export const Animated: FC<AnimatedProps> = ({children, show, animation, className}) => {
+export const Animated: FC<DOMAttributes<HTMLDivElement> & AnimatedProps> = ({children, onHide, show, animation, className, ...rest}) => {
   const [rendered, setRendered] = useState(show);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (show) {
       setRendered(true);
-      // wait two frames so hidden state paints before showing
+      // wait timeout so hidden state paints before showing
       requestAnimationFrame(() => {
         setTimeout(() => setVisible(true), 50);
       });
@@ -26,12 +27,15 @@ export const Animated: FC<AnimatedProps> = ({children, show, animation, classNam
     // preventing children from bubbling
     if (!visible && e.target === e.currentTarget) {
       setRendered(false);
+      if (onHide) {
+        onHide();
+      }
     }
   };
   if (!rendered) {
     return null;
   }
   return (
-    <div className={cn(className, visible ? animation : '')} onTransitionEnd={onTransitionEnd}>{children}</div>
+    <div {...rest} className={cn(className, visible ? animation : '')} onTransitionEnd={onTransitionEnd}>{children}</div>
   );
 };

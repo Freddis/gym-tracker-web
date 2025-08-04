@@ -1,34 +1,46 @@
-import {FC, useContext, useState} from 'react';
+import {FC, MouseEventHandler, useContext, useState} from 'react';
 import {Conditional} from '../../Header';
 import {HeaderLink} from '../HeaderLink';
 import {AuthContext} from '../../../AuthProvider/AuthContext';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
+import {Animated} from '../../../../atoms/Animated/Animated';
 
 export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
   const [displayed, setDisplayed] = useState(true);
   const auth = useContext(AuthContext);
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.header);
 
-  const mobileMenuBackgroundClick = () => {
+  const close = () => {
+    // ordering animated blocks to animate itself out
+    // onAnimatedObjectGone is going to be final step
     setDisplayed(false);
+  };
+  const onAnimatedObjectGone = () => {
+    // calling onClose, letting the parent element know menu is gone and it can be removed from DOM
     onClose();
   };
-  const closeMobileMenu = () => {
-    setDisplayed(false);
-    onClose();
-  };
+
   const logout = () => {
     auth.logout();
-    setDisplayed(false);
-    onClose();
+    close();
   };
-  if (!displayed) {
-    return null;
-  }
+  const blockClick: MouseEventHandler<HTMLElement> = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-  <div className="fixed bg-black/50 bg-opacity-40 h-full w-full z-20" onClick={mobileMenuBackgroundClick}>
-    <div className="bg-surface text-on-surface w-60 h-full p-5" onClick={(e) => e.stopPropagation()}>
-      <div className="flex flex-col gap-5" onClick={closeMobileMenu}>
+  <Animated onHide={onAnimatedObjectGone}
+   show={displayed}
+   className="fixed h-full w-full z-20  duration-500 ease-out"
+   animation="bg-black/50"
+   onClick={close}
+   >
+    <Animated show={displayed}
+    className="fixed -left-60 bg-surface text-on-surface w-60 h-full p-5 duration-500 ease-out"
+    animation="left-0"
+    onClick={blockClick}
+    >
+      <div className="flex flex-col gap-5" onClick={close}>
       <HeaderLink to="/" >{t(i18n.menu.home)}</HeaderLink>
         <HeaderLink to="/feed" >{t(i18n.menu.feed)}</HeaderLink>
         <Conditional condition={!!auth.user}>
@@ -42,7 +54,7 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
           <HeaderLink onClick={logout}>{t(i18n.menu.signOut)}</HeaderLink>
         </Conditional>
       </div>
-    </div>
-  </div>
+    </Animated>
+  </Animated>
   );
 };
