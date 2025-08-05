@@ -475,10 +475,15 @@ export class ArgusService {
     return this.importEntriesFromPath(path);
   }
   async downloadImages() {
+    const postfixes = ['_ASN-a', '_ASN-b'];
     const db = await this.drizzle.getDb();
     const logger = new Logger('DownloadImages', this.logger.getInvoker());
     const baseUrl = 'https://storage.googleapis.com/cdn.fitnessbuddy.com/static/fb_app_images/fitness_img_v5.0/';
     const exercises = await db.query.exercises.findMany({
+      where: (t, op) => and(
+        op.eq(t.images, []),
+        op.isNull(t.deletedAt)
+      ),
     });
     logger.info(`Found '${exercises.length}' exercises`);
     const destinationDir = `${this.config.tempFolderPath}/images`;
@@ -489,15 +494,10 @@ export class ArgusService {
     let i = 0;
     for (const exercise of exercises) {
       logger.info(`Processing ${++i}/${exercises.length}:'${exercise.id}'`, exercise);
-      for (const image of exercise.images) {
-        const parts = image.split('/');
-        const filename = parts[parts.length - 1];
-        if (!filename) {
-          // never
-          throw new Error('Array math went wrong');
-        }
-        const imageUrl = `${baseUrl}${filename.replaceAll('+', '%20')}`;
-        const destination = `${destinationDir}/${filename}`;
+      for (const postfix of postfixes) {
+        const filename = exercise.name.replaceAll(' ', '_');
+        const imageUrl = `${baseUrl}${filename.replaceAll('+', '%20')}${postfix}.jpg`;
+        const destination = `${destinationDir}/${filename}${postfix.replace('_ASN', '')}.jpg`;
         logger.info(imageUrl);
         logger.info(destination);
         if (existsSync(destination)) {

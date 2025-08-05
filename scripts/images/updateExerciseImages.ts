@@ -7,23 +7,22 @@ const logger = new Logger('updateExerciseImages');
 logger.info('Start');
 const service = await globalServiceFactory.drizzle();
 const db = await service.getDb();
-const exercises = await db.query.exercises.findMany();
+const exercises = await db.query.exercises.findMany({
+  where: (t, op) => op.eq(t.images, []),
+});
 let i = 0;
 for (const exercise of exercises) {
   logger.info(`Processing ${++i}/${exercises.length}: ${exercise.name}`);
+  const postfixes = ['-a', '-b'];
   const newImages: string[] = [];
-  for (const img of exercise.images) {
-    logger.info(`Image ${img}`);
-    const nameParts = img.split('/');
-    const lastPart = nameParts[nameParts.length - 1];
-    if (!lastPart) {
-      // never
-      throw new Error("Name doesn't exist");
-    }
-    const name = decodeURIComponent(lastPart);
+  for (const postfix of postfixes) {
+    logger.info(`Image ${postfix}`);
+
+    const name = `${exercise.name.replaceAll(' ', '_')}${postfix}.jpg`;
     const existingImg = await db.query.images.findFirst({
       where: (t, op) => op.like(t.url, `%${name}`),
     });
+
     if (!existingImg) {
       logger.info('Db image not found');
       continue;
@@ -32,7 +31,12 @@ for (const exercise of exercises) {
     const newUrl = existingImg.url.replaceAll(name, encodedName);
     newImages.push(newUrl);
   }
+  if (newImages.length === 0) {
+    console.log('No images found');
+    continue;
+  }
   exercise.images = newImages;
+
   await db.update(db._.fullSchema.exercises)
     .set({
       images: newImages,
