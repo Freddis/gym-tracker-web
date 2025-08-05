@@ -20,6 +20,29 @@
     font-weight: normal!important
   }
 }
+
+input:-webkit-autofill {
+  animation-name: autofill-fix;
+  animation-fill-mode: both;
+  animation-duration: 1ms;
+}
+
+@keyframes autofill-fix {
+  from {}
+  to {}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  font-size: inherit;
+  -webkit-text-size-adjust: 100%; /* forces proper sizing */
+  -webkit-text-fill-color: var(--color-on-cavity);
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px var(--color-cavity) inset;
+}
 @theme  inline {
 
 }
