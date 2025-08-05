@@ -4,6 +4,8 @@
 @import "./storybook.css";
 @import "./shadcn.css";
 @plugin "@tailwindcss/typography";
+
+/** temporary solution for articles until I get my headers in design system **/
 .prose {
   --tw-prose-body: inherit;
   --tw-prose-headings: inherit;
@@ -21,17 +23,7 @@
   }
 }
 
-input:-webkit-autofill {
-  animation-name: autofill-fix;
-  animation-fill-mode: both;
-  animation-duration: 1ms;
-}
-
-@keyframes autofill-fix {
-  from {}
-  to {}
-}
-
+/** fixing chrome autofill as best as hacks allow **/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -44,5 +36,11 @@ select:-webkit-autofill {
   box-shadow: 0 0 0px 1000px var(--color-cavity) inset;
 }
 @theme  inline {
+
+}
+
+/** temporarily removed outline **/
+*:focus {
+  outline: none;
 
 }
