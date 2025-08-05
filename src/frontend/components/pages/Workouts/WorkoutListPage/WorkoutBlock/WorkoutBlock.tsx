@@ -29,7 +29,7 @@ export const WorkoutBlock: FC<{item: Workout}> = (props) => {
       <div className="mt-5">{t(i18n.duration)}: {time}</div>
       <div>{t(i18n.calories)}: {item.calories}</div>
       <div className="mt-5">
-        {item.exercises.map((exercise, i) => (
+        {item.exercises.filter((e) => e.sets.length > 0).map((exercise, i) => (
           <div key={i} className="flex flex-row">
           <AppImage src={exercise.exercise.images[0]} className="mt-1" />
           <div className="pl-5">
