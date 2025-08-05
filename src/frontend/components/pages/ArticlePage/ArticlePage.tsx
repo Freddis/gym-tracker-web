@@ -1,13 +1,12 @@
-import {FC} from 'react';
-import {AppBlock} from '../../atoms/AppBlock/AppBlock';
+import {FC, ReactNode} from 'react';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {Article} from './types/Article';
 import {TermsOfServiceArticle} from './components/TermsOfServiceArticle';
-import {ReactNode} from '@tanstack/react-router';
 import {PrivacyPolicy} from './components/PrivacyPolicy';
 import {AppLink, AppLinkProps} from '../../atoms/AppLink/AppLink';
 import {AppPageHeading} from '../../atoms/AppPageHeading/AppPageHeading';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+import {AppSidebarBlock} from '../../atoms/AppSidebarBlock/AppSidebarBlock';
 
 export const ArticlePage: FC<{article: Article}> = ({article}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.static.articles);
@@ -26,14 +25,14 @@ export const ArticlePage: FC<{article: Article}> = ({article}) => {
           <AppPageHeading>{t(i18n.header)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-justified">
-          <AppBlock className="w-full md:w-80">
+          <AppSidebarBlock>
             <h2 className="text-left text-lg  mb-3">{t(i18n.labels.categories)}</h2>
             <div className="flex flex-col gap-2">
             {Object.keys(links).map((x) => (
               <AppLink to={links[x].to} className={x !== article ? 'text-on-surface' : 'font-normal'}>{links[x].name}</AppLink>
             ))}
             </div>
-          </AppBlock>
+          </AppSidebarBlock>
           <div className="flex flex-col gap-5 grow w-full prose-sm">
           {articleMap[article]}
           </div>

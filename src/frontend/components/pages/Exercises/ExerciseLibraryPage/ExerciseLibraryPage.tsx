@@ -1,7 +1,6 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {FC, useEffect} from 'react';
 import {ExerciseBlock} from './components/ExerciseBlock';
-import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
@@ -15,6 +14,7 @@ import {Equipment, getExercisesBuiltIn, GetExercisesBuiltInData, Muscle} from '.
 import {useInView} from 'react-intersection-observer';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
+import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
@@ -104,10 +104,21 @@ export const ExerciseLibraryPage: FC = () => {
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
-          <AppBlock className="hidden md:block w-full md:w-70 p-5">
+          <AppSidebarBlock className="hidden md:block">
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
             <div className="mb-5">
               <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
+            </div>
+            <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
+            <div className="mb-5 flex flex-col gap-2">
+              {Object.values(Muscle).sort().map((x) => (
+                <AppSwitch
+                key={x}
+                label={x}
+                checked={searchParams.muscles?.includes(x) ?? false}
+                onCheckedChange={(e) => filterByMuscle(x, e)}
+                />
+              ))}
             </div>
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
             <div className="mb-5 flex flex-col gap-2">
@@ -121,18 +132,7 @@ export const ExerciseLibraryPage: FC = () => {
                 />
               ))}
             </div>
-            <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
-            <div className="mb-5 flex flex-col gap-2">
-              {Object.values(Muscle).sort().map((x) => (
-                <AppSwitch
-                key={x}
-                label={x}
-                checked={searchParams.muscles?.includes(x) ?? false}
-                onCheckedChange={(e) => filterByMuscle(x, e)}
-                />
-              ))}
-            </div>
-          </AppBlock>
+          </AppSidebarBlock>
           <div className="flex flex-col gap-5 grow w-full">
             {!response.isFetching && items.length === 0 && (
               <AppToast variant={Color.Danger}>{t(i18n.toasts.noExercisesFound)}</AppToast>

@@ -11,9 +11,9 @@ import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {EntryBlock} from './components/EntryBlock';
 import {AppPageHeading} from '../../atoms/AppPageHeading/AppPageHeading';
 import {useInView} from 'react-intersection-observer';
-import {AppBlock} from '../../atoms/AppBlock/AppBlock';
 import {AppSwitch} from '../../atoms/AppSwitch/AppSwitch';
 import {AppLabel} from '../../atoms/AppLabel/AppLabel';
+import {AppSidebarBlock} from '../../atoms/AppSidebarBlock/AppSidebarBlock';
 
 const routeApi = getRouteApi('/feed/');
 export const FeedPage: FC = () => {
@@ -74,7 +74,7 @@ export const FeedPage: FC = () => {
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
-          <AppBlock className="w-full md:w-70">
+          <AppSidebarBlock>
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.type)}</AppLabel>
             <div className="mb-5 flex flex-col gap-2">
               {Object.values(EntryType).map((x) => (
@@ -87,7 +87,7 @@ export const FeedPage: FC = () => {
                 ></AppSwitch>
               ))}
             </div>
-          </AppBlock>
+          </AppSidebarBlock>
           <div className="flex flex-col gap-5 grow w-full">
             {response.isLoading && <AppSpinner />}
             {items.map((item) => <EntryBlock key={item.id} entry={item}/>)}
