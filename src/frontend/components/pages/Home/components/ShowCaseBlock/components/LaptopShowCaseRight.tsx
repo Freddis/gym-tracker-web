@@ -32,11 +32,11 @@ export const LaptopShowCaseRight: FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-full overflow-hidden">
-          <img
+      <div className="w-full h-full overflow-hidden flex justify-center">
+        <img
         src="/images/pages/home/laptop.png"
-        className="min-h-60 h-full object-cover object-left bg-contain md:bg-contain bg-no-repeat bg-center md:bg-left mb-20 md:mb-0"
-      />
+        className="min-h-60 max-h-40 md:max-h-200 h-full object-cover object-left  mb-20 md:mb-0"
+        />
       </div>
     </div>
   );
