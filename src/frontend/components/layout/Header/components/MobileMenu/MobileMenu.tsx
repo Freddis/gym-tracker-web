@@ -4,6 +4,7 @@ import {HeaderLink} from '../HeaderLink';
 import {AuthContext} from '../../../AuthProvider/AuthContext';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {Animated} from '../../../../atoms/Animated/Animated';
+import {ThemeUtilityBar} from '../ThemeUtilityBar/ThemeUtilityBar';
 
 export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
   const [displayed, setDisplayed] = useState(true);
@@ -36,12 +37,15 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
    onClick={close}
    >
     <Animated show={displayed}
-    className="fixed -left-60 bg-surface text-on-surface w-60 h-full p-5 duration-500 ease-out"
+    className="fixed -left-60 bg-surface text-on-surface w-60 h-full p-5 duration-500 ease-out flex flex-col"
     animation="left-0"
     onClick={blockClick}
     >
+      <div onClick={blockClick} className=" flex flex-row-reverse mb-5">
+        <ThemeUtilityBar/>
+      </div>
       <div className="flex flex-col gap-5" onClick={close}>
-      <HeaderLink to="/" >{t(i18n.menu.home)}</HeaderLink>
+        <HeaderLink to="/" >{t(i18n.menu.home)}</HeaderLink>
         <HeaderLink to="/feed" >{t(i18n.menu.feed)}</HeaderLink>
         <Conditional condition={!!auth.user}>
           <HeaderLink to="/workouts">{t(i18n.menu.activities)}</HeaderLink>
@@ -54,6 +58,7 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
           <HeaderLink onClick={logout}>{t(i18n.menu.signOut)}</HeaderLink>
         </Conditional>
       </div>
+
     </Animated>
   </Animated>
   );

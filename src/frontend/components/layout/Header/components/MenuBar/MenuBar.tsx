@@ -1,26 +1,19 @@
 import {FC, useContext} from 'react';
 import {GiHamburgerMenu} from 'react-icons/gi';
 import {AppLogo} from '../../../../atoms/AppLogo/AppLogo';
-import {Theme} from '../../../ThemeProvider/enums/Theme';
 import {Conditional} from '../../Header';
-import {DarkModeSwitch} from '../DarkModeSwitch/DarkModeSwitch';
 import {HeaderLink} from '../HeaderLink';
 import {ProfileDropdownMenu} from '../ProfileDropdownMenu/ProfileDropdownMenu';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {AuthContext} from '../../../AuthProvider/AuthContext';
-import {ThemeContext} from '../../../ThemeProvider/context/ThemeContext';
-import {EditThemeContext} from '../../../ThemeProvider/context/EditThemeContext';
 import {Link} from '@tanstack/react-router';
 import {cn} from '../../../../../utils/cn';
+import {ThemeUtilityBar} from '../ThemeUtilityBar/ThemeUtilityBar';
 
 export const MenuBar:FC<{onMobileMenuClick: () => void}> = ({onMobileMenuClick}) => {
   const auth = useContext(AuthContext);
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.header);
-  const theme = useContext(ThemeContext);
-  const themeContext = useContext(EditThemeContext);
-  const toggleTheme = () => {
-    themeContext.setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark);
-  };
+
   return (
   <div className={cn('bg-surface text-on-surface py-2 px-3  border-b-2 border-b-accent flex justify-center w-full z-20 sticky top-0')}>
     <div className={cn('w-full max-w-5xl flex items-center justify-items-start m-auto')}>
@@ -47,7 +40,7 @@ export const MenuBar:FC<{onMobileMenuClick: () => void}> = ({onMobileMenuClick})
           </div>
         </Conditional>
         <Conditional condition={!auth.user}>
-          <DarkModeSwitch onClick={toggleTheme} checked={theme === Theme.Dark} />
+          <ThemeUtilityBar className="hidden md:flex" />
         </Conditional>
       </div>
     </div>
