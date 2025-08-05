@@ -52,13 +52,13 @@ export const ViewExercisePage:FC = () => {
   const descriptionParagraphs = item.description?.split(/<[0-9]>/) ?? [];
   return (
     <PageContainer>
-      <div className="max-full w-5xl">
+      <div className="w-full max-w-5xl">
         <div className="mb-5 -mt-5">
           <AppLink to="/exercises">Exercises</AppLink>
           <span className="ml-2">&gt;&gt;</span>
           <span className="ml-2">{item.name}</span>
         </div>
-        <AppBlock>
+        <AppBlock className="w-full">
           <div className="flex flex-col gap-2 items-start">
             <AppBlockHeader>{item.name}</AppBlockHeader>
             <div className="flex justify-center w-full gap-5">

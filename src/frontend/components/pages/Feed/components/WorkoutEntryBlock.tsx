@@ -20,16 +20,20 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry}> = ({workout
   const weekDayString = translations.utils.time.weekDays[date.getDay()];
   return (
     <AppBlock>
-      <div>
-        <b>{t(i18n.type)}: {workout.id}</b>
-        <div className="float-right">{weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}</div>
+      <div className="flex flex-col sm:flex-row">
+        <div className="text-lg font-normal mb-5">{t(i18n.type)}: {workout.id}</div>
+        <div className="grow flex flex-row sm:justify-end">
+          {weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}
+        </div>
       </div>
-      <div className="mt-5">{t(i18n.duration)}: {time}</div>
-      <div>{t(i18n.calories)}: {workout.calories}</div>
+      <div className="flex flex-col">
+        <div className="">{t(i18n.duration)}: {time}</div>
+        <div>{t(i18n.calories)}: {workout.calories}</div>
+      </div>
       <div className="mt-5">
         {workout.exercises.filter((e) => e.sets.length > 0).map((exercise, i) => (
           <div key={i} className="flex flex-row">
-          <AppImage src={exercise.exercise.images[0]} className="mt-1" />
+          <AppImage src={exercise.exercise.images[0]} className="mt-1 min-w-20" />
           <div className="pl-5">
             <b>{exercise.exercise.name}</b>
             <div className="pb-3">

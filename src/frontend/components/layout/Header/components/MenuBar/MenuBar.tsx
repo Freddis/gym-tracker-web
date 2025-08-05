@@ -22,7 +22,7 @@ export const MenuBar:FC<{onMobileMenuClick: () => void}> = ({onMobileMenuClick})
     themeContext.setTheme(theme === Theme.Dark ? Theme.Light : Theme.Dark);
   };
   return (
-  <div className={cn('bg-surface text-on-surface p-2  border-b-2 border-b-accent flex justify-center w-full z-20 sticky top-0')}>
+  <div className={cn('bg-surface text-on-surface py-2 px-3  border-b-2 border-b-accent flex justify-center w-full z-20 sticky top-0')}>
     <div className={cn('w-full max-w-5xl flex items-center justify-items-start m-auto')}>
         <GiHamburgerMenu size={25} className="block md:hidden" onClick={onMobileMenuClick}/>
         <div className="flex flex-row-reverse grow md:flex-row md:grow-0">
