@@ -32,7 +32,7 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
   <Animated onHide={onAnimatedObjectGone}
    show={displayed}
    className="fixed h-full w-full z-20  duration-500 ease-out"
-   animation="bg-black/50"
+   animation="bg-black/80"
    onClick={close}
    >
     <Animated show={displayed}

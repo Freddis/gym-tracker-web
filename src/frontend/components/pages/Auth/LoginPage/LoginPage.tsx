@@ -43,7 +43,7 @@ export const LoginPage: FC = () => {
     setLoggingIn(false);
     if (!result.error) {
       auth.login(result.data);
-      toasts.addSuccess('You successfully logged in');
+      toasts.addSuccess(t(i18n.toasts.loginSuccess));
       navigate({to: '/workouts'});
       return;
     }

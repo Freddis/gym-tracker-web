@@ -95,15 +95,39 @@ export const dictionary = {
           button: 'Download App',
         },
         features: {
-          heading: {
-            start: 'What is ',
-            end: ' discipline?',
-          },
+          heading: 'What is Discipline?',
+          subheading: 'There is a very good reason discipline exists',
           workouts: {
             title: 'Gym Workout Tracking',
-            description: `Track your workouts and progress. 
-                        Built-in library contrains over 2000 exercises and 
-                        you can tweak them as you like and create your own.`,
+            description: `
+            Track your workouts. Create workout templates and plans. Track your RPE and mood.
+            We want you to shape your own training.
+            `,
+          },
+          exerciseLibrary: {
+            title: 'Huge Exercise Library',
+            description: ` Built-in library contains over 2000 exercises.
+                Choose a muscle and we provide you a variety of ways to target it!`,
+          },
+          autonomous: {
+            title: 'Fully Autonomous',
+            description: `We store the data in our cloud, but we also keep a full copy on your device.
+              You don't need internet connection to use the app efficiently.`,
+          },
+          ownExercises: {
+            title: 'Own Your Exercises',
+            description: `The exercises you include into workouts are copied into your personal library.
+              You can tweak and change them as you like.`,
+          },
+          analytics: {
+            title: 'Build Your Analytics',
+            description: `Browse history, tag your custom workouts templates and set milestones.
+              Find what works the best for you presonally!`,
+          },
+          freeFeatures: {
+            title: 'Forever Free',
+            description: `Our aim is to provide reliable app that never gonna let you down.
+              We will never put a paywall on vital features such as analytics or limit your workout types.`,
           },
           activities: {
             title: 'Activity Tracking',
@@ -114,11 +138,35 @@ export const dictionary = {
             title: 'Calorie Tracking',
             description: 'Track calories, macros & more. Log even faster with tools like barcode scan & the NEW voice log.',
           },
-          analytics: {
-            title: 'Analytics',
-            description: `Observe your progress with our analytics.
-             History, charts, body measurements. Set up your goals and see your pace towards them.`,
+        },
+        pricing: {
+          heading: 'Our Pricing Model',
+          subheading: `You get everything you can do in excel spreadsheets for free!
+                    We only charge for things that require active suppoort and expenses.`,
+          plans: {
+            free: {
+              name: 'Free Plan',
+              price: 'Free',
+            },
+            pro: {
+              name: 'Pro Plan',
+              price: '$30 / year',
+            },
           },
+          points: {
+            workoutTracking: 'Workout Tracking',
+            analytics: 'Analytics',
+            dataExport: 'Data Export',
+            cloudStorage: 'Cloud storage for data',
+            extendedCloudStorage: 'Cloud storage for pictures and videos',
+            socialFeatures: 'Social features',
+            coaching: 'Coaching',
+            extendedAnalytics: 'Community-wide analytics',
+          },
+        },
+        download: {
+          heading: 'Download App',
+          subheading: '“Come on! Do it! Do it now!!!!” Arnold Schwarzenegger',
         },
       },
     },

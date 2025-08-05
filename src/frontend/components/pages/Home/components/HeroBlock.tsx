@@ -11,7 +11,8 @@ export const HeroBlock: FC = () => {
     toasts.addWarning(t(i18n.toasts.appNotYetPublished));
   };
   return (
-      <div style={{backgroundImage: 'url(/images/pages/home/hero-1.jpg)'}} className="h-180 bg-cover">
+      <div style={{backgroundImage: 'url(/images/pages/home/hero-1.jpg)'}} className="h-[60vh] min-h-12
+      0 bg-cover">
         <div className="bg-black/50 w-full h-full flex items-center justify-center">
             <div className="p-5 mb-10 text-center">
               <h1 className="text-white text-4xl uppercase">

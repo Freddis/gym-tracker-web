@@ -10,9 +10,8 @@ export const ShowCaseBlock: FC = () => {
   );
   return (
     <div className="justify-center pt-20 md:px-0 flex flex-col items-center bg-main text-on-main palette-lightest">
-      <HeadingBlock title= {t(i18n.heading.start) + t(i18n.heading.end)}>
-        <span>There is a very good reason </span>
-        <span className="text-accent">Discipline</span> exists
+      <HeadingBlock title= {t(i18n.heading)}>
+        {t(i18n.subheading)}
       </HeadingBlock>
       <IphoneShowCase />
       <div className="palette-neutral w-full">
