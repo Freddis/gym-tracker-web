@@ -50,7 +50,7 @@ export const dictionary = {
           privacyPolicy: 'Privacy Policy',
         },
       },
-      copyright: '© Copyright Home Studio 2025. All Right Reserved. Designed and Developed by Alex S.',
+      copyright: 'Designed and Developed by Alex S. 2025',
     },
     popups: {
       exerciseSelection: {

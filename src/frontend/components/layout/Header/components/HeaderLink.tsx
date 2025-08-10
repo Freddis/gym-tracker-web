@@ -1,9 +1,9 @@
-import {LinkComponentProps, useLocation} from '@tanstack/react-router';
+import {useLocation} from '@tanstack/react-router';
 import {FC} from 'react';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {AppLink, AppLinkProps} from '../../../atoms/AppLink/AppLink';
 import {cn} from '../../../../utils/cn';
 
-export const HeaderLink: FC<LinkComponentProps> = (props) => {
+export const HeaderLink: FC<AppLinkProps> = (props) => {
   const location = useLocation();
   const isActive = location.pathname === props.to;
   const activeClass = isActive ? 'text-accent scale-103' : '';

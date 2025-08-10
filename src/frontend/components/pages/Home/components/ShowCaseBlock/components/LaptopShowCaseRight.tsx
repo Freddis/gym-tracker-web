@@ -3,6 +3,8 @@ import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppParti
 import {GrAnalytics} from 'react-icons/gr';
 import {ImRocket} from 'react-icons/im';
 import {FaCrown} from 'react-icons/fa6';
+import {Feature} from './Feature';
+
 export const LaptopShowCaseRight: FC = () => {
   const {t, i18n} = useAppPartialTranslation(
     (x) => x.pages.static.home.features
@@ -10,27 +12,9 @@ export const LaptopShowCaseRight: FC = () => {
   return (
     <div className="flex flex-col-reverse md:grid md:grid-cols-2 w-full bg-main text-on-main pb-20 px-5 md:px-0">
       <div className="flex flex-col md:items-end justify-evenly gap-10 md:py-30 md:pr-20">
- <div className="flex flex-col md:flex-row gap-6 items-center mb-10">
-          <FaCrown size={100} className="min-w-20" />
-          <div className="max-w-100">
-            <h3 className="text-accent text-center md:text-left text-xl mb-2">{t(i18n.ownExercises.title)}</h3>
-            <p className="text-lg text-center md:text-left">{t(i18n.ownExercises.description)}</p>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-6 items-center mb-10">
-          <GrAnalytics size={100} className="min-w-20" />
-          <div className="max-w-100">
-            <h3 className="text-accent text-center md:text-left text-xl mb-2">{t(i18n.analytics.title)}</h3>
-            <p className="text-lg text-center md:text-left">{t(i18n.analytics.description)}</p>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-6 items-center mb-10">
-          <ImRocket size={100} className="min-w-20" />
-          <div className="max-w-100">
-            <h3 className="text-accent text-center md:text-left text-xl mb-2">{t(i18n.freeFeatures.title)}</h3>
-            <p className="text-lg text-center md:text-left">{t(i18n.freeFeatures.description)}</p>
-          </div>
-        </div>
+        <Feature title={t(i18n.ownExercises.title)} description={t(i18n.ownExercises.description)} icon={FaCrown} />
+        <Feature title={t(i18n.analytics.title)} description={t(i18n.analytics.description)} icon={GrAnalytics} />
+        <Feature title={t(i18n.freeFeatures.title)} description={t(i18n.freeFeatures.description)} icon={ImRocket} />
       </div>
       <div className="w-full h-full overflow-hidden flex justify-center">
         <img

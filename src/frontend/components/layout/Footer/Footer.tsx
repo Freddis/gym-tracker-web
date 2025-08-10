@@ -38,7 +38,9 @@ export const Footer: FC = () => {
           </div>
         </div>
       </div>
-      <div className="bg-main text-xs text-on-main pb-5 px-5 text-center">{t(i18n.copyright)}</div>
+      <div className="bg-main text-xs text-on-main pb-5 px-5 text-center">
+        <AppLink href="https://alex-sarychev.com" className="text-on-main">{t(i18n.copyright)}</AppLink>
+      </div>
     </div>
   );
 };

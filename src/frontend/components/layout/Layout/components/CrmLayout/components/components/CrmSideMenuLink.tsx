@@ -1,9 +1,9 @@
 import {FC} from 'react';
-import {AppLink} from '../../../../../../atoms/AppLink/AppLink';
-import {LinkComponentProps, useLocation} from '@tanstack/react-router';
+import {AppLink, AppLinkProps} from '../../../../../../atoms/AppLink/AppLink';
+import {useLocation} from '@tanstack/react-router';
 import {cn} from '../../../../../../../utils/cn';
 
-export const CrmSideMenuLink: FC<LinkComponentProps> = (props) => {
+export const CrmSideMenuLink: FC<AppLinkProps> = (props) => {
   const location = useLocation();
   const isActive = location.pathname === props.to;
   const activeClass = isActive ? 'text-accent scale-103' : '';
