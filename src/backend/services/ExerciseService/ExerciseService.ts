@@ -27,7 +27,7 @@ export class ExerciseService {
       if (!firstRow) {
         throw new Error('Unable to get inserted user');
       }
-      if (data.muscles) {
+      if (data.muscles.primary.length > 0 || data.muscles.secondary.length > 0) {
         const muscles: typeof dbSchema.muscles.$inferInsert[] = [];
         muscles.push(
           ...data.muscles.primary.map((x) => ({
