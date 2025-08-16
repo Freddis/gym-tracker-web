@@ -282,9 +282,10 @@ Lints the project according to the eslint rules. Linting is a process of putting
 2. Do we need a transaction opened for every request?
 3. Connect email server
 4. Figure out translations for data stored in DB
+5. Add CORS
 
 
 ### Project
 1. <s>Start writing documentation to form the project vision</s>
 2. <s>Move images to own storage</s>
-3. Add simplistic CRM / CMS
+3. <s>Add simplistic CRM / CMS</s>
