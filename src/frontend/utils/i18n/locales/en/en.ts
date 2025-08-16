@@ -234,6 +234,9 @@ export const dictionary = {
       },
       registration: {
         heading: 'Register new account',
+        toasts: {
+          registrationSuccess: "You've successfully registered",
+        },
         form: {
           labels: {
             name: 'Display Name',

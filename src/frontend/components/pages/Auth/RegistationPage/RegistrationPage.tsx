@@ -12,9 +12,11 @@ import {postAuthRegister, PostAuthRegisterError} from '../../../../utils/openapi
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
+import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 
 export const RegistrationPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);
+  const toasts = useToasts();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,6 +36,7 @@ export const RegistrationPage: FC = () => {
     });
     if (!result.error) {
       auth.login(result.data);
+      toasts.addSuccess(t(i18n.toasts.registrationSuccess));
       navigate({to: '/workouts'});
       return;
     }
@@ -54,23 +57,30 @@ export const RegistrationPage: FC = () => {
       <AppBlock className="p-10 w-full max-w-xl rounded-sm">
         <AppBlockHeader >{t(i18n.heading)}</AppBlockHeader>
         <AppLabel className="mb-2">{t(i18n.form.labels.name)}</AppLabel>
-        <AppTextInput onChange={(e) => setName(e.target.value)} value={name}/>
+        <AppTextInput data-testid="name" onChange={(e) => setName(e.target.value)} value={name}/>
         <AppInputError error={errorMessage('name')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
         <AppTextInput
+          data-testid="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
         <AppInputError error={errorMessage('email')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
         <AppTextInput
+          data-testid="password"
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
         <AppInputError error={errorMessage('password')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
-        <AppTextInput type="password" onChange={(e) => setPasswordConfirmation(e.target.value)} value={passwordConfirmation} />
+        <AppTextInput
+        data-testid="passwordConfirmation"
+        type="password"
+        onChange={(e) => setPasswordConfirmation(e.target.value)}
+        value={passwordConfirmation}
+        />
         <AppInputError error={errorMessage('passwordConfirmation')} />
 
         <div className="flex flex-col sm:flex-row items-center gap-5 mt-5 ">

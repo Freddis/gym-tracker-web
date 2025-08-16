@@ -39,7 +39,7 @@ export const ProfileDropdownMenu: FC = () => {
     <AppDropdownMenu>
     <AppDropdownMenuTrigger className="text-lg">
     <div className="flex items-center cursor-pointer">
-      <span className="text-base ">{auth.user?.name}</span>
+      <span data-testid="my-name" className="text-base">{auth.user?.name}</span>
       <FiChevronDown className=" relative" />
       {auth.user && <AppAvatar user={auth.user} className="ml-2"/>}
     </div>

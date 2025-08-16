@@ -24,7 +24,9 @@ export default defineConfig({
     tsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    tanstackStart(),
+    tanstackStart({
+      customViteReactPlugin: true,
+    }),
     {
       name: 'postbuild-commands',
       watchChange: async () => {

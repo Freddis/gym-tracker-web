@@ -225,6 +225,9 @@ export const dictionary: Translation = {
             register: 'Зарегистрироваться',
           },
         },
+        toasts: {
+          registrationSuccess: 'Вы успешно зарегистрировались',
+        },
       },
     },
     feed: {
