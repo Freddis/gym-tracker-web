@@ -20,6 +20,18 @@ export const createExercise = RouteFactory.createRoute({
     const exercise = await ctx.services.models.exercise.create({
       userId: ctx.viewer.id,
       name: ctx.params.body.name,
+      params: [],
+      equipment: null,
+      description: null,
+      difficulty: null,
+      images: [],
+      copiedFromId: null,
+      parentExerciseId: null,
+      deletedAt: null,
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
     });
     return exercise;
   },

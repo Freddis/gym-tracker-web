@@ -7,11 +7,11 @@ import {AppSwitch} from '../AppSwitch/AppSwitch';
 import {AppSpinner} from '../AppSpinner/AppSpinner';
 import {useOpenApiQuery} from '../../../utils/useOpenApiQuery';
 import {Exercise} from '../../../utils/openapi-client';
-import {getExercisesOptions} from '../../../utils/openapi-client/@tanstack/react-query.gen';
+import {getExercisesBuiltInOptions} from '../../../utils/openapi-client/@tanstack/react-query.gen';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
-  const query = useOpenApiQuery(getExercisesOptions, {});
+  const query = useOpenApiQuery(getExercisesBuiltInOptions, {});
   const [search, setSearch] = useState<string>('');
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.popups.exerciseSelection);
   const [ownLibrary, setOwnLibrary] = useState(false);

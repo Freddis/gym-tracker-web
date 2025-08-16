@@ -13,6 +13,7 @@ import {ServerConfig} from '../ServerConfig/ServerConfig';
 import {DrizzleServiceConfig} from '../../services/DrizzleService/types/DrizzleServiceConfig';
 import {DbSyncService} from '../../services/DbSyncService/DbSyncService';
 import {ManagerService} from '../../services/ManagerService/ManagerService';
+import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -77,6 +78,10 @@ export class GlobalServiceFactory {
 
   async getExerciseService(): Promise<ExerciseService> {
     return new ExerciseService(await this.drizzle());
+  }
+
+  async getWorkoutService(): Promise<WorkoutService> {
+    return new WorkoutService(await this.drizzle(), await this.getExerciseService());
   }
 
   async dbSync() {

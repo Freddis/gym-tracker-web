@@ -35,6 +35,7 @@ cd gym-tracker-web
 npm install
 docker-compose up -d db 
 npm run db:migrate
+npm run db:seed
 npm run dev
 ```
 Running the project in dev mode automatically does this:

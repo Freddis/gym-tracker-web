@@ -1,14 +1,14 @@
-import {ExerciseRow} from '../../../services/DrizzleService/types/ExerciseRow';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
 import {Logger} from '../../../../common/utils/Logger/Logger';
 import {BusinessUtils} from './BusinessUtils';
+import {Exercise} from 'src/backend/services/ExerciseService/types/Exercise';
 
 export class SeedUtils {
   protected static counter = new Date().getTime();
   protected static defaultPassword = '1q2w3e4r';
   protected static logger = new Logger(SeedUtils.name);
 
-  static async createUser(): Promise<UserRow> {
+  static async createUser(data?: Partial<{name: string, email:string, password: string}>): Promise<UserRow> {
     const factory = BusinessUtils.getFactory();
     const drizzle = await factory.drizzle();
     const db = await drizzle.getDb();
@@ -19,6 +19,8 @@ export class SeedUtils {
       email: `user${tag}@test.com`,
       password: this.getDefaultPassword(),
       passwordConfirmation: this.getDefaultPassword(),
+      ...data,
+      ...(data?.password ? {passwordConfirmation: data?.password} : undefined),
     });
     const user = await db.query.users.findFirst({where: (t, op) => op.eq(t.id, result.id)});
     if (!user) {
@@ -27,12 +29,25 @@ export class SeedUtils {
     return user;
   }
 
-  static async createExercise(exercise: Partial<ExerciseRow> = {}): Promise<ExerciseRow> {
+  static async createExercise(exercise: Partial<Exercise> = {}): Promise<Exercise> {
     const factory = BusinessUtils.getFactory();
     const exerciseService = await factory.getExerciseService();
     const result = await exerciseService.create({
-      name: exercise.name ?? 'something',
-      userId: exercise.userId ?? undefined,
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
+      params: [],
+      name: '',
+      description: null,
+      difficulty: null,
+      equipment: null,
+      images: [],
+      userId: null,
+      copiedFromId: null,
+      parentExerciseId: null,
+      deletedAt: null,
+      ...exercise,
     });
     return result;
   }
@@ -48,6 +63,7 @@ export class SeedUtils {
       db._.fullSchema.workouts,
       db._.fullSchema.muscles,
       db._.fullSchema.exercises,
+      db._.fullSchema.users,
     ];
     for (const table of tables) {
       await db.delete(table);

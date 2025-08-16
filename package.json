@@ -20,7 +20,7 @@
     "db:drop": "drizzle-kit drop",
     "db:migrate": "drizzle-kit migrate",
     "db:clean": "docker-compose rm -s -v -f db && docker volume prune -f && docker-compose up -d db && sleep 10 && npm run db:migrate",
-    "db:seed": "tsx ./scripts/argus/seed.ts",
+    "db:seed": "tsx ./scripts/db/seed.ts",
     "db:wipe": "npm run db:clean && npm run db:seed",
     "lint": "eslint . --fix --ignore-pattern '.output/**'",
     "openapi:generate": "tsx ./scripts/openapi/generateSchema.ts",

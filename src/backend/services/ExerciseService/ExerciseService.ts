@@ -14,21 +14,40 @@ export class ExerciseService {
     this.db = db;
   }
 
-  async create(data: {userId?: number, name: string;}): Promise<Exercise> {
+  async create(data: Omit<Exercise, 'id'|'variations'|'createdAt'|'updatedAt'>): Promise<Exercise> {
     const db = await this.db.getDb();
     const dbSchema = this.db.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
-      params: [],
-      name: data.name,
+      ...data,
       createdAt: new Date(),
-      userId: data.userId,
-      images: [],
     };
-    const result = await db.insert(dbSchema.exercises).values(entity).returning();
-    const firstRow = result[0];
-    if (!firstRow) {
-      throw new Error('Unable to get inserted user');
-    }
+    const firstRow = await db.transaction(async (db) => {
+      const result = await db.insert(dbSchema.exercises).values(entity).returning();
+      const firstRow = result[0];
+      if (!firstRow) {
+        throw new Error('Unable to get inserted user');
+      }
+      if (data.muscles) {
+        const muscles: typeof dbSchema.muscles.$inferInsert[] = [];
+        muscles.push(
+          ...data.muscles.primary.map((x) => ({
+            muscle: x,
+            createdAt: new Date(),
+            isPrimary: true,
+            exerciseId: firstRow.id,
+          })),
+          ...data.muscles.secondary.map((x) => ({
+            muscle: x,
+            createdAt: new Date(),
+            isPrimary: false,
+            exerciseId: firstRow.id,
+          }))
+        );
+        await db.insert(dbSchema.muscles).values(muscles);
+      }
+      return firstRow;
+    });
+
     const exercise: Exercise = {
       ...firstRow,
       variations: [],
