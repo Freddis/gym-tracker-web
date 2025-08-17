@@ -25,6 +25,10 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test:gha
+      - name: docker-compose logs
+        if: ${{ failure() }}
+        run: |
+          docker-compose logs
   Test-E2E:
     timeout-minutes: 10
     runs-on: ubuntu-latest
