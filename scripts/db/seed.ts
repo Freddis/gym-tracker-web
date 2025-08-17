@@ -4,6 +4,9 @@ import {Equipment} from 'src/backend/types/Equipment';
 import {Muscle} from 'src/backend/types/Muscle';
 import {WorkoutUpsertDto} from 'src/frontend/utils/openapi-client';
 
+const workoutService = await globalServiceFactory.getWorkoutService();
+const authService = await globalServiceFactory.auth();
+
 await TestUtils.seed.wipeDb();
 const benchPress = await TestUtils.seed.createExercise({
   name: 'Bench press',
@@ -31,7 +34,12 @@ const tommy = await TestUtils.seed.createUser({
   password: 'password1234',
 });
 
-const workoutService = await globalServiceFactory.getWorkoutService();
+await authService.registerManager({
+  name: 'Admin',
+  email: 'admin@admin.com',
+  password: 'password1235',
+});
+
 const start = new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3);
 const workout: WorkoutUpsertDto = {
   typeId: null,

@@ -118,6 +118,27 @@ export class AuthService {
     return {...user, jwt: token};
   }
 
+  async registerManager(
+    params: {
+      name: string;
+      email: string;
+      password: string;
+    }
+  ): Promise<AuthUser> {
+    const existing = await this.managerService.getByEmail(params.email);
+    if (existing) {
+      throw new ActionError(ActionErrorCode.EmailAlreadyExists);
+    }
+    const hashedPassword = await this.hashString(params.password);
+    const manager = await this.managerService.create({
+      ...params,
+      password: hashedPassword,
+      profilePicture: null,
+    });
+    const token = this.createToken(manager);
+    return {...manager, jwt: token};
+  }
+
   async hashString(str: string): Promise<string> {
     return await hash(str, this.config.hashSalt);
   }

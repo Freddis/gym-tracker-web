@@ -4,12 +4,27 @@ import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Manager} from './types/Manager';
 
 export class ManagerService {
-  protected db: DrizzleService;
+  protected drizzle: DrizzleService;
   protected table: AppDbSchema['managers'];
 
   constructor(db: DrizzleService) {
-    this.db = db;
+    this.drizzle = db;
     this.table = db.getSchema().managers;
+  }
+
+  async create(manager: Omit<Manager, 'id'|'createdAt'|'updatedAt'|'deletedAt'>): Promise<Manager> {
+    const db = await this.drizzle.getDb();
+    const rows = await db.insert(db._.fullSchema.managers).values({
+      ...manager,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      id: undefined,
+    }).returning();
+    if (!rows[0]) {
+      throw new Error("Couldn't inser");
+    }
+    return rows[0];
   }
 
   async getByEmail(email: string): Promise<Manager | null> {
@@ -32,7 +47,7 @@ export class ManagerService {
     page?: number,
     perPage?: number,
   }): Promise<PaginatedResult<Manager>> {
-    const db = await this.db.getDb();
+    const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
     const limit = params?.perPage ?? 10;
     const offset = (page - 1) * limit;
