@@ -1,6 +1,6 @@
 import {FC, HTMLAttributes} from 'react';
 import {twMerge} from 'tailwind-merge';
-import {EnumMap} from '../../../../common/types/EnumMap';
+import {EnumMap} from '../../../../backend/types/EnumMap';
 import {Color} from '../../../utils/design-system/types/Color';
 
 type AppButtonProps = HTMLAttributes<HTMLButtonElement> & {variant?: 'md' | 'lg', palette?: Color };

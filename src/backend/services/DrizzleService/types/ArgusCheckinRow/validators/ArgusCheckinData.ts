@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {ArgusCheckinType} from '../types/ArgusCheckinType';
-import {ZodHelper} from 'src/common/utils/ZodHelper/ZodHelper';
+import {ZodHelper} from 'src/backend/utils/ZodHelper/ZodHelper';
 
 export const argusCheckinDataValidator = z.object({
   id: ZodHelper.validators.numberOrStringNumber.openapi({type: 'number'}),

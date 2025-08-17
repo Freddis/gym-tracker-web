@@ -1,7 +1,7 @@
 import {createSelectSchema} from 'drizzle-zod';
 import {dbSchema} from './db';
 import {nativeEnum, TypeOf} from 'zod';
-import {Muscle} from '../../../../common/enums/Muscle';
+import {Muscle} from '../../../types/Muscle';
 
 export const exerciseMuscleValidator = createSelectSchema(dbSchema.muscles).extend({
   muscle: nativeEnum(Muscle),

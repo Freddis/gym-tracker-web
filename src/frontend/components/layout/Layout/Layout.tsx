@@ -8,7 +8,7 @@ import {LanguageProvider} from '../LanguageProvider/LanguageProvider';
 import {ToastProvider} from '../../atoms/AppToast/ToastProvider';
 import {CrmLayout} from './components/CrmLayout/CrmLayout';
 import {WebsiteLayout} from './components/WebsiteLayout';
-import {CookieName} from '../../../../common/enums/CookieName';
+import {CookieName} from '../../../types/CookieName';
 
 const queryClient = new QueryClient();
 export function Layout() {

@@ -1,4 +1,4 @@
-import {StictOmit} from '../../../../../../../../common/types/StrictOmit';
+import {StictOmit} from '../../../../../../../../backend/types/StrictOmit';
 import {Exercise, WorkoutUpdateDto} from '../../../../../../../utils/openapi-client';
 
 export interface UpdateWorkoutExerciseFormExercrise {

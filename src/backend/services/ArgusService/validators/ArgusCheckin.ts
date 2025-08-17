@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {ZodHelper} from '../../../../common/utils/ZodHelper/ZodHelper';
+import {ZodHelper} from '../../../utils/ZodHelper/ZodHelper';
 
 export const argusCheckinValidator = z.object({
   id: z.string(),

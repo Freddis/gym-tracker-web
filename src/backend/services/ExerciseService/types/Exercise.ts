@@ -1,4 +1,4 @@
-import {Muscle} from '../../../../common/enums/Muscle';
+import {Muscle} from '../../../types/Muscle';
 import {ExerciseRow} from '../../DrizzleService/types/ExerciseRow';
 
 export interface Exercise extends ExerciseRow {

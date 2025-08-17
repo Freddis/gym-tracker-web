@@ -1,7 +1,7 @@
 import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean} from 'drizzle-orm/pg-core';
 import {array, string} from 'zod';
-import {Muscle} from '../../../../common/enums/Muscle';
-import {Equipment} from '../../../../common/enums/Equipment';
+import {Muscle} from '../../../types/Muscle';
+import {Equipment} from '../../../types/Equipment';
 
 
 export const gymTracker = pgSchema('gym_tracker');

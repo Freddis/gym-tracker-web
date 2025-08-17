@@ -1,8 +1,8 @@
 import {object, nativeEnum} from 'zod';
 import {exerciseRowValidator} from '../../../../DrizzleService/types/ExerciseRow';
-import {Muscle} from '../../../../../../common/enums/Muscle';
+import {Muscle} from '../../../../../types/Muscle';
 import {RouteFactory} from '../../../utils/RouteFactory';
-import {Equipment} from '../../../../../../common/enums/Equipment';
+import {Equipment} from '../../../../../types/Equipment';
 import {Exercise} from '../../../../ExerciseService/types/Exercise';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 

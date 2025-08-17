@@ -1,7 +1,7 @@
 import {createSelectSchema} from 'drizzle-zod';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {nativeEnum, TypeOf} from 'zod';
-import {Equipment} from '../../../../common/enums/Equipment';
+import {Equipment} from '../../../types/Equipment';
 
 export const exerciseRowValidator = createSelectSchema(dbSchema.exercises).extend({
   equipment: nativeEnum(Equipment).nullable(),

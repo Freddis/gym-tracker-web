@@ -1,8 +1,8 @@
 import {and, eq, isNotNull, isNull, like} from 'drizzle-orm';
 import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AppDb, DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
-import {NewModel} from 'src/common/types/NewModel';
-import {Logger} from 'src/common/utils/Logger/Logger';
+import {NewModel} from 'src/backend/types/NewModel';
+import {Logger} from 'src/backend/utils/Logger/Logger';
 import {Exercise as ArgusExercise, exerciseData} from './data/argusExercisesJson';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {argusWorkoutCheckinValidator} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWorkoutCheckin';
@@ -14,8 +14,8 @@ import {join} from 'path';
 import {ArgusCheckin, argusCheckinValidator} from './validators/ArgusCheckin';
 import {ArgusServiceConfig} from './types/ArgusServiceConfig';
 import {request} from 'https';
-import {Muscle} from '../../../common/enums/Muscle';
-import {Equipment} from '../../../common/enums/Equipment';
+import {Muscle} from '../../types/Muscle';
+import {Equipment} from '../../types/Equipment';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 
 export class ArgusService {

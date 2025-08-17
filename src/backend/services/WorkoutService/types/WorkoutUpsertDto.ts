@@ -1,4 +1,4 @@
-import {StictOmit} from '../../../../common/types/StrictOmit';
+import {StictOmit} from '../../../types/StrictOmit';
 import {Workout} from './Workout';
 import {WorkoutExercise} from './WorkoutExercise';
 import {WorkoutExerciseSet} from './WorkoutExerciseSet';

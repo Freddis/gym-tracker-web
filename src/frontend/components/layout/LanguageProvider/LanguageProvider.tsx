@@ -1,7 +1,7 @@
 import {FC, ReactNode, useEffect, useState} from 'react';
 import {z} from 'zod';
-import {Cookie} from '../../../../common/utils/Cookie/Cookie';
-import {CookieName} from '../../../../common/enums/CookieName';
+import {Cookie} from '../../../utils/Cookie/Cookie';
+import {CookieName} from '../../../types/CookieName';
 import {Language} from './enums/Language';
 import {LanguageContext} from './context/LanguageContext';
 

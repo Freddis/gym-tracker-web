@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {describe, test} from 'vitest';
-import {WeightUnits} from '../../../../../common/enums/WeightUnits';
+import {WeightUnits} from '../../../../types/WeightUnits';
 import {TestUtils} from '../../../../utils/TestUtils/TestUtils';
 
 

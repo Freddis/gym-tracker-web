@@ -1,4 +1,4 @@
-import {Muscle} from '../../src/common/enums/Muscle';
+import {Muscle} from '../../src/backend/types/Muscle';
 import {AuthUser} from '../../src/frontend/components/layout/AuthProvider/types/AuthUser';
 import {Exercise, Workout} from '../../src/frontend/utils/openapi-client';
 

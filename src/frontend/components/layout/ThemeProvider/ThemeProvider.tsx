@@ -3,8 +3,8 @@ import {EditThemeContext} from './context/EditThemeContext';
 import {Theme} from './enums/Theme';
 import {ThemeContext} from './context/ThemeContext';
 import {z} from 'zod';
-import {Cookie} from '../../../../common/utils/Cookie/Cookie';
-import {CookieName} from '../../../../common/enums/CookieName';
+import {Cookie} from '../../../utils/Cookie/Cookie';
+import {CookieName} from '../../../types/CookieName';
 
 export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
   const cookie = new Cookie();

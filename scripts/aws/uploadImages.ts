@@ -2,7 +2,7 @@
 import {readdirSync, readFileSync, realpathSync} from 'node:fs';
 import {join} from 'node:path';
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
-import {Logger} from '../../src/common/utils/Logger/Logger';
+import {Logger} from '../../src/backend/utils/Logger/Logger';
 
 const logger = new Logger('uploadImages');
 logger.info('Start');

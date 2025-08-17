@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import {Environment} from 'src/common/types/Environment';
+import {Environment} from 'src/backend/types/Environment';
 import {EnumLike, z} from 'zod';
-import {LogLevel} from '../../../common/utils/Logger/types/LogLevel';
+import {LogLevel} from '../Logger/types/LogLevel';
 
 
 export class EnvHelper {

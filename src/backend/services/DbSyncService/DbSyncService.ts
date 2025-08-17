@@ -1,6 +1,6 @@
 import {PgColumn, PgTable} from 'drizzle-orm/pg-core';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
-import {Logger} from '../../../common/utils/Logger/Logger';
+import {Logger} from '../../utils/Logger/Logger';
 import {desc} from 'drizzle-orm';
 
 /**

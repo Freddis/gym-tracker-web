@@ -1,5 +1,5 @@
-import {WeightUnits} from '../../../common/enums/WeightUnits';
-import {NewModel} from '../../../common/types/NewModel';
+import {WeightUnits} from '../../types/WeightUnits';
+import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';

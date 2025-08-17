@@ -2,11 +2,11 @@ import {and, inArray, eq, exists, isNull, asc, or, gte, ilike} from 'drizzle-orm
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
-import {SemiPartial} from 'src/common/types/SemiPartial';
+import {SemiPartial} from 'src/backend/types/SemiPartial';
 import {Exercise} from './types/Exercise';
-import {Muscle} from '../../../common/enums/Muscle';
+import {Muscle} from '../../types/Muscle';
 import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
-import {Equipment} from '../../../common/enums/Equipment';
+import {Equipment} from '../../types/Equipment';
 
 export class ExerciseService {
   protected db: DrizzleService;

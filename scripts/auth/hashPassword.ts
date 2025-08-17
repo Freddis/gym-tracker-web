@@ -1,6 +1,6 @@
 import {argv} from 'process';
 import {globalServiceFactory} from 'src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
-import {Logger} from 'src/common/utils/Logger/Logger';
+import {Logger} from 'src/backend/utils/Logger/Logger';
 
 const logger = new Logger('Generate Password');
 const auth = await globalServiceFactory.auth();

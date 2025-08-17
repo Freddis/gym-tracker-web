@@ -4,7 +4,7 @@ import {createSelectSchema} from 'drizzle-zod';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {ArgusCheckinType} from '../types/ArgusCheckinType';
 import {argusCheckinDataValidator} from './ArgusCheckinData';
-import {ZodHelper} from 'src/common/utils/ZodHelper/ZodHelper';
+import {ZodHelper} from 'src/backend/utils/ZodHelper/ZodHelper';
 
 
 export const argusWorkoutCheckinValidator = createSelectSchema(dbSchema.argusCheckins).extend({

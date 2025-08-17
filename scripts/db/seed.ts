@@ -1,7 +1,7 @@
 import {globalServiceFactory} from 'src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
 import {TestUtils} from 'src/backend/utils/TestUtils/TestUtils';
-import {Equipment} from 'src/common/enums/Equipment';
-import {Muscle} from 'src/common/enums/Muscle';
+import {Equipment} from 'src/backend/types/Equipment';
+import {Muscle} from 'src/backend/types/Muscle';
 import {WorkoutUpsertDto} from 'src/frontend/utils/openapi-client';
 
 await TestUtils.seed.wipeDb();

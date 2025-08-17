@@ -1,8 +1,8 @@
 import {FC, ReactNode, useMemo, useState} from 'react';
 import {AuthContext} from './AuthContext';
 import {authUserValidator, AuthUser} from './types/AuthUser';
-import {Cookie} from '../../../../common/utils/Cookie/Cookie';
-import {CookieName} from '../../../../common/enums/CookieName';
+import {Cookie} from '../../../utils/Cookie/Cookie';
+import {CookieName} from '../../../types/CookieName';
 import {client} from '../../../utils/openapi-client/client.gen';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../atoms/AppToast/hooks/useToasts';

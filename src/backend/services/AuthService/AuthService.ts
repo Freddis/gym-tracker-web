@@ -2,7 +2,7 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {compare, hash} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {AuthServiceConfig} from './types/AuthServiceConfig';
-import {Logger} from 'src/common/utils/Logger/Logger';
+import {Logger} from 'src/backend/utils/Logger/Logger';
 import {z} from 'zod';
 import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AuthUser} from './types/AuthUser';
