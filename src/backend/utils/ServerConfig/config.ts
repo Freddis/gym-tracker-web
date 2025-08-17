@@ -1,20 +1,41 @@
+import {realpathSync} from 'fs';
+import {join} from 'path';
+import {ArgusServiceConfig} from '../../services/ArgusService/types/ArgusServiceConfig';
 import {EnvHelper} from '../EnvHelper/EnvHelper';
 import {ServerConfig} from './ServerConfig';
 
 export const serverConfig: ServerConfig = {
   services: {
+    drizzle: {
+      host: EnvHelper.getString('DB_HOST'),
+      port: EnvHelper.getNumber('DB_PORT'),
+      user: EnvHelper.getString('DB_USER'),
+      password: EnvHelper.getString('DB_PASSWORD'),
+      database: EnvHelper.getString('DB_DATABASE'),
+      ssl: EnvHelper.getBoolean('DB_SSL'),
+      schema: EnvHelper.getString('DB_SCHEMA'),
+    },
     auth: {
       hashSalt: EnvHelper.getNumber('SERVICES_AUTH_HASH_SALT'),
       jwtSecret: EnvHelper.getString('SERVICES_AUTH_JWT_SECRET'),
     },
-  },
-  database: {
-    host: EnvHelper.getString('DB_HOST'),
-    port: EnvHelper.getNumber('DB_PORT'),
-    user: EnvHelper.getString('DB_USER'),
-    password: EnvHelper.getString('DB_PASSWORD'),
-    database: EnvHelper.getString('DB_DATABASE'),
-    ssl: EnvHelper.getBoolean('DB_SSL'),
-    schema: EnvHelper.getString('DB_SCHEMA'),
+    argus: EnvHelper.getObjectOrNothing<ArgusServiceConfig>({
+      tempFolderPath: join(realpathSync('.'), '/temp'),
+      seededUser: {
+        name: EnvHelper.getString('SEED_USER_NAME'),
+        email: EnvHelper.getString('SEED_USER_EMAIL'),
+        password: EnvHelper.getString('SEED_USER_PASSWORD'),
+        argusAuthToken: EnvHelper.getString('ARGUS_AUTH_TOKEN'),
+      },
+    }),
+    dbSync: EnvHelper.getObjectOrNothing({
+      host: EnvHelper.getOptionalString('PROD_DB_HOST'),
+      port: EnvHelper.getOptionalNumber('PROD_DB_PORT'),
+      user: EnvHelper.getOptionalString('PROD_DB_USER'),
+      password: EnvHelper.getOptionalString('PROD_DB_PASSWORD'),
+      database: EnvHelper.getOptionalString('PROD_DB_DATABASE'),
+      ssl: EnvHelper.getOptinalBoolean('PROD_DB_SSL'),
+      schema: EnvHelper.getOptionalString('PROD_DB_SCHEMA'),
+    }),
   },
 };

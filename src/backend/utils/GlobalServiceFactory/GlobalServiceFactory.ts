@@ -3,14 +3,10 @@ import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService
 import {serverConfig} from '../ServerConfig/config';
 import {ApiService} from '../../services/ApiService/ApiService';
 import {ImageService} from '../../services/ImageService/ImageService';
-import {realpathSync, existsSync, mkdirSync} from 'fs';
-import {join} from 'path';
+import {existsSync, mkdirSync} from 'fs';
 import {ArgusService} from '../../services/ArgusService/ArgusService';
-import {ArgusServiceConfig} from '../../services/ArgusService/types/ArgusServiceConfig';
-import {EnvHelper} from '../EnvHelper/EnvHelper';
 import {ExerciseService} from '../../services/ExerciseService/ExerciseService';
 import {ServerConfig} from '../ServerConfig/ServerConfig';
-import {DrizzleServiceConfig} from '../../services/DrizzleService/types/DrizzleServiceConfig';
 import {DbSyncService} from '../../services/DbSyncService/DbSyncService';
 import {ManagerService} from '../../services/ManagerService/ManagerService';
 import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
@@ -41,7 +37,7 @@ export class GlobalServiceFactory {
 
   async drizzle(): Promise<DrizzleService> {
     if (!this.drizzleCached) {
-      this.drizzleCached = new DrizzleService(serverConfig.database);
+      this.drizzleCached = new DrizzleService(serverConfig.services.drizzle);
     }
     return this.drizzleCached;
   }
@@ -58,20 +54,15 @@ export class GlobalServiceFactory {
     return api;
   }
 
-  async argus() {
-    const tempPath = join(realpathSync('.'), '/temp');
+  async argus(): Promise<ArgusService | null> {
+    const config = this.config.services.argus;
+    if (!config) {
+      return null;
+    }
+    const tempPath = config.tempFolderPath;
     if (!existsSync(tempPath)) {
       mkdirSync(tempPath);
     }
-    const config: ArgusServiceConfig = {
-      tempFolderPath: tempPath,
-      seededUser: {
-        name: EnvHelper.getString('SEED_USER_NAME'),
-        email: EnvHelper.getString('SEED_USER_EMAIL'),
-        password: EnvHelper.getString('SEED_USER_PASSWORD'),
-        argusAuthToken: EnvHelper.getString('AUTH_TOKEN'),
-      },
-    };
     const service = new ArgusService(await this.getExerciseService(), await this.drizzle(), config);
     return service;
   }
@@ -84,19 +75,13 @@ export class GlobalServiceFactory {
     return new WorkoutService(await this.drizzle(), await this.getExerciseService());
   }
 
-  async dbSync() {
+  async dbSync(): Promise<DbSyncService | null> {
     const localDrizzle = await this.drizzle();
+    if (!this.config.services.dbSync) {
+      return null;
+    }
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const prodConf: DrizzleServiceConfig = {
-      host: EnvHelper.getString('PROD_DB_HOST'),
-      port: EnvHelper.getNumber('PROD_DB_PORT'),
-      user: EnvHelper.getString('PROD_DB_USER'),
-      password: EnvHelper.getString('PROD_DB_PASSWORD'),
-      database: EnvHelper.getString('PROD_DB_DATABASE'),
-      ssl: EnvHelper.getBoolean('PROD_DB_SSL'),
-      schema: EnvHelper.getString('PROD_DB_SCHEMA'),
-    };
-    this.prodDrizzleCached = this.prodDrizzleCached ?? new DrizzleService(prodConf);
+    this.prodDrizzleCached = this.prodDrizzleCached ?? new DrizzleService(this.config.services.dbSync);
     const prodDrizzle = this.prodDrizzleCached;
     const service = new DbSyncService(localDrizzle, prodDrizzle);
     return service;

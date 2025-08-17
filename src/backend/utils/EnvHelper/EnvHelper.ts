@@ -55,6 +55,10 @@ export class EnvHelper {
     return value;
   }
 
+  static getOptionalString(name: string): string | undefined {
+    return this.returnUndefinedOrThrow(() => this.getString(name));
+  }
+
   static getNumber(name: string, defaultValue?: number): number {
     const value = process.env[name];
     if (value === undefined) {
@@ -69,6 +73,10 @@ export class EnvHelper {
       throw new Error(`ENV variable ${name} is not a number`);
     }
     return number;
+  }
+
+  static getOptionalNumber(name: string): number | undefined {
+    return this.returnUndefinedOrThrow(() => this.getNumber(name));
   }
 
   static getBoolean(name: string, defaultValue?: boolean): boolean {
@@ -86,6 +94,30 @@ export class EnvHelper {
       return false;
     }
     throw new Error(`ENV variable ${name} has strange value: ${value}, should be either: 'true' or 'false'`);
+  }
+
+  static getOptinalBoolean(name: string): boolean | undefined {
+    return this.returnUndefinedOrThrow(() => this.getBoolean(name));
+  }
+
+  static getObjectOrNothing<T>(data: Partial<T>): T | undefined {
+    for (const val of Object.values(data)) {
+      if (val === undefined) {
+        return undefined;
+      }
+    }
+    return data as T;
+  }
+
+  protected static returnUndefinedOrThrow<X, T extends() => X>(func: T): X | undefined {
+    try {
+      return func();
+    } catch (e: unknown) {
+      if (e instanceof Error && e.message.includes("doesn't exist")) {
+        return undefined;
+      }
+      throw e;
+    }
   }
 
 }

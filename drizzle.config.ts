@@ -9,18 +9,18 @@ export default defineConfig({
   strict: true,
   migrations: {
     table: 'drizzle_migrations',
-    schema: serverConfig.database.schema,
+    schema: serverConfig.services.drizzle.schema,
   },
-  schemaFilter: serverConfig.database.schema,
+  schemaFilter: serverConfig.services.drizzle.schema,
   dbCredentials: {
     //should be esxactly like that, otherwise schema in serverConfig will mess things up
     //even though it's not even listed in dbCredentials type
-    database: serverConfig.database.database,
-    user: serverConfig.database.user,
-    password: serverConfig.database.password,
-    host: serverConfig.database.host,
-    port: serverConfig.database.port,
-    ssl: serverConfig.database.ssl,
+    database: serverConfig.services.drizzle.database,
+    user: serverConfig.services.drizzle.user,
+    password: serverConfig.services.drizzle.password,
+    host: serverConfig.services.drizzle.host,
+    port: serverConfig.services.drizzle.port,
+    ssl: serverConfig.services.drizzle.ssl,
   },
   verbose: true,
 });
