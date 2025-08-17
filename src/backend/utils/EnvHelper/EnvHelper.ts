@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import {Environment} from 'src/backend/types/Environment';
 import {EnumLike, z} from 'zod';
 import {LogLevel} from '../Logger/types/LogLevel';
-
+import {NestedPartial} from '../../types/NestedPartial';
 
 export class EnvHelper {
   protected static init = (() => {
@@ -100,7 +100,7 @@ export class EnvHelper {
     return this.returnUndefinedOrThrow(() => this.getBoolean(name));
   }
 
-  static getObjectOrNothing<T>(data: Partial<T>): T | undefined {
+  static getObjectOrNothing<T>(data: NestedPartial<T>): T | undefined {
     for (const val of Object.values(data)) {
       if (val === undefined) {
         return undefined;

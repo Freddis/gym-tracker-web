@@ -22,10 +22,10 @@ export const serverConfig: ServerConfig = {
     argus: EnvHelper.getObjectOrNothing<ArgusServiceConfig>({
       tempFolderPath: join(realpathSync('.'), '/temp'),
       seededUser: {
-        name: EnvHelper.getString('SEED_USER_NAME'),
-        email: EnvHelper.getString('SEED_USER_EMAIL'),
-        password: EnvHelper.getString('SEED_USER_PASSWORD'),
-        argusAuthToken: EnvHelper.getString('ARGUS_AUTH_TOKEN'),
+        name: EnvHelper.getOptionalString('SEED_USER_NAME'),
+        email: EnvHelper.getOptionalString('SEED_USER_EMAIL'),
+        password: EnvHelper.getOptionalString('SEED_USER_PASSWORD'),
+        argusAuthToken: EnvHelper.getOptionalString('ARGUS_AUTH_TOKEN'),
       },
     }),
     dbSync: EnvHelper.getObjectOrNothing({
