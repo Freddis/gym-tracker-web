@@ -1,33 +1,68 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
-import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
+import {WeightUpdateForm} from '../comon/WeightUpdateForm';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {postWeight} from '../../../../utils/openapi-client';
+import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
+import {useNavigate} from '@tanstack/react-router';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 export const WeightCreatePage: FC = () => {
+  const navigate = useNavigate();
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
+  const toasts = useToasts();
+  const [, setErrors, errors] = useResponseErrors();
+  const [weight, setWeight] = useState<number| null>(null);
+
+  const save = async () => {
+    if (!weight) {
+      return;
+    }
+    const result = await postWeight({
+      body: {
+        weight: weight,
+      },
+    });
+    if (!result.error) {
+      toasts.addSuccess(t(i18n.weight.add.toasts.success));
+      navigate({to: '/entries'});
+      return;
+    }
+    const err = result.error;
+    if (err.error.code === 'ValidationFailed') {
+      setErrors(err.error.fieldErrors ?? []);
+    } else if (err.error.code === 'ActionError') {
+      toasts.addDanger(err.error.humanReadable);
+    } else {
+      toasts.addDanger(translations.utils.toasts.unknownApiError);
+    }
+  };
 
   return (
     <PageContainer>
-      <AppBlock className="w-sm">
-        <div>
+       <div className="flex flex-col max-w-5xl w-full">
+        <div className="mb-5 -mt-5">
+          <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
+          <span className="ml-2">&gt;&gt;</span>
+          <AppLink to="/entries/add">{t(i18n.add.heading)}</AppLink>
+          <span className="ml-2">&gt;&gt;</span>
+          <span className="ml-2">{t(i18n.weight.add.heading)}</span>
+        </div>
+      </div>
+      <AppBlock className="max-w-5xl">
         <AppBlockHeader>Add Weight Entry</AppBlockHeader>
-          <div className="flex flex-row gap-5 items-center">
-            <AppLabel>Weight:</AppLabel>
-            <div className="flex flex-row-reverse grow">
-              <div>
-                <AppTextInput className="w-20"/>
-                <span className="ml-5">kg</span>
-              </div>
+          <WeightUpdateForm onUpdate={setWeight} errors={errors}/>
+          <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+          <div className="mt-5 flex flex-row">
+            <AppLink to="/entries/add">Back</AppLink>
+            <div className="grow flex flex-row-reverse gap-2">
+              <AppButton disabled={!weight} onClick={save}>Save</AppButton>
             </div>
           </div>
-          <div className="flex flex-row-reverse items-center gap-5 mt-5">
-            <AppButton>Add Entry</AppButton>
-            <AppLink>Back</AppLink>
-          </div>
-        </div>
       </AppBlock>
     </PageContainer>
   );

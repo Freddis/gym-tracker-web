@@ -3,6 +3,8 @@ import {weightValidator} from './validators/weightValidator';
 import {number, object} from 'zod';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
+import {EntryType} from '../../../EntryService/types/EntryType';
+import {EntryVisibility} from '../../../EntryService/types/EntryVisibility';
 
 export const createWeight = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
@@ -18,7 +20,11 @@ export const createWeight = RouteFactory.createRoute({
     response: weightValidator,
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.weight.create(ctx.viewer, ctx.params.body.weight);
-    return result;
+    const result = await ctx.services.models.entry.createWeightEntry(ctx.viewer.id, {
+      type: EntryType.Weight,
+      weight: ctx.params.body.weight,
+      visibility: EntryVisibility.Public,
+    });
+    return result.weight;
   },
 });

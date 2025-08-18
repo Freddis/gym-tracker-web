@@ -12,7 +12,7 @@ export const header = {
     signOut: 'Sign Out',
     feed: 'Explore',
     home: 'Home',
-    activities: 'Activities',
+    activities: 'My Activities',
     exerciseLibrary: 'Exercise Library',
   },
 };

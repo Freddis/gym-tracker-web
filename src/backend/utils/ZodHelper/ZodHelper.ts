@@ -32,6 +32,9 @@ export class ZodHelper {
       z.string()
                 .refine((input) => {
                   try {
+                    if (input.trim() === '') {
+                      return false;
+                    }
                     if (input === '-0') {
                       return true;
                     }
@@ -51,7 +54,6 @@ export class ZodHelper {
                     const number = Number(input);
                     const outputStr = number.toString();
                     const noTrailingZeroesInput = input.replace(/(\.[0-9]*[1-9])0+$|\.0*$/, '$1');
-
 
                     return noTrailingZeroesInput === outputStr;
                   } catch {

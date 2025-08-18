@@ -18,9 +18,12 @@ import {
   getWorkoutsById,
   patchWorkoutsById,
   postWeight,
+  getWeightById,
+  patchWeightById,
   getArgusCheckin,
   getArgusCheckinTypes,
   getEntries,
+  getEntriesOwn,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -76,6 +79,10 @@ import type {
   PostWeightData,
   PostWeightError,
   PostWeightResponse,
+  GetWeightByIdData,
+  PatchWeightByIdData,
+  PatchWeightByIdError,
+  PatchWeightByIdResponse,
   GetArgusCheckinData,
   GetArgusCheckinError,
   GetArgusCheckinResponse,
@@ -83,6 +90,9 @@ import type {
   GetEntriesData,
   GetEntriesError,
   GetEntriesResponse,
+  GetEntriesOwnData,
+  GetEntriesOwnError,
+  GetEntriesOwnResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -658,6 +668,57 @@ export const postWorkoutsOptions = (options?: Options<PostWorkoutsData>) => {
   });
 };
 
+export const postWorkoutsInfiniteQueryKey = (
+  options?: Options<PostWorkoutsData>,
+): QueryKey<Options<PostWorkoutsData>> =>
+  createQueryKey("postWorkouts", options, true);
+
+/**
+ * Adds new workout for the user
+ */
+export const postWorkoutsInfiniteOptions = (
+  options?: Options<PostWorkoutsData>,
+) => {
+  return infiniteQueryOptions<
+    PostWorkoutsResponse,
+    AxiosError<PostWorkoutsError>,
+    InfiniteData<PostWorkoutsResponse>,
+    QueryKey<Options<PostWorkoutsData>>,
+    | Date
+    | Pick<
+        QueryKey<Options<PostWorkoutsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<PostWorkoutsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                body: {
+                  start: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await postWorkouts({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: postWorkoutsInfiniteQueryKey(options),
+    },
+  );
+};
+
 /**
  * Adds new workout for the user
  */
@@ -838,6 +899,54 @@ export const postWeightMutation = (
   return mutationOptions;
 };
 
+export const getWeightByIdQueryKey = (options: Options<GetWeightByIdData>) =>
+  createQueryKey("getWeightById", options);
+
+/**
+ * Gets own weight entry for the user
+ */
+export const getWeightByIdOptions = (options: Options<GetWeightByIdData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWeightById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getWeightByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updates own weight entry for the user
+ */
+export const patchWeightByIdMutation = (
+  options?: Partial<Options<PatchWeightByIdData>>,
+): UseMutationOptions<
+  PatchWeightByIdResponse,
+  AxiosError<PatchWeightByIdError>,
+  Options<PatchWeightByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchWeightByIdResponse,
+    AxiosError<PatchWeightByIdError>,
+    Options<PatchWeightByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchWeightById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getArgusCheckinQueryKey = (
   options?: Options<GetArgusCheckinData>,
 ) => createQueryKey("getArgusCheckin", options);
@@ -1005,6 +1114,78 @@ export const getEntriesInfiniteOptions = (
         return data;
       },
       queryKey: getEntriesInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
+  createQueryKey("getEntriesOwn", options);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesOwn({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesOwnQueryKey(options),
+  });
+};
+
+export const getEntriesOwnInfiniteQueryKey = (
+  options?: Options<GetEntriesOwnData>,
+): QueryKey<Options<GetEntriesOwnData>> =>
+  createQueryKey("getEntriesOwn", options, true);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwnInfiniteOptions = (
+  options?: Options<GetEntriesOwnData>,
+) => {
+  return infiniteQueryOptions<
+    GetEntriesOwnResponse,
+    AxiosError<GetEntriesOwnError>,
+    InfiniteData<GetEntriesOwnResponse>,
+    QueryKey<Options<GetEntriesOwnData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetEntriesOwnData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetEntriesOwnData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getEntriesOwn({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getEntriesOwnInfiniteQueryKey(options),
     },
   );
 };

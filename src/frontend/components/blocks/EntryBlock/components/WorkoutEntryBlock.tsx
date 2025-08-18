@@ -4,8 +4,9 @@ import {Entry, Workout} from '../../../../utils/openapi-client';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppImage} from '../../../atoms/AppImage/AppImage';
 import {AppAvatar} from '../../../atoms/AppAvatar/AppAvatar';
+import {AppLink} from '../../../atoms/AppLink/AppLink';
 
-export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry}> = ({workout, entry}) => {
+export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
 
   const date = new Date(workout.createdAt);
@@ -21,7 +22,12 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry}> = ({workout
   return (
     <AppBlock>
       <div className="flex flex-col sm:flex-row">
-        <div className="text-lg font-normal mb-5">{t(i18n.type)}: {workout.id}</div>
+        <div className="text-lg font-normal mb-5">
+          {!own && `${t(i18n.type)}: ${workout.id}`}
+          {own && (
+            <AppLink to="/workouts/update/$id" params={{id: workout.id.toString()}}>{t(i18n.type)}: {workout.id}</AppLink>
+          )}
+        </div>
         <div className="grow flex flex-row sm:justify-end">
           {weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}
         </div>
@@ -45,12 +51,14 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry}> = ({workout
         </div>
         ))}
       </div>
-        <div className="grow flex flex-row-reverse">
-          <div className="flex flex-row  items-center">
-            <span className="text-accent">{entry.user.name}</span>
-            <AppAvatar user={entry.user} className="ml-2"/>
-          </div>
+      {!own && (
+      <div className="grow flex flex-row-reverse">
+        <div className="flex flex-row  items-center">
+          <span className="text-accent">{entry.user.name}</span>
+          <AppAvatar user={entry.user} className="ml-2"/>
         </div>
+      </div>
+      )}
     </AppBlock>
   );
 };

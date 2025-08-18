@@ -374,6 +374,77 @@ export type ExerciseUpsertDto = {
   deletedAt: Date | null;
 };
 
+export type WorkoutUpdateDto = {
+  /**
+   * Id of the workout type. Users can create their own workout types as templates for workouts.
+   */
+  typeId: number | null;
+  /**
+   * Calories burned during workout
+   */
+  calories: number;
+  /**
+   * Time when workout started
+   */
+  start: Date;
+  /**
+   * Time when workout finished
+   */
+  end: Date | null;
+  /**
+   * The time workout has been deleted. Users cannot access deleted workouts
+   */
+  deletedAt: Date | null;
+  /**
+   * List of the performed exercises
+   */
+  exercises: Array<{
+    /**
+     * Id of the exercise
+     */
+    exerciseId: number;
+    /**
+     * List of sets performed for this excercise
+     */
+    sets: Array<WorkoutExerciseSetUpdateDto>;
+  }>;
+  /**
+   * Time when the workout was created. Not changeable by user
+   */
+  createdAt: Date;
+  /**
+   * The last time the workout was updated
+   */
+  updatedAt: Date | null;
+};
+
+export type WorkoutExerciseSetUpdateDto = {
+  /**
+   * The time when set started
+   */
+  start: Date | null;
+  /**
+   * The time set ended.
+   */
+  end: Date | null;
+  /**
+   * Weight in lifted in units that user is using
+   */
+  weight: number | null;
+  /**
+   * Number of repetitions
+   */
+  reps: number | null;
+  /**
+   * The date set was created
+   */
+  createdAt: Date;
+  /**
+   * The date set was last time updated
+   */
+  updatedAt: Date | null;
+};
+
 /**
  * Gym Workout. Consists of performed excercises and sets.
  */
@@ -594,77 +665,6 @@ export type WorkoutUpsertDto = {
       updatedAt: Date | null;
     }>;
   }>;
-};
-
-export type WorkoutUpdateDto = {
-  /**
-   * Id of the workout type. Users can create their own workout types as templates for workouts.
-   */
-  typeId: number | null;
-  /**
-   * Calories burned during workout
-   */
-  calories: number;
-  /**
-   * Time when workout started
-   */
-  start: Date;
-  /**
-   * Time when workout finished
-   */
-  end: Date | null;
-  /**
-   * The time workout has been deleted. Users cannot access deleted workouts
-   */
-  deletedAt: Date | null;
-  /**
-   * List of the performed exercises
-   */
-  exercises: Array<{
-    /**
-     * Id of the exercise
-     */
-    exerciseId: number;
-    /**
-     * List of sets performed for this excercise
-     */
-    sets: Array<WorkoutExerciseSetUpdateDto>;
-  }>;
-  /**
-   * Time when the workout was created. Not changeable by user
-   */
-  createdAt: Date;
-  /**
-   * The last time the workout was updated
-   */
-  updatedAt: Date | null;
-};
-
-export type WorkoutExerciseSetUpdateDto = {
-  /**
-   * The time when set started
-   */
-  start: Date | null;
-  /**
-   * The time set ended.
-   */
-  end: Date | null;
-  /**
-   * Weight in lifted in units that user is using
-   */
-  weight: number | null;
-  /**
-   * Number of repetitions
-   */
-  reps: number | null;
-  /**
-   * The date set was created
-   */
-  createdAt: Date;
-  /**
-   * The date set was last time updated
-   */
-  updatedAt: Date | null;
 };
 
 /**
@@ -2230,9 +2230,7 @@ export type GetWorkoutsResponse =
   GetWorkoutsResponses[keyof GetWorkoutsResponses];
 
 export type PostWorkoutsData = {
-  body?: {
-    [key: string]: unknown;
-  };
+  body?: WorkoutUpdateDto;
   path?: never;
   query?: never;
   url: "/workouts";
@@ -2924,6 +2922,240 @@ export type PostWeightResponses = {
 
 export type PostWeightResponse = PostWeightResponses[keyof PostWeightResponses];
 
+export type GetWeightByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the weight record
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/weight/{id}";
+};
+
+export type GetWeightByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetWeightByIdError = GetWeightByIdErrors[keyof GetWeightByIdErrors];
+
+export type GetWeightByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: Weight;
+};
+
+export type GetWeightByIdResponse =
+  GetWeightByIdResponses[keyof GetWeightByIdResponses];
+
+export type PatchWeightByIdData = {
+  body?: {
+    /**
+     * Weight value
+     */
+    weight: number;
+  };
+  path: {
+    /**
+     * Id of the weight record
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/weight/{id}";
+};
+
+export type PatchWeightByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchWeightByIdError =
+  PatchWeightByIdErrors[keyof PatchWeightByIdErrors];
+
+export type PatchWeightByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: Weight;
+};
+
+export type PatchWeightByIdResponse =
+  PatchWeightByIdResponses[keyof PatchWeightByIdResponses];
+
 export type GetArgusCheckinData = {
   body?: never;
   path?: never;
@@ -3491,6 +3723,146 @@ export type GetEntriesResponses = {
 };
 
 export type GetEntriesResponse = GetEntriesResponses[keyof GetEntriesResponses];
+
+export type GetEntriesOwnData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Filters excercises by type.
+     */
+    type?: "Workout" | "Weight";
+  };
+  url: "/entries/own";
+};
+
+export type GetEntriesOwnErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetEntriesOwnError = GetEntriesOwnErrors[keyof GetEntriesOwnErrors];
+
+export type GetEntriesOwnResponses = {
+  /**
+   * List of entries
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Entry>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetEntriesOwnResponse =
+  GetEntriesOwnResponses[keyof GetEntriesOwnResponses];
 
 export type GetCrmUsersData = {
   body?: never;

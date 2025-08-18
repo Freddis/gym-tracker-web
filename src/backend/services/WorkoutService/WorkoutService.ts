@@ -1,4 +1,4 @@
-import {eq, and, desc, gte, isNull} from 'drizzle-orm';
+import {eq, and, desc, gte, isNull, inArray} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Workout} from 'src/backend/services/WorkoutService/types/Workout';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
@@ -12,6 +12,7 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
 import {Exercise} from '../ExerciseService/types/Exercise';
 import {WorkoutUpdateDto} from './types/WorkoutUpdateDto';
 import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';
+import {WorkoutCreateDto} from './types/WorkoutCreateDto';
 export class WorkoutService {
   protected db: DrizzleService;
   protected exerciseService: ExerciseService;
@@ -21,23 +22,28 @@ export class WorkoutService {
     this.exerciseService = exerciseService;
   }
 
-  async create(userId: number): Promise<Workout> {
+  async create(data: WorkoutCreateDto): Promise<Workout> {
     const db = await this.db.getDb();
     const entity: typeof this.table.$inferInsert = {
       createdAt: new Date(),
-      userId: userId,
+      userId: data.userId,
       start: new Date(),
+      deletedAt: null,
+      updatedAt: null,
       calories: 0,
     };
     const result = await db.insert(this.table).values(entity).returning();
-    if (!result[0]) {
+    const row = result[0];
+    if (!row) {
       throw new Error('Unable to get inserted workout ');
     }
-    const firstRow: Workout = {
-      ...result[0],
-      exercises: [],
-    };
-    return firstRow;
+    const updated = await this.update(row.id, {
+      ...data,
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+      deletedAt: row.deletedAt,
+    });
+    return updated;
   }
 
   async update(id: number, data: WorkoutUpdateDto): Promise<Workout> {
@@ -261,6 +267,7 @@ export class WorkoutService {
   }
 
   async getAll(params?: {
+    id?: number[],
     userId?: number,
     page?: number,
     perPage?: number,
@@ -271,6 +278,7 @@ export class WorkoutService {
     const limit = params?.perPage ?? 10;
     const offset = (page - 1) * limit;
     const where = and(
+        params?.id ? inArray(dbSchema.workouts.id, params.id) : undefined,
         params?.userId ? eq(dbSchema.workouts.userId, params.userId) : undefined,
         isNull(dbSchema.workouts.deletedAt),
         params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined

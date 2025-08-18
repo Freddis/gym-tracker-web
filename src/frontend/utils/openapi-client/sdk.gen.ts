@@ -50,6 +50,12 @@ import type {
   PostWeightData,
   PostWeightResponses,
   PostWeightErrors,
+  GetWeightByIdData,
+  GetWeightByIdResponses,
+  GetWeightByIdErrors,
+  PatchWeightByIdData,
+  PatchWeightByIdResponses,
+  PatchWeightByIdErrors,
   GetArgusCheckinData,
   GetArgusCheckinResponses,
   GetArgusCheckinErrors,
@@ -59,6 +65,9 @@ import type {
   GetEntriesData,
   GetEntriesResponses,
   GetEntriesErrors,
+  GetEntriesOwnData,
+  GetEntriesOwnResponses,
+  GetEntriesOwnErrors,
   GetCrmUsersData,
   GetCrmUsersResponses,
   GetCrmUsersErrors,
@@ -82,8 +91,11 @@ import {
   getWorkoutsByIdResponseTransformer,
   patchWorkoutsByIdResponseTransformer,
   postWeightResponseTransformer,
+  getWeightByIdResponseTransformer,
+  patchWeightByIdResponseTransformer,
   getArgusCheckinResponseTransformer,
   getEntriesResponseTransformer,
+  getEntriesOwnResponseTransformer,
   getCrmManagersResponseTransformer,
 } from "./transformers.gen";
 
@@ -504,6 +516,58 @@ export const postWeight = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Gets own weight entry for the user
+ */
+export const getWeightById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWeightByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWeightByIdResponses,
+    GetWeightByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getWeightByIdResponseTransformer,
+    url: "/weight/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updates own weight entry for the user
+ */
+export const patchWeightById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWeightByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWeightByIdResponses,
+    PatchWeightByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: patchWeightByIdResponseTransformer,
+    url: "/weight/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Returns data on all checkins from Argus
  */
 export const getArgusCheckin = <ThrowOnError extends boolean = false>(
@@ -552,6 +616,30 @@ export const getEntries = <ThrowOnError extends boolean = false>(
     responseType: "json",
     responseTransformer: getEntriesResponseTransformer,
     url: "/entries",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwn = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesOwnData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesOwnResponses,
+    GetEntriesOwnErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getEntriesOwnResponseTransformer,
+    url: "/entries/own",
     ...options,
   });
 };

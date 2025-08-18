@@ -30,6 +30,10 @@ export const dictionary = {
         Weight: 'Weight',
       } satisfies Record<EntryType, string>,
     },
+    toasts: {
+      unknownApiError: "Something went wrong. We can't log you in",
+      notImplemented: 'Not implemented yet',
+    },
   },
   layout: {
     header: header,
@@ -198,15 +202,62 @@ export const dictionary = {
       },
     },
     activities: {
-      list: {
+      workouts: {
+        add: {
+          heading: 'Add Workout',
+        },
+        update: {
+          heading: 'Update Workout',
+        },
+      },
+      weight: {
+        add: {
+          heading: 'Add Weight',
+          buttons: {
+            save: 'Add',
+            back: 'Back',
+          },
+          toasts: {
+            success: 'You successfully added weight record',
+          },
+        },
+        update: {
+          heading: 'Update Weight',
+          toasts: {
+            success: 'You successfully added weight record',
+          },
+          buttons: {
+            save: 'Save',
+            back: 'Back',
+          },
+        },
+      },
+      add: {
+        heading: 'Add Entry',
         buttons: {
           addWorkout: 'Add Workout',
+          addWeight: 'Add Weight',
+        },
+      },
+      list: {
+        heading: 'My Records',
+        buttons: {
+          addWorkout: 'Add Workout',
+          addEntry: 'Add Entry',
+        },
+        filter: {
+          labels: {
+            type: 'Entry type:',
+          },
         },
         objects: {
           workout: {
             type: 'Workout',
             calories: 'Calories',
             duration: 'Duration',
+          },
+          weight: {
+            type: 'Weight',
           },
         },
       },

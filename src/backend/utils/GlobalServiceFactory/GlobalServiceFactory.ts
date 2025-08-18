@@ -10,6 +10,9 @@ import {ServerConfig} from '../ServerConfig/ServerConfig';
 import {DbSyncService} from '../../services/DbSyncService/DbSyncService';
 import {ManagerService} from '../../services/ManagerService/ManagerService';
 import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService';
+import {EntryService} from '../../services/EntryService/EntryService';
+import {UserService} from '../../services/UserService/UserService';
+import {WeightService} from '../../services/WeightService/WeightService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -73,6 +76,14 @@ export class GlobalServiceFactory {
 
   async getWorkoutService(): Promise<WorkoutService> {
     return new WorkoutService(await this.drizzle(), await this.getExerciseService());
+  }
+  async entry() {
+    return new EntryService(
+      await this.drizzle(),
+      new UserService(await this.drizzle()),
+      await this.getWorkoutService(),
+      new WeightService(await this.drizzle())
+    );
   }
 
   async dbSync(): Promise<DbSyncService | null> {

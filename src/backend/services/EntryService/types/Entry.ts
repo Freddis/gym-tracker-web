@@ -1,12 +1,14 @@
+import {EntryRow} from '../../DrizzleService/types/EntryRow';
 import {User} from '../../UserService/types/User';
 import {Weight} from '../../WeightService/types/Weight';
 import {Workout} from '../../WorkoutService/types/Workout';
 import {EntryType} from './EntryType';
+import {EntryVisibility} from './EntryVisibility';
 
-export interface BaseEntry {
-  id: number
+export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId'> {
   user: User
   type: EntryType
+  visibility: EntryVisibility,
 }
 
 export interface WorkoutEntry extends BaseEntry {

@@ -2,9 +2,11 @@ import {globalServiceFactory} from 'src/backend/utils/GlobalServiceFactory/globa
 import {TestUtils} from 'src/backend/utils/TestUtils/TestUtils';
 import {Equipment} from 'src/backend/types/Equipment';
 import {Muscle} from 'src/backend/types/Muscle';
-import {WorkoutUpsertDto} from 'src/frontend/utils/openapi-client';
+import {EntryVisibility} from '../../src/backend/services/EntryService/types/EntryVisibility';
+import {EntryType} from '../../src/backend/services/EntryService/types/EntryType';
+import {WorkoutCreateDto} from '../../src/backend/services/WorkoutService/types/WorkoutCreateDto';
 
-const workoutService = await globalServiceFactory.getWorkoutService();
+const entryService = await globalServiceFactory.entry();
 const authService = await globalServiceFactory.auth();
 
 await TestUtils.seed.wipeDb();
@@ -41,19 +43,15 @@ await authService.registerManager({
 });
 
 const start = new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3);
-const workout: WorkoutUpsertDto = {
+const workout: WorkoutCreateDto = {
   typeId: null,
   calories: 100,
   start: start,
   end: new Date(start.getTime() + 1000 * 60 * 73.2),
-  createdAt: start,
-  updatedAt: null,
-  deletedAt: null,
+  userId: tommy.id,
   exercises: [
     {
       exerciseId: bicepsCurl.id,
-      createdAt: start,
-      updatedAt: null,
       sets: [
         {
           start: null,
@@ -83,8 +81,6 @@ const workout: WorkoutUpsertDto = {
     },
     {
       exerciseId: benchPress.id,
-      createdAt: start,
-      updatedAt: null,
       sets: [
         {
           start: null,
@@ -114,5 +110,10 @@ const workout: WorkoutUpsertDto = {
     },
   ],
 };
-await workoutService.upsert(tommy.id, [workout]);
+
+await entryService.createWorkoutEntry(tommy.id, {
+  type: EntryType.Workout,
+  workout: workout,
+  visibility: EntryVisibility.Public,
+});
 await globalServiceFactory.cleanup();

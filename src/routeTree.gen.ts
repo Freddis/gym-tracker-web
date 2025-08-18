@@ -12,20 +12,24 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WorkoutsIndexRouteImport } from './routes/workouts/index'
 import { Route as FeedIndexRouteImport } from './routes/feed/index'
 import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
+import { Route as EntriesIndexRouteImport } from './routes/entries/index'
 import { Route as CrmIndexRouteImport } from './routes/crm/index'
 import { Route as ArgusIndexRouteImport } from './routes/argus/index'
+import { Route as WorkoutsCreateRouteImport } from './routes/workouts/create'
+import { Route as WeightCreateRouteImport } from './routes/weight/create'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
+import { Route as EntriesAddRouteImport } from './routes/entries/add'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
 import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/privacy-policy'
 import { Route as CrmUsersIndexRouteImport } from './routes/crm/users/index'
 import { Route as CrmManagersIndexRouteImport } from './routes/crm/managers/index'
-import { Route as WorkoutsUpdateWorkoutIdRouteImport } from './routes/workouts/update/$workoutId'
+import { Route as WorkoutsUpdateIdRouteImport } from './routes/workouts/update/$id'
+import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
 import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
@@ -39,11 +43,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkoutsIndexRoute = WorkoutsIndexRouteImport.update({
-  id: '/workouts/',
-  path: '/workouts/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FeedIndexRoute = FeedIndexRouteImport.update({
   id: '/feed/',
   path: '/feed/',
@@ -52,6 +51,11 @@ const FeedIndexRoute = FeedIndexRouteImport.update({
 const ExercisesIndexRoute = ExercisesIndexRouteImport.update({
   id: '/exercises/',
   path: '/exercises/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntriesIndexRoute = EntriesIndexRouteImport.update({
+  id: '/entries/',
+  path: '/entries/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CrmIndexRoute = CrmIndexRouteImport.update({
@@ -64,6 +68,16 @@ const ArgusIndexRoute = ArgusIndexRouteImport.update({
   path: '/argus/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkoutsCreateRoute = WorkoutsCreateRouteImport.update({
+  id: '/workouts/create',
+  path: '/workouts/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeightCreateRoute = WeightCreateRouteImport.update({
+  id: '/weight/create',
+  path: '/weight/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
   id: '/exercises/create',
   path: '/exercises/create',
@@ -72,6 +86,11 @@ const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
 const ExercisesExerciseIdRoute = ExercisesExerciseIdRouteImport.update({
   id: '/exercises/$exerciseId',
   path: '/exercises/$exerciseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntriesAddRoute = EntriesAddRouteImport.update({
+  id: '/entries/add',
+  path: '/entries/add',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -104,9 +123,14 @@ const CrmManagersIndexRoute = CrmManagersIndexRouteImport.update({
   path: '/crm/managers/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkoutsUpdateWorkoutIdRoute = WorkoutsUpdateWorkoutIdRouteImport.update({
-  id: '/workouts/update/$workoutId',
-  path: '/workouts/update/$workoutId',
+const WorkoutsUpdateIdRoute = WorkoutsUpdateIdRouteImport.update({
+  id: '/workouts/update/$id',
+  path: '/workouts/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeightUpdateIdRoute = WeightUpdateIdRouteImport.update({
+  id: '/weight/update/$id',
+  path: '/weight/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesUpdateExerciseIdRoute =
@@ -142,15 +166,19 @@ export interface FileRoutesByFullPath {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/weight/create': typeof WeightCreateRoute
+  '/workouts/create': typeof WorkoutsCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/crm': typeof CrmIndexRoute
+  '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
-  '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
-  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
+  '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
 }
@@ -160,15 +188,19 @@ export interface FileRoutesByTo {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/weight/create': typeof WeightCreateRoute
+  '/workouts/create': typeof WorkoutsCreateRoute
   '/argus': typeof ArgusIndexRoute
   '/crm': typeof CrmIndexRoute
+  '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
-  '/workouts': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
-  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
+  '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
 }
@@ -179,15 +211,19 @@ export interface FileRoutesById {
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/weight/create': typeof WeightCreateRoute
+  '/workouts/create': typeof WorkoutsCreateRoute
   '/argus/': typeof ArgusIndexRoute
   '/crm/': typeof CrmIndexRoute
+  '/entries/': typeof EntriesIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
   '/feed/': typeof FeedIndexRoute
-  '/workouts/': typeof WorkoutsIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
-  '/workouts/update/$workoutId': typeof WorkoutsUpdateWorkoutIdRoute
+  '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers/': typeof CrmManagersIndexRoute
   '/crm/users/': typeof CrmUsersIndexRoute
 }
@@ -199,15 +235,19 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/weight/create'
+    | '/workouts/create'
     | '/argus'
     | '/crm'
+    | '/entries'
     | '/exercises'
     | '/feed'
-    | '/workouts'
     | '/exercises/update/$exerciseId'
-    | '/workouts/update/$workoutId'
+    | '/weight/update/$id'
+    | '/workouts/update/$id'
     | '/crm/managers'
     | '/crm/users'
   fileRoutesByTo: FileRoutesByTo
@@ -217,15 +257,19 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/weight/create'
+    | '/workouts/create'
     | '/argus'
     | '/crm'
+    | '/entries'
     | '/exercises'
     | '/feed'
-    | '/workouts'
     | '/exercises/update/$exerciseId'
-    | '/workouts/update/$workoutId'
+    | '/weight/update/$id'
+    | '/workouts/update/$id'
     | '/crm/managers'
     | '/crm/users'
   id:
@@ -235,15 +279,19 @@ export interface FileRouteTypes {
     | '/articles/terms-of-service'
     | '/auth/login'
     | '/auth/register'
+    | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/weight/create'
+    | '/workouts/create'
     | '/argus/'
     | '/crm/'
+    | '/entries/'
     | '/exercises/'
     | '/feed/'
-    | '/workouts/'
     | '/exercises/update/$exerciseId'
-    | '/workouts/update/$workoutId'
+    | '/weight/update/$id'
+    | '/workouts/update/$id'
     | '/crm/managers/'
     | '/crm/users/'
   fileRoutesById: FileRoutesById
@@ -254,15 +302,19 @@ export interface RootRouteChildren {
   ArticlesTermsOfServiceRoute: typeof ArticlesTermsOfServiceRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  EntriesAddRoute: typeof EntriesAddRoute
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
+  WeightCreateRoute: typeof WeightCreateRoute
+  WorkoutsCreateRoute: typeof WorkoutsCreateRoute
   ArgusIndexRoute: typeof ArgusIndexRoute
   CrmIndexRoute: typeof CrmIndexRoute
+  EntriesIndexRoute: typeof EntriesIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
   FeedIndexRoute: typeof FeedIndexRoute
-  WorkoutsIndexRoute: typeof WorkoutsIndexRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
-  WorkoutsUpdateWorkoutIdRoute: typeof WorkoutsUpdateWorkoutIdRoute
+  WeightUpdateIdRoute: typeof WeightUpdateIdRoute
+  WorkoutsUpdateIdRoute: typeof WorkoutsUpdateIdRoute
   CrmManagersIndexRoute: typeof CrmManagersIndexRoute
   CrmUsersIndexRoute: typeof CrmUsersIndexRoute
 }
@@ -309,13 +361,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workouts/': {
-      id: '/workouts/'
-      path: '/workouts'
-      fullPath: '/workouts'
-      preLoaderRoute: typeof WorkoutsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/feed/': {
       id: '/feed/'
       path: '/feed'
@@ -328,6 +373,13 @@ declare module '@tanstack/react-router' {
       path: '/exercises'
       fullPath: '/exercises'
       preLoaderRoute: typeof ExercisesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entries/': {
+      id: '/entries/'
+      path: '/entries'
+      fullPath: '/entries'
+      preLoaderRoute: typeof EntriesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/': {
@@ -344,6 +396,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArgusIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workouts/create': {
+      id: '/workouts/create'
+      path: '/workouts/create'
+      fullPath: '/workouts/create'
+      preLoaderRoute: typeof WorkoutsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weight/create': {
+      id: '/weight/create'
+      path: '/weight/create'
+      fullPath: '/weight/create'
+      preLoaderRoute: typeof WeightCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercises/create': {
       id: '/exercises/create'
       path: '/exercises/create'
@@ -356,6 +422,13 @@ declare module '@tanstack/react-router' {
       path: '/exercises/$exerciseId'
       fullPath: '/exercises/$exerciseId'
       preLoaderRoute: typeof ExercisesExerciseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entries/add': {
+      id: '/entries/add'
+      path: '/entries/add'
+      fullPath: '/entries/add'
+      preLoaderRoute: typeof EntriesAddRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -400,11 +473,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmManagersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workouts/update/$workoutId': {
-      id: '/workouts/update/$workoutId'
-      path: '/workouts/update/$workoutId'
-      fullPath: '/workouts/update/$workoutId'
-      preLoaderRoute: typeof WorkoutsUpdateWorkoutIdRouteImport
+    '/workouts/update/$id': {
+      id: '/workouts/update/$id'
+      path: '/workouts/update/$id'
+      fullPath: '/workouts/update/$id'
+      preLoaderRoute: typeof WorkoutsUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weight/update/$id': {
+      id: '/weight/update/$id'
+      path: '/weight/update/$id'
+      fullPath: '/weight/update/$id'
+      preLoaderRoute: typeof WeightUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/update/$exerciseId': {
@@ -455,15 +535,19 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesTermsOfServiceRoute: ArticlesTermsOfServiceRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  EntriesAddRoute: EntriesAddRoute,
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
+  WeightCreateRoute: WeightCreateRoute,
+  WorkoutsCreateRoute: WorkoutsCreateRoute,
   ArgusIndexRoute: ArgusIndexRoute,
   CrmIndexRoute: CrmIndexRoute,
+  EntriesIndexRoute: EntriesIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
   FeedIndexRoute: FeedIndexRoute,
-  WorkoutsIndexRoute: WorkoutsIndexRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
-  WorkoutsUpdateWorkoutIdRoute: WorkoutsUpdateWorkoutIdRoute,
+  WeightUpdateIdRoute: WeightUpdateIdRoute,
+  WorkoutsUpdateIdRoute: WorkoutsUpdateIdRoute,
   CrmManagersIndexRoute: CrmManagersIndexRoute,
   CrmUsersIndexRoute: CrmUsersIndexRoute,
 }

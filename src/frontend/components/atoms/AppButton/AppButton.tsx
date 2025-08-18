@@ -1,9 +1,9 @@
-import {FC, HTMLAttributes} from 'react';
+import {ButtonHTMLAttributes, FC} from 'react';
 import {twMerge} from 'tailwind-merge';
 import {EnumMap} from '../../../../backend/types/EnumMap';
 import {Color} from '../../../utils/design-system/types/Color';
 
-type AppButtonProps = HTMLAttributes<HTMLButtonElement> & {variant?: 'md' | 'lg', palette?: Color };
+type AppButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {variant?: 'md' | 'lg', palette?: Color };
 
 export const AppButton: FC<AppButtonProps> = (props) => {
   const variant = props.variant ?? 'md';
@@ -17,6 +17,7 @@ export const AppButton: FC<AppButtonProps> = (props) => {
     'bg-main',
     'text-on-main',
     ...sizes[variant],
+    props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ];
   const className = twMerge('px-2 py-1 font-normal  rounded-sm cursor-pointer ', classes, props.className);
   return (

@@ -11,6 +11,12 @@ export class UserService {
     this.drizzle = drizzle;
   }
 
+  async get(id: number): Promise<User | null> {
+    const exercises = await this.getAll({ids: [id]});
+    const result = exercises.items[0];
+    return result ?? null;
+  }
+
   async getAll(params: { ids?: number[], page?: number, perPage?: number}): Promise<PaginatedResult<User>> {
     const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;

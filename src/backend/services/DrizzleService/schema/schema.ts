@@ -1,16 +1,24 @@
 import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean} from 'drizzle-orm/pg-core';
-import {array, string} from 'zod';
+import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
 import {Equipment} from '../../../types/Equipment';
+import {EntryType} from '../../EntryService/types/EntryType';
+import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 
 
 export const gymTracker = pgSchema('gym_tracker');
 
-const muscleValues = array(string()).nonempty().parse(Object.values(Muscle));
+const muscleValues = array(nativeEnum(Muscle)).nonempty().parse(Object.values(Muscle));
 export const muscleEnum = gymTracker.enum('Muscle', muscleValues);
 
-const equipmentValues = array(string()).nonempty().parse(Object.values(Equipment));
+const equipmentValues = array(nativeEnum(Equipment)).nonempty().parse(Object.values(Equipment));
 export const equipmentEnum = gymTracker.enum('Equipment', equipmentValues);
+
+const entryTypeValues = array(nativeEnum(EntryType)).nonempty().parse(Object.values(EntryType));
+export const entryTypeEnum = gymTracker.enum('EntryType', entryTypeValues);
+
+const entryVisibilityValues = array(nativeEnum(EntryVisibility)).nonempty().parse(Object.values(EntryVisibility));
+export const entryVisibilityEnum = gymTracker.enum('EntryVisibility', entryVisibilityValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -27,7 +35,7 @@ export const exercises = gymTracker.table('exercises', {
   name: varchar().notNull(),
   description: text(),
   difficulty: integer(),
-  equipment: equipmentEnum().$type<Equipment>(),
+  equipment: equipmentEnum(),
   images: varchar().array().notNull(),
   params: integer().array().notNull(),
   userId: integer(),
@@ -44,7 +52,7 @@ export const exercises = gymTracker.table('exercises', {
 
 export const muscles = gymTracker.table('exercise_muscles', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  muscle: muscleEnum().notNull().$type<Muscle>(),
+  muscle: muscleEnum().notNull(),
   exerciseId: integer().notNull().references(() => exercises.id),
   isPrimary: boolean().notNull(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -148,3 +156,16 @@ export const managers = gymTracker.table('managers', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
+
+export const entries = gymTracker.table('entries', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity({name: 'entry_id_seq_alt'}),
+  type: entryTypeEnum().notNull(),
+  userId: integer().notNull().references(() => users.id),
+  workoutId: integer().references(() => workouts.id),
+  weightId: integer().references(() => weight.id),
+  visibility: entryVisibilityEnum().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});
+

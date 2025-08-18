@@ -44,7 +44,7 @@ export const LoginPage: FC = () => {
     if (!result.error) {
       auth.login(result.data);
       toasts.addSuccess(t(i18n.toasts.loginSuccess));
-      navigate({to: '/workouts'});
+      navigate({to: '/entries'});
       return;
     }
     const err: PostAuthLoginError = result.error;
