@@ -5,7 +5,7 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/frontend/css/app.css",
+    "css": "src/frontend/css/app.css?url",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
@@ -13,7 +13,7 @@
   "aliases": {
     "components": "src/frontend/components",
     "utils": "src/frontend/utils",
-    "ui": "src/frontend/components/ui",
+    "ui": "src/frontend/components/shadcn",
     "lib": "src/frontend/lib",
     "hooks": "src/frontend/hooks"
   },

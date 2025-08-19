@@ -15,6 +15,7 @@ import {useInView} from 'react-intersection-observer';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
 import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
+import {AppCombobox} from '../../../atoms/AppCombobox/AppCombobox';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
@@ -97,6 +98,11 @@ export const ExerciseLibraryPage: FC = () => {
     );
   }
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
+  const values = Object.values(Equipment).map((equipment) => ({
+    label: equipment,
+    onSelect: () => filterByEquipment(equipment, true),
+  }));
+
   return (
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
@@ -109,6 +115,15 @@ export const ExerciseLibraryPage: FC = () => {
             <div className="mb-5">
               <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
             </div>
+            <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
+            <div className="mb-5">
+               <AppCombobox
+                  placeholder="Seach equipment"
+                  notFound="No equipment found"
+                  defaultValue="Select equipment..."
+                  values={values}
+               />
+            </div>
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
             <div className="mb-5 flex flex-col gap-2">
               {Object.values(Muscle).sort().map((x) => (
@@ -117,18 +132,6 @@ export const ExerciseLibraryPage: FC = () => {
                 label={x}
                 checked={searchParams.muscles?.includes(x) ?? false}
                 onCheckedChange={(e) => filterByMuscle(x, e)}
-                />
-              ))}
-            </div>
-            <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
-            <div className="mb-5 flex flex-col gap-2">
-              {Object.values(Equipment).sort().map((x) => (
-                <AppSwitch
-                className="capitalize"
-                key={x}
-                label={x}
-                checked={searchParams.equipment === x}
-                onCheckedChange={(e) => filterByEquipment(x, e)}
                 />
               ))}
             </div>
