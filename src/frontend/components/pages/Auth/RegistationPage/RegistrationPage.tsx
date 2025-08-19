@@ -37,7 +37,7 @@ export const RegistrationPage: FC = () => {
     if (!result.error) {
       auth.login(result.data);
       toasts.addSuccess(t(i18n.toasts.registrationSuccess));
-      navigate({to: '/workouts'});
+      navigate({to: '/entries'});
       return;
     }
     const err: PostAuthRegisterError = result.error;

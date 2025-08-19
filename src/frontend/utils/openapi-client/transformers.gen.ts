@@ -12,8 +12,11 @@ import type {
   GetWorkoutsByIdResponse,
   PatchWorkoutsByIdResponse,
   PostWeightResponse,
+  GetWeightByIdResponse,
+  PatchWeightByIdResponse,
   GetArgusCheckinResponse,
   GetEntriesResponse,
+  GetEntriesOwnResponse,
   GetCrmManagersResponse,
 } from "./types.gen";
 
@@ -180,6 +183,20 @@ export const postWeightResponseTransformer = async (
   return data;
 };
 
+export const getWeightByIdResponseTransformer = async (
+  data: any,
+): Promise<GetWeightByIdResponse> => {
+  data = weightSchemaResponseTransformer(data);
+  return data;
+};
+
+export const patchWeightByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchWeightByIdResponse> => {
+  data = weightSchemaResponseTransformer(data);
+  return data;
+};
+
 export const getArgusCheckinResponseTransformer = async (
   data: any,
 ): Promise<GetArgusCheckinResponse> => {
@@ -206,6 +223,15 @@ const entrySchemaResponseTransformer = (data: any) => {
 export const getEntriesResponseTransformer = async (
   data: any,
 ): Promise<GetEntriesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return entrySchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getEntriesOwnResponseTransformer = async (
+  data: any,
+): Promise<GetEntriesOwnResponse> => {
   data.items = data.items.map((item: any) => {
     return entrySchemaResponseTransformer(item);
   });

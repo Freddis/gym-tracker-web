@@ -8,7 +8,7 @@ import {AppApiErrorDisplay} from '../../atoms/AppApiErrorDisplay/AppApiErrorDisp
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {AppToast} from '../../atoms/AppToast/AppToast';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
-import {EntryBlock} from './components/EntryBlock';
+import {EntryBlock} from '../../blocks/EntryBlock/EntryBlock';
 import {AppPageHeading} from '../../atoms/AppPageHeading/AppPageHeading';
 import {useInView} from 'react-intersection-observer';
 import {AppSwitch} from '../../atoms/AppSwitch/AppSwitch';

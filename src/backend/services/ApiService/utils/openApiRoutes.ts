@@ -22,6 +22,9 @@ import {getEntryList} from '../api/entries/validators/getEntryList';
 import {getUserList} from '../api/users/getUserList';
 import {loginManager} from '../api/auth/loginManager';
 import {getManagerList} from '../api/crm/managers/getManagerList';
+import {getOwnEntryList} from '../api/entries/validators/getOwnEntryList';
+import {getWeight} from '../api/weight/getWeight';
+import {updateWeight} from '../api/weight/updateWeight';
 
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
@@ -48,6 +51,8 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/weight': [
     createWeight,
+    getWeight,
+    updateWeight,
   ],
   '/argus': [
     getArgusCheckins,
@@ -55,6 +60,7 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/entries': [
     getEntryList,
+    getOwnEntryList,
   ],
   '/crm/users': [
     getUserList,

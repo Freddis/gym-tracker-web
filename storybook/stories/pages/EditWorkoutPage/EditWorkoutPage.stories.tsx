@@ -1,11 +1,9 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import
-{UpdateWorkoutForm,
-} from '../../../../src/frontend/components/pages/Workouts/UpdateWorkoutPage/components/UpdateWorkoutForm/UpdateWorkoutForm';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils';
 import {PageContainer} from '../../../../src/frontend/components/layout/PageContainer/PageContainer';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {UpdateWorkoutForm} from '../../../../src/frontend/components/pages/Workouts/common/UpdateWorkoutForm/UpdateWorkoutForm';
 
 const meta = {
   title: 'Pages/Workouts/Edit',
@@ -16,6 +14,7 @@ const meta = {
   },
   args: {
     item: StorybookDataUtils.getWorkout(),
+    onUpdate: () => {},
   },
   parameters: {
     layout: 'centered',

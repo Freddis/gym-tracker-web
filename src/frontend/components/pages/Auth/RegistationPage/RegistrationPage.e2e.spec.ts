@@ -24,5 +24,5 @@ test('Can register a user', async ({page}) => {
   await expect(toast, 'Should display toast about successful registration').toHaveText("You've successfully registered");
   const nameNearAvatar = await page.getByTestId('my-name').textContent({timeout});
   expect(nameNearAvatar, 'Should display correct user name near the avatar').toBe('Alex Smith');
-  expect(page.url(), 'Page should be /workouts').toContain('/workouts');
+  expect(page.url(), 'Page should be /entries').toContain('/entries');
 });

@@ -13,7 +13,14 @@ describe(WorkoutService.name, async () => {
 
   test('Can create workout', async () => {
     const user = await TestUtils.seed.createUser();
-    const created = await service.create(user.id);
+    const created = await service.create({
+      typeId: null,
+      userId: user.id,
+      calories: 0,
+      start: new Date(),
+      end: null,
+      exercises: [],
+    });
     const workout = await service.get(created.id);
     expect(workout?.id, 'Id should match the created one').toBe(created.id);
   });

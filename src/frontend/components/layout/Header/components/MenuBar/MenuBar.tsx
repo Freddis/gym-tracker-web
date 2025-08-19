@@ -27,7 +27,7 @@ export const MenuBar:FC<{onMobileMenuClick: () => void}> = ({onMobileMenuClick})
           <HeaderLink to="/">{t(i18n.menu.home)}</HeaderLink>
           <HeaderLink to="/feed">{t(i18n.menu.feed)}</HeaderLink>
           <Conditional condition={!!auth.user}>
-            <HeaderLink to="/workouts">{t(i18n.menu.activities)}</HeaderLink>
+            <HeaderLink to="/entries">{t(i18n.menu.activities)}</HeaderLink>
           </Conditional>
           <HeaderLink to="/exercises">{t(i18n.menu.exerciseLibrary)}</HeaderLink>
           <Conditional condition={!auth.user}>

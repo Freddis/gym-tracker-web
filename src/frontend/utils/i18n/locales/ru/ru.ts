@@ -19,6 +19,10 @@ export const dictionary: Translation = {
         Weight: 'Вес',
       },
     },
+    toasts: {
+      unknownApiError: 'Что-то пошло не так.',
+      notImplemented: 'К сожалению, функция пока не добавлена',
+    },
   },
   layout: {
     header: {
@@ -180,12 +184,59 @@ export const dictionary: Translation = {
       list: {
         buttons: {
           addWorkout: 'Добавить',
+          addEntry: 'Добавить',
         },
         objects: {
           workout: {
             type: 'Тренировка',
             calories: 'Калориии',
             duration: 'Длительность',
+          },
+          weight: {
+            type: 'Вес',
+          },
+        },
+        heading: 'Мои Записи',
+        filter: {
+          labels: {
+            type: 'Тип Записи',
+          },
+        },
+      },
+      workouts: {
+        add: {
+          heading: 'Добавить тренировку',
+        },
+        update: {
+          heading: 'Изменить тренировку',
+        },
+      },
+      add: {
+        heading: 'Добавить Запись',
+        buttons: {
+          addWorkout: 'Добавить Тренировку',
+          addWeight: 'Добавить Вес',
+        },
+      },
+      weight: {
+        add: {
+          heading: 'Добавить Вес',
+          buttons: {
+            save: 'Добавить',
+            back: 'Назад',
+          },
+          toasts: {
+            success: 'Вы успешно добавили вес',
+          },
+        },
+        update: {
+          heading: 'Обновить Вес',
+          toasts: {
+            success: 'Вы успешно обновили вес',
+          },
+          buttons: {
+            save: 'Сохранить',
+            back: 'Назад',
           },
         },
       },

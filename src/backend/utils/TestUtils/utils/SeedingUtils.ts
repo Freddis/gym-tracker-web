@@ -58,12 +58,14 @@ export class SeedUtils {
     const drizzle = await factory.drizzle();
     const db = await drizzle.getDb();
     const tables = [
+      db._.fullSchema.entries,
       db._.fullSchema.workoutExerciseSets,
       db._.fullSchema.workoutExercises,
       db._.fullSchema.workouts,
       db._.fullSchema.muscles,
       db._.fullSchema.exercises,
       db._.fullSchema.users,
+      db._.fullSchema.managers,
     ];
     for (const table of tables) {
       await db.delete(table);

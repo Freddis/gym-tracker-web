@@ -85,10 +85,10 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     const drizzle = this.drizzle;
     const exercise = new ExerciseService(drizzle);
     const user = new UserService(drizzle);
-    const workout = new WorkoutService(drizzle, exercise);
-    const entry = new EntryService(user, workout);
-    const argusCheckin = new ArgusCheckinService(drizzle);
     const weight = new WeightService(drizzle);
+    const workout = new WorkoutService(drizzle, exercise);
+    const entry = new EntryService(drizzle, user, workout, weight);
+    const argusCheckin = new ArgusCheckinService(drizzle);
     const manager = new ManagerService(drizzle);
     const auth = new AuthService(serverConfig.services.auth, drizzle, manager);
     const services: ApiRequestServices = {
