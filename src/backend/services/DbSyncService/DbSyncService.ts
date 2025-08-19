@@ -29,7 +29,9 @@ export class DbSyncService {
       ['workouts', localDb._.fullSchema.workouts, localDb._.fullSchema.workouts.id],
       ['workout exercises', localDb._.fullSchema.workoutExercises, localDb._.fullSchema.workoutExercises.id],
       ['workout sets', localDb._.fullSchema.workoutExerciseSets, localDb._.fullSchema.workoutExerciseSets.id],
+      ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id],
       ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id],
+      ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id],
     ];
 
     for (const [name, table] of [...tables].reverse()) {

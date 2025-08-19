@@ -13,6 +13,7 @@ import {WorkoutService} from 'src/backend/services/WorkoutService/WorkoutService
 import {EntryService} from '../../services/EntryService/EntryService';
 import {UserService} from '../../services/UserService/UserService';
 import {WeightService} from '../../services/WeightService/WeightService';
+import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheckinService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -84,6 +85,14 @@ export class GlobalServiceFactory {
       await this.getWorkoutService(),
       new WeightService(await this.drizzle())
     );
+  }
+
+  async argusCheckin() {
+    return new ArgusCheckinService(await this.drizzle());
+  }
+
+  async weight() {
+    return new WeightService(await this.drizzle());
   }
 
   async dbSync(): Promise<DbSyncService | null> {

@@ -6,10 +6,11 @@ import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {Entry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
-import {and, eq, inArray, isNull, not, desc} from 'drizzle-orm';
+import {and, eq, inArray, isNull, desc} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
 import {Workout} from '../WorkoutService/types/Workout';
+
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -108,27 +109,29 @@ export class EntryService {
 
   }
 
-  async getAll(
+  async getAll<T extends EntryType>(
     params?: {
       id?: number[],
+      workoutIds?: number[],
+      weightIds?: number[]
       page?: number,
       perPage?: number,
       userId?: number[],
-      type?: EntryType
+      type?: T
     }
-  ): Promise<PaginatedResult<Entry>> {
+  ): Promise<PaginatedResult<Entry & {type: T}>> {
 
     const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 100;
+    const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
     const where = and(
-      params?.id ? inArray(db._.fullSchema.entries.id, params?.id) : undefined,
+      params?.id ? inArray(db._.fullSchema.entries.id, params.id) : undefined,
+      params?.weightIds ? inArray(db._.fullSchema.entries.weightId, params.weightIds) : undefined,
+      params?.workoutIds ? inArray(db._.fullSchema.entries.workoutId, params.workoutIds) : undefined,
       params?.type ? eq(db._.fullSchema.entries.type, params.type) : undefined,
       params?.userId ? inArray(db._.fullSchema.entries.userId, params.userId) : undefined,
-      not(
-        isNull(db._.fullSchema.entries.createdAt)
-      )
+      isNull(db._.fullSchema.entries.deletedAt)
     );
 
     const count = await db.$count(db._.fullSchema.entries, where);
@@ -139,18 +142,17 @@ export class EntryService {
       .limit(limit)
       .offset(offset)
       .orderBy(desc(
-        db._.fullSchema.entries.id
+        db._.fullSchema.entries.createdAt
       ));
 
     const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
-    const workouts = await this.workoutService.getAll({id: workoutIds});
+    const workouts = await this.workoutService.getAll({id: workoutIds, perPage: limit});
     const workoutMap = workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
-
     const weightIds = rows.map((x) => x.weightId).filter((x) => x !== null);
-    const weight = await this.weightService.getAll({id: weightIds});
+    const weight = await this.weightService.getAll({id: weightIds, perPage: limit});
     const weightMap = weight.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
     const userIds = rows.map((x) => x.userId);
-    const users = await this.userService.getAll({ids: userIds});
+    const users = await this.userService.getAll({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {
@@ -192,8 +194,8 @@ export class EntryService {
       }
     });
 
-    const result: PaginatedResult<Entry> = {
-      items,
+    const result: PaginatedResult<Entry & {type: T}> = {
+      items: items as (Entry & {type: T})[],
       info: {
         page: page,
         count: count,

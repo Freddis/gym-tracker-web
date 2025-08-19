@@ -275,7 +275,7 @@ export class WorkoutService {
   }): Promise<PaginatedResult<Workout>> {
     const db = await this.db.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 10;
+    const limit = params?.perPage ?? 50;
     const offset = (page - 1) * limit;
     const where = and(
         params?.id ? inArray(dbSchema.workouts.id, params.id) : undefined,

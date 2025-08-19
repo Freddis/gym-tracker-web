@@ -12,10 +12,11 @@ export class ArgusCheckinService {
     this.db = db;
   }
 
-  async getLatest(params: {type?: ArgusCheckinType, page: number;}): Promise<PaginatedResult<ArgusCheckIn>> {
+  async getLatest(params: {type?: ArgusCheckinType, page?: number; perPage?: number}): Promise<PaginatedResult<ArgusCheckIn>> {
     const db = await this.db.getDb();
-    const limit = 10;
-    const offset = limit * (params.page - 1);
+    const page = params.page ?? 1;
+    const limit = params.perPage ?? 10;
+    const offset = limit * (page - 1);
     const result = await db.query.argusCheckins.findMany({
       limit: limit,
       offset: offset,
@@ -27,7 +28,7 @@ export class ArgusCheckinService {
       .where(params.type ? eq(dbSchema.argusCheckins.type, params.type) : undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return {items: result as any, info: {page: params.page, pageSize: limit, count: countResp[0] ? countResp[0].count : 0}};
+    return {items: result as any, info: {page: page, pageSize: limit, count: countResp[0] ? countResp[0].count : 0}};
   }
 
   getCategories(): ArgusCheckinType[] {
