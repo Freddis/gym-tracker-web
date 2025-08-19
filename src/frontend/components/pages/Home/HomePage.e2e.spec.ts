@@ -1,11 +1,20 @@
 import {test, expect} from '@playwright/test';
+import {TestUtils} from '../../../../backend/utils/TestUtils/TestUtils';
 
-test('Click on hero block CTA displays warning toast', async ({page}) => {
-  await page.goto('http://localhost:3000/');
-  await expect(page).toHaveTitle(/Discipline/);
-  await page.waitForLoadState('networkidle');
-  await page.click('#hero-cta-button');
-  await page.waitForSelector('.toast', {timeout: 2000});
-  const toast = page.locator('.toast');
-  await expect(toast).toHaveText('Unfortunately the app is not yet published in stores');
+test.describe('HomePage', () => {
+
+  test('Click on hero block CTA displays warning toast', async ({page}) => {
+    const pageUtils = TestUtils.frontend.home(page);
+
+    //test
+    await pageUtils.open();
+    await pageUtils.clickHeroCtaDownloadButton();
+
+    //check
+    await expect(page, 'Should have proper page title').toHaveTitle(/Discipline/);
+    const toast = await pageUtils.waitForToast('warning');
+    await expect(toast, 'Should display warning that app is not yet published')
+    .toHaveText('Unfortunately the app is not yet published in stores');
+  });
+
 });

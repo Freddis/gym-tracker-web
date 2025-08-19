@@ -58,7 +58,7 @@ export const ToastProvider: FC<{children: ReactNode}> = ({children}) => {
           // eslint-disable-next-line max-len
           className={'px-2 w-full md:w-auto right-auto md:right-10 fixed mt-21 duration-500 ease-in-out opacity-0 translate-y-4 transition-all z-100'}
         >
-          <AppToast variant={toast.color}>{toast.text}</AppToast>
+          <AppToast variant={toast.color} className="toast">{toast.text}</AppToast>
         </Animated>
       )}
       {children}

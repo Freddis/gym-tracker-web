@@ -21,7 +21,7 @@ export const AppToast: FC<AppToastProps> = (props) => {
   const parts = props.children.split('\n');
   return (
     // eslint-disable-next-line max-len
-    <div className={cn(`palette-${props.variant} flex items-center bg-main text-on-main py-3 px-5 rounded-sm min-w-full md:min-w-100 text-left toast`, props.className)}>
+    <div className={cn(`palette-${props.variant} flex items-center bg-main text-on-main py-3 px-5 rounded-sm min-w-full md:min-w-100 text-left`, props.className)}>
       <div>{icon}</div>
       <div className="flex flex-col grow">
         {parts.map((x) => <div key={x}>{x}</div>)}

@@ -1,28 +1,27 @@
 import {test, expect} from '@playwright/test';
+import {TestUtils} from '../../../../../backend/utils/TestUtils/TestUtils';
 
-test('Can register a user', async ({page}) => {
+test.describe('RegistrationPage', async () => {
+
+  test('Can register a user', async ({page}) => {
   // prepare
-  const timeout = 5000;
-  await page.goto('http://localhost:3000/auth/register');
-  await page.waitForLoadState('networkidle');
-  const name = 'Alex Smith';
-  const email = `alex${new Date().getTime()}@smit.com`;
-  const password = '1q2w3e4rDD';
+    const pageUtils = TestUtils.frontend.registration(page);
 
   // test
-  await page.getByTestId('name').fill(name);
-  await page.getByTestId('email').fill(email);
-  await page.getByTestId('password').fill(password);
-  await page.getByTestId('passwordConfirmation').fill(password);
-
-  const button = page.locator('button.palette-accent');
-  button.click();
+    await pageUtils.open();
+    await pageUtils.fillName('Alex Smith');
+    await pageUtils.fillEmail(`alex${new Date().getTime()}@smit.com`);
+    await pageUtils.fillPassword('1q2w3e4rDD');
+    await pageUtils.fillPasswordConfirmation('1q2w3e4rDD');
+    await pageUtils.clickRegisterButton();
 
   // check
-  await page.waitForSelector('.toast', {timeout});
-  const toast = page.locator('.toast');
-  await expect(toast, 'Should display toast about successful registration').toHaveText("You've successfully registered");
-  const nameNearAvatar = await page.getByTestId('my-name').textContent({timeout});
-  expect(nameNearAvatar, 'Should display correct user name near the avatar').toBe('Alex Smith');
-  expect(page.url(), 'Page should be /entries').toContain('/entries');
+    const toast = await pageUtils.waitForToast('success');
+    const toastText = await toast.textContent();
+    expect(toastText, 'Should display toast about successful registration').toBe("You've successfully registered");
+    const userName = await pageUtils.getUserNameInHeader().textContent();
+    expect(userName, 'Should display correct user name near the avatar').toBe('Alex Smith');
+    expect(page.url(), 'Page should be /entries').toContain('/entries');
+  });
+
 });
