@@ -23,14 +23,14 @@ export class DbSyncService {
     this.logger.info('Starting sync');
     const localDb = await this.local.getDb();
     const tables: Array<[string, PgTable, PgColumn]> = [
-      // ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id],
-      // ['exercises', localDb._.fullSchema.exercises, localDb._.fullSchema.exercises.id],
-      // ['exercise muscles', localDb._.fullSchema.muscles, localDb._.fullSchema.muscles.id],
-      // ['workouts', localDb._.fullSchema.workouts, localDb._.fullSchema.workouts.id],
-      // ['workout exercises', localDb._.fullSchema.workoutExercises, localDb._.fullSchema.workoutExercises.id],
-      // ['workout sets', localDb._.fullSchema.workoutExerciseSets, localDb._.fullSchema.workoutExerciseSets.id],
+      ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id],
+      ['exercises', localDb._.fullSchema.exercises, localDb._.fullSchema.exercises.id],
+      ['exercise muscles', localDb._.fullSchema.muscles, localDb._.fullSchema.muscles.id],
+      ['workouts', localDb._.fullSchema.workouts, localDb._.fullSchema.workouts.id],
+      ['workout exercises', localDb._.fullSchema.workoutExercises, localDb._.fullSchema.workoutExercises.id],
+      ['workout sets', localDb._.fullSchema.workoutExerciseSets, localDb._.fullSchema.workoutExerciseSets.id],
       ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id],
-      // ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id],
+      ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id],
       ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id],
     ];
 
