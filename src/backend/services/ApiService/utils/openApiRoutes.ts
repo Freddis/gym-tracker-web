@@ -18,11 +18,11 @@ import {getWorkout} from '../api/workouts/getWorkout';
 import {getWorkoutList} from '../api/workouts/getWorkoutList';
 import {updateWorkout} from '../api/workouts/updateWorkout';
 import {upsertWorkouts} from '../api/workouts/upsertWorkouts';
-import {getEntryList} from '../api/entries/validators/getEntryList';
+import {getEntryList} from '../api/entries/getEntryList';
 import {getUserList} from '../api/users/getUserList';
 import {loginManager} from '../api/auth/loginManager';
 import {getManagerList} from '../api/crm/managers/getManagerList';
-import {getOwnEntryList} from '../api/entries/validators/getOwnEntryList';
+import {getOwnEntryList} from '../api/entries/getOwnEntryList';
 import {getWeight} from '../api/weight/getWeight';
 import {updateWeight} from '../api/weight/updateWeight';
 

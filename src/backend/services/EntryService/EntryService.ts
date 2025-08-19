@@ -6,7 +6,7 @@ import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {Entry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
-import {and, eq, inArray, isNull, desc} from 'drizzle-orm';
+import {and, inArray, isNull, desc} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
 import {Workout} from '../WorkoutService/types/Workout';
@@ -117,7 +117,7 @@ export class EntryService {
       page?: number,
       perPage?: number,
       userId?: number[],
-      type?: T
+      type?: T[]
     }
   ): Promise<PaginatedResult<Entry & {type: T}>> {
 
@@ -129,7 +129,7 @@ export class EntryService {
       params?.id ? inArray(db._.fullSchema.entries.id, params.id) : undefined,
       params?.weightIds ? inArray(db._.fullSchema.entries.weightId, params.weightIds) : undefined,
       params?.workoutIds ? inArray(db._.fullSchema.entries.workoutId, params.workoutIds) : undefined,
-      params?.type ? eq(db._.fullSchema.entries.type, params.type) : undefined,
+      params?.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
       params?.userId ? inArray(db._.fullSchema.entries.userId, params.userId) : undefined,
       isNull(db._.fullSchema.entries.deletedAt)
     );

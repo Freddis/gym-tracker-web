@@ -5,7 +5,7 @@ import {EntryType} from '../../frontend/utils/openapi-client';
 
 const queryParams = z.object({
   page: z.number().optional(),
-  type: nativeEnum(EntryType).optional(),
+  type: nativeEnum(EntryType).array().optional(),
 });
 
 export const Route = createFileRoute('/entries/')({

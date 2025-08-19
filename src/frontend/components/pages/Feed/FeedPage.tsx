@@ -51,10 +51,15 @@ export const FeedPage: FC = () => {
   }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
 
   const filterByType = (type: EntryType, checked: boolean) => {
+    const existing = searchParams.type?.filter((x) => x !== type) ?? [];
+    if (checked) {
+      existing.push(type);
+    }
+    const types = existing.length > 0 ? existing : undefined;
     navigate({
       search: {
         ...searchParams,
-        type: checked ? type : undefined,
+        type: types,
       },
     });
   };
@@ -82,7 +87,7 @@ export const FeedPage: FC = () => {
                 className="capitalize"
                 key={x}
                 label={t(i18nEntryTypes[x])}
-                checked={searchParams.type === x}
+                checked={searchParams.type?.includes(x) ?? false}
                 onCheckedChange={(e) => filterByType(x, e)}
                 ></AppSwitch>
               ))}
