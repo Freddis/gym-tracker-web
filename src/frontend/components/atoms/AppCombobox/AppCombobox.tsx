@@ -38,7 +38,7 @@ export const AppCombobox: FC<AppComboboxProps> = ({className, values, placeholde
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? '' : currentValue);
                       setOpen(false);
-                      val.onSelect();
+                      val.onSelect(currentValue !== value);
                     }}
                   >
                     {val.label}

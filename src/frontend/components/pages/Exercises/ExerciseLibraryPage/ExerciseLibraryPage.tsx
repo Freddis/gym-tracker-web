@@ -16,10 +16,11 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
 import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
 import {AppCombobox} from '../../../atoms/AppCombobox/AppCombobox';
+import {ComboValue} from '../../../atoms/AppCombobox/types/ComboValue';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.exercises);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises);
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const {ref, inView} = useInView({
@@ -61,6 +62,7 @@ export const ExerciseLibraryPage: FC = () => {
   }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
 
   const filterByEquipment = (equipment: Equipment, checked: boolean) => {
+    console.group(equipment, checked);
     navigate({
       search: {
         ...searchParams,
@@ -98,9 +100,9 @@ export const ExerciseLibraryPage: FC = () => {
     );
   }
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
-  const values = Object.values(Equipment).map((equipment) => ({
-    label: equipment,
-    onSelect: () => filterByEquipment(equipment, true),
+  const values: ComboValue[] = Object.values(Equipment).map((equipment) => ({
+    label: translations.utils.objects.equipment[equipment],
+    onSelect: (selected) => filterByEquipment(equipment, selected),
   }));
 
   return (
@@ -118,9 +120,9 @@ export const ExerciseLibraryPage: FC = () => {
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
             <div className="mb-5">
                <AppCombobox
-                  placeholder="Seach equipment"
-                  notFound="No equipment found"
-                  defaultValue="Select equipment..."
+                  placeholder={t(i18n.filter.labels.searchEquipment)}
+                  notFound={t(i18n.filter.labels.noEquipmentFound)}
+                  defaultValue={t(i18n.filter.labels.selectEquipment)}
                   values={values}
                />
             </div>
@@ -129,7 +131,7 @@ export const ExerciseLibraryPage: FC = () => {
               {Object.values(Muscle).sort().map((x) => (
                 <AppSwitch
                 key={x}
-                label={x}
+                label={translations.utils.objects.muscles[x]}
                 checked={searchParams.muscles?.includes(x) ?? false}
                 onCheckedChange={(e) => filterByMuscle(x, e)}
                 />

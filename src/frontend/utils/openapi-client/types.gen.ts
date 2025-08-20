@@ -3610,7 +3610,7 @@ export type GetEntriesData = {
     /**
      * Filters excercises by type.
      */
-    type?: Array<"Workout" | "Weight">;
+    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
   };
   url: "/entries";
 };
@@ -3735,7 +3735,7 @@ export type GetEntriesOwnData = {
     /**
      * Filters excercises by type.
      */
-    type?: Array<"Workout" | "Weight">;
+    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
   };
   url: "/entries/own";
 };

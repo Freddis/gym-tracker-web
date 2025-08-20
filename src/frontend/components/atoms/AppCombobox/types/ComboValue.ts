@@ -1,4 +1,4 @@
 export type ComboValue = {
   label: string,
-  onSelect: () => void
+  onSelect: (selected: boolean) => void
 }
