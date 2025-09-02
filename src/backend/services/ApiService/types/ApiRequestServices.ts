@@ -6,6 +6,8 @@ import {WeightService} from '../../WeightService/WeightService';
 import {EntryService} from '../../EntryService/EntryService';
 import {UserService} from '../../UserService/UserService';
 import {ManagerService} from '../../ManagerService/ManagerService';
+import {WorkoutPlanService} from '../../WorkoutPlanService/WorkoutPlanService';
+import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
 
 export interface ApiRequestServices {
   auth: AuthService
@@ -13,6 +15,8 @@ export interface ApiRequestServices {
     argusCheckin: ArgusCheckinService
     exercise: ExerciseService
     workout: WorkoutService
+    workoutPlan: WorkoutPlanService
+    workoutType: WorkoutTypeService
     weight: WeightService
     entry: EntryService
     user: UserService

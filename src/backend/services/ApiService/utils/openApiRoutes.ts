@@ -25,7 +25,16 @@ import {getManagerList} from '../api/crm/managers/getManagerList';
 import {getOwnEntryList} from '../api/entries/getOwnEntryList';
 import {getWeight} from '../api/weight/getWeight';
 import {updateWeight} from '../api/weight/updateWeight';
-
+import {getWorkoutPlanList} from '../api/workoutPlans/getWorkoutPlanList';
+import {getWorkoutPlan} from '../api/workoutPlans/getWorkoutPlan';
+import {createWorkoutPlan} from '../api/workoutPlans/createWorkoutPlan';
+import {updateWorkoutPlan} from '../api/workoutPlans/updateWorkoutPlan';
+import {deleteWorkoutPlan} from '../api/workoutPlans/deleteWorkoutPlan';
+import {getWorkoutTypeList} from '../api/workoutTypes/getWorkoutTypeList';
+import {deleteWorkoutType} from '../api/workoutTypes/deleteWorkoutType';
+import {createWorkoutType} from '../api/workoutTypes/createWorkoutType';
+import {getWorkoutType} from '../api/workoutTypes/getWorkoutType';
+import {updateWorkoutType} from '../api/workoutTypes/updateWorkoutType';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -48,6 +57,20 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     updateWorkout,
     upsertWorkouts,
     deleteWorkout,
+  ],
+  '/workout-plans': [
+    createWorkoutPlan,
+    getWorkoutPlan,
+    getWorkoutPlanList,
+    updateWorkoutPlan,
+    deleteWorkoutPlan,
+  ],
+  '/workout-types': [
+    createWorkoutType,
+    getWorkoutType,
+    getWorkoutTypeList,
+    updateWorkoutType,
+    deleteWorkoutType,
   ],
   '/weight': [
     createWeight,

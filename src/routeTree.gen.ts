@@ -26,11 +26,17 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
 import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/privacy-policy'
+import { Route as WorkoutsTypesIndexRouteImport } from './routes/workouts/types/index'
+import { Route as WorkoutsPlansIndexRouteImport } from './routes/workouts/plans/index'
 import { Route as CrmUsersIndexRouteImport } from './routes/crm/users/index'
 import { Route as CrmManagersIndexRouteImport } from './routes/crm/managers/index'
 import { Route as WorkoutsUpdateIdRouteImport } from './routes/workouts/update/$id'
+import { Route as WorkoutsTypesCreateRouteImport } from './routes/workouts/types/create'
+import { Route as WorkoutsPlansCreateRouteImport } from './routes/workouts/plans/create'
 import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
+import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/types/update/$id'
+import { Route as WorkoutsPlansUpdateIdRouteImport } from './routes/workouts/plans/update/$id'
 import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
 import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
 import { ServerRoute as SchemaServerRouteImport } from './routes/schema'
@@ -113,6 +119,16 @@ const ArticlesPrivacyPolicyRoute = ArticlesPrivacyPolicyRouteImport.update({
   path: '/articles/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkoutsTypesIndexRoute = WorkoutsTypesIndexRouteImport.update({
+  id: '/workouts/types/',
+  path: '/workouts/types/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkoutsPlansIndexRoute = WorkoutsPlansIndexRouteImport.update({
+  id: '/workouts/plans/',
+  path: '/workouts/plans/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CrmUsersIndexRoute = CrmUsersIndexRouteImport.update({
   id: '/crm/users/',
   path: '/crm/users/',
@@ -128,6 +144,16 @@ const WorkoutsUpdateIdRoute = WorkoutsUpdateIdRouteImport.update({
   path: '/workouts/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkoutsTypesCreateRoute = WorkoutsTypesCreateRouteImport.update({
+  id: '/workouts/types/create',
+  path: '/workouts/types/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkoutsPlansCreateRoute = WorkoutsPlansCreateRouteImport.update({
+  id: '/workouts/plans/create',
+  path: '/workouts/plans/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeightUpdateIdRoute = WeightUpdateIdRouteImport.update({
   id: '/weight/update/$id',
   path: '/weight/update/$id',
@@ -139,6 +165,16 @@ const ExercisesUpdateExerciseIdRoute =
     path: '/exercises/update/$exerciseId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const WorkoutsTypesUpdateIdRoute = WorkoutsTypesUpdateIdRouteImport.update({
+  id: '/workouts/types/update/$id',
+  path: '/workouts/types/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkoutsPlansUpdateIdRoute = WorkoutsPlansUpdateIdRouteImport.update({
+  id: '/workouts/plans/update/$id',
+  path: '/workouts/plans/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SwaggerServerRoute = SwaggerServerRouteImport.update({
   id: '/swagger',
   path: '/swagger',
@@ -178,9 +214,15 @@ export interface FileRoutesByFullPath {
   '/feed': typeof FeedIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
+  '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
+  '/workouts/plans': typeof WorkoutsPlansIndexRoute
+  '/workouts/types': typeof WorkoutsTypesIndexRoute
+  '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
+  '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -200,9 +242,15 @@ export interface FileRoutesByTo {
   '/feed': typeof FeedIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
+  '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
+  '/workouts/plans': typeof WorkoutsPlansIndexRoute
+  '/workouts/types': typeof WorkoutsTypesIndexRoute
+  '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
+  '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -223,9 +271,15 @@ export interface FileRoutesById {
   '/feed/': typeof FeedIndexRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
+  '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
+  '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers/': typeof CrmManagersIndexRoute
   '/crm/users/': typeof CrmUsersIndexRoute
+  '/workouts/plans/': typeof WorkoutsPlansIndexRoute
+  '/workouts/types/': typeof WorkoutsTypesIndexRoute
+  '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
+  '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -247,9 +301,15 @@ export interface FileRouteTypes {
     | '/feed'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
+    | '/workouts/plans/create'
+    | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers'
     | '/crm/users'
+    | '/workouts/plans'
+    | '/workouts/types'
+    | '/workouts/plans/update/$id'
+    | '/workouts/types/update/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -269,9 +329,15 @@ export interface FileRouteTypes {
     | '/feed'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
+    | '/workouts/plans/create'
+    | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers'
     | '/crm/users'
+    | '/workouts/plans'
+    | '/workouts/types'
+    | '/workouts/plans/update/$id'
+    | '/workouts/types/update/$id'
   id:
     | '__root__'
     | '/'
@@ -291,9 +357,15 @@ export interface FileRouteTypes {
     | '/feed/'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
+    | '/workouts/plans/create'
+    | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers/'
     | '/crm/users/'
+    | '/workouts/plans/'
+    | '/workouts/types/'
+    | '/workouts/plans/update/$id'
+    | '/workouts/types/update/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -314,9 +386,15 @@ export interface RootRouteChildren {
   FeedIndexRoute: typeof FeedIndexRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
   WeightUpdateIdRoute: typeof WeightUpdateIdRoute
+  WorkoutsPlansCreateRoute: typeof WorkoutsPlansCreateRoute
+  WorkoutsTypesCreateRoute: typeof WorkoutsTypesCreateRoute
   WorkoutsUpdateIdRoute: typeof WorkoutsUpdateIdRoute
   CrmManagersIndexRoute: typeof CrmManagersIndexRoute
   CrmUsersIndexRoute: typeof CrmUsersIndexRoute
+  WorkoutsPlansIndexRoute: typeof WorkoutsPlansIndexRoute
+  WorkoutsTypesIndexRoute: typeof WorkoutsTypesIndexRoute
+  WorkoutsPlansUpdateIdRoute: typeof WorkoutsPlansUpdateIdRoute
+  WorkoutsTypesUpdateIdRoute: typeof WorkoutsTypesUpdateIdRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api': typeof ApiServerRoute
@@ -459,6 +537,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesPrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workouts/types/': {
+      id: '/workouts/types/'
+      path: '/workouts/types'
+      fullPath: '/workouts/types'
+      preLoaderRoute: typeof WorkoutsTypesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/plans/': {
+      id: '/workouts/plans/'
+      path: '/workouts/plans'
+      fullPath: '/workouts/plans'
+      preLoaderRoute: typeof WorkoutsPlansIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/crm/users/': {
       id: '/crm/users/'
       path: '/crm/users'
@@ -480,6 +572,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkoutsUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workouts/types/create': {
+      id: '/workouts/types/create'
+      path: '/workouts/types/create'
+      fullPath: '/workouts/types/create'
+      preLoaderRoute: typeof WorkoutsTypesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/plans/create': {
+      id: '/workouts/plans/create'
+      path: '/workouts/plans/create'
+      fullPath: '/workouts/plans/create'
+      preLoaderRoute: typeof WorkoutsPlansCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/weight/update/$id': {
       id: '/weight/update/$id'
       path: '/weight/update/$id'
@@ -492,6 +598,20 @@ declare module '@tanstack/react-router' {
       path: '/exercises/update/$exerciseId'
       fullPath: '/exercises/update/$exerciseId'
       preLoaderRoute: typeof ExercisesUpdateExerciseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/types/update/$id': {
+      id: '/workouts/types/update/$id'
+      path: '/workouts/types/update/$id'
+      fullPath: '/workouts/types/update/$id'
+      preLoaderRoute: typeof WorkoutsTypesUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workouts/plans/update/$id': {
+      id: '/workouts/plans/update/$id'
+      path: '/workouts/plans/update/$id'
+      fullPath: '/workouts/plans/update/$id'
+      preLoaderRoute: typeof WorkoutsPlansUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -547,9 +667,15 @@ const rootRouteChildren: RootRouteChildren = {
   FeedIndexRoute: FeedIndexRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
   WeightUpdateIdRoute: WeightUpdateIdRoute,
+  WorkoutsPlansCreateRoute: WorkoutsPlansCreateRoute,
+  WorkoutsTypesCreateRoute: WorkoutsTypesCreateRoute,
   WorkoutsUpdateIdRoute: WorkoutsUpdateIdRoute,
   CrmManagersIndexRoute: CrmManagersIndexRoute,
   CrmUsersIndexRoute: CrmUsersIndexRoute,
+  WorkoutsPlansIndexRoute: WorkoutsPlansIndexRoute,
+  WorkoutsTypesIndexRoute: WorkoutsTypesIndexRoute,
+  WorkoutsPlansUpdateIdRoute: WorkoutsPlansUpdateIdRoute,
+  WorkoutsTypesUpdateIdRoute: WorkoutsTypesUpdateIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

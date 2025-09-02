@@ -14,6 +14,7 @@ import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
 import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {EntryBlock} from '../../../blocks/EntryBlock/EntryBlock';
+import {AppLink} from '../../../atoms/AppLink/AppLink';
 
 const routeApi = getRouteApi('/entries/');
 export function EntryListPage() {
@@ -30,11 +31,12 @@ export function EntryListPage() {
     queryKey: ['workouts', searchParams],
     placeholderData: keepPreviousData,
   });
-
   const navigate = routeApi.useNavigate();
   const onPageChanged = (page: number) => {
+    console.log(searchParams);
     navigate({
       search: {
+        ...searchParams,
         page,
       }});
   };
@@ -49,6 +51,7 @@ export function EntryListPage() {
       search: {
         ...searchParams,
         type: types,
+        page: undefined,
       },
     });
   };
@@ -74,10 +77,13 @@ export function EntryListPage() {
          <div className="flex flex-col max-w-5xl w-full">
            <div className="w-full text-left mb-5 flex">
              <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
-             <div className="grow flex flex-row-reverse">
-              <Link to="/entries/add" className="absolute z-0">
+             <div className="grow flex flex-row-reverse gap-5 items-center">
+              <Link to="/entries/add" className="z-0">
                 <AppButton>{t(i18n.buttons.addEntry)}</AppButton>
               </Link>
+              <AppLink to="/workouts/types" className="z-0">
+                {t(i18n.buttons.types)}
+              </AppLink>
               </div>
            </div>
            <div className="flex flex-col md:flex-row gap-5 items-start">

@@ -17,6 +17,16 @@ import {
   deleteWorkoutsById,
   getWorkoutsById,
   patchWorkoutsById,
+  getWorkoutPlans,
+  postWorkoutPlans,
+  deleteWorkoutPlansById,
+  getWorkoutPlansById,
+  patchWorkoutPlansById,
+  getWorkoutTypes,
+  postWorkoutTypes,
+  deleteWorkoutTypesById,
+  getWorkoutTypesById,
+  patchWorkoutTypesById,
   postWeight,
   getWeightById,
   patchWeightById,
@@ -76,6 +86,32 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdError,
   PatchWorkoutsByIdResponse,
+  GetWorkoutPlansData,
+  GetWorkoutPlansError,
+  GetWorkoutPlansResponse,
+  PostWorkoutPlansData,
+  PostWorkoutPlansError,
+  PostWorkoutPlansResponse,
+  DeleteWorkoutPlansByIdData,
+  DeleteWorkoutPlansByIdError,
+  DeleteWorkoutPlansByIdResponse,
+  GetWorkoutPlansByIdData,
+  PatchWorkoutPlansByIdData,
+  PatchWorkoutPlansByIdError,
+  PatchWorkoutPlansByIdResponse,
+  GetWorkoutTypesData,
+  GetWorkoutTypesError,
+  GetWorkoutTypesResponse,
+  PostWorkoutTypesData,
+  PostWorkoutTypesError,
+  PostWorkoutTypesResponse,
+  DeleteWorkoutTypesByIdData,
+  DeleteWorkoutTypesByIdError,
+  DeleteWorkoutTypesByIdResponse,
+  GetWorkoutTypesByIdData,
+  PatchWorkoutTypesByIdData,
+  PatchWorkoutTypesByIdError,
+  PatchWorkoutTypesByIdResponse,
   PostWeightData,
   PostWeightError,
   PostWeightResponse,
@@ -841,6 +877,414 @@ export const patchWorkoutsByIdMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await patchWorkoutsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getWorkoutPlansQueryKey = (
+  options?: Options<GetWorkoutPlansData>,
+) => createQueryKey("getWorkoutPlans", options);
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutPlansOptions = (
+  options?: Options<GetWorkoutPlansData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutPlans({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getWorkoutPlansQueryKey(options),
+  });
+};
+
+export const getWorkoutPlansInfiniteQueryKey = (
+  options?: Options<GetWorkoutPlansData>,
+): QueryKey<Options<GetWorkoutPlansData>> =>
+  createQueryKey("getWorkoutPlans", options, true);
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutPlansInfiniteOptions = (
+  options?: Options<GetWorkoutPlansData>,
+) => {
+  return infiniteQueryOptions<
+    GetWorkoutPlansResponse,
+    AxiosError<GetWorkoutPlansError>,
+    InfiniteData<GetWorkoutPlansResponse>,
+    QueryKey<Options<GetWorkoutPlansData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetWorkoutPlansData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetWorkoutPlansData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getWorkoutPlans({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getWorkoutPlansInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const postWorkoutPlansQueryKey = (
+  options?: Options<PostWorkoutPlansData>,
+) => createQueryKey("postWorkoutPlans", options);
+
+/**
+ * Adds new workout plan for the user
+ */
+export const postWorkoutPlansOptions = (
+  options?: Options<PostWorkoutPlansData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWorkoutPlans({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postWorkoutPlansQueryKey(options),
+  });
+};
+
+/**
+ * Adds new workout plan for the user
+ */
+export const postWorkoutPlansMutation = (
+  options?: Partial<Options<PostWorkoutPlansData>>,
+): UseMutationOptions<
+  PostWorkoutPlansResponse,
+  AxiosError<PostWorkoutPlansError>,
+  Options<PostWorkoutPlansData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostWorkoutPlansResponse,
+    AxiosError<PostWorkoutPlansError>,
+    Options<PostWorkoutPlansData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postWorkoutPlans({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Deletes workout plan
+ */
+export const deleteWorkoutPlansByIdMutation = (
+  options?: Partial<Options<DeleteWorkoutPlansByIdData>>,
+): UseMutationOptions<
+  DeleteWorkoutPlansByIdResponse,
+  AxiosError<DeleteWorkoutPlansByIdError>,
+  Options<DeleteWorkoutPlansByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteWorkoutPlansByIdResponse,
+    AxiosError<DeleteWorkoutPlansByIdError>,
+    Options<DeleteWorkoutPlansByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteWorkoutPlansById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getWorkoutPlansByIdQueryKey = (
+  options: Options<GetWorkoutPlansByIdData>,
+) => createQueryKey("getWorkoutPlansById", options);
+
+/**
+ * Returns data on user workout plan
+ */
+export const getWorkoutPlansByIdOptions = (
+  options: Options<GetWorkoutPlansByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutPlansById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getWorkoutPlansByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updated workout plan for the user
+ */
+export const patchWorkoutPlansByIdMutation = (
+  options?: Partial<Options<PatchWorkoutPlansByIdData>>,
+): UseMutationOptions<
+  PatchWorkoutPlansByIdResponse,
+  AxiosError<PatchWorkoutPlansByIdError>,
+  Options<PatchWorkoutPlansByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchWorkoutPlansByIdResponse,
+    AxiosError<PatchWorkoutPlansByIdError>,
+    Options<PatchWorkoutPlansByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchWorkoutPlansById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getWorkoutTypesQueryKey = (
+  options?: Options<GetWorkoutTypesData>,
+) => createQueryKey("getWorkoutTypes", options);
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutTypesOptions = (
+  options?: Options<GetWorkoutTypesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutTypes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getWorkoutTypesQueryKey(options),
+  });
+};
+
+export const getWorkoutTypesInfiniteQueryKey = (
+  options?: Options<GetWorkoutTypesData>,
+): QueryKey<Options<GetWorkoutTypesData>> =>
+  createQueryKey("getWorkoutTypes", options, true);
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutTypesInfiniteOptions = (
+  options?: Options<GetWorkoutTypesData>,
+) => {
+  return infiniteQueryOptions<
+    GetWorkoutTypesResponse,
+    AxiosError<GetWorkoutTypesError>,
+    InfiniteData<GetWorkoutTypesResponse>,
+    QueryKey<Options<GetWorkoutTypesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetWorkoutTypesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetWorkoutTypesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getWorkoutTypes({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getWorkoutTypesInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const postWorkoutTypesQueryKey = (
+  options?: Options<PostWorkoutTypesData>,
+) => createQueryKey("postWorkoutTypes", options);
+
+/**
+ * Adds new workout type for the user
+ */
+export const postWorkoutTypesOptions = (
+  options?: Options<PostWorkoutTypesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postWorkoutTypes({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postWorkoutTypesQueryKey(options),
+  });
+};
+
+/**
+ * Adds new workout type for the user
+ */
+export const postWorkoutTypesMutation = (
+  options?: Partial<Options<PostWorkoutTypesData>>,
+): UseMutationOptions<
+  PostWorkoutTypesResponse,
+  AxiosError<PostWorkoutTypesError>,
+  Options<PostWorkoutTypesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostWorkoutTypesResponse,
+    AxiosError<PostWorkoutTypesError>,
+    Options<PostWorkoutTypesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postWorkoutTypes({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Deletes workout type
+ */
+export const deleteWorkoutTypesByIdMutation = (
+  options?: Partial<Options<DeleteWorkoutTypesByIdData>>,
+): UseMutationOptions<
+  DeleteWorkoutTypesByIdResponse,
+  AxiosError<DeleteWorkoutTypesByIdError>,
+  Options<DeleteWorkoutTypesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteWorkoutTypesByIdResponse,
+    AxiosError<DeleteWorkoutTypesByIdError>,
+    Options<DeleteWorkoutTypesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteWorkoutTypesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getWorkoutTypesByIdQueryKey = (
+  options: Options<GetWorkoutTypesByIdData>,
+) => createQueryKey("getWorkoutTypesById", options);
+
+/**
+ * Returns data on user workout type
+ */
+export const getWorkoutTypesByIdOptions = (
+  options: Options<GetWorkoutTypesByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getWorkoutTypesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getWorkoutTypesByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updated workout type for the user
+ */
+export const patchWorkoutTypesByIdMutation = (
+  options?: Partial<Options<PatchWorkoutTypesByIdData>>,
+): UseMutationOptions<
+  PatchWorkoutTypesByIdResponse,
+  AxiosError<PatchWorkoutTypesByIdError>,
+  Options<PatchWorkoutTypesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchWorkoutTypesByIdResponse,
+    AxiosError<PatchWorkoutTypesByIdError>,
+    Options<PatchWorkoutTypesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchWorkoutTypesById({
         ...options,
         ...localOptions,
         throwOnError: true,

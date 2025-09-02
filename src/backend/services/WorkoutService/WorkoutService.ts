@@ -8,7 +8,7 @@ import {NewModel} from 'src/backend/types/NewModel';
 import {SemiPartial} from 'src/backend/types/SemiPartial';
 import {WorkoutRow} from 'src/backend/services/DrizzleService/types/WorkoutRow';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {Exercise} from '../ExerciseService/types/Exercise';
 import {WorkoutUpdateDto} from './types/WorkoutUpdateDto';
 import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';

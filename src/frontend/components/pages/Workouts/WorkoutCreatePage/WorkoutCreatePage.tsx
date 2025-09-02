@@ -54,7 +54,7 @@ export const WorkoutCreatePage: FC = () => {
         </div>
       </div>
       <AppBlock className="max-w-5xl">
-        <AppBlockHeader>{'New Workout'}</AppBlockHeader>
+        <AppBlockHeader>New Workout</AppBlockHeader>
         <UpdateWorkoutForm item={item} onUpdate={setItemDto}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
         <div className="mt-5 flex flex-row">

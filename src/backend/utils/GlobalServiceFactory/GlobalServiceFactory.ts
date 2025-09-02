@@ -14,8 +14,11 @@ import {EntryService} from '../../services/EntryService/EntryService';
 import {UserService} from '../../services/UserService/UserService';
 import {WeightService} from '../../services/WeightService/WeightService';
 import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheckinService';
+import {WorkoutPlanService} from '../../services/WorkoutPlanService/WorkoutPlanService';
+import {WorkoutTypeService} from '../../services/WorkoutTypeService/WorkoutTypeService';
 
 export class GlobalServiceFactory {
+
   protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
@@ -48,12 +51,12 @@ export class GlobalServiceFactory {
 
   async auth(): Promise<AuthService> {
     const drizzle = await this.drizzle();
-    const managerService = new ManagerService(drizzle);
+    const managerService = await this.manager();
     return new AuthService(serverConfig.services.auth, drizzle, managerService);
   }
 
   async openApi(): Promise<ReturnType<ApiService['createOpenApi']>> {
-    const helper = new ApiService(await this.drizzle());
+    const helper = new ApiService(this);
     const api = helper.createOpenApi();
     return api;
   }
@@ -67,23 +70,23 @@ export class GlobalServiceFactory {
     if (!existsSync(tempPath)) {
       mkdirSync(tempPath);
     }
-    const service = new ArgusService(await this.getExerciseService(), await this.drizzle(), config);
+    const service = new ArgusService(await this.exercise(), await this.drizzle(), config);
     return service;
   }
 
-  async getExerciseService(): Promise<ExerciseService> {
+  async exercise(): Promise<ExerciseService> {
     return new ExerciseService(await this.drizzle());
   }
 
-  async getWorkoutService(): Promise<WorkoutService> {
-    return new WorkoutService(await this.drizzle(), await this.getExerciseService());
+  async workout(): Promise<WorkoutService> {
+    return new WorkoutService(await this.drizzle(), await this.exercise());
   }
   async entry() {
     return new EntryService(
-      await this.drizzle(),
-      new UserService(await this.drizzle()),
-      await this.getWorkoutService(),
-      new WeightService(await this.drizzle())
+        await this.drizzle(),
+        await this.user(),
+        await this.workout(),
+        await this.weight(),
     );
   }
 
@@ -105,6 +108,20 @@ export class GlobalServiceFactory {
     const prodDrizzle = this.prodDrizzleCached;
     const service = new DbSyncService(localDrizzle, prodDrizzle);
     return service;
+  }
+
+  async workoutType(): Promise<WorkoutTypeService> {
+    return new WorkoutTypeService(await this.drizzle(), await this.exercise());
+
+  }
+  async workoutPlan(): Promise<WorkoutPlanService> {
+    return new WorkoutPlanService(await this.drizzle());
+  }
+  async manager(): Promise<ManagerService> {
+    return new ManagerService(await this.drizzle());
+  }
+  async user(): Promise<UserService> {
+    return new UserService(await this.drizzle());
   }
 
 }

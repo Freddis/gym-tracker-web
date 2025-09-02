@@ -1,4 +1,4 @@
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';

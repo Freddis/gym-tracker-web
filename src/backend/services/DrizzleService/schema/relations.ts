@@ -1,5 +1,15 @@
 import {relations} from 'drizzle-orm/relations';
-import {exercises, muscles, users, workoutExercises, workoutExerciseSets, workouts} from './schema';
+import {
+  exercises,
+  muscles,
+  users,
+  workoutExercises,
+  workoutExerciseSets,
+  workouts,
+  workoutTypeExercises,
+  workoutTypeExerciseSets,
+  workoutTypes,
+} from './schema';
 
 
 export const exerciseRelations = relations(exercises, (relations) => ({
@@ -31,4 +41,16 @@ export const workoutExerciseSetRelations = relations(workoutExerciseSets, (relat
     }
   ),
   exercise: relations.one(exercises, {fields: [workoutExerciseSets.exerciseId], references: [exercises.id]}),
+}));
+
+export const workoutTypeRelations = relations(workoutTypes, (relations) => ({
+  user: relations.one(users),
+  exercises: relations.many(workoutTypeExercises),
+}));
+
+export const workoutTypeExerciseRelations = relations(workoutTypeExercises, (relations) => ({
+  user: relations.one(users),
+  workout: relations.one(workoutTypes, {fields: [workoutTypeExercises.workoutTypeId], references: [workoutTypes.id]}),
+  exercise: relations.one(exercises, {fields: [workoutTypeExercises.exerciseId], references: [exercises.id]}),
+  sets: relations.many(workoutTypeExerciseSets),
 }));

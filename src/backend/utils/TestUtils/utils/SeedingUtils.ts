@@ -31,7 +31,7 @@ export class SeedUtils {
 
   static async createExercise(exercise: Partial<Exercise> = {}): Promise<Exercise> {
     const factory = BusinessUtils.getFactory();
-    const exerciseService = await factory.getExerciseService();
+    const exerciseService = await factory.exercise();
     const result = await exerciseService.create({
       muscles: {
         primary: [],

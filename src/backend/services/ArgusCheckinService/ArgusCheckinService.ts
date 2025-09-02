@@ -1,6 +1,6 @@
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ArgusCheckinType} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinType';
-import {PaginatedResult} from 'src/backend/services/ApiService/types/PaginatedResponse';
+import {PaginatedResult} from 'src/backend/services/ApiService/types/PaginatedResult';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {eq, count} from 'drizzle-orm';
 import {ArgusCheckIn} from './types/ArgusCheckin';

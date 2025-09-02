@@ -100,6 +100,13 @@ export const dictionary = {
       unknownApiError: "Something went wrong. We can't log you in",
       notImplemented: 'Not implemented yet',
     },
+    generic: {
+      buttons: {
+        back: 'Back',
+        save: 'Save',
+        delete: 'Delete',
+      },
+    },
   },
   layout: {
     header: header,
@@ -129,6 +136,9 @@ export const dictionary = {
           exercises: 'Exercises:',
           ownLibrary: 'Own Library',
           searchPlaceholder: 'Search here...',
+        },
+        toasts: {
+          noExercisesFound: 'No exercises found',
         },
       },
     },
@@ -282,6 +292,51 @@ export const dictionary = {
         noExercisesFound: 'No exercises found',
       },
     },
+    workoutTypes: {
+      create: {
+        heading: 'Create Workout Type',
+        toasts: {
+          success: 'You successfully added workout type',
+        },
+      },
+      update: {
+        heading: 'Update Workout Type',
+        toasts: {
+          success: 'You successfully updated workout type',
+          deletionSuccss: 'You successfully deleted workout type',
+        },
+      },
+      list: {
+        heading: 'Workout Types',
+        toasts: {
+          noPlansFound: "You don't have any workout types yet. Try to add one!",
+        },
+        buttons: {
+          add: 'Add Workout Type',
+        },
+      },
+    },
+    workoutPlans: {
+      create: {
+        heading: 'Create Workout Plan',
+        toasts: {
+          success: 'You successfully added workout plan',
+        },
+      },
+      list: {
+        heading: 'Workout Plans',
+        toasts: {
+          noPlansFound: "You don't have any workout plans yet. Try to add one!",
+        },
+      },
+      update: {
+        heading: 'Update Workout Plan',
+        toasts: {
+          success: 'You successfully updated workout plan',
+          deletionSuccss: 'You successfully deleted workout plan',
+        },
+      },
+    },
     activities: {
       workouts: {
         add: {
@@ -305,7 +360,7 @@ export const dictionary = {
         update: {
           heading: 'Update Weight',
           toasts: {
-            success: 'You successfully added weight record',
+            success: 'You successfully updated weight record',
           },
           buttons: {
             save: 'Save',
@@ -325,6 +380,8 @@ export const dictionary = {
         buttons: {
           addWorkout: 'Add Workout',
           addEntry: 'Add Entry',
+          plans: 'My Workout Plans',
+          types: 'My Workout Types',
         },
         filter: {
           labels: {

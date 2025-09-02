@@ -47,6 +47,36 @@ import type {
   PatchWorkoutsByIdData,
   PatchWorkoutsByIdResponses,
   PatchWorkoutsByIdErrors,
+  GetWorkoutPlansData,
+  GetWorkoutPlansResponses,
+  GetWorkoutPlansErrors,
+  PostWorkoutPlansData,
+  PostWorkoutPlansResponses,
+  PostWorkoutPlansErrors,
+  DeleteWorkoutPlansByIdData,
+  DeleteWorkoutPlansByIdResponses,
+  DeleteWorkoutPlansByIdErrors,
+  GetWorkoutPlansByIdData,
+  GetWorkoutPlansByIdResponses,
+  GetWorkoutPlansByIdErrors,
+  PatchWorkoutPlansByIdData,
+  PatchWorkoutPlansByIdResponses,
+  PatchWorkoutPlansByIdErrors,
+  GetWorkoutTypesData,
+  GetWorkoutTypesResponses,
+  GetWorkoutTypesErrors,
+  PostWorkoutTypesData,
+  PostWorkoutTypesResponses,
+  PostWorkoutTypesErrors,
+  DeleteWorkoutTypesByIdData,
+  DeleteWorkoutTypesByIdResponses,
+  DeleteWorkoutTypesByIdErrors,
+  GetWorkoutTypesByIdData,
+  GetWorkoutTypesByIdResponses,
+  GetWorkoutTypesByIdErrors,
+  PatchWorkoutTypesByIdData,
+  PatchWorkoutTypesByIdResponses,
+  PatchWorkoutTypesByIdErrors,
   PostWeightData,
   PostWeightResponses,
   PostWeightErrors,
@@ -90,6 +120,14 @@ import {
   putWorkoutsResponseTransformer,
   getWorkoutsByIdResponseTransformer,
   patchWorkoutsByIdResponseTransformer,
+  getWorkoutPlansResponseTransformer,
+  postWorkoutPlansResponseTransformer,
+  getWorkoutPlansByIdResponseTransformer,
+  patchWorkoutPlansByIdResponseTransformer,
+  getWorkoutTypesResponseTransformer,
+  postWorkoutTypesResponseTransformer,
+  getWorkoutTypesByIdResponseTransformer,
+  patchWorkoutTypesByIdResponseTransformer,
   postWeightResponseTransformer,
   getWeightByIdResponseTransformer,
   patchWeightByIdResponseTransformer,
@@ -479,6 +517,268 @@ export const patchWorkoutsById = <ThrowOnError extends boolean = false>(
     ],
     responseTransformer: patchWorkoutsByIdResponseTransformer,
     url: "/workouts/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutPlans = <ThrowOnError extends boolean = false>(
+  options?: Options<GetWorkoutPlansData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetWorkoutPlansResponses,
+    GetWorkoutPlansErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getWorkoutPlansResponseTransformer,
+    url: "/workout-plans",
+    ...options,
+  });
+};
+
+/**
+ * Adds new workout plan for the user
+ */
+export const postWorkoutPlans = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWorkoutPlansData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWorkoutPlansResponses,
+    PostWorkoutPlansErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: postWorkoutPlansResponseTransformer,
+    url: "/workout-plans",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Deletes workout plan
+ */
+export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteWorkoutPlansByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteWorkoutPlansByIdResponses,
+    DeleteWorkoutPlansByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/workout-plans/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on user workout plan
+ */
+export const getWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWorkoutPlansByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWorkoutPlansByIdResponses,
+    GetWorkoutPlansByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getWorkoutPlansByIdResponseTransformer,
+    url: "/workout-plans/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updated workout plan for the user
+ */
+export const patchWorkoutPlansById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWorkoutPlansByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWorkoutPlansByIdResponses,
+    PatchWorkoutPlansByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: patchWorkoutPlansByIdResponseTransformer,
+    url: "/workout-plans/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Returns list of user workout plans
+ */
+export const getWorkoutTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<GetWorkoutTypesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetWorkoutTypesResponses,
+    GetWorkoutTypesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getWorkoutTypesResponseTransformer,
+    url: "/workout-types",
+    ...options,
+  });
+};
+
+/**
+ * Adds new workout type for the user
+ */
+export const postWorkoutTypes = <ThrowOnError extends boolean = false>(
+  options?: Options<PostWorkoutTypesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostWorkoutTypesResponses,
+    PostWorkoutTypesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: postWorkoutTypesResponseTransformer,
+    url: "/workout-types",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Deletes workout type
+ */
+export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteWorkoutTypesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteWorkoutTypesByIdResponses,
+    DeleteWorkoutTypesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/workout-types/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on user workout type
+ */
+export const getWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetWorkoutTypesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetWorkoutTypesByIdResponses,
+    GetWorkoutTypesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getWorkoutTypesByIdResponseTransformer,
+    url: "/workout-types/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updated workout type for the user
+ */
+export const patchWorkoutTypesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchWorkoutTypesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchWorkoutTypesByIdResponses,
+    PatchWorkoutTypesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: patchWorkoutTypesByIdResponseTransformer,
+    url: "/workout-types/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",

@@ -68,10 +68,74 @@ export const users = gymTracker.table('users', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
 
+export const workoutPlans = gymTracker.table('workout_plan', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar(),
+  description: text(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+(table) => [
+  index().on(table.userId),
+  index().on(table.deletedAt),
+]);
+
+export const workoutTypes = gymTracker.table('workout_type', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  planIndex: integer(),
+  planId: integer().references(() => workoutPlans.id, {onDelete: 'cascade'}),
+  name: varchar(),
+  description: text(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+(table) => [
+  index().on(table.userId),
+  index().on(table.deletedAt),
+]);
+
+export const workoutTypeExercises = gymTracker.table('workout_type_exercise', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  index: integer().notNull(),
+  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
+  description: text(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+(table) => [
+  index().on(table.userId),
+  index().on(table.deletedAt),
+]);
+
+export const workoutTypeExerciseSets = gymTracker.table('workout_type_exercise_sets', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  reps: integer(),
+  exerciseId: integer().notNull().references(() => exercises.id, {onDelete: 'cascade'}),
+  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  workoutTypeExerciseId: integer().notNull().references(() => workoutTypeExercises.id, {onDelete: 'cascade'}),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+(table) => [
+  index().on(table.workoutTypeId),
+  index().on(table.exerciseId),
+  index().on(table.userId),
+  index().on(table.workoutTypeExerciseId),
+]);
+
 export const workouts = gymTracker.table('workouts', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   externalId: varchar(),
-  typeId: integer(),
+  typeId: integer().references(() => workoutTypes.id, {onDelete: 'restrict'}),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   calories: real().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -83,8 +147,7 @@ export const workouts = gymTracker.table('workouts', {
 (table) => [
   index().on(table.userId),
   index().on(table.deletedAt),
-]
-);
+]);
 
 export const weight = gymTracker.table('weight', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -99,8 +162,7 @@ export const weight = gymTracker.table('weight', {
 (table) => [
   index().on(table.userId),
   index().on(table.deletedAt),
-]
-);
+]);
 
 export const workoutExercises = gymTracker.table('workout_exercises', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -167,4 +229,3 @@ export const entries = gymTracker.table('entries', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
-

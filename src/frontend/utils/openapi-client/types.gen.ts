@@ -668,6 +668,126 @@ export type WorkoutUpsertDto = {
 };
 
 /**
+ * Workout Plan. Consist of workout templates that users supposed to conduct.
+ */
+export type WorkoutPlan = {
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Name of the workout plan
+   */
+  name: string | null;
+  /**
+   * Description of the workpout plan
+   */
+  description: string | null;
+  /**
+   * Id of the user
+   */
+  userId: number;
+  /**
+   * Date of creation
+   */
+  createdAt: Date;
+  /**
+   * The last time workout plan was updated
+   */
+  updatedAt: Date | null;
+  /**
+   * Date workout plan was deleted
+   */
+  deletedAt: Date | null;
+};
+
+/**
+ * Workout Type. Workout template for  that user follows every other day.
+ */
+export type WorkoutTypeExerciseUpdateDto = {
+  /**
+   * Sets
+   */
+  sets: Array<WorkoutTypeExerciseSet>;
+  /**
+   * Position / ordering inside the workout type
+   */
+  index: number;
+  /**
+   * Id of the exercise
+   */
+  exerciseId: number;
+};
+
+export type WorkoutTypeExerciseSet = {
+  /**
+   * Target number of reps
+   */
+  reps: number | null;
+};
+
+/**
+ * Workout Type. Workout template for  that user follows every other day.
+ */
+export type WorkoutType = {
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Id of the user
+   */
+  userId: number;
+  /**
+   * Workout Plan Id
+   */
+  planIndex: number | null;
+  /**
+   * Position inside Workout Plan
+   */
+  planId: number | null;
+  /**
+   * Name of the workout type
+   */
+  name: string | null;
+  /**
+   * Description of the workpout type
+   */
+  description: string | null;
+  /**
+   * Date of creation
+   */
+  createdAt: Date;
+  /**
+   * The last time workout type was updated
+   */
+  updatedAt: Date | null;
+  /**
+   * Date workout type was deleted
+   */
+  deletedAt: Date | null;
+  /**
+   * Exercises
+   */
+  exercises: Array<WorkoutTypeExercise>;
+};
+
+/**
+ * Workout Type. Workout template for  that user follows every other day.
+ */
+export type WorkoutTypeExercise = {
+  exercise: Exercise;
+  /**
+   * Sets
+   */
+  sets: Array<WorkoutTypeExerciseSet>;
+  /**
+   * Position / ordering inside the workout type
+   */
+  index: number;
+};
+
+/**
  * Weight record added by user
  */
 export type Weight = {
@@ -2808,6 +2928,1274 @@ export type PatchWorkoutsByIdResponses = {
 
 export type PatchWorkoutsByIdResponse =
   PatchWorkoutsByIdResponses[keyof PatchWorkoutsByIdResponses];
+
+export type GetWorkoutPlansData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Only return workouts plan updated after this date. Used for syncing.
+     */
+    updatedAfter?: Date;
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/workout-plans";
+};
+
+export type GetWorkoutPlansErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetWorkoutPlansError =
+  GetWorkoutPlansErrors[keyof GetWorkoutPlansErrors];
+
+export type GetWorkoutPlansResponses = {
+  /**
+   * List of workout plans
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<WorkoutPlan>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetWorkoutPlansResponse =
+  GetWorkoutPlansResponses[keyof GetWorkoutPlansResponses];
+
+export type PostWorkoutPlansData = {
+  /**
+   * Workout Plan. Consist of workout templates that users supposed to conduct.
+   */
+  body?: {
+    /**
+     * Name of the workout plan
+     */
+    name: string | null;
+    /**
+     * Description of the workpout plan
+     */
+    description: string | null;
+  };
+  path?: never;
+  query?: never;
+  url: "/workout-plans";
+};
+
+export type PostWorkoutPlansErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostWorkoutPlansError =
+  PostWorkoutPlansErrors[keyof PostWorkoutPlansErrors];
+
+export type PostWorkoutPlansResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutPlan;
+};
+
+export type PostWorkoutPlansResponse =
+  PostWorkoutPlansResponses[keyof PostWorkoutPlansResponses];
+
+export type DeleteWorkoutPlansByIdData = {
+  body?: unknown;
+  path: {
+    /**
+     * Id of the workout plan
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-plans/{id}";
+};
+
+export type DeleteWorkoutPlansByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type DeleteWorkoutPlansByIdError =
+  DeleteWorkoutPlansByIdErrors[keyof DeleteWorkoutPlansByIdErrors];
+
+export type DeleteWorkoutPlansByIdResponses = {
+  /**
+   * Empty response on success
+   */
+  200: {
+    [key: string]: unknown;
+  };
+};
+
+export type DeleteWorkoutPlansByIdResponse =
+  DeleteWorkoutPlansByIdResponses[keyof DeleteWorkoutPlansByIdResponses];
+
+export type GetWorkoutPlansByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the workout plan
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-plans/{id}";
+};
+
+export type GetWorkoutPlansByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetWorkoutPlansByIdError =
+  GetWorkoutPlansByIdErrors[keyof GetWorkoutPlansByIdErrors];
+
+export type GetWorkoutPlansByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutPlan;
+};
+
+export type GetWorkoutPlansByIdResponse =
+  GetWorkoutPlansByIdResponses[keyof GetWorkoutPlansByIdResponses];
+
+export type PatchWorkoutPlansByIdData = {
+  /**
+   * Workout Plan. Consist of workout templates that users supposed to conduct.
+   */
+  body?: {
+    /**
+     * Name of the workout plan
+     */
+    name: string | null;
+    /**
+     * Description of the workpout plan
+     */
+    description: string | null;
+  };
+  path: {
+    /**
+     * Id of the workout plan
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-plans/{id}";
+};
+
+export type PatchWorkoutPlansByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchWorkoutPlansByIdError =
+  PatchWorkoutPlansByIdErrors[keyof PatchWorkoutPlansByIdErrors];
+
+export type PatchWorkoutPlansByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutPlan;
+};
+
+export type PatchWorkoutPlansByIdResponse =
+  PatchWorkoutPlansByIdResponses[keyof PatchWorkoutPlansByIdResponses];
+
+export type GetWorkoutTypesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Only return workouts plan updated after this date. Used for syncing.
+     */
+    updatedAfter?: Date;
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/workout-types";
+};
+
+export type GetWorkoutTypesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetWorkoutTypesError =
+  GetWorkoutTypesErrors[keyof GetWorkoutTypesErrors];
+
+export type GetWorkoutTypesResponses = {
+  /**
+   * List of workout plans
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<WorkoutType>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetWorkoutTypesResponse =
+  GetWorkoutTypesResponses[keyof GetWorkoutTypesResponses];
+
+export type PostWorkoutTypesData = {
+  /**
+   * Workout Type.
+   */
+  body?: {
+    /**
+     * Workout Plan Id
+     */
+    planIndex: number | null;
+    /**
+     * Position inside Workout Plan
+     */
+    planId: number | null;
+    /**
+     * Name of the workout type
+     */
+    name: string | null;
+    /**
+     * Description of the workpout type
+     */
+    description: string | null;
+    /**
+     * Exercises
+     */
+    exercises: Array<WorkoutTypeExerciseUpdateDto>;
+  };
+  path?: never;
+  query?: never;
+  url: "/workout-types";
+};
+
+export type PostWorkoutTypesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostWorkoutTypesError =
+  PostWorkoutTypesErrors[keyof PostWorkoutTypesErrors];
+
+export type PostWorkoutTypesResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutType;
+};
+
+export type PostWorkoutTypesResponse =
+  PostWorkoutTypesResponses[keyof PostWorkoutTypesResponses];
+
+export type DeleteWorkoutTypesByIdData = {
+  body?: unknown;
+  path: {
+    /**
+     * Id of the workout type
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-types/{id}";
+};
+
+export type DeleteWorkoutTypesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type DeleteWorkoutTypesByIdError =
+  DeleteWorkoutTypesByIdErrors[keyof DeleteWorkoutTypesByIdErrors];
+
+export type DeleteWorkoutTypesByIdResponses = {
+  /**
+   * Empty response on success
+   */
+  200: {
+    [key: string]: unknown;
+  };
+};
+
+export type DeleteWorkoutTypesByIdResponse =
+  DeleteWorkoutTypesByIdResponses[keyof DeleteWorkoutTypesByIdResponses];
+
+export type GetWorkoutTypesByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the workout type
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-types/{id}";
+};
+
+export type GetWorkoutTypesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetWorkoutTypesByIdError =
+  GetWorkoutTypesByIdErrors[keyof GetWorkoutTypesByIdErrors];
+
+export type GetWorkoutTypesByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutType;
+};
+
+export type GetWorkoutTypesByIdResponse =
+  GetWorkoutTypesByIdResponses[keyof GetWorkoutTypesByIdResponses];
+
+export type PatchWorkoutTypesByIdData = {
+  /**
+   * Workout Type.
+   */
+  body?: {
+    /**
+     * Workout Plan Id
+     */
+    planIndex: number | null;
+    /**
+     * Position inside Workout Plan
+     */
+    planId: number | null;
+    /**
+     * Name of the workout type
+     */
+    name: string | null;
+    /**
+     * Description of the workpout type
+     */
+    description: string | null;
+    /**
+     * Exercises
+     */
+    exercises: Array<WorkoutTypeExerciseUpdateDto>;
+  };
+  path: {
+    /**
+     * Id of the workout type
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/workout-types/{id}";
+};
+
+export type PatchWorkoutTypesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchWorkoutTypesByIdError =
+  PatchWorkoutTypesByIdErrors[keyof PatchWorkoutTypesByIdErrors];
+
+export type PatchWorkoutTypesByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: WorkoutType;
+};
+
+export type PatchWorkoutTypesByIdResponse =
+  PatchWorkoutTypesByIdResponses[keyof PatchWorkoutTypesByIdResponses];
 
 export type PostWeightData = {
   body?: {

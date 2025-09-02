@@ -1,5 +1,5 @@
 import {and, desc, isNull} from 'drizzle-orm';
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Manager} from './types/Manager';
 

@@ -1,46 +1,82 @@
 
-import {FC, useState, useContext} from 'react';
+import {FC, useState, useEffect, ChangeEventHandler} from 'react';
 import {ExerciseRow} from './components/ExerciseRow';
-import {AuthContext} from '../../layout/AuthProvider/AuthContext';
 import {AppTextInput} from '../AppTextInput/AppTextInput';
 import {AppSwitch} from '../AppSwitch/AppSwitch';
 import {AppSpinner} from '../AppSpinner/AppSpinner';
-import {useOpenApiQuery} from '../../../utils/useOpenApiQuery';
-import {Exercise} from '../../../utils/openapi-client';
-import {getExercisesBuiltInOptions} from '../../../utils/openapi-client/@tanstack/react-query.gen';
+import {Exercise, getExercises, getExercisesBuiltIn} from '../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+import {useInView} from 'react-intersection-observer';
+import {useInfiniteQuery} from '@tanstack/react-query';
+import {Color} from '../../../utils/design-system/types/Color';
+import {AppToast} from '../AppToast/AppToast';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
-  const query = useOpenApiQuery(getExercisesBuiltInOptions, {});
-  const [search, setSearch] = useState<string>('');
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.popups.exerciseSelection);
+  const [search, setSearch] = useState<string>('');
   const [ownLibrary, setOwnLibrary] = useState(false);
-  const auth = useContext(AuthContext);
-  const userId = auth.user?.id ?? 0;
-  const searchFilter = (exercise: Exercise) => {
-    if (ownLibrary && exercise.userId !== userId) {
-      return false;
+  const {ref, inView} = useInView({
+    rootMargin: '50%',
+  });
+  const response = useInfiniteQuery({
+    queryFn: ({pageParam}) => {
+      if (ownLibrary) {
+        return getExercises({
+          query: {
+            page: pageParam,
+            filter: search,
+          },
+        });
+      }
+      return getExercisesBuiltIn({
+        query: {
+          page: pageParam,
+          filter: search,
+        },
+      });
+    },
+    queryKey: ['exercises', search, ownLibrary],
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.data) {
+        return null;
+      }
+      const left = lastPage.data.info.count - lastPage.data.info.page * lastPage.data.info.pageSize;
+      if (left <= 0) {
+        return null;
+      }
+      return lastPage.data.info.page + 1;
+    },
+    initialPageParam: 1,
+  });
+  useEffect(() => {
+    if (inView && response.hasNextPage && !response.isFetchingNextPage) {
+      response.fetchNextPage();
     }
-    if (search.length >= 3 && !exercise.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())) {
-      return false;
-    }
-    return true;
+  }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
+
+  const onSearchInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearch(e.target.value);
   };
+
+  const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   return (
     <div className="flex flex-col items-stretch max-w-full max-h-full w-200 h-200">
       <h2 className="mb-10 text-center text-xl">{t(i18n.heading)}</h2>
-      <AppTextInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t(i18n.labels.searchPlaceholder)}/>
+      <AppTextInput value={search} onChange={onSearchInputChange} placeholder={t(i18n.labels.searchPlaceholder)}/>
       <div className="mt-5">
         <AppSwitch onCheckedChange={(e) => setOwnLibrary(e)} label={t(i18n.labels.ownLibrary)} />
       </div>
-      {query.isLoading && <AppSpinner />}
-      {query.isSuccess && (
+      {response.isLoading && <AppSpinner />}
+      {response.isSuccess && (
         <div className="mt-5 flex flex-col overflow-hidden">
           <div>{t(i18n.labels.exercises)}</div>
           <div className="h-200 overflow-scroll mt-2 bg-main p-2 rounded-xs">
-            {query.data.items.filter(searchFilter).map((item) => (
+            {items.map((item) => (
               <ExerciseRow key={item.id} item={item} onSelect={props.onSelect}/>)
             )}
+            {response.isFetchingNextPage ? <AppSpinner/> : null}
+            {!response.isLoading && items.length === 0 && <AppToast variant={Color.Warning}>{t(i18n.toasts.noExercisesFound)}</AppToast>}
+            <div ref={ref}></div>
           </div>
         </div>
       )}

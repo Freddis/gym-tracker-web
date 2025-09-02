@@ -11,6 +11,14 @@ import type {
   PutWorkoutsResponse,
   GetWorkoutsByIdResponse,
   PatchWorkoutsByIdResponse,
+  GetWorkoutPlansResponse,
+  PostWorkoutPlansResponse,
+  GetWorkoutPlansByIdResponse,
+  PatchWorkoutPlansByIdResponse,
+  GetWorkoutTypesResponse,
+  PostWorkoutTypesResponse,
+  GetWorkoutTypesByIdResponse,
+  PatchWorkoutTypesByIdResponse,
   PostWeightResponse,
   GetWeightByIdResponse,
   PatchWeightByIdResponse,
@@ -162,6 +170,96 @@ export const patchWorkoutsByIdResponseTransformer = async (
   data: any,
 ): Promise<PatchWorkoutsByIdResponse> => {
   data = workoutSchemaResponseTransformer(data);
+  return data;
+};
+
+const workoutPlanSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getWorkoutPlansResponseTransformer = async (
+  data: any,
+): Promise<GetWorkoutPlansResponse> => {
+  data.items = data.items.map((item: any) => {
+    return workoutPlanSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const postWorkoutPlansResponseTransformer = async (
+  data: any,
+): Promise<PostWorkoutPlansResponse> => {
+  data = workoutPlanSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getWorkoutPlansByIdResponseTransformer = async (
+  data: any,
+): Promise<GetWorkoutPlansByIdResponse> => {
+  data = workoutPlanSchemaResponseTransformer(data);
+  return data;
+};
+
+export const patchWorkoutPlansByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchWorkoutPlansByIdResponse> => {
+  data = workoutPlanSchemaResponseTransformer(data);
+  return data;
+};
+
+const workoutTypeExerciseSchemaResponseTransformer = (data: any) => {
+  data.exercise = exerciseSchemaResponseTransformer(data.exercise);
+  return data;
+};
+
+const workoutTypeSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  data.exercises = data.exercises.map((item: any) => {
+    return workoutTypeExerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getWorkoutTypesResponseTransformer = async (
+  data: any,
+): Promise<GetWorkoutTypesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return workoutTypeSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const postWorkoutTypesResponseTransformer = async (
+  data: any,
+): Promise<PostWorkoutTypesResponse> => {
+  data = workoutTypeSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getWorkoutTypesByIdResponseTransformer = async (
+  data: any,
+): Promise<GetWorkoutTypesByIdResponse> => {
+  data = workoutTypeSchemaResponseTransformer(data);
+  return data;
+};
+
+export const patchWorkoutTypesByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchWorkoutTypesByIdResponse> => {
+  data = workoutTypeSchemaResponseTransformer(data);
   return data;
 };
 

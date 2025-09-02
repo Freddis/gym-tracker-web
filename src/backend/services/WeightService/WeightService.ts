@@ -3,7 +3,7 @@ import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {and, isNull, desc, eq, inArray} from 'drizzle-orm';
 export class WeightService {
   protected drizzle: DrizzleService;

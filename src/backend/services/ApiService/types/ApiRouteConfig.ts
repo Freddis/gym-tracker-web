@@ -1,27 +1,18 @@
 import {OpenApiAnyRouteConfigMap, OpenApiRouteConfig} from 'strap-on-openapi';
 import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
-import {serverConfig} from '../../../utils/ServerConfig/config';
-import {ArgusCheckinService} from '../../ArgusCheckinService/ArgusCheckinService';
-import {AuthService} from '../../AuthService/AuthService';
-import {ExerciseService} from '../../ExerciseService/ExerciseService';
-import {WeightService} from '../../WeightService/WeightService';
-import {WorkoutService} from '../../WorkoutService/WorkoutService';
 import {ActionErrorCode} from './ActionErrorCode';
 import {ApiRequestServices} from './ApiRequestServices';
-import {DrizzleService} from '../../DrizzleService/DrizzleService';
 import {ApiError} from '../errors/ApiError';
 import {UserRouteContext} from './UserRouteContext';
 import {PublicRouteContext} from './PublicRouteContext';
-import {EntryService} from '../../EntryService/EntryService';
-import {UserService} from '../../UserService/UserService';
-import {ManagerService} from '../../ManagerService/ManagerService';
 import {ManagerRouteContext} from './ManagerRouteContext';
+import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
-  protected drizzle: DrizzleService;
-  constructor(service: DrizzleService) {
-    this.drizzle = service;
+  protected factory: GlobalServiceFactory;
+  constructor(factory: GlobalServiceFactory) {
+    this.factory = factory;
   }
 
   Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, ManagerRouteContext> = {
@@ -82,25 +73,19 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     return result;
   }
   protected async createRequestServices(): Promise<ApiRequestServices> {
-    const drizzle = this.drizzle;
-    const exercise = new ExerciseService(drizzle);
-    const user = new UserService(drizzle);
-    const weight = new WeightService(drizzle);
-    const workout = new WorkoutService(drizzle, exercise);
-    const entry = new EntryService(drizzle, user, workout, weight);
-    const argusCheckin = new ArgusCheckinService(drizzle);
-    const manager = new ManagerService(drizzle);
-    const auth = new AuthService(serverConfig.services.auth, drizzle, manager);
+
     const services: ApiRequestServices = {
-      auth,
+      auth: await this.factory.auth(),
       models: {
-        argusCheckin,
-        workout,
-        exercise,
-        weight,
-        entry,
-        user,
-        manager,
+        argusCheckin: await this.factory.argusCheckin(),
+        workout: await this.factory.workout(),
+        exercise: await this.factory.exercise(),
+        weight: await this.factory.weight(),
+        entry: await this.factory.entry(),
+        user: await this.factory.user(),
+        manager: await this.factory.manager(),
+        workoutPlan: await this.factory.workoutPlan(),
+        workoutType: await this.factory.workoutType(),
       },
     };
     return services;

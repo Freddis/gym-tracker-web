@@ -5,9 +5,12 @@ import {PopupContext} from '../../../../atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from '../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {Conditional} from '../../../../layout/Header/Header';
 import {AppLabel} from '../../../../atoms/AppLabel/AppLabel';
-import {Workout, WorkoutUpdateDto, Exercise} from '../../../../../utils/openapi-client';
+import {Workout, WorkoutUpdateDto, Exercise, getWorkoutTypes} from '../../../../../utils/openapi-client';
 import {UpdateWorkoutExerciseFormExercrise} from './components/UpdateWorkoutExerciseForm/types/UpdateWorkoutExerciseFormExercrise';
 import {UpdateWorkoutExerciseForm} from './components/UpdateWorkoutExerciseForm/UpdateWorkoutExerciseForm';
+import {AppCombobox} from '../../../../atoms/AppCombobox/AppCombobox';
+import {useQuery} from '@tanstack/react-query';
+import {ComboValue} from '../../../../atoms/AppCombobox/types/ComboValue';
 
 export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: WorkoutUpdateDto) => void }> = (props) => {
   const popupContext = useContext(PopupContext);
@@ -20,7 +23,10 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
       },
     }));
   });
-
+  const response = useQuery({
+    queryFn: () => getWorkoutTypes(),
+    queryKey: [],
+  });
   const setStart = (start: Date) => {
     setItem({
       ...item,
@@ -43,7 +49,6 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
       deletedAt: item.deletedAt,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
-
     };
     console.log(newItem);
     props.onUpdate(newItem);
@@ -76,8 +81,34 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
     setExercises([...exercises, {workoutExercise, exercise}]);
     popupContext.setContent(null);
   };
+  const workoutTypesValues: ComboValue[] = response.data?.data?.items.map((type) => ({
+    label: type.name ?? 'Nothing',
+    onSelect: (selected) => {
+      if (!selected) {
+        setItem({
+          ...item,
+          typeId: null,
+        });
+        return;
+      }
+      setItem({
+        ...item,
+        typeId: type.id,
+      });
+    },
+  })) ?? [];
+  const selectedType = response.data?.data?.items.find((x) => x.id === item.typeId) ?? null;
   return (
     <>
+      <div className="mb-5 flex flex-row items-center">
+        <AppLabel className="w-20">Type</AppLabel>
+        <AppCombobox
+          placeholder={'Find Workout type'}
+          defaultValue={selectedType?.name ?? 'Select workout type'}
+          notFound={'No types found'}
+          values={workoutTypesValues}
+        />
+      </div>
       <div className="mb-5 flex flex-row items-center">
         <AppLabel className="w-20">Started</AppLabel>
         <AppTextInput className="w-60 text-center" onChange={(e) => setStart(new Date(e.target.value))} value={item.start.toISOString()}/>

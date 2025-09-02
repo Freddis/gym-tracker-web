@@ -81,14 +81,14 @@ export const UpdateWorkoutPage: FC = () => {
       <AppBlock className="max-w-5xl">
         <AppBlockHeader>{t(i18n.workouts.update.heading)} {response.data.item.id.toString()}</AppBlockHeader>
         <UpdateWorkoutForm item={response.data.item} onUpdate={setItemDto}/>
-          <div className="mt-5 border-b-1 border-neutral-on-surface"/>
-            <div className="mt-5 flex flex-row">
-              <AppLink to="/entries">Back</AppLink>
-              <div className="grow flex flex-row-reverse gap-2">
-                <AppButton onClick={save}>Save</AppButton>
-                <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
-              </div>
-          </div>
+        <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+          <div className="mt-5 flex flex-row">
+            <AppLink to="/entries">Back</AppLink>
+            <div className="grow flex flex-row-reverse gap-2">
+              <AppButton onClick={save}>Save</AppButton>
+              <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
+            </div>
+        </div>
       </AppBlock>
     </PageContainer>
   );

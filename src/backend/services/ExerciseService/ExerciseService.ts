@@ -5,7 +5,7 @@ import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/Exer
 import {SemiPartial} from 'src/backend/types/SemiPartial';
 import {Exercise} from './types/Exercise';
 import {Muscle} from '../../types/Muscle';
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {Equipment} from '../../types/Equipment';
 
 export class ExerciseService {

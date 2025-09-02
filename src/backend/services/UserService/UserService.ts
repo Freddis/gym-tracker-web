@@ -1,5 +1,5 @@
 import {and, desc, inArray} from 'drizzle-orm';
-import {PaginatedResult} from '../ApiService/types/PaginatedResponse';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from './types/User';
 

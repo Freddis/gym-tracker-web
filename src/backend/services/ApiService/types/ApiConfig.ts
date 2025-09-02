@@ -10,7 +10,6 @@ import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
 import {ApiRouteConfig} from './ApiRouteConfig';
 import {ApiErrorConfigMap} from './ApiErrorConfigMap';
-import {DrizzleService} from '../../DrizzleService/DrizzleService';
 import {PermissionError} from '../errors/PermissionError';
 import {ApiError} from '../errors/ApiError';
 import {PermissionErrorResponse} from '../validators/PermissionErrorResponse';
@@ -19,6 +18,7 @@ import {UnauthorizedErrorResponse} from '../validators/UnauthorizedErrorResponse
 import {UnknownErrorResponse} from '../validators/UnknownErrorResponse';
 import {ValidationErrorResponse} from '../validators/ValidationErrorResponse';
 import {NotFoundErrorResponse} from '../validators/NotFoundErrorResponse';
+import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
 
 export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
   basePath = '/api' as const;
@@ -30,10 +30,9 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
       error: ApiErrorCode.UnknownError,
     },
   } as const;
-  // skipDescriptionsCheck?: boolean = true;
 
-  constructor(service: DrizzleService) {
-    this.routes = new ApiRouteConfig(service);
+  constructor(factory: GlobalServiceFactory) {
+    this.routes = new ApiRouteConfig(factory);
   }
 
   handleError(e: unknown): OpenApiErrorResponse<ApiErrorCode, OpenApiErrorConfigMap<ApiErrorCode>> {

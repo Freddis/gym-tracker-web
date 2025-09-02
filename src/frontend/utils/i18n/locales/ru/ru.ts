@@ -89,6 +89,13 @@ export const dictionary: Translation = {
       unknownApiError: 'Что-то пошло не так.',
       notImplemented: 'К сожалению, функция пока не добавлена',
     },
+    generic: {
+      buttons: {
+        back: 'Назад',
+        save: 'Сохранить',
+        delete: 'Удалить',
+      },
+    },
   },
   layout: {
     header: {
@@ -119,6 +126,9 @@ export const dictionary: Translation = {
           exercises: 'Упражнения:',
           ownLibrary: 'Моя Библиотека',
           searchPlaceholder: 'Поиск...',
+        },
+        toasts: {
+          noExercisesFound: 'Упражнения не найдены',
         },
       },
     },
@@ -157,6 +167,51 @@ export const dictionary: Translation = {
     },
   },
   pages: {
+    workoutPlans: {
+      list: {
+        heading: 'Планы тренировок',
+        toasts: {
+          noPlansFound: 'Вы пока не добавили планы тренировок. Попробуйте создать один!',
+        },
+      },
+      create: {
+        heading: 'Создать план тренировок',
+        toasts: {
+          success: 'Вы успешно добавили план тренировок',
+        },
+      },
+      update: {
+        heading: 'Обновить план тренировок',
+        toasts: {
+          success: 'Вы успешно обновили план тренировок',
+          deletionSuccss: 'Вы успешно удалили план тренировок',
+        },
+      },
+    },
+    workoutTypes: {
+      create: {
+        heading: 'Создать тип тренировки',
+        toasts: {
+          success: 'Вы успешно добавили тип тренировки',
+        },
+      },
+      update: {
+        heading: 'Обновить тип тренировки',
+        toasts: {
+          success: 'Вы успешно обновили тип тренировки',
+          deletionSuccss: 'Вы успешно удалили тип тренировки',
+        },
+      },
+      list: {
+        heading: 'Типы тренировок',
+        toasts: {
+          noPlansFound: 'У вас пока нет типов тренировок. Попробуйте добавить один!',
+        },
+        buttons: {
+          add: 'Добавить тип тренировки',
+        },
+      },
+    },
     static: {
       articles: {
         header: 'Статьи',
@@ -263,6 +318,8 @@ export const dictionary: Translation = {
         buttons: {
           addWorkout: 'Добавить',
           addEntry: 'Добавить',
+          plans: 'Планы Тренировок',
+          types: 'Типы Тренировок',
         },
         objects: {
           workout: {
