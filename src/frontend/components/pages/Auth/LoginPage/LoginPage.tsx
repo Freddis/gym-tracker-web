@@ -63,17 +63,19 @@ export const LoginPage: FC = () => {
           <div className="flex flex-col">
             <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
             <AppTextInput
+              data-testid="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
-            <AppInputError error={errorMessage('email')} />
+            <AppInputError data-testid="error-email" error={errorMessage('email')} />
             <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
+              data-testid="password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-            <AppInputError error={errorMessage('password')} />
+            <AppInputError data-testid="error-password" error={errorMessage('password')} />
           </div>
           <div className="flex flex-row gap-10 justify-center">
             <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">

@@ -8,6 +8,7 @@ export abstract class BasePageTestUtils {
 
   constructor(page: Page) {
     this.page = page;
+    page.setDefaultTimeout(this.timeout);
   }
 
   async open() {

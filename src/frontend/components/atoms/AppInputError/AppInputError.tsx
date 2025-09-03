@@ -9,7 +9,7 @@ export const AppInputError: FC<{error: string | null, className?: string}> = (pr
   const classes = `palette-danger text-on-main duration-1000 
   transition-opacity mt-2 mb-2 flex items-center rounded-xs ${opacity} ${visibility}`;
   return (
-    <div className={twMerge(classes, props.className)}>
+    <div {...props} className={twMerge(classes, props.className)}>
       {props.error && <FaCircleXmark className="inline mr-2"/>}
       <span>{error}</span>
     </div>
