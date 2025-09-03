@@ -1,5 +1,5 @@
 import {describe, test, expect} from 'vitest';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {TestUtils} from '../../../../utils/TestUtils/TestUtils';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 

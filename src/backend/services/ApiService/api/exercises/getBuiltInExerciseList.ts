@@ -1,5 +1,5 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {getExerciseListQueryValidator} from './validators/getExerciseListQueryValidator';
 import {exerciseValidator} from './validators/exerciseValidator';
 import {RouteFactory} from '../../utils/RouteFactory';
@@ -10,7 +10,7 @@ export const getBuiltInExerciseList = RouteFactory.createRoute({
   description: 'Returns data on exercises available to the user',
   path: '/built-in',
   validators: {
-    query: getExerciseListQueryValidator,
+    query: getExerciseListQueryValidator.omit({includeBuiltIn: true}),
     response: RouteFactory.validators.paginatedResponse(exerciseValidator).openapi({description: 'List of excercises'}),
   },
   handler: async (ctx) => {

@@ -1,4 +1,4 @@
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {workoutValidator} from './validators/workoutValidator';
 import {object} from 'zod';
 import {ActionError} from '../../errors/ActionError';

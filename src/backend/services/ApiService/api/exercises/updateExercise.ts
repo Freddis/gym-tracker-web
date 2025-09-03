@@ -1,5 +1,5 @@
 import {boolean, object, string} from 'zod';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';

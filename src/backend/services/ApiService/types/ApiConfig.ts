@@ -5,7 +5,7 @@ import {
   OpenApiFieldError,
   OpenApiValidationError,
   OpenApiValidationLocation,
-} from 'strap-on-openapi';
+} from 'snap-on-openapi';
 import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
 import {ApiRouteConfig} from './ApiRouteConfig';

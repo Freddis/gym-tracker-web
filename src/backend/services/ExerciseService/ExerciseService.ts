@@ -6,7 +6,7 @@ import {SemiPartial} from 'src/backend/types/SemiPartial';
 import {Exercise} from './types/Exercise';
 import {Muscle} from '../../types/Muscle';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
-import {Equipment} from '../../types/Equipment';
+import {ExerciseFilter} from './types/ExerciseFilter';
 
 export class ExerciseService {
   protected db: DrizzleService;
@@ -115,15 +115,7 @@ export class ExerciseService {
    * Gets list of exercises. If exercises have variations they're going to be nested.
    * <b>Variations are going to be present in the list on top level as well, unless parentsOnly = true</b>
    */
-  async getPage(params?: {
-    page?: number,
-    perPage?: number,
-    ids?: number[],
-    filter?: string,
-    userId?: number | null,
-    muscle?: Muscle[],
-    equipment?: Equipment,
-    updatedAfter?: Date,
+  async getPage(params?: ExerciseFilter & {
     /** Only include parent exercises in items. Children only going to be nested in that case */
     parentsOnly?: boolean
   }): Promise<PaginatedResult<Exercise>> {
@@ -146,20 +138,10 @@ export class ExerciseService {
     return result;
   }
 
-  protected async paginateRows(params?: {
-    page?: number,
-    perPage?: number,
-    ids?: number[],
-    filter?: string,
-    userId?: number | null,
-    muscle?: Muscle[],
-    equipment?: Equipment,
-    updatedAfter?: Date
-    parentIds?: number[] | null
-  }): Promise<PaginatedResult<ExerciseRow>> {
+  protected async paginateRows(params?: ExerciseFilter): Promise<PaginatedResult<ExerciseRow>> {
     const db = await this.db.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 20;
+    const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
 
     // For each muscle we need subquery to find if the muscle is attached to this exercise
@@ -179,7 +161,10 @@ export class ExerciseService {
     const where = and(
       or(
           params?.userId === null ? isNull(db._.fullSchema.exercises.userId) : undefined,
-          params?.userId ? eq(db._.fullSchema.exercises.userId, params.userId) : undefined
+          params?.userId ? or(
+            eq(db._.fullSchema.exercises.userId, params.userId),
+            params?.includeBuiltIn ? isNull(db._.fullSchema.exercises.userId) : undefined,
+          ) : undefined
         ),
       params?.updatedAfter ? gte(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
       params?.filter ? and(
@@ -198,7 +183,8 @@ export class ExerciseService {
     .from(db._.fullSchema.exercises)
     .where(where)
     .orderBy(
-      asc(db._.fullSchema.exercises.name)
+        asc(db._.fullSchema.exercises.name),
+        asc(db._.fullSchema.exercises.id),
     )
     .limit(limit)
     .offset(offset);

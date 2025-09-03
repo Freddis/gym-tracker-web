@@ -1,5 +1,5 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {exerciseValidator} from './validators/exerciseValidator';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {getExerciseListQueryValidator} from './validators/getExerciseListQueryValidator';

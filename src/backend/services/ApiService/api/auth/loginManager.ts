@@ -1,6 +1,6 @@
 import {object, string, ZodError} from 'zod';
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod, OpenApiValidationError, OpenApiValidationLocation} from 'strap-on-openapi';
+import {OpenApiMethod, OpenApiValidationError, OpenApiValidationLocation} from 'snap-on-openapi';
 import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {RouteFactory} from '../../utils/RouteFactory';

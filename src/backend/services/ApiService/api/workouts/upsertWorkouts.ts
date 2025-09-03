@@ -1,5 +1,5 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {object} from 'zod';
 import {workoutUpsertDtoValidator} from './validators/workoutUpsertDtoValidator';
 import {RouteFactory} from '../../utils/RouteFactory';

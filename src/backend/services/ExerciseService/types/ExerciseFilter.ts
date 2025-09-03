@@ -1,0 +1,13 @@
+import {Equipment} from '../../../types/Equipment';
+import {Filter} from '../../../types/ModelService/Filter';
+import {Muscle} from '../../../types/Muscle';
+
+export interface ExerciseFilter extends Filter{
+    filter?: string,
+    userId?: number | null,
+    muscle?: Muscle[],
+    equipment?: Equipment,
+    updatedAfter?: Date,
+    parentIds?: number[] | null,
+    includeBuiltIn?: boolean,
+  }

@@ -1,4 +1,4 @@
-import {OpenApiError} from 'strap-on-openapi';
+import {OpenApiError} from 'snap-on-openapi';
 import {ApiErrorCode} from '../types/ApiErrorCode';
 import {Permission} from '../types/Permission';
 import {NonEmptyArray} from '../../../types/NonEmptyArray';

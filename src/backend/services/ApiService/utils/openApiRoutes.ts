@@ -1,4 +1,4 @@
-import {OpenApiRouteMap} from 'strap-on-openapi';
+import {OpenApiRouteMap} from 'snap-on-openapi';
 import {ApiRouteType} from '../types/ApiRouteType';
 import {getArgusCheckins} from '../api/argus-checkins/getArgusCheckins';
 import {getArgusCheckinTypes} from '../api/argus-checkins/getArgusCheckinTypes';

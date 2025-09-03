@@ -1,4 +1,4 @@
-import {OpenApiAnyRouteConfigMap, OpenApiRouteConfig} from 'strap-on-openapi';
+import {OpenApiAnyRouteConfigMap, OpenApiRouteConfig} from 'snap-on-openapi';
 import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
 import {ActionErrorCode} from './ActionErrorCode';

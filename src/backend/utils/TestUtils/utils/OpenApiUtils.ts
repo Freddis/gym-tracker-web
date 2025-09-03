@@ -1,4 +1,5 @@
-import {OpenApiMethod} from 'strap-on-openapi';
+
+import {OpenApiMethod} from 'snap-on-openapi';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
 import {openApiRoutes} from '../../../services/ApiService/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';

@@ -1,4 +1,4 @@
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {weightValidator} from './validators/weightValidator';
 import {number, object, ZodError} from 'zod';
 import {ApiRouteType} from '../../types/ApiRouteType';

@@ -1,6 +1,6 @@
 import {object, string} from 'zod';
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {authUserValidator} from './validators/authUserValidator';
 

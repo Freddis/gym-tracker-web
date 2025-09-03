@@ -1,4 +1,4 @@
-import {OpenApiErrorConfigMap} from 'strap-on-openapi';
+import {OpenApiErrorConfigMap} from 'snap-on-openapi';
 import {ApiErrorCode} from './ApiErrorCode';
 import {permissionErrorResponseValidator} from '../validators/PermissionErrorResponse';
 import {actionErrorResponseValidator} from '../validators/ActionErrorResponse';

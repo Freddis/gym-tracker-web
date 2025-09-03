@@ -1,4 +1,4 @@
-import {OpenApi, OpenApiValidationUtils} from 'strap-on-openapi';
+import {OpenApi, OpenApiValidationUtils} from 'snap-on-openapi';
 import {ApiErrorCode} from '../types/ApiErrorCode';
 import {ApiRouteType} from '../types/ApiRouteType';
 import {ApiConfig} from '../types/ApiConfig';

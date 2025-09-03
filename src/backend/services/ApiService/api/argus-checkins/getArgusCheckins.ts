@@ -1,6 +1,6 @@
  import {ArgusCheckinType} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinType';
  import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
- import {OpenApiMethod} from 'strap-on-openapi';
+ import {OpenApiMethod} from 'snap-on-openapi';
  import {argusCheckinValidator} from '../../../ArgusCheckinService/types/ArgusCheckin';
  import {nativeEnum, object} from 'zod';
  import {RouteFactory} from '../../utils/RouteFactory';

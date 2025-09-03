@@ -1,4 +1,4 @@
-import 'strap-on-openapi';
+import 'snap-on-openapi';
 import {ArgusCheckinType} from '../../src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinType';
 import {argusWeightCheckinValidator} from '../../src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWeightCheckin';
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';

@@ -1,4 +1,4 @@
-import {OpenApiMethod} from 'strap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {object} from 'zod';

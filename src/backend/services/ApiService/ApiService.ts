@@ -1,5 +1,5 @@
 import {openApiRoutes} from './utils/openApiRoutes';
-import {OpenApi} from 'strap-on-openapi';
+import {OpenApi} from 'snap-on-openapi';
 import {ApiConfig} from './types/ApiConfig';
 import {ApiErrorCode} from './types/ApiErrorCode';
 import {ApiRouteType} from './types/ApiRouteType';

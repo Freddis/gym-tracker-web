@@ -20,7 +20,7 @@ This is the backend for the Discipline project. It's a gym tracker similar to Ha
 
 ## Related projects
 
-[Strap-On OpenAPI](https://github.com/Freddis/strap-on-openapi)
+[Snap-On OpenAPI](https://github.com/Freddis/snap-on-openapi)
 
 [AWS Deployment Infrastructure](https://github.com/Freddis/cdk)
 
@@ -66,9 +66,9 @@ In addition to that:
 In this project, frontend and backend are segregated even though they're running under the same framework. Only a small amount of common utilities and enums should be shared.
 
 ### Frameworks
-The project uses Tanstack Start as the frontend framework, which is similar to <b>NextJS</b>. The Backend API is built upon <b>Strap-On OpenAPI</b> which is framework agnostic.
+The project uses Tanstack Start as the frontend framework, which is similar to <b>NextJS</b>. The Backend API is built upon <b>Snap-On OpenAPI</b> which is framework agnostic.
 
-Unlike NextJS, Tanstack Start easily allows you to turn it into a single page application (SPA). Combined with the fact that Strap-On OpenAPI is framework agnostic, it allows for quick scaling when the time comes.
+Unlike NextJS, Tanstack Start easily allows you to turn it into a single page application (SPA). Combined with the fact that Snap-On OpenAPI is framework agnostic, it allows for quick scaling when the time comes.
 
 ### Folder structure
 
@@ -169,10 +169,10 @@ Solution for CSS. Picked mostly because it seems like it's the standard right no
 This is the ideal solution for projects that use a design system. Components are fully customizable and unstyled by default.
 3. <b>Storybook</b><br> 
 Serves as a preview for the design system and its building blocks. Allows for development of new blocks right inside.
-4. <b>Strap-On OpenAPI</b><br> 
-Part of the Strap-On OpenAPI package that generates a client for the OpenAPI schema.
+4. <b>Snap-On OpenAPI</b><br> 
+Part of the Snap-On OpenAPI package that generates a client for the OpenAPI schema.
 
-The frontend serves as a thin client and should not rely on any types from backend folders (except common). Strap-On OpenAPI generates everything the frontend would require: queries, mutations, and types with comments.
+The frontend serves as a thin client and should not rely on any types from backend folders (except common). Snap-On OpenAPI generates everything the frontend would require: queries, mutations, and types with comments.
 
 ### Tailwind & Design System
 The frontend uses Tailwind in such a fashion that everything should be described in TSX files. The CSS file should only be used if absolutely necessary.

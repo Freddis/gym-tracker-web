@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {ApiErrorCode} from '../types/ApiErrorCode';
-import {OpenApiValidationLocation} from 'strap-on-openapi';
+import {OpenApiValidationLocation} from 'snap-on-openapi';
 import {fieldErrorValidator} from './FieldError';
 
 

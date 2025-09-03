@@ -367,7 +367,7 @@ export type ExerciseUpsertDto = {
   /**
    * Date of deletion. Deleted exercises are not accessible to users.
    */
-  updatedAt: Date;
+  updatedAt: Date | null;
   /**
    * Date of deletion. Deleted exercises are not accessible to users.
    */
@@ -1275,6 +1275,14 @@ export type GetExercisesData = {
       | "jump rope"
       | "treadmill"
       | "bosu ball";
+    /**
+     * Include built-in exercises into the response
+     */
+    includeBuiltIn?: boolean;
+    /**
+     * Only return exercises updated after this date. Used for syncing.
+     */
+    updatedAfter?: Date;
   };
   url: "/exercises";
 };
@@ -1744,6 +1752,10 @@ export type GetExercisesBuiltInData = {
       | "jump rope"
       | "treadmill"
       | "bosu ball";
+    /**
+     * Only return exercises updated after this date. Used for syncing.
+     */
+    updatedAfter?: Date;
   };
   url: "/exercises/built-in";
 };

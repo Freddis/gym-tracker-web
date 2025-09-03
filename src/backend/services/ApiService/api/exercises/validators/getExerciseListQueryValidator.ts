@@ -11,4 +11,8 @@ export const getExerciseListQueryValidator = object({
     nativeEnum(Muscle).transform((x) => [x]),
   ]).optional().openapi({description: 'Filters excercises by muscles. Exercise must involve all muscles from the list.'}),
   equipment: nativeEnum(Equipment).optional().openapi({description: 'Filters excercises by equipment'}),
+  includeBuiltIn: RouteFactory.validators.strings.boolean.optional().openapi({description: 'Include built-in exercises into the response'}),
+  updatedAfter: RouteFactory.validators.strings.datetime.optional().openapi({
+    description: 'Only return exercises updated after this date. Used for syncing.',
+  }),
 });
