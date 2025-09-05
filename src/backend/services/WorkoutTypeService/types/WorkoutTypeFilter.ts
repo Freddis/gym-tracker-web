@@ -1,3 +1,5 @@
 import {Filter} from '../../../types/ModelService/Filter';
 
-export type WorkoutTypeFilter = Filter
+export interface WorkoutTypeFilter extends Filter {
+  updatedAfter?: Date
+}
