@@ -4,9 +4,9 @@ import {Header} from '../../../../../src/frontend/components/layout/Header/Heade
 
 export const StoryBookPageDisplay: FC<{story: ReactNode}> = (props) => {
   return (
-    <div className="flex flex-col palette-neutral bg-main">
+    <div className="flex min-h-screen flex-col font-extralight palette-neutral bg-main">
       <Header/>
-        <div className="grow">
+        <div className="flex flex-col grow">
           {props.story}
         </div>
       <Footer />

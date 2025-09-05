@@ -1,8 +1,42 @@
 import {Muscle} from '../../src/backend/types/Muscle';
 import {AuthUser} from '../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-import {Exercise, Workout} from '../../src/frontend/utils/openapi-client';
+import {Entry, Exercise, Workout, WorkoutType} from '../../src/frontend/utils/openapi-client';
 
 export class StorybookDataUtils {
+
+  static getWorkoutType(): WorkoutType {
+    const type: WorkoutType = {
+      id: 1,
+      userId: 1,
+      planIndex: null,
+      planId: null,
+      name: 'Leg Day',
+      description: null,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      exercises: [],
+    };
+    return type;
+  }
+  static getExercises(): Exercise[] {
+    return [
+      this.getExercise(),
+    ];
+  }
+  static getEntry(): Entry {
+    const entry: Entry = {
+      id: 0,
+      user: {
+        ...this.getUser(),
+        profilePicture: '',
+      },
+      type: 'Workout',
+      workout: this.getWorkout(),
+    };
+    return entry;
+  }
+
   static getUser(): AuthUser {
     const user: AuthUser = {
       id: 1,

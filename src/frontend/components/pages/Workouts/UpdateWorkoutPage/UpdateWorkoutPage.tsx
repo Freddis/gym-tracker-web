@@ -4,17 +4,11 @@ import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {FC, useState} from 'react';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {getWorkoutsByIdOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
-import {UpdateWorkoutForm} from '../common/UpdateWorkoutForm/UpdateWorkoutForm';
-import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
-import {AppButton} from '../../../atoms/AppButton/AppButton';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {WorkoutUpdateDto, patchWorkoutsById, deleteWorkoutsById} from '../../../../utils/openapi-client';
-import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {UpdateWorkoutPagePresenter} from './components/UpdateWorkoutPagePresenter';
 
 const routeApi = getRouteApi('/workouts/update/$id');
 export const UpdateWorkoutPage: FC = () => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const params = routeApi.useParams();
   const client = useQueryClient();
   const navigation = useNavigate();
@@ -70,26 +64,6 @@ export const UpdateWorkoutPage: FC = () => {
     });
   };
   return (
-    <PageContainer>
-      <div className="flex flex-col max-w-5xl w-full">
-        <div className="mb-5 -mt-5">
-          <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
-          <span className="ml-2">&gt;&gt;</span>
-          <span className="ml-2">{t(i18n.workouts.update.heading)} {response.data.item.id.toString()}</span>
-        </div>
-      </div>
-      <AppBlock className="max-w-5xl">
-        <AppBlockHeader>{t(i18n.workouts.update.heading)} {response.data.item.id.toString()}</AppBlockHeader>
-        <UpdateWorkoutForm item={response.data.item} onUpdate={setItemDto}/>
-        <div className="mt-5 border-b-1 border-neutral-on-surface"/>
-          <div className="mt-5 flex flex-row">
-            <AppLink to="/entries">Back</AppLink>
-            <div className="grow flex flex-row-reverse gap-2">
-              <AppButton onClick={save}>Save</AppButton>
-              <AppButton onClick={deleteItem} color={'error'}>Delete</AppButton>
-            </div>
-        </div>
-      </AppBlock>
-    </PageContainer>
+   <UpdateWorkoutPagePresenter item={response.data.item} onSaveClick={save} onDeleteClick={deleteItem} onUpdate={setItemDto} />
   );
 };

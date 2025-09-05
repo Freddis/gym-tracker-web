@@ -82,7 +82,7 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
             <ThemeContext.Provider value={Theme.Dark}>
             <div className="theme-dark">
               <Conditional condition={type === StoryBookDisplayType.Component}>
-              <StoryBookComponentDisplay {...props} />
+                <StoryBookComponentDisplay {...props} />
               </Conditional>
               <Conditional condition={type === StoryBookDisplayType.Page}>
                 <StoryBookPageDisplay story={props.story} />
