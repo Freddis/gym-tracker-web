@@ -120,6 +120,10 @@
 --color-on-main: #222;
 --color-surface: white;
 --color-on-surface: #444;
+.bg-surface {
+--color-cavity: #f8f8f8;
+--color-on-cavity: #222;
+}
 --color-cavity: var(--color-neutral-300);
 --color-on-cavity: black;
 }
@@ -136,6 +140,10 @@
 --color-on-main: var(--color-neutral-100);
 --color-surface: var(--color-neutral-900);
 --color-on-surface: var(--color-neutral-200);
+.bg-surface {
+--color-cavity: var(--color-neutral-800);
+--color-on-cavity: var(--color-neutral-100);
+}
 --color-cavity: var(--color-black);
 --color-on-cavity: white;
 }

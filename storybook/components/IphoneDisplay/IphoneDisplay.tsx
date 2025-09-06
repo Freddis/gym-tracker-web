@@ -4,9 +4,10 @@ import {cn} from '../../../src/frontend/utils/cn';
 
 interface IphoneDisplayProps {
   title?: string; children: React.ReactNode
+  tab?: 1 | 2 | 3
 }
 
-export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
+export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title, tab = 1}) => {
   return (
     <div
       className="flex flex-col relative mx-auto my-6 w-[393px] h-[852px]
@@ -55,16 +56,16 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
         bg-surface border-t border-on-surface/15 flex flex-col items-center
         justify-between pt-2 pb-2"
         >
-        <div className="flex justify-around w-full text-xs text-gray-700">
-          <div className="flex flex-col items-center text-on-surface">
+        <div className="flex justify-around w-full text-xs text-on-surface/60">
+          <div className={cn('flex flex-col items-center', tab === 1 ? 'text-on-surface' : '')}>
             <FaCalendar className="text-2xl "/>
             <span className="mt-1">Entries</span>
           </div>
-          <div className="flex flex-col items-center">
+          <div className={cn('flex flex-col items-center', tab === 2 ? 'text-on-surface' : '')}>
             <FaDumbbell className="text-2xl"/>
             <span className="mt-1">Exercises</span>
           </div>
-          <div className="flex flex-col items-center">
+          <div className={cn('flex flex-col items-center', tab === 3 ? 'text-on-surface' : '')}>
             <FaGear className="text-2xl"/>
             <span className="mt-1">Settings</span>
           </div>

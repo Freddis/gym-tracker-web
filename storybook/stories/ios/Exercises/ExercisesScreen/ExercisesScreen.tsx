@@ -7,7 +7,7 @@ import {MobileScreenContainer} from '../../../../components/MobileScreenContaine
 import {MobileExerciseBlock} from './MobileExerciseBlock';
 
 export const ExercisesScreen: FC<{exercises: Exercise[]}> = ({exercises}) => (
-  <IphoneDisplay>
+  <IphoneDisplay tab={2}>
    <MobileScreenContainer className="flex flex-col h-full">
       <div className="mb-3">
         <AppTextInput placeholder="Search" className="bg-surface" />

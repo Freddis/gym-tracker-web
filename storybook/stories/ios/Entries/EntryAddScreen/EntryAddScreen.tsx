@@ -5,7 +5,7 @@ import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay'
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 
 export const EntryAddScreen: FC<{minimal: boolean}> = ({minimal = true}) => (
-  <IphoneDisplay title="Add Entry">
+  <IphoneDisplay title="Add Entry" tab={1}>
     <MobileScreenContainer>
       <div className="flex flex-col items-start gap-5">
         <AppBlock className="flex flex-col mb-5 cursor-pointer">

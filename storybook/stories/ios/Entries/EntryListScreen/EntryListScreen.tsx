@@ -1,13 +1,13 @@
 import {FC} from 'react';
 import {FaChevronRight, FaPlus} from 'react-icons/fa6';
-import {WorkoutEntryBlock} from '../../../../../src/frontend/components/blocks/EntryBlock/components/WorkoutEntryBlock';
 import {Entry, Workout} from '../../../../../src/frontend/utils/openapi-client';
 import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
+import {MobileWorkoutEntryBlock} from './MobileWorkoutEntryBlock';
 
 export const EntryListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, entry}) => (
-  <IphoneDisplay>
+  <IphoneDisplay tab={1}>
     <MobileScreenContainer>
       <div className="flex flex-col items-start">
         <AppBlock className="flex mb-5 cursor-pointer">
@@ -23,7 +23,7 @@ export const EntryListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, e
                 <FaPlus className="text text-accent inline-block ml-2"/>
               </div>
           </div>
-        <WorkoutEntryBlock workout={workout} own={true} entry={entry}/>
+        <MobileWorkoutEntryBlock workout={workout} own={true} entry={entry}/>
       </div>
     </MobileScreenContainer>
   </IphoneDisplay>

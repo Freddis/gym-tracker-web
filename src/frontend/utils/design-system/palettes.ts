@@ -16,7 +16,10 @@ export const palettes: PaletteSet = {
   [Color.Neutral]: {
     dark: {
       ...neutralDarkPalette,
-      surface: lightestDarkPalette,
+      surface: {
+        ...lightestDarkPalette,
+        cavity: neutralDarkPalette,
+      },
       cavity: {
         text: 'white',
         color: 'var(--color-black)',
@@ -24,7 +27,10 @@ export const palettes: PaletteSet = {
     },
     light: {
       ...neutralPalette,
-      surface: lightestPalette,
+      surface: {
+        ...lightestPalette,
+        cavity: neutralPalette,
+      },
       cavity: {
         text: 'black',
         color: 'var(--color-neutral-300)',

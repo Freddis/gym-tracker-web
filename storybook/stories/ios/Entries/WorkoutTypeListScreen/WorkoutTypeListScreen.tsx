@@ -6,7 +6,7 @@ import {MobileScreenContainer} from '../../../../components/MobileScreenContaine
 import {MobileWorkoutTypeBlock} from './MobileWorkoutTypeBlock';
 
 export const WorkoutTypeListScreen: FC<{items:WorkoutType[]}> = ({items}) => (
-  <IphoneDisplay title="Workout Types">
+  <IphoneDisplay title="Workout Types" tab={1}>
    <MobileScreenContainer>
        <div>
           <div className="flex flex-row-reverse w-full mb-2">

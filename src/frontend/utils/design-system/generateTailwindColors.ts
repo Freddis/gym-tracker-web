@@ -33,6 +33,14 @@ const getPaletteVariables = (color: Color, mode: 'dark'|'light') => {
       `--color-surface: ${palette.surface.color};`,
       `--color-on-surface: ${palette.surface.text};`,
     ]);
+    if (palette.surface.cavity) {
+      lines.push(...[
+        '.bg-surface {',
+        `--color-cavity: ${palette.surface.cavity.color};`,
+        `--color-on-cavity: ${palette.surface.cavity.text};`,
+        '}',
+      ]);
+    }
   }
   if (palette.cavity) {
     lines.push(...[
