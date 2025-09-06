@@ -113,7 +113,7 @@ export class StorybookDataUtils {
             index: 0,
           },
           {
-            exercise: this.getExercise('barbellSrug'),
+            exercise: this.getExercise('barbellShrug'),
             sets: [
               {
                 reps: 12,
@@ -241,8 +241,18 @@ export class StorybookDataUtils {
   }
 
   static getExercises(): Exercise[] {
+    const map: Record<Exclude<Parameters<typeof this.getExercise>[0], undefined>, boolean> = {
+      benchPress: true,
+      barbellShrug: true,
+      squat: true,
+      legExtension: true,
+      deadLift: true,
+      calfRaise: true,
+      adduction: true,
+      pullUp: true,
+    };
     return [
-      this.getExercise(),
+      ...Object.keys(map).map((key) => this.getExercise(key)),
     ];
   }
   static getEntry(): Entry {
@@ -274,11 +284,11 @@ export class StorybookDataUtils {
   }
 
   static getExercise(
-    type: 'benchPress' | 'barbellSrug' | 'squat'|'legExtension'|'deadLift'|'calfRaise'| 'adduction'| 'pullUp' = 'benchPress'
+    type: 'benchPress' | 'barbellShrug' | 'squat'|'legExtension'|'deadLift'|'calfRaise'| 'adduction'| 'pullUp' = 'benchPress'
   ): Exercise {
     const map: Record<typeof type, Exercise> = {
       benchPress: benchPress,
-      barbellSrug: barbellShrug,
+      barbellShrug: barbellShrug,
       squat: barbellSquat,
       pullUp: pullUp,
       legExtension: legExtension,

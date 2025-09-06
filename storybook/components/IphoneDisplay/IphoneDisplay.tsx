@@ -9,7 +9,7 @@ interface IphoneDisplayProps {
 export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
   return (
     <div
-      className="relative mx-auto my-6 w-[393px] h-[852px]
+      className="flex flex-col relative mx-auto my-6 w-[393px] h-[852px]
       bg-main text-on-main rounded-[50px] border-[12px]
       border-black shadow-2xl overflow-hidden font-[system-ui
     ">
@@ -19,7 +19,7 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
       {/* Status bar */}
       <div className={
         cn(
-          'absolute top-0 w-full h-[47px] flex items-center justify-between px-4 text-[15px] font-semibold z-20',
+          'top-0 w-full h-[47px] flex items-center justify-between px-4 text-[15px] font-semibold z-20',
           title ? 'bg-surface' : ''
         )}>
         <span>13:59</span>
@@ -35,23 +35,23 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
       </div>
 
       {/* Content */}
-      <div className="absolute top-[47px] bottom-[83px] w-full overflow-auto flex flex-col">
+      <div className="top-[47px] bottom-[83px] w-full h-full overflow-auto flex flex-col">
         {title && (
           <div
-           className="w-full h-12 flex items-center justify-center
-           border-b border-on-surface/15 text-[17px] font-semibold bg-surface z-10 ">
+           className="relative w-full h-12 flex items-center justify-center
+           border-b border-on-surface/15 text-[17px] font-semibold bg-surface z-10 pb-5">
             <FaChevronLeft className="text-accent text-lg absolute left-2" />
-        {title}
-    </div>
-  )}
-      <div className="frlow overflow-scroll">
-        {children}
-      </div>
+            {title}
+          </div>
+        )}
+        <div className="grow overflow-scroll">
+          {children}
+        </div>
       </div>
 
       {/* Tab bar */}
       <div
-        className="absolute bottom-0 w-full h-[83px]
+        className="bottom-0 w-full h-[83px]
         bg-surface border-t border-on-surface/15 flex flex-col items-center
         justify-between pt-2 pb-2"
         >

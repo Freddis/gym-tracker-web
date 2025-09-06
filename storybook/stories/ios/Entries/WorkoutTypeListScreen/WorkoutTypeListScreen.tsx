@@ -3,7 +3,7 @@ import {FaPlus} from 'react-icons/fa6';
 import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {MobileWorkoutTypeBlock} from '../../common/MobileWorkoutTypeBlock';
+import {MobileWorkoutTypeBlock} from './MobileWorkoutTypeBlock';
 
 export const WorkoutTypeListScreen: FC<{items:WorkoutType[]}> = ({items}) => (
   <IphoneDisplay title="Workout Types">

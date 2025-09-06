@@ -2,6 +2,8 @@
 @source inline("bg-neutral-100");
 @source inline("bg-neutral-900");
 @source inline("bg-neutral-200");
+@source inline("bg-black");
+@source inline("bg-neutral-300");
 @source inline("bg-red-100");
 @source inline("bg-red-400");
 @source inline("bg-rose-300");
@@ -30,6 +32,8 @@
 @source inline("text-neutral-100");
 @source inline("text-neutral-900");
 @source inline("text-neutral-200");
+@source inline("text-black");
+@source inline("text-neutral-300");
 @source inline("text-red-100");
 @source inline("text-red-400");
 @source inline("text-rose-300");
@@ -116,8 +120,8 @@
 --color-on-main: #222;
 --color-surface: white;
 --color-on-surface: #444;
---color-cavity: #f8f8f8;
---color-on-cavity: #222;
+--color-cavity: var(--color-neutral-300);
+--color-on-cavity: black;
 }
 .theme-dark .palette-neutral {
 --color-neutral: var(--color-neutral-800);
@@ -132,8 +136,8 @@
 --color-on-main: var(--color-neutral-100);
 --color-surface: var(--color-neutral-900);
 --color-on-surface: var(--color-neutral-200);
---color-cavity: var(--color-neutral-800);
---color-on-cavity: var(--color-neutral-100);
+--color-cavity: var(--color-black);
+--color-on-cavity: white;
 }
 .theme-light .palette-lightest {
 --color-neutral: #f8f8f8;

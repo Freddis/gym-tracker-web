@@ -1,8 +1,8 @@
 import {FC} from 'react';
-import {WorkoutType} from '../../../../src/frontend/utils/openapi-client';
-import {AppImage} from '../../../../src/frontend/components/atoms/AppImage/AppImage';
-import {AppLink} from '../../../../src/frontend/components/atoms/AppLink/AppLink';
-import {MobileBlock} from '../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
+import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
+import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
+import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 
 export const MobileWorkoutTypeBlock: FC<{item: WorkoutType}> = ({item}) => {
   return (

@@ -15,6 +15,7 @@ const meta = {
     items: [
       StorybookDataUtils.getWorkoutType('pull day'),
       StorybookDataUtils.getWorkoutType('leg day'),
+      StorybookDataUtils.getWorkoutType('pull day'),
     ],
   },
   parameters: {
