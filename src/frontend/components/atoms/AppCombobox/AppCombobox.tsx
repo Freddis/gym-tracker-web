@@ -16,7 +16,7 @@ export const AppCombobox: FC<AppComboboxProps> = ({className, values, placeholde
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className={cn('h-10 bg-cavity border-in-cavity border-1 cursor-pointer flex items-center gap-3 p-3 rounded-xs', className)}>
-          <div className="capitalize">{value ? values.find((val) => val.label === value)?.label : defaultValue}</div>
+          <div className="capitalize text-base">{value ? values.find((val) => val.label === value)?.label : defaultValue}</div>
           <div className="grow flex flex-row-reverse">
             <div className="inline-block">
               <ChevronsUpDown className="opacity-50 " />
@@ -26,13 +26,13 @@ export const AppCombobox: FC<AppComboboxProps> = ({className, values, placeholde
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 z-5">
         <Command>
-          <CommandInput placeholder={placeholder} className="h-9" />
+          <CommandInput placeholder={placeholder} className="h-9 text-base" />
           <CommandList>
             <CommandEmpty>{notFound}</CommandEmpty>
             <ScrollArea className="max-h-100">
               <CommandGroup className="">
                 {values.map((val) => (
-                  <CommandItem className="capitalize cursor-pointer"
+                  <CommandItem className="capitalize cursor-pointer text-base transition-all"
                     key={val.label}
                     value={val.label}
                     onSelect={(currentValue) => {
