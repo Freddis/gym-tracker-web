@@ -1,12 +1,12 @@
 import {FC} from 'react';
 import {FaChevronRight, FaPlus} from 'react-icons/fa6';
 import {WorkoutEntryBlock} from '../../../../../src/frontend/components/blocks/EntryBlock/components/WorkoutEntryBlock';
-import {IphoneDisplay} from '../../../../components/StoryBookDisplay/components/IphoneDisplayProps/IphoneDisplay';
 import {Entry, Workout} from '../../../../../src/frontend/utils/openapi-client';
 import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
-import {MobileScreenContainer} from '../../../../components/StoryBookDisplay/components/MobileScreenContainer/MobileScreenContainer';
+import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
+import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 
-export const WorkoutListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, entry}) => (
+export const EntryListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, entry}) => (
   <IphoneDisplay>
     <MobileScreenContainer>
       <div className="flex flex-col items-start">

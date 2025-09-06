@@ -1,7 +1,7 @@
 
 import {FC, useState} from 'react';
 import {AppBlock} from '../../../src/frontend/components/atoms/AppBlock/AppBlock';
-import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
+import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUtils';
 import {AppButton} from '../../../src/frontend/components/atoms/AppButton/AppButton';
 import {AppLabel} from '../../../src/frontend/components/atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../../src/frontend/components/atoms/AppTextInput/AppTextInput';

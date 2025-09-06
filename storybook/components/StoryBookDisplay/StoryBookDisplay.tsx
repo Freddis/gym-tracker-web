@@ -18,7 +18,7 @@ import {StoryBookDisplayProps} from './types/StoryBookDisplayProps';
 import {StoryBookDisplayType} from './enums/StoryBookDisplayType';
 import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
 import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBookPopupDisplay';
-import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
+import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUtils';
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
 import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
 import {routeTree} from '../../../src/routeTree.gen';

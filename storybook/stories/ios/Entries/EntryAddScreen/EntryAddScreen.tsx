@@ -1,8 +1,8 @@
 import {FC} from 'react';
 import {FaChevronRight} from 'react-icons/fa6';
-import {IphoneDisplay} from '../../../../components/StoryBookDisplay/components/IphoneDisplayProps/IphoneDisplay';
-import {MobileScreenContainer} from '../../../../components/StoryBookDisplay/components/MobileScreenContainer/MobileScreenContainer';
 import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
+import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
+import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 
 export const EntryAddScreen: FC<{minimal: boolean}> = ({minimal = true}) => (
   <IphoneDisplay title="Add Entry">

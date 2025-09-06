@@ -1,17 +1,19 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
-import {EntryAddScreen} from './EntryAddScreen';
+import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
+import {EntryListScreen} from './EntryListScreen';
 
 const meta = {
-  title: 'IOS/Workouts/Entry Create',
-  component: EntryAddScreen,
+  title: 'IOS/Entries/Entry List',
+  component: EntryListScreen,
   tags: ['autodocs'],
   globals: {
     viewport: {value: 'tablet', isRotated: false},
   },
   args: {
-    minimal: true,
+    workout: StorybookDataUtils.getWorkout(),
+    entry: StorybookDataUtils.getEntry(),
   },
   parameters: {
     layout: 'centered',
@@ -22,21 +24,12 @@ const meta = {
     },
   },
   decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
-} satisfies Meta<typeof EntryAddScreen>;
+} satisfies Meta<typeof EntryListScreen>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Minimal: Story = {
-  args: {
-    minimal: true,
-  },
-};
+export const Primary: Story = {
 
-export const Full: Story = {
-
-  args: {
-    minimal: false,
-  },
 };
 

@@ -1,18 +1,17 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils';
-import {WorkoutTypeListScreen} from './WorkoutTypeListScreen';
+import {EntryAddScreen} from './EntryAddScreen';
 
 const meta = {
-  title: 'IOS/Workouts/Workout Type List',
-  component: WorkoutTypeListScreen,
+  title: 'IOS/Entries/Entry Create',
+  component: EntryAddScreen,
   tags: ['autodocs'],
   globals: {
     viewport: {value: 'tablet', isRotated: false},
   },
   args: {
-    item: StorybookDataUtils.getWorkoutType(),
+    minimal: true,
   },
   parameters: {
     layout: 'centered',
@@ -23,12 +22,21 @@ const meta = {
     },
   },
   decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
-} satisfies Meta<typeof WorkoutTypeListScreen>;
+} satisfies Meta<typeof EntryAddScreen>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Minimal: Story = {
+  args: {
+    minimal: true,
+  },
+};
 
+export const Full: Story = {
+
+  args: {
+    minimal: false,
+  },
 };
 

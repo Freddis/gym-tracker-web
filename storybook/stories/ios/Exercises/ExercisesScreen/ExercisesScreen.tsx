@@ -1,10 +1,10 @@
 import {FC} from 'react';
 import {FaPlus} from 'react-icons/fa6';
-import {IphoneDisplay} from '../../../../components/StoryBookDisplay/components/IphoneDisplayProps/IphoneDisplay';
 import {Exercise} from '../../../../../src/frontend/utils/openapi-client';
 import {ExerciseBlock} from '../../../../../src/frontend/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock';
 import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {MobileScreenContainer} from '../../../../components/StoryBookDisplay/components/MobileScreenContainer/MobileScreenContainer';
+import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
+import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 
 export const ExercisesScreen: FC<{exercises: Exercise[]}> = ({exercises}) => (
   <IphoneDisplay>

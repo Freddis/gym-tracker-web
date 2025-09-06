@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 import {AppImage} from '../../../src/frontend/components/atoms/AppImage/AppImage';
-import {StorybookDataUtils} from '../../utils/StorybookDataUtils';
+import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUtils';
 
 const meta = {
   title: 'Components/Image',

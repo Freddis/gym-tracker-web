@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StorybookDataUtils} from '../../../utils/StorybookDataUtils';
+import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {
   UpdateWorkoutPagePresenter,

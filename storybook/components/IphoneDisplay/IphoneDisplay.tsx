@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
 import {FaCalendar, FaChevronLeft, FaDumbbell, FaGear} from 'react-icons/fa6';
-import {cn} from '../../../../../src/frontend/utils/cn';
+import {cn} from '../../../src/frontend/utils/cn';
 
 interface IphoneDisplayProps {
-title?: string; children: React.ReactNode
+  title?: string; children: React.ReactNode
 }
+
 export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
   return (
     <div
@@ -34,7 +35,7 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
       </div>
 
       {/* Content */}
-      <div className="absolute top-[47px] bottom-[83px] w-full overflow-auto">
+      <div className="absolute top-[47px] bottom-[83px] w-full overflow-auto flex flex-col">
         {title && (
           <div
            className="w-full h-12 flex items-center justify-center
@@ -43,7 +44,9 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
         {title}
     </div>
   )}
+      <div className="frlow overflow-scroll">
         {children}
+      </div>
       </div>
 
       {/* Tab bar */}
@@ -55,7 +58,7 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title}) => {
         <div className="flex justify-around w-full text-xs text-gray-700">
           <div className="flex flex-col items-center text-on-surface">
             <FaCalendar className="text-2xl "/>
-            <span className="mt-1">Workouts</span>
+            <span className="mt-1">Entries</span>
           </div>
           <div className="flex flex-col items-center">
             <FaDumbbell className="text-2xl"/>
