@@ -415,6 +415,21 @@ export const dictionary: Translation = {
           registrationSuccess: 'Вы успешно зарегистрировались',
         },
       },
+      passwordRestore: {
+        heading: 'Восстановление пароля',
+        toasts: {
+          restorationSuccess: 'Письмо успешно отравлено',
+        },
+        form: {
+          description: 'Укажите адрес своей электронной почты. Если ваш аккаунт существует мы отправим письмо с новым паролем.',
+          labels: {
+            email: 'Почта',
+          },
+          buttons: {
+            restore: 'Отправить',
+          },
+        },
+      },
     },
     feed: {
       heading: 'Следи За Другими',

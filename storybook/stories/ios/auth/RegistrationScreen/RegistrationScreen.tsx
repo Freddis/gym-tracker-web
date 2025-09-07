@@ -77,7 +77,7 @@ export const RegistrationScreen: FC = () => {
               value={password}
             />
             <AppInputError error={errorMessage('password')} />
-            <AppLabel className="mb-2">{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
+            <AppLabel>{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
             <AppTextInput
             data-testid="passwordConfirmation"
             type="password"

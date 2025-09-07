@@ -439,6 +439,21 @@ export const dictionary = {
           },
         },
       },
+      passwordRestore: {
+        heading: 'Restore Password',
+        toasts: {
+          restorationSuccess: 'The email has been sent',
+        },
+        form: {
+          description: 'Enter your email and we will send you new password if your account exists',
+          labels: {
+            email: 'Email',
+          },
+          buttons: {
+            restore: 'Send',
+          },
+        },
+      },
     },
   },
 };
