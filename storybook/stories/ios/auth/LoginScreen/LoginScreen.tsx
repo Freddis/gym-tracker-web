@@ -1,20 +1,21 @@
-import {useNavigate} from '@tanstack/react-router';
 import {FC, MouseEventHandler, useContext, useState} from 'react';
-import {useResponseErrors} from '../../../../utils/useResponseErrors';
-import {AppButton} from '../../../atoms/AppButton/AppButton';
-import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
-import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
-import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
-import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
-import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {postAuthLogin, PostAuthLoginError} from '../../../../utils/openapi-client';
-import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
-import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
+import {AppLogo} from '../../../../../src/frontend/components/atoms/AppLogo/AppLogo';
+import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
+import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
+import {AppButton} from '../../../../../src/frontend/components/atoms/AppButton/AppButton';
+import {AppInputError} from '../../../../../src/frontend/components/atoms/AppInputError/AppInputError';
+import {AppLabel} from '../../../../../src/frontend/components/atoms/AppLabel/AppLabel';
+import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
+import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
+import {useNavigate} from '@tanstack/react-router';
+import {useToasts} from '../../../../../src/frontend/components/atoms/AppToast/hooks/useToasts';
+import {AuthContext} from '../../../../../src/frontend/components/layout/AuthProvider/AuthContext';
+import {postAuthLogin, PostAuthLoginError} from '../../../../../src/frontend/utils/openapi-client';
+import {useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
 
-export const LoginPage: FC = () => {
+
+export const LoginScreen: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,23 +46,28 @@ export const LoginPage: FC = () => {
       toasts.addDanger(t(i18n.toasts.unknownApiError));
     }
   };
+
   const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
     e.preventDefault();
     toasts.addWarning(t(i18n.toasts.notImplemented));
   };
+
   return (
-    <PageContainer className="justify-center bg-main text-main">
-        <AppBlock className="p-10 w-full max-w-xl rounded-sm">
-          <AppBlockHeader className="text-center text-xl mb-5">{t(i18n.heading)}</AppBlockHeader>
-          <div className="flex flex-col">
-            <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
+  <IphoneDisplay tab={3} hideTabs>
+   <MobileScreenContainer className="flex flex-col h-full">
+    <div className="flex flex-col items-center justify-center grow">
+      <div className="flex flex-col items-center w-full p-10">
+        <AppLogo withText={false} className="h-20 mb-3"/>
+        <h2 className="inline uppercase font-bold text-2xl ml-1 text-on-main mb-10">Discipline</h2>
+          <div className="flex flex-col w-full">
+            <AppLabel>Email:</AppLabel>
             <AppTextInput
               data-testid="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
             <AppInputError data-testid="error-email" error={errorMessage('email')} />
-            <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
+            <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
               type="password"
@@ -70,23 +76,27 @@ export const LoginPage: FC = () => {
             />
             <AppInputError data-testid="error-password" error={errorMessage('password')} />
           </div>
-          <div className="flex flex-row gap-10 justify-center">
+          <div className="flex flex-row justify-center">
             <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">
               {t(i18n.form.buttons.forgotPassword)}
             </AppLink>
           </div>
           <div className="mt-10 flex items-center justify-center">
+            <div className="relative">
               <AppButton className="w-30 inline-block" onClick={loginButtonPress}>
                 {t(i18n.form.buttons.signIn)}
               </AppButton>
+            </div>
           </div>
-          <div className="grow mt-10 flex justify-center">
+          <div className="grow mt-20 flex justify-center">
             <span>{t(i18n.registerCta)}</span>
             <AppLink to="/auth/register" className="text-accent ml-3">
               {t(i18n.form.buttons.register)}
             </AppLink>
           </div>
-          </AppBlock>
-    </PageContainer>
+        </div>
+      </div>
+    </MobileScreenContainer>
+  </IphoneDisplay>
   );
 };
