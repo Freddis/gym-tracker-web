@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
-import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
+import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
+import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {SettingsScreen} from './SettingsScreen';
 
 const meta = {
-  title: 'IOS/Settings/Settings',
+  title: 'IOS/Settings',
   component: SettingsScreen,
   tags: ['autodocs'],
   globals: {

@@ -1,9 +1,9 @@
 import {FC} from 'react';
-import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
-import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppSwitch} from '../../../../../src/frontend/components/atoms/AppSwitch/AppSwitch';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
-import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
+import {IphoneDisplay} from '../../../components/IphoneDisplay/IphoneDisplay';
+import {MobileScreenContainer} from '../../../components/MobileScreenContainer/MobileScreenContainer';
+import {AppSwitch} from '../../../../src/frontend/components/atoms/AppSwitch/AppSwitch';
+import {AppLink} from '../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {MobileBlock} from '../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 
 export const SettingsScreen: FC = () => (
   <IphoneDisplay tab={3}>
