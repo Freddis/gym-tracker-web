@@ -1,4 +1,4 @@
-import {FC, MouseEventHandler, useContext, useState} from 'react';
+import {FC, MouseEventHandler, useState} from 'react';
 import {AppLogo} from '../../../../../src/frontend/components/atoms/AppLogo/AppLogo';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
@@ -8,48 +8,20 @@ import {AppLabel} from '../../../../../src/frontend/components/atoms/AppLabel/Ap
 import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
-import {useNavigate} from '@tanstack/react-router';
-import {useToasts} from '../../../../../src/frontend/components/atoms/AppToast/hooks/useToasts';
-import {AuthContext} from '../../../../../src/frontend/components/layout/AuthProvider/AuthContext';
-import {postAuthLogin, PostAuthLoginError} from '../../../../../src/frontend/utils/openapi-client';
-import {useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
+import {FieldError, useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
 
 
-export const LoginScreen: FC = () => {
+export const LoginScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const auth = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [errorMessage, setErrors] = useResponseErrors();
-  const toasts = useToasts();
+  const [errorMessage] = useResponseErrors(errors);
 
   const loginButtonPress = async () => {
-    const result = await postAuthLogin({
-      body: {
-        email,
-        password,
-      },
-    });
-    if (!result.error) {
-      auth.login(result.data);
-      toasts.addSuccess(t(i18n.toasts.loginSuccess));
-      navigate({to: '/entries'});
-      return;
-    }
-    const err: PostAuthLoginError = result.error;
-    if (err.error.code === 'ValidationFailed') {
-      setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'ActionError') {
-      toasts.addDanger(err.error.humanReadable);
-    } else {
-      toasts.addDanger(t(i18n.toasts.unknownApiError));
-    }
+
   };
 
-  const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
-    e.preventDefault();
-    toasts.addWarning(t(i18n.toasts.notImplemented));
+  const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async () => {
   };
 
   return (

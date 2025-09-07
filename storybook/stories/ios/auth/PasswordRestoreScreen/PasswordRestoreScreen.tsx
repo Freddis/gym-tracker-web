@@ -12,9 +12,8 @@ import {FieldError, useResponseErrors} from '../../../../../src/frontend/utils/u
 export const PasswordRestoreScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.passwordRestore);
   const [email, setEmail] = useState('');
-  const [errorMessage, setErrors] = useResponseErrors(errors);
+  const [errorMessage] = useResponseErrors(errors);
   const loginButtonPress = async () => {
-
   };
 
   return (

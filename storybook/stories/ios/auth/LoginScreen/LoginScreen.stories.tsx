@@ -32,3 +32,19 @@ export const Primary: Story = {
 
 };
 
+export const Errors: Story = {
+
+  args: {
+    errors: [
+      {
+        field: 'email',
+        message: 'Not a valid email',
+      },
+      {
+        field: 'password',
+        message: 'Password cannot be empty',
+      },
+    ],
+  },
+};
+

@@ -7,7 +7,7 @@ export const AppInputError: FC<{error: string | null, className?: string}> = (pr
   const visibility = props.error ? '' : 'invisible';
   const opacity = props.error ? 'opacity-100' : 'opacity-0';
   const classes = `palette-danger text-on-main duration-1000 
-  transition-opacity mt-2 mb-2 flex items-center rounded-xs ${opacity} ${visibility}`;
+  transition-opacity mt-1 mb-2 flex items-center rounded-xs ${opacity} ${visibility}`;
   return (
     <div {...props} className={twMerge(classes, props.className)}>
       {props.error && <FaCircleXmark className="inline mr-2"/>}
