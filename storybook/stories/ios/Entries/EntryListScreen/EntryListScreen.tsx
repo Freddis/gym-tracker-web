@@ -1,12 +1,22 @@
 import {FC} from 'react';
 import {FaChevronRight, FaPlus} from 'react-icons/fa6';
-import {Entry, Workout} from '../../../../../src/frontend/utils/openapi-client';
+import {Entry, Weight, Workout} from '../../../../../src/frontend/utils/openapi-client';
 import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 import {MobileWorkoutEntryBlock} from './MobileWorkoutEntryBlock';
-
-export const EntryListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, entry}) => (
+import {MobileWeightEntryBlock} from './MobileWeightEntryBlock';
+interface EntryListScreenProps {
+  workout: {
+    obj: Workout,
+    entry: Entry,
+  },
+  weight: {
+    obj: Weight,
+    entry: Entry
+  }
+}
+export const EntryListScreen: FC<EntryListScreenProps> = ({workout, weight}) => (
   <IphoneDisplay tab={1}>
     <MobileScreenContainer>
       <div className="flex flex-col items-start">
@@ -23,7 +33,10 @@ export const EntryListScreen: FC<{workout:Workout, entry: Entry}> = ({workout, e
                 <FaPlus className="text text-accent inline-block ml-2"/>
               </div>
           </div>
-        <MobileWorkoutEntryBlock workout={workout} own={true} entry={entry}/>
+        <div className="flex flex-col gap-3">
+          <MobileWeightEntryBlock weight={weight.obj} own={true} entry={weight.entry}/>
+          <MobileWorkoutEntryBlock workout={workout.obj} own={true} entry={workout.entry}/>
+        </div>
       </div>
     </MobileScreenContainer>
   </IphoneDisplay>

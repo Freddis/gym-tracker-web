@@ -28,11 +28,10 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title, tab = 1,
         <div className="flex items-center gap-2">
           {/* Signal dots */}
           <div className="flex gap-0.5">
-            <div className="w-1 h-1 rounded-full bg-black" />
-            <div className="w-1 h-1 rounded-full bg-black" />
-            <div className="w-1 h-1 rounded-full bg-black" />
+            <div className="w-1 h-1 rounded-full bg-on-surface" />
+            <div className="w-1 h-1 rounded-full bg-on-surface" />
+            <div className="w-1 h-1 rounded-full bg-on-surface" />
           </div>
-          <span>📶</span>
         </div>
       </div>
 

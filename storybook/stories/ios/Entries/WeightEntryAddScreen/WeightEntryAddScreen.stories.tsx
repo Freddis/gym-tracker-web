@@ -1,41 +1,39 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
-import {EntryListScreen} from './EntryListScreen';
+import {WeightEntryAddScreen} from './WeightEntryAddScreen';
 
 const meta = {
-  title: 'IOS/Entries/Entry List',
-  component: EntryListScreen,
+  title: 'IOS/Entries/Weight Entry Add',
+  component: WeightEntryAddScreen,
   tags: ['autodocs'],
   globals: {
     viewport: {value: 'tablet', isRotated: false},
   },
   args: {
-    workout: {
-      obj: StorybookDataUtils.getWorkout(),
-      entry: StorybookDataUtils.getEntry(),
-    },
-    weight: {
-      obj: StorybookDataUtils.getWeight(),
-      entry: StorybookDataUtils.getEntry(),
-    },
+
   },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Shows the list of entries that user has added',
+        component: 'Create Entry Screen. Shows selection of entry types.',
       },
     },
   },
   decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
-} satisfies Meta<typeof EntryListScreen>;
+} satisfies Meta<typeof WeightEntryAddScreen>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-
+export const New: Story = {
 };
 
+
+export const FilledIn: Story = {
+  args: {
+    date: new Date(),
+    weight: 78.3,
+  },
+};

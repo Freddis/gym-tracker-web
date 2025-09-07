@@ -10,7 +10,7 @@ export const AppButton: FC<AppButtonProps> = (props) => {
   const color = props.palette ?? Color.Accent;
   const sizes : EnumMap<typeof props.variant, string[]> = {
     md: ['px-2', 'py-1', 'font-normal'],
-    lg: ['px-3', 'py-2', 'uppercase'],
+    lg: ['px-3', 'py-2', ''],
   };
   const classes = [
     `palette-${color}`,

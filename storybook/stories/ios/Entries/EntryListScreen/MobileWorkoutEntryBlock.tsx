@@ -23,9 +23,9 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
     <MobileBlock>
       <div className="flex flex-col sm:flex-row">
         <div className="text font-normal">
-          {!own && `Leg Day ${workout.id}`}
+          {!own && 'Leg Day'}
           {own && (
-            <AppLink to="/workouts/update/$id" params={{id: workout.id.toString()}}>Leg Day {workout.id}</AppLink>
+            <AppLink to="/workouts/update/$id" params={{id: workout.id.toString()}}>Leg Day</AppLink>
           )}
         </div>
       </div>
@@ -45,15 +45,15 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
           <div key={i} className="flex flex-col">
             <b>{exercise.exercise.name}</b>
             <div className="flex flex-row mt-1">
-            <AppImage src={exercise.exercise.images[0]} className="mt-1 w-20 h-20" />
-            <div className="pl-2">
-              <div className="">
-                {exercise.sets.map((set, i) => (
-                  <div key={i}>{i + 1}: {set.weight} kg x {set.reps}</div>
-                ))}
+              <AppImage src={exercise.exercise.images[0]} className="mt-1 w-20 h-20" />
+              <div className="pl-5 grow flex flex-row-reverse">
+                <div className="">
+                  {exercise.sets.map((set, i) => (
+                    <div key={i}>{i + 1}: {set.weight} kg x {set.reps}</div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
         </div>
         {i < exerises.length - 1 && <div key={`${i}sep`} className="border-b-1 border-on-surface/15 my-2" />}
         </>
