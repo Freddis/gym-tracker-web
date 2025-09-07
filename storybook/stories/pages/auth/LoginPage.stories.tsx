@@ -8,13 +8,12 @@ const meta = {
   component: LoginPage,
   tags: ['autodocs'],
   globals: {
-    viewport: {value: 'tablet', isRotated: false},
   },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Login Page',
       },
     },
   },

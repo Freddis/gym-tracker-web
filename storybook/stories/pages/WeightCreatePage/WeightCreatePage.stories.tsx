@@ -9,13 +9,12 @@ const meta = {
   component: WeightCreatePage,
   tags: ['autodocs'],
   globals: {
-    viewport: {value: 'tablet', isRotated: false},
   },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Weight Entry Creation Page',
       },
     },
   },

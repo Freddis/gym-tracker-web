@@ -4,14 +4,14 @@ import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 
 const meta = {
-  title: 'Icons/Social',
+  title: 'Icons/Dark Mode',
   component: FaSun,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Icons used in the application',
+        component: 'Icons used in dark mode swithes',
       },
     },
   },

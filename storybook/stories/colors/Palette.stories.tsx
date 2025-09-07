@@ -6,6 +6,9 @@ const meta = {
   title: 'Colors/Palette',
   component: StoryBookPaletteOverview,
   tags: ['autodocs'],
+  globals: {
+    viewport: {value: 'tablet', isRotated: false},
+  },
   parameters: {
     layout: 'centered',
     docs: {

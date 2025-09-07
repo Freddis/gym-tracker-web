@@ -1,5 +1,5 @@
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-import {Entry, Exercise, Workout, WorkoutType} from '../../../src/frontend/utils/openapi-client';
+import {Entry, Exercise, Weight, Workout, WorkoutType} from '../../../src/frontend/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
 import {barbellSquat} from './data/barbellSquat';
@@ -10,7 +10,6 @@ import {legExtension} from './data/legExtension';
 import {pullUp} from './data/pullUp';
 
 export class StorybookDataUtils {
-
   static getWorkoutTypeB(): WorkoutType {
     const type: WorkoutType = {
       id: 1,
@@ -313,6 +312,20 @@ export class StorybookDataUtils {
       exercises: [],
     };
     return workout;
+  }
+
+  static getWeight(): Weight {
+    const weight: Weight = {
+      id: 1,
+      externalId: null,
+      userId: 1,
+      weight: 75.2,
+      units: 'kg',
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    };
+    return weight;
   }
 
   static getWorkout(): Workout {

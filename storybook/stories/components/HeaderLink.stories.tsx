@@ -12,7 +12,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Basic text link for redirects',
+        component: 'A link used the header menu',
       },
     },
   },

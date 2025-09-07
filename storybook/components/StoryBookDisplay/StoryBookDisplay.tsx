@@ -22,6 +22,7 @@ import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUt
 import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
 import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
 import {routeTree} from '../../../src/routeTree.gen';
+import {cn} from '../../../src/frontend/utils/cn';
 const queryClient = new QueryClient();
 
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
@@ -59,15 +60,15 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
       setLanguage(l);
     },
   };
-  const flexDiraction = props.column ? 'flex-col' : 'flex-row';
+  const mdFlexDiraction = props.column ? 'md:flex-col' : 'md:flex-row';
   const InternalDisplay: FC = () => {
     return (
       <LanguageContext.Provider value={lang}>
         <QueryClientProvider client={queryClient}>
           <AuthContext.Provider value={auth} >
-          <div className={`flex ${flexDiraction} h-full w-full justify-center font-extralight`}>
+          <div className={cn(`flex flex-col ${mdFlexDiraction} h-full w-full justify-center font-extralight`, props.layoutClassName)}>
             <ThemeContext.Provider value={Theme.Light}>
-              <div className="theme-light">
+              <div className="theme-light w-full">
                 <Conditional condition={type === StoryBookDisplayType.Component}>
                   <StoryBookComponentDisplay {...props} />
                 </Conditional>
@@ -80,7 +81,7 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
               </div>
             </ThemeContext.Provider>
             <ThemeContext.Provider value={Theme.Dark}>
-            <div className="theme-dark">
+            <div className="theme-dark w-full">
               <Conditional condition={type === StoryBookDisplayType.Component}>
                 <StoryBookComponentDisplay {...props} />
               </Conditional>

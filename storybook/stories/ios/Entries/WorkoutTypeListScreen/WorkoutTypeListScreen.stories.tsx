@@ -22,11 +22,11 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Shows the list of workout types (templates) that the user has added',
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
 } satisfies Meta<typeof WorkoutTypeListScreen>;
 
 export default meta;

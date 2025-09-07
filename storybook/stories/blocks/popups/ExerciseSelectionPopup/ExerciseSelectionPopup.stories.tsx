@@ -8,13 +8,12 @@ const meta = {
   component: ExerciseSelectionPopup,
   tags: ['autodocs'],
   globals: {
-    viewport: {value: 'tablet', isRotated: false},
   },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Registration Form',
+        component: "Allows to select an exercise from the built-in or the user's library. Used to reference exercises in forms.",
       },
     },
   },

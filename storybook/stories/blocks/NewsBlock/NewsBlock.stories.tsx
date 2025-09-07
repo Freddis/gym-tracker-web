@@ -14,15 +14,22 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Workout Block',
+        component: 'News Block',
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} className="max-w-5xl" column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} className="max-w-5xl" />],
 } satisfies Meta<typeof NewsBlock>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+};
+
+
+export const OwnNews: Story = {
+  args: {
+    own: true,
+  },
 };

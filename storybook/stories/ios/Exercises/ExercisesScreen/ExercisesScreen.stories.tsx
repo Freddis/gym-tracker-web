@@ -18,11 +18,11 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: "Shows the list of exercises in the built-in and the user's library",
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
 } satisfies Meta<typeof ExercisesScreen>;
 
 export default meta;

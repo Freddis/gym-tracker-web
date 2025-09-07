@@ -6,11 +6,14 @@ const meta = {
   title: 'Colors/Colors Overview',
   component: StoryBookColorOverview,
   tags: ['autodocs'],
+  globals: {
+    viewport: {value: 'tablet', isRotated: false},
+  },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Colors shared accross all palettes',
+        component: 'Primary (Background) colors used in palettes',
       },
     },
   },

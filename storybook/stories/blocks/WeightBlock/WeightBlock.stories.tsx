@@ -1,29 +1,38 @@
+
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {ExerciseBlock} from '../../../../src/frontend/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
+import {WeightEntryBlock} from '../../../../src/frontend/components/blocks/EntryBlock/components/WeightEntryBlock';
 
 const meta = {
-  title: 'Blocks/Exercise',
-  component: ExerciseBlock,
+  title: 'Blocks/Weight',
+  component: WeightEntryBlock,
   tags: ['autodocs'],
   args: {
-    item: StorybookDataUtils.getExercise(),
+    weight: StorybookDataUtils.getWeight(),
+    entry: StorybookDataUtils.getEntry(),
+    own: false,
   },
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Exercise Block',
+        component: 'Weight Block',
       },
     },
   },
   decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} className="w-full" layoutClassName="w-full" />],
-} satisfies Meta<typeof ExerciseBlock>;
+} satisfies Meta<typeof WeightEntryBlock>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+};
+
+export const OwnWorkout: Story = {
+  args: {
+    own: true,
+  },
 };

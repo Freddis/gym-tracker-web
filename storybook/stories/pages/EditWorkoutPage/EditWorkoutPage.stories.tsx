@@ -11,7 +11,6 @@ const meta = {
   component: UpdateWorkoutPagePresenter,
   tags: ['autodocs'],
   globals: {
-    viewport: {value: 'tablet', isRotated: false},
   },
   args: {
     item: StorybookDataUtils.getWorkout(),
@@ -23,7 +22,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Workout Editing Page',
       },
     },
   },

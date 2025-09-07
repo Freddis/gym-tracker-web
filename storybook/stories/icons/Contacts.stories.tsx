@@ -12,7 +12,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Icons used in the application',
+        component: 'Icons used for contact blocks',
       },
     },
   },

@@ -19,11 +19,11 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Shows the list of entries that user has added',
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
 } satisfies Meta<typeof EntryListScreen>;
 
 export default meta;

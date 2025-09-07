@@ -11,7 +11,7 @@ const meta: Meta<typeof AppLogo> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Basic text link for redirects',
+        component: 'Website logo',
       },
     },
   },

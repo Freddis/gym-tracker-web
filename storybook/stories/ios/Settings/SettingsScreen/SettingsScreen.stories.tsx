@@ -16,11 +16,11 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Settings tab in the mobile app',
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
 } satisfies Meta<typeof SettingsScreen>;
 
 export default meta;

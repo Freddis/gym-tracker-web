@@ -17,11 +17,11 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Login Form',
+        component: 'Create Entry Screen. Shows selection of entry types.',
       },
     },
   },
-  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} column />],
+  decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
 } satisfies Meta<typeof EntryAddScreen>;
 
 export default meta;
