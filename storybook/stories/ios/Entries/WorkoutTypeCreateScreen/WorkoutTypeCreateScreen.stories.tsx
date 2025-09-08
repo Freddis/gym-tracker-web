@@ -1,11 +1,12 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
-import {WeightEntryAddScreen} from './WeightEntryAddScreen';
+import {WorkoutTypeCreateScreen} from './WorkoutTypeCreateScreen';
+import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
 
 const meta = {
-  title: 'IOS/Entries/Weight Entry Add',
-  component: WeightEntryAddScreen,
+  title: 'IOS/Entries/Workout Type Create',
+  component: WorkoutTypeCreateScreen,
   tags: ['autodocs'],
   globals: {
     viewport: {value: 'tablet', isRotated: false},
@@ -17,12 +18,12 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Adding weight entry',
+        component: 'Adding new workout type.',
       },
     },
   },
   decorators: [(Story) => <StoryBookDisplay story={<Story/>} palette={Color.Neutral} />],
-} satisfies Meta<typeof WeightEntryAddScreen>;
+} satisfies Meta<typeof WorkoutTypeCreateScreen>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -33,7 +34,18 @@ export const New: Story = {
 
 export const FilledIn: Story = {
   args: {
-    date: new Date(),
-    weight: 78.3,
+    type: StorybookDataUtils.getWorkoutType(),
+  },
+};
+
+export const Errors: Story = {
+  args: {
+    type: {
+      ...StorybookDataUtils.getWorkoutType(),
+      name: '',
+    },
+    errors: [
+      {field: 'name', message: "Name can't be empty"},
+    ],
   },
 };

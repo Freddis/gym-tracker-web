@@ -3,7 +3,6 @@
 @source inline("bg-neutral-900");
 @source inline("bg-neutral-200");
 @source inline("bg-black");
-@source inline("bg-neutral-300");
 @source inline("bg-red-100");
 @source inline("bg-red-400");
 @source inline("bg-rose-300");
@@ -33,7 +32,6 @@
 @source inline("text-neutral-900");
 @source inline("text-neutral-200");
 @source inline("text-black");
-@source inline("text-neutral-300");
 @source inline("text-red-100");
 @source inline("text-red-400");
 @source inline("text-rose-300");
@@ -124,7 +122,7 @@
 --color-cavity: #f8f8f8;
 --color-on-cavity: #222;
 }
---color-cavity: var(--color-neutral-300);
+--color-cavity: var(--color-neutral-200);
 --color-on-cavity: black;
 }
 .theme-dark .palette-neutral {

@@ -33,7 +33,7 @@ export const palettes: PaletteSet = {
       },
       cavity: {
         text: 'black',
-        color: 'var(--color-neutral-300)',
+        color: 'var(--color-neutral-200)',
       },
     },
   },

@@ -87,7 +87,7 @@ export const workoutTypes = gymTracker.table('workout_type', {
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   planIndex: integer(),
   planId: integer().references(() => workoutPlans.id, {onDelete: 'cascade'}),
-  name: varchar(),
+  name: varchar().notNull(),
   description: text(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),

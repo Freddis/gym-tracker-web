@@ -749,7 +749,7 @@ export type WorkoutType = {
   /**
    * Name of the workout type
    */
-  name: string | null;
+  name: string;
   /**
    * Description of the workpout type
    */
@@ -3720,7 +3720,7 @@ export type PostWorkoutTypesData = {
     /**
      * Name of the workout type
      */
-    name: string | null;
+    name: string;
     /**
      * Description of the workpout type
      */
@@ -4086,7 +4086,7 @@ export type PatchWorkoutTypesByIdData = {
     /**
      * Name of the workout type
      */
-    name: string | null;
+    name: string;
     /**
      * Description of the workpout type
      */

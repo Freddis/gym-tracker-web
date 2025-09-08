@@ -1,20 +1,23 @@
 import React, {FC} from 'react';
 import {FaCalendar, FaChevronLeft, FaDumbbell, FaGear} from 'react-icons/fa6';
 import {cn} from '../../../src/frontend/utils/cn';
+import {AppLink} from '../../../src/frontend/components/atoms/AppLink/AppLink';
 
 interface IphoneDisplayProps {
   title?: string; children: React.ReactNode
   tab?: 1 | 2 | 3
   hideTabs?: boolean
+  rightButton?: string
+  className?: string
 }
 
-export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title, tab = 1, hideTabs = false}) => {
+export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title, tab = 1, hideTabs = false, rightButton, className}) => {
   return (
     <div
-      className="flex flex-col relative mx-auto my-6 w-[393px] h-[852px]
+      className={cn(`flex flex-col relative mx-auto my-6 w-[393px] h-[852px]
       bg-main text-on-main rounded-[50px] border-[12px]
-      border-black shadow-2xl overflow-hidden font-[system-ui
-    ">
+      border-black shadow-2xl overflow-hidden font-[system-ui 
+    `, className)}>
       {/* Notch */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-black rounded-b-3xl z-30" />
 
@@ -40,9 +43,10 @@ export const IphoneDisplay: FC<IphoneDisplayProps> = ({children, title, tab = 1,
         {title && (
           <div
            className="relative w-full h-12 flex items-center justify-center
-           border-b border-on-surface/15 text-[17px] font-semibold bg-surface z-10 pb-5">
+           border-b border-on-surface/15 text-[17px] font-semibold bg-surface text-on-surface z-10 pb-5">
             <FaChevronLeft className="text-accent text-lg absolute left-2" />
             {title}
+            {rightButton && (<AppLink className="absolute right-2 text-base">{rightButton}</AppLink>)}
           </div>
         )}
         <div className="grow overflow-scroll">

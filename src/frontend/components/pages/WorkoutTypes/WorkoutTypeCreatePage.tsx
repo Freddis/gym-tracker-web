@@ -18,7 +18,7 @@ export const WorkoutTypeCreatePage: FC = () => {
   const navigate = useNavigate();
   const [workoutType, setWorkoutPlan] = useState<WorkoutType>({
     id: 0,
-    name: null,
+    name: '',
     description: null,
     userId: 0,
     createdAt: new Date(),

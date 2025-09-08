@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."workout_type" ALTER COLUMN "name" SET NOT NULL;

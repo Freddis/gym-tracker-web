@@ -306,6 +306,18 @@ export const dictionary = {
           deletionSuccss: 'You successfully deleted workout type',
         },
       },
+      form: {
+        labels: {
+          name: 'Name',
+          description: 'Description',
+        },
+        buttons: {
+          addExercise: 'Add Exercise',
+          addSet: 'Add',
+          deleteSet: 'Delete',
+          deleteExercise: 'Delete',
+        },
+      },
       list: {
         heading: 'Workout Types',
         toasts: {

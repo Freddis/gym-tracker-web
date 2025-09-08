@@ -28,8 +28,8 @@ export const MobileWeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boo
         <div></div>
       </div>
       <div className="mt-5 flex flex-row justify-center items-end">
-          <div className="text-4xl font-normal">{weight.weight}</div>
-          <div className="text-lg font-semibold">{weight.units}</div>
+        <div className="text-4xl font-normal">{weight.weight}</div>
+        <div className="text-lg font-semibold">{weight.units}</div>
       </div>
       {!own && (
         <div className="grow flex flex-row-reverse">

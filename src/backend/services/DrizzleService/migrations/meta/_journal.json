@@ -127,6 +127,13 @@
       "when": 1756799949604,
       "tag": "0017_workout_types",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1757318034372,
+      "tag": "0018_workoutTypeNameNonNull",
+      "breakpoints": true
     }
   ]
 }

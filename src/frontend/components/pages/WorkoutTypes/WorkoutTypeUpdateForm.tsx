@@ -6,6 +6,7 @@ import {AppButton} from '../../atoms/AppButton/AppButton';
 import {PopupContext} from '../../atoms/Popup/PopupContext';
 import {ExerciseSelectionPopup} from '../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {WorkoutTypeExerciseUpdateForm} from './WorkoutTypeExerciseUpdateForm';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 type Updated<T> = Omit<T, 'id'>
 interface WorkoutTypeUpdateFormProps {
@@ -14,6 +15,7 @@ interface WorkoutTypeUpdateFormProps {
 }
 
 export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => {
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.workoutTypes.form);
   const [name, setName] = useState(props.item.name ?? '');
   const [description, setDescription] = useState(props.item.description ?? '');
   const popupContext = useContext(PopupContext);
@@ -64,11 +66,11 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
   return (
     <>
       <div className="mb-5 flex flex-col items-start justify-start">
-        <AppLabel>Name</AppLabel>
+        <AppLabel>{t(i18n.labels.name)}</AppLabel>
         <AppTextInput onChange={onNameChange} value={name}/>
       </div>
       <div className="mb-5 flex flex-col items-start">
-        <AppLabel >Description</AppLabel>
+        <AppLabel >{t(i18n.labels.description)}</AppLabel>
         <AppTextInput onChange={onDescriptionChange} value={description}/>
       </div>
       <div>
@@ -76,7 +78,7 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
           <WorkoutTypeExerciseUpdateForm key={exercise.index} item={exercise} onDelete={deleteExercise} onUpdate={updateExercise} />
         ))}
       </div>
-      <AppButton onClick={addExerciseButtonClicked}>Add Exercise</AppButton>
+      <AppButton onClick={addExerciseButtonClicked}>{t(i18n.buttons.addExercise)}</AppButton>
     </>
   );
 };

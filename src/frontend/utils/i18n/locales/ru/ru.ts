@@ -202,6 +202,18 @@ export const dictionary: Translation = {
           deletionSuccss: 'Вы успешно удалили тип тренировки',
         },
       },
+      form: {
+        labels: {
+          name: 'Имя',
+          description: 'Описание',
+        },
+        buttons: {
+          addExercise: 'Добавить Упражнение',
+          addSet: 'Добавить',
+          deleteSet: 'Удалить',
+          deleteExercise: 'Удалить',
+        },
+      },
       list: {
         heading: 'Типы тренировок',
         toasts: {

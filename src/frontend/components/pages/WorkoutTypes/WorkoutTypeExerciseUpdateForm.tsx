@@ -3,6 +3,7 @@ import {WorkoutTypeExercise, WorkoutTypeExerciseSet} from '../../../utils/openap
 import {AppImage} from '../../atoms/AppImage/AppImage';
 import {AppButton} from '../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../atoms/AppTextInput/AppTextInput';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 interface WorkoutTypeExerciseUpdateFormProps {
   item: WorkoutTypeExercise
@@ -11,6 +12,7 @@ interface WorkoutTypeExerciseUpdateFormProps {
 }
 
 export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProps> = (props) => {
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.workoutTypes.form);
   const [workoutTypeExercise, setWorkoutExercise] = useState(props.item);
   const [exercise] = useState(props.item.exercise);
   const deleteExercise = () => {
@@ -56,7 +58,7 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
           <div className="flex flex-row">
             <b>{exercise.name}</b>
             <div className="grow flex flex-row-reverse gap-2">
-              <AppButton onClick={deleteExercise} color={'error'}>Delete</AppButton>
+              <AppButton onClick={deleteExercise} color={'error'}>{t(i18n.buttons.deleteExercise)}</AppButton>
             </div>
           </div>
           <div>
@@ -68,10 +70,10 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
                   value={(set.reps ?? 0).toString()}
                   className="w-15 text-center"
                 />
-                <AppButton onClick={() => deleteSet(set)} color={'error'}>Delete</AppButton>
+                <AppButton onClick={() => deleteSet(set)} color={'error'}>{t(i18n.buttons.deleteSet)}</AppButton>
               </div>
             ))}
-            <AppButton onClick={addSet}>Add Set</AppButton>
+            <AppButton onClick={addSet}>{t(i18n.buttons.addSet)}</AppButton>
           </div>
         </div>
       </div>
