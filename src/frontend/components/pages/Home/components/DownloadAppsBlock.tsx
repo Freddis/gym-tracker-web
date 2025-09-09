@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {HeadingBlock} from './HeadingBlock/HeadingBlock';
+import {HeadingBlock} from './HeadingBlock';
 
 export const DownloadAppsBlock: FC = () => {
   const toasts = useToasts();

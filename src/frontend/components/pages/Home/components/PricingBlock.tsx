@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {ImCheckboxUnchecked, ImCheckboxChecked} from 'react-icons/im';
-import {HeadingBlock} from './HeadingBlock/HeadingBlock';
+import {HeadingBlock} from './HeadingBlock';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 export const PricingBlock: FC = () => {

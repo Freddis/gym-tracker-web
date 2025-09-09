@@ -1,11 +1,11 @@
 import {FC} from 'react';
-import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
 import {GrAnalytics} from 'react-icons/gr';
 import {ImRocket} from 'react-icons/im';
 import {FaCrown} from 'react-icons/fa6';
 import {Feature} from './Feature';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
-export const LaptopShowCaseRight: FC = () => {
+export const LaptopShowcaseBlock: FC = () => {
   const {t, i18n} = useAppPartialTranslation(
     (x) => x.pages.static.home.features
   );
