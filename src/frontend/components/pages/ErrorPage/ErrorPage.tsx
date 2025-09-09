@@ -1,14 +1,20 @@
 import {ErrorComponentProps} from '@tanstack/react-router';
 import {FC} from 'react';
+import appCss from '../../../../frontend/utils/css/app.css?url';
+import {ThemeProvider} from '../../layout/ThemeProvider/ThemeProvider';
+import {ErrorPagePresenter} from './components/ErrorPagePresenter';
 
 export const ErrorPage: FC<ErrorComponentProps> = (props) => {
-  // todo: delete this before release
-  console.log(props.error);
+  // Need to use as little modules as possible not to trigger error again
+  // Decided to risk here and include ThemeProvider
   return (
     <html>
-      <body>
-        {props.error.message}
-      </body>
-      </html>
+      <head>
+        <link rel="stylesheet" href={appCss} />
+      </head>
+      <ThemeProvider>
+        <ErrorPagePresenter {...props} />
+      </ThemeProvider>
+    </html>
   );
 };

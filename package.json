@@ -77,7 +77,6 @@
     "@hey-api/openapi-ts": "^0.66.7",
     "@playwright/test": "^1.54.2",
     "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-onboarding": "^8.6.14",
     "@storybook/blocks": "^8.6.14",
     "@storybook/experimental-addon-test": "^8.6.14",
     "@storybook/react": "^8.6.14",
