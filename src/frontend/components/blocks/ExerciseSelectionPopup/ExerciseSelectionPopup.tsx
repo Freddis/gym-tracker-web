@@ -1,15 +1,15 @@
 
 import {FC, useState, useEffect, ChangeEventHandler} from 'react';
 import {ExerciseRow} from './components/ExerciseRow';
-import {AppTextInput} from '../AppTextInput/AppTextInput';
-import {AppSwitch} from '../AppSwitch/AppSwitch';
-import {AppSpinner} from '../AppSpinner/AppSpinner';
 import {Exercise, getExercises, getExercisesBuiltIn} from '../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {useInView} from 'react-intersection-observer';
 import {useInfiniteQuery} from '@tanstack/react-query';
 import {Color} from '../../../utils/design-system/types/Color';
-import {AppToast} from '../AppToast/AppToast';
+import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
+import {AppSwitch} from '../../atoms/AppSwitch/AppSwitch';
+import {AppTextInput} from '../../atoms/AppTextInput/AppTextInput';
+import {AppToast} from '../../atoms/AppToast/AppToast';
 
 export const ExerciseSelectionPopup: FC<{onSelect?: (exercise: Exercise)=> void}> = (props) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.popups.exerciseSelection);

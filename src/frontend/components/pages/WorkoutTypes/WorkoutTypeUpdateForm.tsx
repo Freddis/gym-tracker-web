@@ -4,9 +4,9 @@ import {AppLabel} from '../../atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../atoms/AppButton/AppButton';
 import {PopupContext} from '../../atoms/Popup/PopupContext';
-import {ExerciseSelectionPopup} from '../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {WorkoutTypeExerciseUpdateForm} from './WorkoutTypeExerciseUpdateForm';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+import {ExerciseSelectionPopup} from '../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 
 type Updated<T> = Omit<T, 'id'>
 interface WorkoutTypeUpdateFormProps {

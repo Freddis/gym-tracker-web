@@ -2,7 +2,6 @@ import {FC, useState, useContext, useEffect} from 'react';
 import {AppTextInput} from '../../../../atoms/AppTextInput/AppTextInput';
 import {AppButton} from '../../../../atoms/AppButton/AppButton';
 import {PopupContext} from '../../../../atoms/Popup/PopupContext';
-import {ExerciseSelectionPopup} from '../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {Conditional} from '../../../../layout/Header/Header';
 import {AppLabel} from '../../../../atoms/AppLabel/AppLabel';
 import {Workout, WorkoutUpdateDto, Exercise, getWorkoutTypes} from '../../../../../utils/openapi-client';
@@ -11,6 +10,7 @@ import {UpdateWorkoutExerciseForm} from './components/UpdateWorkoutExerciseForm/
 import {AppCombobox} from '../../../../atoms/AppCombobox/AppCombobox';
 import {useQuery} from '@tanstack/react-query';
 import {ComboValue} from '../../../../atoms/AppCombobox/types/ComboValue';
+import {ExerciseSelectionPopup} from '../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 
 export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: WorkoutUpdateDto) => void }> = (props) => {
   const popupContext = useContext(PopupContext);

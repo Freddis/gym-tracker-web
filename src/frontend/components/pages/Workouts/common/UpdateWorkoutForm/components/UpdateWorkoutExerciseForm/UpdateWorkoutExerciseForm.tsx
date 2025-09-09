@@ -2,10 +2,10 @@ import {FC, useContext, useState, ChangeEvent} from 'react';
 import {UpdateWorkoutExerciseFormProps} from './types/UpdateWorkoutExerciseFormProps';
 import {AppButton} from '../../../../../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../../../../../atoms/AppTextInput/AppTextInput';
-import {ExerciseSelectionPopup} from '../../../../../../atoms/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {PopupContext} from '../../../../../../atoms/Popup/PopupContext';
 import {Exercise, WorkoutUpdateDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../../utils/openapi-client';
 import {AppImage} from '../../../../../../atoms/AppImage/AppImage';
+import {ExerciseSelectionPopup} from '../../../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
