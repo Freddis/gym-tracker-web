@@ -11,10 +11,12 @@ import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
+import {useResponseErrors} from '../../../utils/useResponseErrors';
 
 const routeApi = getRouteApi('/workouts/plans/update/$id');
 export const WorkoutPlanUpdatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutPlans.update);
+  const {showToastsAndSetErrors} = useResponseErrors();
   const client = useQueryClient();
   const toasts = useToasts();
   const navigate = useNavigate();
@@ -51,9 +53,7 @@ export const WorkoutPlanUpdatePage: FC = () => {
         id,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-plans', 'workout-plan']});
@@ -75,9 +75,7 @@ export const WorkoutPlanUpdatePage: FC = () => {
         description: workoutPlan.description,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-plans', 'workout-plan']});

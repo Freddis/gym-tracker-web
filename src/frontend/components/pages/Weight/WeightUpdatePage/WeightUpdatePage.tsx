@@ -18,9 +18,9 @@ const routeApi = getRouteApi('/weight/update/$id');
 export const WeightUpdatePage: FC = () => {
   const navigate = useNavigate();
   const params = routeApi.useParams();
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const toasts = useToasts();
-  const [, setErrors, errors] = useResponseErrors();
+  const {errors, showToastsAndSetErrors} = useResponseErrors();
   const [weight, setWeight] = useState<number| null>(null);
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery(getWeightByIdOptions({
@@ -49,19 +49,11 @@ export const WeightUpdatePage: FC = () => {
         weight: weight,
       },
     });
-    if (!result.error) {
-      toasts.addSuccess(t(i18n.weight.update.toasts.success));
-      navigate({to: '/entries'});
+    if (showToastsAndSetErrors(result)) {
       return;
     }
-    const err = result.error;
-    if (err.error.code === 'ValidationFailed') {
-      setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'ActionError') {
-      toasts.addDanger(err.error.humanReadable);
-    } else {
-      toasts.addDanger(translations.utils.toasts.unknownApiError);
-    }
+    toasts.addSuccess(t(i18n.weight.update.toasts.success));
+    navigate({to: '/entries'});
   };
 
   return (

@@ -10,9 +10,11 @@ import {AppBlockHeader} from '../../atoms/AppBlock/components/AppBlockHeader';
 import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
+import {useResponseErrors} from '../../../utils/useResponseErrors';
 
 export const WorkoutPlanCreatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutPlans.create);
+  const {showToastsAndSetErrors} = useResponseErrors();
   const client = useQueryClient();
   const toasts = useToasts();
   const navigate = useNavigate();
@@ -38,9 +40,7 @@ export const WorkoutPlanCreatePage: FC = () => {
         description: workoutPlan.description,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-plans']});

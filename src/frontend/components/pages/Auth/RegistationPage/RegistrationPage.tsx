@@ -8,7 +8,7 @@ import {AppLink} from '../../../atoms/AppLink/AppLink';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
-import {postAuthRegister, PostAuthRegisterError} from '../../../../utils/openapi-client';
+import {postAuthRegister} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
@@ -21,7 +21,7 @@ export const RegistrationPage: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [errorMessage, setErrors] = useResponseErrors();
+  const {getError, showToastsAndSetErrors} = useResponseErrors();
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -34,22 +34,13 @@ export const RegistrationPage: FC = () => {
         passwordConfirmation,
       },
     });
-    if (!result.error) {
-      auth.login(result.data);
-      toasts.addSuccess(t(i18n.toasts.registrationSuccess));
-      navigate({to: '/entries'});
+    if (showToastsAndSetErrors(result, {noValidationToasts: true})) {
       return;
     }
-    const err: PostAuthRegisterError = result.error;
-    if (err.error.code === 'ValidationFailed') {
-      setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'ActionError') {
-          // eslint-disable-next-line no-alert
-      alert(err.error.humanReadable);
-    } else {
-          // eslint-disable-next-line no-alert
-      alert('Something went wrong:');
-    }
+    auth.login(result.data);
+    toasts.addSuccess(t(i18n.toasts.registrationSuccess));
+    navigate({to: '/entries'});
+    return;
   };
 
   return (
@@ -58,14 +49,14 @@ export const RegistrationPage: FC = () => {
         <AppBlockHeader >{t(i18n.heading)}</AppBlockHeader>
         <AppLabel className="mb-2">{t(i18n.form.labels.name)}</AppLabel>
         <AppTextInput data-testid="name" onChange={(e) => setName(e.target.value)} value={name}/>
-        <AppInputError error={errorMessage('name')} />
+        <AppInputError error={getError('name')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.email)}:</AppLabel>
         <AppTextInput
           data-testid="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
-        <AppInputError error={errorMessage('email')} />
+        <AppInputError error={getError('email')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
         <AppTextInput
           data-testid="password"
@@ -73,7 +64,7 @@ export const RegistrationPage: FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        <AppInputError error={errorMessage('password')} />
+        <AppInputError error={getError('password')} />
         <AppLabel className="mb-2">{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
         <AppTextInput
         data-testid="passwordConfirmation"
@@ -81,7 +72,7 @@ export const RegistrationPage: FC = () => {
         onChange={(e) => setPasswordConfirmation(e.target.value)}
         value={passwordConfirmation}
         />
-        <AppInputError error={errorMessage('passwordConfirmation')} />
+        <AppInputError error={getError('passwordConfirmation')} />
 
         <div className="flex flex-col sm:flex-row items-center gap-5 mt-5 ">
           <AppLink to="/auth/login">{t(i18n.form.buttons.signIn)}</AppLink>

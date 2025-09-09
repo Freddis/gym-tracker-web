@@ -88,6 +88,7 @@ export const dictionary: Translation = {
     toasts: {
       unknownApiError: 'Что-то пошло не так.',
       notImplemented: 'К сожалению, функция пока не добавлена',
+      invalidForm: 'Информация отсутствует или указана неверно',
     },
     generic: {
       buttons: {

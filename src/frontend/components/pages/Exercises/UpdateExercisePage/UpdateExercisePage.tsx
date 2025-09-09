@@ -1,30 +1,24 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useState} from 'react';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
-import {Exercise} from '../../../../utils/openapi-client';
+import {deleteExercisesById, Exercise, patchExercisesById} from '../../../../utils/openapi-client';
 import {
-  patchExercisesByIdMutation,
-  deleteExercisesByIdMutation,
   getExercisesByIdOptions,
 } from '../../../../utils/openapi-client/@tanstack/react-query.gen';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 const routeApi = getRouteApi('/exercises/update/$exerciseId');
 
 const EditExerciseForm = (props: {item: Exercise}) => {
   const navigation = useNavigate();
+  const {showToastsAndSetErrors} = useResponseErrors();
   const [name, setName] = useState(props.item.name);
   const [descriptiom, setDescription] = useState(props.item.description ?? '');
-  const updateMutation = useMutation({
-    ...patchExercisesByIdMutation(),
-  });
-  const deleteMutation = useMutation({
-    ...deleteExercisesByIdMutation(),
-  });
   const client = useQueryClient();
   const item = props.item;
   const saveExercise = async () => {
-    const result = await updateMutation.mutateAsync({
+    const result = await patchExercisesById({
       path: {
         id: item.id,
       },
@@ -33,12 +27,9 @@ const EditExerciseForm = (props: {item: Exercise}) => {
         description: descriptiom,
       },
     });
-    if (!result.success) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
-
     await client.invalidateQueries({queryKey: ['exercises']});
     navigation({
       to: '/exercises',
@@ -50,14 +41,12 @@ const EditExerciseForm = (props: {item: Exercise}) => {
     });
   };
   const deleteExercise = async () => {
-    const result = await deleteMutation.mutateAsync({
+    const result = await deleteExercisesById({
       path: {
         id: item.id,
       },
     });
-    if (!result.success) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     navigation({

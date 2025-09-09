@@ -2,10 +2,11 @@ import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useState} from 'react';
 import {useNavigate} from '@tanstack/react-router';
 import {postExercises} from '../../../../utils/openapi-client';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 export function AddExercisePage() {
   const [name, setName] = useState('');
-
+  const {showToastsAndSetErrors} = useResponseErrors();
   const navigation = useNavigate();
   const addExercise = async () => {
     const result = await postExercises({
@@ -13,9 +14,7 @@ export function AddExercisePage() {
         name,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     navigation({

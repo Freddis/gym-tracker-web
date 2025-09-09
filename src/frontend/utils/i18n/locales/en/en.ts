@@ -99,6 +99,7 @@ export const dictionary = {
     toasts: {
       unknownApiError: "Something went wrong. We can't log you in",
       notImplemented: 'Not implemented yet',
+      invalidForm: 'Some information is missing or invalid',
     },
     generic: {
       buttons: {

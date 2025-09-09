@@ -9,7 +9,7 @@ import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {postAuthLogin, PostAuthLoginError} from '../../../../utils/openapi-client';
+import {postAuthLogin} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
@@ -20,7 +20,7 @@ export const LoginPage: FC = () => {
   const [password, setPassword] = useState('');
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-  const [errorMessage, setErrors] = useResponseErrors();
+  const {getError, showToastsAndSetErrors} = useResponseErrors();
   const toasts = useToasts();
 
   const loginButtonPress = async () => {
@@ -30,25 +30,20 @@ export const LoginPage: FC = () => {
         password,
       },
     });
-    if (!result.error) {
-      auth.login(result.data);
-      toasts.addSuccess(t(i18n.toasts.loginSuccess));
-      navigate({to: '/entries'});
+    if (showToastsAndSetErrors(result, {noValidationToasts: true})) {
       return;
     }
-    const err: PostAuthLoginError = result.error;
-    if (err.error.code === 'ValidationFailed') {
-      setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'ActionError') {
-      toasts.addDanger(err.error.humanReadable);
-    } else {
-      toasts.addDanger(t(i18n.toasts.unknownApiError));
-    }
+    auth.login(result.data);
+    toasts.addSuccess(t(i18n.toasts.loginSuccess));
+    navigate({to: '/entries'});
+    return;
   };
+
   const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
     e.preventDefault();
     toasts.addWarning(t(i18n.toasts.notImplemented));
   };
+
   return (
     <PageContainer className="justify-center bg-main text-main">
         <AppBlock className="p-10 w-full max-w-xl rounded-sm">
@@ -60,7 +55,7 @@ export const LoginPage: FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
-            <AppInputError data-testid="error-email" error={errorMessage('email')} />
+            <AppInputError data-testid="error-email" error={getError('email')} />
             <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
@@ -68,7 +63,7 @@ export const LoginPage: FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-            <AppInputError data-testid="error-password" error={errorMessage('password')} />
+            <AppInputError data-testid="error-password" error={getError('password')} />
           </div>
           <div className="flex flex-row gap-10 justify-center">
             <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">

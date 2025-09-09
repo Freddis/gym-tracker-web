@@ -9,9 +9,11 @@ import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader'
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {UpdateWorkoutForm} from '../common/UpdateWorkoutForm/UpdateWorkoutForm';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();
+  const {showToastsAndSetErrors} = useResponseErrors();
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const client = useQueryClient();
   const [itemDto, setItemDto] = useState<WorkoutUpdateDto>();
@@ -30,13 +32,11 @@ export const WorkoutCreatePage: FC = () => {
     const result = await postWorkouts({
       body: itemDto,
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
 
-    await client.invalidateQueries({queryKey: ['exercises']});
+    await client.invalidateQueries({queryKey: ['entries']});
     navigation({
       to: '/entries',
     });
@@ -67,4 +67,5 @@ export const WorkoutCreatePage: FC = () => {
     </PageContainer>
   );
 };
+
 

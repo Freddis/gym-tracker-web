@@ -15,7 +15,7 @@ export const LoginScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage] = useResponseErrors(errors);
+  const {getError} = useResponseErrors(errors);
 
   const loginButtonPress = async () => {
 
@@ -38,7 +38,7 @@ export const LoginScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
-            <AppInputError data-testid="error-email" error={errorMessage('email')} />
+            <AppInputError data-testid="error-email" error={getError('email')} />
             <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
@@ -46,7 +46,7 @@ export const LoginScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-            <AppInputError data-testid="error-password" error={errorMessage('password')} />
+            <AppInputError data-testid="error-password" error={getError('password')} />
           </div>
           <div className="flex flex-row justify-center">
             <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">

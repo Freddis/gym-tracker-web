@@ -11,6 +11,7 @@ import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
+import {useResponseErrors} from '../../../utils/useResponseErrors';
 
 /**
  * Like useState, but doesn't trigger re-renders.
@@ -36,6 +37,7 @@ export function useLocalRefState<T extends object>(initialValue: T) {
 
 const routeApi = getRouteApi('/workouts/types/update/$id');
 export const WorkoutTypeUpdatePage: FC = () => {
+  const {showToastsAndSetErrors} = useResponseErrors();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutTypes.update);
   const client = useQueryClient();
   const toasts = useToasts();
@@ -90,9 +92,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
         id,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-types', 'workout-type']});
@@ -119,9 +119,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
         })),
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-types', 'workout-type']});

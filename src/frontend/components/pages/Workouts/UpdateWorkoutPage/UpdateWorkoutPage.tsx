@@ -6,9 +6,11 @@ import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {getWorkoutsByIdOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 import {WorkoutUpdateDto, patchWorkoutsById, deleteWorkoutsById} from '../../../../utils/openapi-client';
 import {UpdateWorkoutPagePresenter} from './components/UpdateWorkoutPagePresenter';
+import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 const routeApi = getRouteApi('/workouts/update/$id');
 export const UpdateWorkoutPage: FC = () => {
+  const {showToastsAndSetErrors} = useResponseErrors();
   const params = routeApi.useParams();
   const client = useQueryClient();
   const navigation = useNavigate();
@@ -36,13 +38,10 @@ export const UpdateWorkoutPage: FC = () => {
       },
       body: itemDto,
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
-
-    await client.invalidateQueries({queryKey: ['exercises']});
+    await client.invalidateQueries({queryKey: ['entries']});
     navigation({
       to: '/entries',
     });
@@ -54,9 +53,7 @@ export const UpdateWorkoutPage: FC = () => {
         id: id,
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     navigation({

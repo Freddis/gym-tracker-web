@@ -14,7 +14,7 @@ import {FaPlus, FaXmark} from 'react-icons/fa6';
 
 export const WorkoutTypeCreateScreen: FC<{type?: WorkoutType, errors?: FieldError[]}> = (props) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.workoutTypes.form);
-  const [errorMessage] = useResponseErrors(props.errors);
+  const {getError} = useResponseErrors(props.errors);
   const [name, setName] = useState(props.type?.name ?? '');
   return (
   <IphoneDisplay title="New Workout Type" tab={1} rightButton="Save">
@@ -23,7 +23,7 @@ export const WorkoutTypeCreateScreen: FC<{type?: WorkoutType, errors?: FieldErro
          <div className="flex flex-col items-start w-full">
             <AppLabel>{t(i18n.labels.name)}</AppLabel>
             <AppTextInput data-testid="name" onChange={(e) => setName(e.target.value)} value={name}/>
-            <AppInputError error={errorMessage('name')} />
+            <AppInputError error={getError('name')} />
           </div>
           {props.type?.exercises && (
             <div className="flex flex-col gap-3 w-full mb-5">

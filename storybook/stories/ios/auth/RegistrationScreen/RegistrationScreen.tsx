@@ -15,7 +15,7 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [errorMessage] = useResponseErrors(errors);
+  const {getError} = useResponseErrors(errors);
 
   const register = async () => {
 
@@ -30,14 +30,14 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
           <div className="flex flex-col items-start w-full">
             <AppLabel>{t(i18n.form.labels.name)}</AppLabel>
             <AppTextInput data-testid="name" onChange={(e) => setName(e.target.value)} value={name}/>
-            <AppInputError error={errorMessage('name')} />
+            <AppInputError error={getError('name')} />
             <AppLabel >{t(i18n.form.labels.email)}:</AppLabel>
             <AppTextInput
               data-testid="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
-            <AppInputError error={errorMessage('email')} />
+            <AppInputError error={getError('email')} />
             <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
@@ -45,7 +45,7 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-            <AppInputError error={errorMessage('password')} />
+            <AppInputError error={getError('password')} />
             <AppLabel>{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
             <AppTextInput
             data-testid="passwordConfirmation"
@@ -53,7 +53,7 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             value={passwordConfirmation}
             />
-            <AppInputError error={errorMessage('passwordConfirmation')} />
+            <AppInputError error={getError('passwordConfirmation')} />
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-5 mt-5 ">
             <div className="grow flex flex-row-reverse">

@@ -14,7 +14,7 @@ interface WeightUpdateFormProps {
 
 export const WeightUpdateForm: FC<WeightUpdateFormProps> = (props) => {
   const [value, setvalue] = useState(props.item ? props.item.weight.toString() : '');
-  const [errorMessage, setErrors] = useResponseErrors(props.errors);
+  const {getError, setErrors} = useResponseErrors(props.errors);
   useEffect(() => {
     const validated = ZodHelper.validators.numberOrStringNumber.safeParse(value);
     props.onUpdate(validated.success ? validated.data : null);
@@ -41,7 +41,7 @@ export const WeightUpdateForm: FC<WeightUpdateFormProps> = (props) => {
               <AppTextInput className="w-20" onChange={onWeightInputChange} value={value}/>
               <span className="ml-5">kg</span>
             </div>
-            <AppInputError error={errorMessage('weight')} />
+            <AppInputError error={getError('weight')} />
           </div>
         </div>
     </div>

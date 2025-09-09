@@ -10,9 +10,11 @@ import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
+import {useResponseErrors} from '../../../utils/useResponseErrors';
 
 export const WorkoutTypeCreatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutTypes.create);
+  const {showToastsAndSetErrors} = useResponseErrors();
   const client = useQueryClient();
   const toasts = useToasts();
   const navigate = useNavigate();
@@ -48,9 +50,7 @@ export const WorkoutTypeCreatePage: FC = () => {
         })),
       },
     });
-    if (!result.data) {
-      // eslint-disable-next-line no-alert
-      alert('Something went wrong');
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     await client.invalidateQueries({queryKey: ['workout-types']});

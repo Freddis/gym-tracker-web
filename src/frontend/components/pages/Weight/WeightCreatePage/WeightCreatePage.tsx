@@ -13,9 +13,9 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 
 export const WeightCreatePage: FC = () => {
   const navigate = useNavigate();
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const toasts = useToasts();
-  const [, setErrors, errors] = useResponseErrors();
+  const {errors, showToastsAndSetErrors} = useResponseErrors();
   const [weight, setWeight] = useState<number| null>(null);
 
   const save = async () => {
@@ -27,19 +27,11 @@ export const WeightCreatePage: FC = () => {
         weight: weight,
       },
     });
-    if (!result.error) {
-      toasts.addSuccess(t(i18n.weight.add.toasts.success));
-      navigate({to: '/entries'});
+    if (!showToastsAndSetErrors(result)) {
       return;
     }
-    const err = result.error;
-    if (err.error.code === 'ValidationFailed') {
-      setErrors(err.error.fieldErrors ?? []);
-    } else if (err.error.code === 'ActionError') {
-      toasts.addDanger(err.error.humanReadable);
-    } else {
-      toasts.addDanger(translations.utils.toasts.unknownApiError);
-    }
+    toasts.addSuccess(t(i18n.weight.add.toasts.success));
+    navigate({to: '/entries'});
   };
 
   return (
