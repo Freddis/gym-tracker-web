@@ -1,4 +1,4 @@
-import {FC, useCallback, useEffect, useRef} from 'react';
+import {FC, useEffect} from 'react';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {AppLink} from '../../atoms/AppLink/AppLink';
@@ -12,28 +12,7 @@ import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
-
-/**
- * Like useState, but doesn't trigger re-renders.
- * Value lives in a ref and persists across renders.
- */
-export function useLocalRefState<T extends object>(initialValue: T) {
-  const ref = useRef<T>({...initialValue});
-  const setValue = useCallback((value: T | ((prev: T) => T)) => {
-    const next = typeof value === 'function' ? (value as (prev: T) => T)(ref.current) : value;
-    // delete old keys
-    Object.keys(ref.current).forEach((key) => {
-      delete (ref.current)[key];
-    });
-
-    // copy new keys
-    Object.keys(next).forEach((key) => {
-      (ref.current)[key] = (next)[key];
-    });
-  }, []);
-
-  return [ref.current, setValue] as const;
-}
+import {useLocalRefState} from '../../../utils/useLocalRefState';
 
 const routeApi = getRouteApi('/workouts/types/update/$id');
 export const WorkoutTypeUpdatePage: FC = () => {
