@@ -6,9 +6,12 @@ import {PopupContext} from '../../../../../../atoms/Popup/PopupContext';
 import {Exercise, WorkoutUpdateDto, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../../utils/openapi-client';
 import {AppImage} from '../../../../../../atoms/AppImage/AppImage';
 import {ExerciseSelectionPopup} from '../../../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {useAppPartialTranslation} from '../../../../../../../utils/i18n/useAppPartialTranslation';
+import {FaX} from 'react-icons/fa6';
 
 export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
   const [workoutExercise, setWorkoutExercise] = useState(props.item.workoutExercise);
   const [exercise, setExercise] = useState(props.item.exercise);
   const finalizeExerciseSwap = (selected: Exercise) => {
@@ -78,8 +81,10 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
           <div className="flex flex-row">
             <b>{exercise.name}</b>
             <div className="grow flex flex-row-reverse gap-2">
-              <AppButton onClick={() => deleteExercise(props.item.workoutExercise)} color={'error'}>Delete</AppButton>
-              <AppButton onClick={swapExercise}>Change</AppButton>
+              <AppButton onClick={() => deleteExercise(props.item.workoutExercise)} >
+                {translations.utils.generic.buttons.delete}
+              </AppButton>
+              <AppButton onClick={swapExercise}>{t(i18n.buttons.swapExercise)}</AppButton>
             </div>
           </div>
           <div>
@@ -91,16 +96,18 @@ export const UpdateWorkoutExerciseForm: FC<UpdateWorkoutExerciseFormProps> = (pr
                   value={(set.weight ?? 0).toString()}
                   className="w-15 text-center"
                 />
-                <span>x</span>
+                <span><FaX className="text-xs" /></span>
                 <AppTextInput
                   onChange={(e) => updateSetReps(set, e)}
                   value={(set.reps ?? 0).toString()}
                   className="w-15 text-center"
                 />
-                <AppButton onClick={() => deleteSet(set)} color={'error'}>Delete</AppButton>
+                <AppButton onClick={() => deleteSet(set)}>
+                  {translations.utils.generic.buttons.delete}
+                </AppButton>
               </div>
             ))}
-            <AppButton onClick={addSet}>Add Set</AppButton>
+            <AppButton onClick={addSet}>{t(i18n.buttons.addSet)}</AppButton>
           </div>
         </div>
       </div>

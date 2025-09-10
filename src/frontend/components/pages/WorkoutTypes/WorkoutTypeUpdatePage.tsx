@@ -43,7 +43,6 @@ export const WorkoutTypeUpdatePage: FC = () => {
     planId: null,
     exercises: [],
   });
-  console.log('Render form', workoutType);
   useEffect(() => {
     if (response.data?.data) {
       setWorkoutPlan(response.data?.data);

@@ -1,9 +1,11 @@
 import {CSSProperties} from 'react';
 import {ArgusWorkoutCheckin} from 'src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusWorkoutCheckin';
 import {ArgusCheckinContainer} from '../ArgusCheckinContainer/ArgusCheckinContainer';
+import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
 
 export function ArgusWorkoutCheckinBlock(props: {item: ArgusWorkoutCheckin}) {
-  const validExercises = props.item.data.exercises ?? [];//.filter((exercise) =>
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.argusCheckins);
+  const validExercises = props.item.data.exercises ?? [];
   const duration = (props.item.data.end - props.item.data.start) / 1000;
   const hours = Math.floor(duration / (60 * 60));
   const hoursStr = hours.toLocaleString(undefined, {minimumIntegerDigits: 2});
@@ -24,7 +26,7 @@ export function ArgusWorkoutCheckinBlock(props: {item: ArgusWorkoutCheckin}) {
           <h4>Duration: {time}</h4>
           {validExercises.length > 0 && (
             <>
-              <h4>Sets:</h4>
+              <h4>{t(i18n.labels.sets)}</h4>
               <div style={{paddingLeft: 20, marginBottom: 20}}>
                 {validExercises.map((exercise, i) => (
                   <div key={i} style={{paddingBottom: 10, display: 'flex', flexDirection: 'row'}}>

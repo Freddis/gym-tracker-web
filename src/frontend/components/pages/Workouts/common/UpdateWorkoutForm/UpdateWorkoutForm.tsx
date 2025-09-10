@@ -11,9 +11,11 @@ import {AppCombobox} from '../../../../atoms/AppCombobox/AppCombobox';
 import {useQuery} from '@tanstack/react-query';
 import {ComboValue} from '../../../../atoms/AppCombobox/types/ComboValue';
 import {ExerciseSelectionPopup} from '../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 
 export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: WorkoutUpdateDto) => void }> = (props) => {
   const popupContext = useContext(PopupContext);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
   const [item, setItem] = useState<WorkoutUpdateDto>(props.item);
   const [exercises, setExercises] = useState<UpdateWorkoutExerciseFormExercrise[]>(() => {
     return props.item.exercises.map((x) => ({
@@ -101,7 +103,7 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
   return (
     <>
       <div className="mb-5 flex flex-row items-center">
-        <AppLabel className="w-20">Type</AppLabel>
+        <AppLabel className="w-20">{translations.utils.objects.workout.fields.typeId}</AppLabel>
         <AppCombobox
           placeholder={'Find Workout type'}
           defaultValue={selectedType?.name ?? 'Select workout type'}
@@ -110,20 +112,20 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
         />
       </div>
       <div className="mb-5 flex flex-row items-center">
-        <AppLabel className="w-20">Started</AppLabel>
+        <AppLabel className="w-20">{translations.utils.objects.workout.fields.start}</AppLabel>
         <AppTextInput className="w-60 text-center" onChange={(e) => setStart(new Date(e.target.value))} value={item.start.toISOString()}/>
       </div>
       <div className="mb-5 flex flex-row items-center">
-        <AppLabel className="w-20">Ended</AppLabel>
+        <AppLabel className="w-20">{translations.utils.objects.workout.fields.end}</AppLabel>
         <AppTextInput className="w-60 text-center" onChange={(e) => setEnd(new Date(e.target.value))} value={item.end?.toISOString()}/>
       </div>
       <div className="mb-5 flex flex-row items-center">
-        <AppLabel className="w-20">Calories</AppLabel>
+        <AppLabel className="w-20">{translations.utils.objects.workout.fields.calories}</AppLabel>
         <AppTextInput className="w-20 text-center" onChange={(e) => setCaloriesFromString(e.target.value)} value={item.calories} />
       </div>
       <Conditional condition={exercises.length > 0}>
         <div>
-          <AppLabel>Exercises:</AppLabel>
+          <AppLabel>{t(i18n.labels.exercises)}</AppLabel>
         </div>
       </Conditional>
       <div className="mt-3">
@@ -131,7 +133,7 @@ export const UpdateWorkoutForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dtd: W
           <UpdateWorkoutExerciseForm key={i} item={row} onDelete={deleteExercise} />
           ))}
         <div className="flex justify-center">
-          <AppButton onClick={showAddExercisePopup}>Add Exercise</AppButton>
+          <AppButton onClick={showAddExercisePopup}>{t(i18n.buttons.addExercise)}</AppButton>
         </div>
       </div>
     </>

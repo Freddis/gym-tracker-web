@@ -84,6 +84,63 @@ export const dictionary: Translation = {
         'treadmill': 'Беговая дорожка',
         'bosu ball': 'BOSU-мяч',
       },
+      weight: {
+        fields: {
+          value: 'Вес',
+        },
+        errors: {
+          value: {
+            notNumber: 'Значение должно быть числом',
+          },
+        },
+      },
+      units: {
+        kg: 'кг',
+      },
+      workoutPlan: {
+        fields: {
+          id: 'ID',
+          name: 'Имя',
+          description: 'Описание',
+          userId: 'Пользователь',
+          createdAt: 'Дата Создания',
+          updatedAt: 'Дата Обновления',
+          deletedAt: 'Дата Удаления',
+        },
+      },
+      workout: {
+        fields: {
+          id: 'ID',
+          typeId: 'Тип',
+          userId: 'Пользователь',
+          calories: 'Калории',
+          start: 'Начата',
+          end: 'Завершена',
+          createdAt: 'Дата Создания',
+          updatedAt: 'Дата Обновления',
+          deletedAt: 'Дата Удаления',
+          exercises: 'Упражнения',
+        },
+      },
+      exercise: {
+        fields: {
+          id: 'ID',
+          name: 'Имя',
+          description: 'Описание',
+          difficulty: 'Сложность',
+          equipment: 'Оборудование',
+          images: 'Изображения',
+          params: 'Параметры',
+          userId: 'Пользователь',
+          copiedFromId: 'Оригинальное Упражнение',
+          parentExerciseId: 'Родительское Упражнение',
+          createdAt: 'Дата Создания',
+          updatedAt: 'Дата Обновления',
+          deletedAt: 'Дата Удаления',
+          muscles: 'Мышцы',
+          variations: 'Вариации',
+        },
+      },
     },
     toasts: {
       unknownApiError: 'Что-то пошло не так.',
@@ -164,6 +221,21 @@ export const dictionary: Translation = {
       placeholders: {
         none: 'Нет',
         andMore: 'и еще...',
+      },
+    },
+    workoutPlanBlock: {
+      buttons: {
+        addWorkout: 'Добавить Тренировку',
+      },
+    },
+    newsBlock: {
+      labels: {
+        readMore: 'Читать Далее',
+      },
+    },
+    entryBlock: {
+      labels: {
+        unkownEntry: 'Неизвестный тип записи',
       },
     },
   },
@@ -325,6 +397,16 @@ export const dictionary: Translation = {
           subheading: '“Come on! Do it! Do it now!!!!” Арнольд Шварценеггер',
         },
       },
+      notFound: {
+        code: '404',
+        title: 'Страница не найдена',
+        description: 'Такой страницы не существует. Если это ошибка, пожалуйства дайте нам знать, и мы починим!',
+      },
+      error: {
+        title: 'Упс... У нас ошибка',
+        description: 'Произошло что-то страшное, и мы не знаем почему. Пожалуйства дайте нам знать, и мы починим!',
+        link: 'На главную',
+      },
     },
     activities: {
       list: {
@@ -350,6 +432,9 @@ export const dictionary: Translation = {
             type: 'Тип Записи',
           },
         },
+        toasts: {
+          nothingFound: 'Записи не найдены',
+        },
       },
       workouts: {
         add: {
@@ -357,6 +442,14 @@ export const dictionary: Translation = {
         },
         update: {
           heading: 'Изменить тренировку',
+          buttons: {
+            addSet: 'Добавить',
+            addExercise: 'Добавить Упражнение',
+            swapExercise: 'Поменять',
+          },
+          labels: {
+            exercises: 'Упражнения: ',
+          },
         },
       },
       add: {
@@ -456,22 +549,56 @@ export const dictionary: Translation = {
       },
     },
     exercises: {
-      heading: 'Встроенная Библиотека',
-      buttons: {
-        addExercise: 'Добавить',
-      },
-      filter: {
-        labels: {
-          muscles: 'Мышцы:',
-          search: 'Поиск:',
-          equipment: 'Обрудование',
-          searchEquipment: 'Искать оборудование',
-          noEquipmentFound: 'Не найдено',
-          selectEquipment: 'Выбрать оборудование',
+      list: {
+        heading: 'Встроенная Библиотека',
+        buttons: {
+          addExercise: 'Добавить',
+        },
+        filter: {
+          labels: {
+            muscles: 'Мышцы:',
+            search: 'Поиск:',
+            equipment: 'Обрудование',
+            searchEquipment: 'Искать оборудование',
+            noEquipmentFound: 'Не найдено',
+            selectEquipment: 'Выбрать оборудование',
+          },
+        },
+        toasts: {
+          noExercisesFound: 'Упражнения не найдены',
         },
       },
-      toasts: {
-        noExercisesFound: 'Упражнения не найдены',
+      update: {
+        heading: 'Изменить Упражнение',
+        toasts: {
+          cannotUpdateBuiltIn: 'Нельзя изменять встроенные упражнения',
+          success: 'Упражнение обновлено',
+        },
+      },
+      create: {
+        heading: 'Создать Упражнение',
+      },
+    },
+    exercise: {
+      labels: {
+        variations: 'Вариации',
+        equipment: 'Оборудование:',
+        primaryMuscles: 'Основные:',
+        secondaryMuscles: 'Дополнительные:',
+      },
+      placeholders: {
+        none: 'Нет',
+        andMore: 'и еще...',
+      },
+    },
+    argusCheckins: {
+      labels: {
+        entries: 'Записи из Argus',
+        types: 'Типы:',
+        sets: 'Подходы',
+      },
+      buttons: {
+        all: 'Все',
       },
     },
   },

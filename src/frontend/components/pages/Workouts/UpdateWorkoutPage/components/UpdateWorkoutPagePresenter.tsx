@@ -15,7 +15,7 @@ interface UpdateWorkoutPagePresenterProps {
   onUpdate: (item: WorkoutUpdateDto) => void
 }
 export const UpdateWorkoutPagePresenter: FC<UpdateWorkoutPagePresenterProps> = ({item, onSaveClick, onDeleteClick, onUpdate}) => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   return (
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
@@ -29,12 +29,12 @@ export const UpdateWorkoutPagePresenter: FC<UpdateWorkoutPagePresenterProps> = (
         <AppBlockHeader>{t(i18n.workouts.update.heading)} {item.id.toString()}</AppBlockHeader>
         <UpdateWorkoutForm item={item} onUpdate={onUpdate}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
-          <div className="mt-5 flex flex-row">
-            <AppLink to="/entries">Back</AppLink>
-            <div className="grow flex flex-row-reverse gap-2">
-              <AppButton onClick={onSaveClick}>Save</AppButton>
-              <AppButton onClick={onDeleteClick} color={'error'}>Delete</AppButton>
-            </div>
+        <div className="mt-5 flex flex-row">
+          <AppLink to="/entries">{translations.utils.generic.buttons.back}</AppLink>
+          <div className="grow flex flex-row-reverse gap-2">
+            <AppButton onClick={onSaveClick}>{translations.utils.generic.buttons.save}</AppButton>
+            <AppButton onClick={onDeleteClick} color={'error'}>{translations.utils.generic.buttons.delete}</AppButton>
+          </div>
         </div>
       </AppBlock>
     </PageContainer>

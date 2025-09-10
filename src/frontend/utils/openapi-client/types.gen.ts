@@ -2101,7 +2101,7 @@ export type PatchExercisesByIdData = {
     /**
      * Description of the exercise
      */
-    description: string;
+    description: string | null;
   };
   path: {
     /**

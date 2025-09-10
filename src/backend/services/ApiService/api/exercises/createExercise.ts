@@ -12,7 +12,7 @@ export const createExercise = RouteFactory.createRoute({
   path: '/',
   validators: {
     body: object({
-      name: string().openapi({description: 'Name of the exercise'}),
+      name: string().nonempty('Name cannot be empty').openapi({description: 'Name of the exercise'}),
     }),
     response: exerciseValidator,
   },

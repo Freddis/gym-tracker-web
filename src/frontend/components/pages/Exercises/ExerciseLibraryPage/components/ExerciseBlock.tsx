@@ -49,7 +49,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
                     {translations.utils.objects.equipment[item.equipment]}
                   </AppLink>
                 )}
-                {!item.equipment && <span>None</span>}
+                {!item.equipment && <span>{t(i18n.placeholders.none)}</span>}
               </div>
               <div>
                 <span className="font-normal">{t(i18n.labels.primaryMuscles)} </span>

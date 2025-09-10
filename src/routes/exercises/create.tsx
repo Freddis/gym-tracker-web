@@ -1,7 +1,7 @@
 import {createFileRoute} from '@tanstack/react-router';
-import {AddExercisePage} from 'src/frontend/components/pages/Exercises/AddExercisePage/AddExercisePage';
+import {ExerciseCreatePage} from 'src/frontend/components/pages/Exercises/ExerciseCreatePage/ExerciseCreatePage';
 
 export const Route = createFileRoute('/exercises/create')({
-  component: AddExercisePage,
+  component: ExerciseCreatePage,
 });
 

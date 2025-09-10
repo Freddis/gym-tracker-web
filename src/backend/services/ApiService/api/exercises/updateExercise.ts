@@ -15,8 +15,8 @@ export const updateExercise = RouteFactory.createRoute({
       id: RouteFactory.validators.strings.number.openapi({description: 'Id of the excercise'}),
     }),
     body: object({
-      name: string().openapi({description: 'Name of the exercise'}),
-      description: string().openapi({description: 'Description of the exercise'}),
+      name: string().nonempty('Name cannot be empty').openapi({description: 'Name of the exercise'}),
+      description: string().nullable().openapi({description: 'Description of the exercise'}),
     }),
     response: object({
       success: boolean().openapi({

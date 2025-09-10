@@ -17,7 +17,6 @@ const routeApi = getRouteApi('/workouts/plans/');
 export const WorkoutPlanListPage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutPlans.list);
   const searchParams = routeApi.useSearch();
-  // const navigate = routeApi.useNavigate();
   const {ref, inView} = useInView({
     rootMargin: '50%',
   });
@@ -74,7 +73,7 @@ export const WorkoutPlanListPage: FC = () => {
           </div>
           <div className="flex flex-row justify-center w-full">
             <AppLink to="/workouts/plans/create">
-              <AppButton>Add Workout Plan</AppButton>
+              <AppButton>{t(i18n.heading)}</AppButton>
             </AppLink>
           </div>
         </div>

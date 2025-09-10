@@ -1,16 +1,8 @@
-import {EntryType, Equipment, Muscle} from '../../../openapi-client';
+import {EntryType, Equipment, Exercise, Muscle, Workout, WorkoutPlan} from '../../../openapi-client';
+import {FreeFormTranslationObject} from '../../types/FreeFormTranslationObject';
 import {header} from './layout/header';
+import {WeekDaysTranslation} from './types/WeekDaysTranslation';
 
-// todo: figure out proper approach
-interface WeekDaysTranslation extends Record<string, string> {
-  '0': string,
-  '1': string,
-  '2': string,
-  '3': string,
-  '4': string,
-  '5': string,
-  '6': string,
-}
 export const dictionary = {
   utils: {
     time: {
@@ -25,6 +17,60 @@ export const dictionary = {
       } as WeekDaysTranslation,
     },
     objects: {
+      exercise: {
+        fields: {
+          id: 'Id',
+          name: 'Name',
+          description: 'Description',
+          difficulty: 'Difficulty',
+          equipment: 'Equipment',
+          images: 'Images',
+          params: 'Param Types',
+          userId: 'User',
+          copiedFromId: 'Origin Exercise',
+          parentExerciseId: 'Parent Exercise',
+          createdAt: 'Created At',
+          updatedAt: 'Updated At',
+          deletedAt: 'Deleted At',
+          muscles: 'Muscles',
+          variations: 'Variations',
+        } satisfies Record<keyof Exercise, string>,
+      },
+      weight: {
+        fields: {
+          value: 'Weight',
+        },
+        errors: {
+          value: {
+            notNumber: 'Not a valid number',
+          },
+        },
+      },
+      workoutPlan: {
+        fields: {
+          id: 'Id',
+          name: 'Name',
+          description: 'Description',
+          userId: 'User',
+          createdAt: 'Created At',
+          updatedAt: 'Updated At',
+          deletedAt: 'Deleted At',
+        } satisfies Record<keyof WorkoutPlan, string>,
+      },
+      workout: {
+        fields: {
+          id: 'Id',
+          typeId: 'Type',
+          userId: 'User',
+          calories: 'Calories',
+          start: 'Started At',
+          end: 'Ended At',
+          createdAt: 'Created At',
+          updatedAt: 'Updated At',
+          deletedAt: 'Deleted At',
+          exercises: 'Exercises',
+        } satisfies Record<keyof Workout, string>,
+      },
       entryType: {
         Workout: 'Workout',
         Weight: 'Weight',
@@ -95,6 +141,9 @@ export const dictionary = {
         'treadmill': 'Treadmill',
         'bosu ball': 'BOSU Ball',
       } satisfies Record<Equipment, string>,
+      units: {
+        kg: 'kg',
+      },
     },
     toasts: {
       unknownApiError: "Something went wrong. We can't log you in",
@@ -148,6 +197,21 @@ export const dictionary = {
     },
   },
   components: {
+    workoutPlanBlock: {
+      buttons: {
+        addWorkout: 'Add Workout',
+      },
+    },
+    newsBlock: {
+      labels: {
+        readMore: 'Read More',
+      },
+    },
+    entryBlock: {
+      labels: {
+        unkownEntry: 'Unknown Entry Type',
+      },
+    },
     exerciseBlock: {
       labels: {
         variations: 'Variations',
@@ -163,6 +227,17 @@ export const dictionary = {
   },
   pages: {
     static: {
+      error: {
+        title: 'Oops! Unknown Error!',
+        description: `Something terrible happened and we don't know what.
+                            Please let us know and we'll fix it. Thank you for your patience.`,
+        link: 'Back To Home Page',
+      },
+      notFound: {
+        code: '404',
+        title: 'Page Not Found',
+        description: "This page doesn't exist. If that's a mistake, please let us know and we'll fix it.",
+      },
       articles: {
         header: 'Articles',
         labels: {
@@ -274,23 +349,47 @@ export const dictionary = {
         noActivitiesFound: 'No activities found',
       },
     },
-    exercises: {
-      heading: 'Built-In Library',
-      buttons: {
-        addExercise: 'Add Exercise',
+    exercise: {
+      labels: {
+        variations: 'Variations',
+        equipment: 'Equipment:',
+        primaryMuscles: 'Primary:',
+        secondaryMuscles: 'Secondary:',
       },
-      filter: {
-        labels: {
-          equipment: 'Equipment:',
-          searchEquipment: 'Seach equipment',
-          noEquipmentFound: 'No equipment found',
-          selectEquipment: 'Select equipment...',
-          muscles: 'Muscles:',
-          search: 'Search:',
+      placeholders: {
+        none: 'None',
+        andMore: 'and more..',
+      },
+    },
+    exercises: {
+      create: {
+        heading: 'Create Exercise',
+      },
+      update: {
+        heading: 'Update Exercise',
+        toasts: {
+          cannotUpdateBuiltIn: 'Cannot update built-in exercise',
+          success: 'You successfully updated exercise',
         },
       },
-      toasts: {
-        noExercisesFound: 'No exercises found',
+      list: {
+        heading: 'Built-In Library',
+        buttons: {
+          addExercise: 'Add Exercise',
+        },
+        filter: {
+          labels: {
+            equipment: 'Equipment:',
+            searchEquipment: 'Seach equipment',
+            noEquipmentFound: 'No equipment found',
+            selectEquipment: 'Select equipment...',
+            muscles: 'Muscles:',
+            search: 'Search:',
+          },
+        },
+        toasts: {
+          noExercisesFound: 'No exercises found',
+        },
       },
     },
     workoutTypes: {
@@ -357,6 +456,14 @@ export const dictionary = {
         },
         update: {
           heading: 'Update Workout',
+          labels: {
+            exercises: 'Exercises: ',
+          },
+          buttons: {
+            addSet: 'Add Set',
+            addExercise: 'Add Exercise',
+            swapExercise: 'Swap',
+          },
         },
       },
       weight: {
@@ -410,6 +517,9 @@ export const dictionary = {
           weight: {
             type: 'Weight',
           },
+        },
+        toasts: {
+          nothingFound: 'No activities found',
         },
       },
     },
@@ -468,5 +578,15 @@ export const dictionary = {
         },
       },
     },
+    argusCheckins: {
+      labels: {
+        entries: 'Argus Entries',
+        types: 'Types:',
+        sets: 'Sets',
+      },
+      buttons: {
+        all: 'All',
+      },
+    },
   },
-};
+} satisfies FreeFormTranslationObject;

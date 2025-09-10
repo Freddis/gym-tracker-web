@@ -8,17 +8,16 @@ export type FieldError = {
   message: string,
 }
 
-
-export const useResponseErrors = (initialErrors?: FieldError[]) => {
-  const [errors, setErrors] = useState(initialErrors ?? []);
+export const useResponseErrors = (existingErrors?: FieldError[]) => {
+  const [errors, setErrors] = useState(existingErrors ?? []);
   const {translations} = useAppPartialTranslation((x) => x.pages.auth.login);
   const toasts = useToasts();
   useEffect(() => {
-    if (!initialErrors) {
+    if (!existingErrors) {
       return;
     }
-    setErrors(initialErrors);
-  }, [initialErrors]);
+    setErrors(existingErrors);
+  }, [existingErrors]);
   const getError = (field: string): string | null => {
     for (const err of errors) {
       if (err.field === field) {

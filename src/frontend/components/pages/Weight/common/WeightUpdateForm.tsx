@@ -4,6 +4,7 @@ import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {ZodHelper} from '../../../../../backend/utils/ZodHelper/ZodHelper';
 import {FieldError, useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 
 interface WeightUpdateFormProps {
@@ -13,6 +14,7 @@ interface WeightUpdateFormProps {
 }
 
 export const WeightUpdateForm: FC<WeightUpdateFormProps> = (props) => {
+  const {translations} = useAppPartialTranslation((x) => x);
   const [value, setvalue] = useState(props.item ? props.item.weight.toString() : '');
   const {getError, setErrors} = useResponseErrors(props.errors);
   useEffect(() => {
@@ -27,19 +29,19 @@ export const WeightUpdateForm: FC<WeightUpdateFormProps> = (props) => {
       setErrors([
         {
           field: 'weight',
-          message: 'Not a valid number',
+          message: translations.utils.objects.weight.errors.value.notNumber,
         },
       ]);
     }
   };
   return (
     <div className="flex flex-row gap-5 items-start">
-        <AppLabel>Weight:</AppLabel>
+        <AppLabel>{translations.utils.objects.weight.fields.value}:</AppLabel>
         <div className="flex flex-row grow">
           <div>
             <div>
               <AppTextInput className="w-20" onChange={onWeightInputChange} value={value}/>
-              <span className="ml-5">kg</span>
+              <span className="ml-5">{translations.utils.objects.units.kg}</span>
             </div>
             <AppInputError error={getError('weight')} />
           </div>

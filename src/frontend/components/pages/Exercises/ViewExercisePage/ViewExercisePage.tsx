@@ -11,12 +11,14 @@ import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader'
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {getExercisesById} from '../../../../utils/openapi-client';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 const routeApi = getRouteApi('/exercises/$exerciseId');
 
 export const ViewExercisePage:FC = () => {
   const params = routeApi.useParams();
   const [showVariations, setShowVariations] = useState(false);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercise);
   const id = !Number.isNaN(Number(params.exerciseId)) ? Number(params.exerciseId) : 0;
   const response = useQuery({
     queryFn: () => getExercisesById({
@@ -54,7 +56,7 @@ export const ViewExercisePage:FC = () => {
     <PageContainer>
       <div className="w-full max-w-5xl">
         <div className="mb-5 -mt-5">
-          <AppLink to="/exercises">Exercises</AppLink>
+          <AppLink to="/exercises">{translations.pages.exercises.list.heading}</AppLink>
           <span className="ml-2">&gt;&gt;</span>
           <span className="ml-2">{item.name}</span>
         </div>
@@ -70,28 +72,33 @@ export const ViewExercisePage:FC = () => {
               <div className="flex items-end">
                 <div className="text-base  grow">
                   <div>
-                    <span className="font-normal">Equipment: </span>
+                    <span className="font-normal">{t(i18n.labels.equipment)} </span>
                     {item.equipment && (
                     <AppLink
-                    className="text-on-surface capitalize"
+                    className="capitalize"
                     to="/exercises"
                     search={{equipment: item.equipment}}
-                    >{item.equipment}</AppLink>
+
+                    >{translations.utils.objects.equipment[item.equipment]}</AppLink>
                     )}
-                    {!item.equipment && <span>None</span>}
+                    {!item.equipment && <span>{t(i18n.placeholders.none)}</span>}
                   </div>
                   <div>
-                    <span className="font-normal">Primary: </span>
+                    <span className="font-normal">{t(i18n.labels.primaryMuscles)} </span>
                     {item.muscles.primary.map((muscle, i) => (
-                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className="text-on-surface mr-1">{muscle}</AppLink>
+                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className="mr-1">
+                        {translations.utils.objects.muscles[muscle]}
+                        </AppLink>
                     ))}
                     </div>
                   <div>
-                    <span className="font-normal">Secondary: </span>
+                    <span className="font-normal">{t(i18n.labels.secondaryMuscles)} </span>
                     {item.muscles.secondary.slice(0, 3).map((muscle, i) => (
-                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className="text-on-surface mr-1 ">{muscle}</AppLink>
+                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className=" mr-1 ">
+                        {translations.utils.objects.muscles[muscle]}
+                      </AppLink>
                     ))}
-                    {item.muscles.secondary.length > 3 && <span className="text-xs">and more...</span>}
+                    {item.muscles.secondary.length > 3 && <span className="text-xs">{t(i18n.placeholders.andMore)}</span>}
                   </div>
                 </div>
               </div>
@@ -104,7 +111,7 @@ export const ViewExercisePage:FC = () => {
             {item.variations.length > 0 && (
               <AppLink className="font-normal" onClick={toggleVariationsDisplay}>
                 <span>
-                  <span>Variations</span>
+                  <span>{t(i18n.labels.variations)}</span>
                   {!showVariations && <FaChevronDown className="ml-1 inline" />}
                   {showVariations && <FaChevronUp className="ml-1 inline" />}
                 </span>

@@ -59,7 +59,7 @@ export class ExerciseService {
     return exercise;
   }
 
-  async update(id: number, data: {name: string; description: string;}): Promise<void> {
+  async update(id: number, data: {name: string; description: string | null;}): Promise<void> {
     const db = await this.db.getDb();
     const dbSchema = this.db.getSchema();
     await db.update(dbSchema.exercises)

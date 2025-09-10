@@ -12,11 +12,14 @@ import {ArgusWeightCheckinBlock} from './components/ArgusWeightCheckinBlock/Argu
 import {getArgusCheckinOptions, getArgusCheckinTypesOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
+import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 
 
 const routeApi = getRouteApi('/argus/');
 
 export function ArgusCheckinListPage() {
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.argusCheckins);
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const entriesResponse = useOpenApiQuery(getArgusCheckinOptions, {
@@ -30,7 +33,7 @@ export function ArgusCheckinListPage() {
   if (entriesResponse.isLoading || typesResponse.isLoading) {
     return (
       <PageContainer>
-        <div>Loading...</div>
+        <AppSpinner/>
       </PageContainer>
     );
   }
@@ -52,11 +55,11 @@ export function ArgusCheckinListPage() {
 
   return (
     <PageContainer>
-      <h1>Argus Entries</h1>
+      <h1>{t(i18n.labels.entries)}</h1>
       <div className="flex flex-col gap-5 max-w-full w-2xl">
         <AppBlock className="">
-          <h3>Types:</h3>
-          <AppButton key="all" onClick={() => filterByType()} className="mr-2" >All</AppButton>
+          <h3>{t(i18n.labels.types)}:</h3>
+          <AppButton key="all" onClick={() => filterByType()} className="mr-2" >{t(i18n.buttons.all)}</AppButton>
           {typesResponse.data?.items.map((item) => (
             <AppButton key={item} onClick={() => filterByType(item)} className="capitalize mr-2 mb-2">{item}</AppButton>
           ))}

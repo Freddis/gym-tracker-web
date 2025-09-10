@@ -20,7 +20,7 @@ import {ComboValue} from '../../../atoms/AppCombobox/types/ComboValue';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises.list);
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const {ref, inView} = useInView({

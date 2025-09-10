@@ -14,7 +14,7 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();
   const {showToastsAndSetErrors} = useResponseErrors();
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   const client = useQueryClient();
   const [itemDto, setItemDto] = useState<WorkoutUpdateDto>();
   const [item] = useState<Omit<Workout, 'id'>>({
@@ -54,13 +54,13 @@ export const WorkoutCreatePage: FC = () => {
         </div>
       </div>
       <AppBlock className="max-w-5xl">
-        <AppBlockHeader>New Workout</AppBlockHeader>
+        <AppBlockHeader>{t(i18n.workouts.add.heading)}</AppBlockHeader>
         <UpdateWorkoutForm item={item} onUpdate={setItemDto}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
         <div className="mt-5 flex flex-row">
-          <AppLink to="/entries/add">Back</AppLink>
+          <AppLink to="/entries/add">{translations.utils.generic.buttons.back}</AppLink>
           <div className="grow flex flex-row-reverse gap-2">
-            <AppButton onClick={save}>Save</AppButton>
+            <AppButton onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
           </div>
         </div>
       </AppBlock>

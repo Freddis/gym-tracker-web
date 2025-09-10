@@ -104,16 +104,13 @@ export function EntryListPage() {
              <div className="flex flex-col gap-5 grow w-full">
                 {response.data && response.data.data.items.length > 0 && (
                   <>
-                    {/* <div className="flex justify-center mb-3">
-                      <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
-                    </div> */}
                     {response.data?.data.items.map((item) => <EntryBlock key={item.id} entry={item} own />)}
                     <div className="flex justify-center">
                       <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
                     </div>
                   </>
                 )}
-                {response.data?.data.items.length === 0 && <AppToast variant={Color.Warning}>No Acitivities Found</AppToast>}
+                {response.data?.data.items.length === 0 && <AppToast variant={Color.Warning}>{t(i18n.toasts.nothingFound)}</AppToast>}
              </div>
            </div>
          </div>
