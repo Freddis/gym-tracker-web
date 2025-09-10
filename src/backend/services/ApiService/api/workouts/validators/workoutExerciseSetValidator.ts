@@ -16,8 +16,17 @@ export const workoutExerciseSetValidatorDescriptions: OpenApiDescriptions<Workou
   weight: 'Weight in lifted in units that user is using',
   reps: 'Number of repetitions',
 };
+const validator = workoutExerciseSetRowValidator.omit({
+  createdAt: true,
+  userId: true,
+  updatedAt: true,
+  exerciseId: true,
+  id: true,
+  workoutId: true,
+  workoutExerciseId: true,
+});
 export const workoutExerciseSetValidator = RouteFactory.validators.describeShape(
-  workoutExerciseSetRowValidator,
+  validator,
   workoutExerciseSetValidatorDescriptions
 ).openapi({
   ref: 'WorkoutExerciseSet',

@@ -82,10 +82,7 @@ export class EntryService {
       userId: userId,
     };
 
-    const workout = await this.workoutService.create({
-      ...entry.workout,
-      userId: userId,
-    });
+    const workout = await this.workoutService.create(userId, entry.workout);
     newRow.workoutId = workout.id;
 
     const rows = await db.insert(db._.fullSchema.entries).values(newRow).returning();

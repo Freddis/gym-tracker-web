@@ -8,12 +8,11 @@ const validator = workoutValidator.omit({
   createdAt: true,
   updatedAt: true,
   exercises: true,
+  deletedAt: true,
 }).extend({
   exercises: workoutExerciseUpdateDtoValidator.array(),
   start: RouteFactory.validators.strings.datetime,
   end: RouteFactory.validators.strings.datetime.nullable(),
-  createdAt: RouteFactory.validators.strings.datetime,
-  updatedAt: RouteFactory.validators.strings.datetime.nullable(),
 });
 
 export const workoutUpdateDtoValidator = RouteFactory.validators.describeShape(

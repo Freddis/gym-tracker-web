@@ -13,9 +13,8 @@ describe(WorkoutService.name, async () => {
 
   test('Can create workout', async () => {
     const user = await TestUtils.seed.createUser();
-    const created = await service.create({
+    const created = await service.create(user.id, {
       typeId: null,
-      userId: user.id,
       calories: 0,
       start: new Date(),
       end: null,

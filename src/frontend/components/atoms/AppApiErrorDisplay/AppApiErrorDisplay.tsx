@@ -4,7 +4,7 @@ import {Color} from '../../../utils/design-system/types/Color';
 import {GetExercisesBuiltInError, GetExercisesError, GetWorkoutsError} from '../../../utils/openapi-client';
 
 interface AppApiErrorDisplayProps {
-  error?: GetExercisesBuiltInError['error'] | GetWorkoutsError['error'] | GetExercisesError['error']
+  error: GetExercisesBuiltInError['error'] | GetWorkoutsError['error'] | GetExercisesError['error'] | undefined
 }
 
 export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {

@@ -1,10 +1,10 @@
 import {OpenApiMethod} from 'snap-on-openapi';
 import {workoutValidator} from './validators/workoutValidator';
 import {object} from 'zod';
-import {ActionError} from '../../errors/ActionError';
-import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
+import {ApiError} from '../../errors/ApiError';
+import {ApiErrorCode} from '../../types/ApiErrorCode';
 
 export const getWorkout = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
@@ -22,7 +22,7 @@ export const getWorkout = RouteFactory.createRoute({
   handler: async (ctx) => {
     const result = await ctx.services.models.workout.get(ctx.params.path.id, ctx.viewer.id);
     if (!result) {
-      throw new ActionError(ActionErrorCode.WorkoutNotFound);
+      throw new ApiError(ApiErrorCode.NotFound);
     }
     return {
       item: result,

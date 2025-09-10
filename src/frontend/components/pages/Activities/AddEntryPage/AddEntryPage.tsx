@@ -13,17 +13,17 @@ export function AddEntryPage() {
       <div className="mb-5 -mt-5">
         <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
         <span className="ml-2">&gt;&gt;</span>
-        <span className="ml-2">{t(i18n.add.heading)}</span>
+        <span className="ml-2">{t(i18n.create.heading)}</span>
       </div>
 
       <div className="flex flex-col md:flex-row gap-5 items-start">
         <AppBlock>
           <div className="flex flex-col md:flex-row gap-10 p-10 justify-center">
             <AppLink to="/workouts/create">
-              <AppButton>{t(i18n.add.buttons.addWorkout)}</AppButton>
+              <AppButton>{t(i18n.create.buttons.addWorkout)}</AppButton>
             </AppLink>
             <AppLink to="/weight/create">
-              <AppButton>{t(i18n.add.buttons.addWeight)}</AppButton>
+              <AppButton>{t(i18n.create.buttons.addWeight)}</AppButton>
             </AppLink>
           </div>
         </AppBlock>

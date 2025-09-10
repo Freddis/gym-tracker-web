@@ -464,6 +464,9 @@ export const dictionary = {
             addExercise: 'Add Exercise',
             swapExercise: 'Swap',
           },
+          toasts: {
+            success: 'Workout successfully updated',
+          },
         },
       },
       weight: {
@@ -488,11 +491,14 @@ export const dictionary = {
           },
         },
       },
-      add: {
+      create: {
         heading: 'Add Entry',
         buttons: {
           addWorkout: 'Add Workout',
           addWeight: 'Add Weight',
+        },
+        toasts: {
+          success: 'You successfully added workout record',
         },
       },
       list: {

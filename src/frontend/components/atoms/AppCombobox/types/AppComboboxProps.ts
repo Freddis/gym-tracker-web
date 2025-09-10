@@ -6,4 +6,5 @@ export interface AppComboboxProps {
   notFound: string,
   className?: string,
   values: ComboValue[]
+  selected?: string
 }

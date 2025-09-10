@@ -5,16 +5,16 @@ import {AppBlockHeader} from '../../../../atoms/AppBlock/components/AppBlockHead
 import {AppButton} from '../../../../atoms/AppButton/AppButton';
 import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {PageContainer} from '../../../../layout/PageContainer/PageContainer';
-import {UpdateWorkoutForm} from '../../common/UpdateWorkoutForm/UpdateWorkoutForm';
+import {WorkoutUpdateForm} from '../../common/WorkoutUpdateForm/WorkoutUpdateForm';
 import {Workout, WorkoutUpdateDto} from '../../../../../utils/openapi-client';
 
-interface UpdateWorkoutPagePresenterProps {
+interface WorkoutUpdatePagePresenterProps {
   item: Workout
   onSaveClick: MouseEventHandler<HTMLButtonElement>
   onDeleteClick: MouseEventHandler<HTMLButtonElement>
   onUpdate: (item: WorkoutUpdateDto) => void
 }
-export const UpdateWorkoutPagePresenter: FC<UpdateWorkoutPagePresenterProps> = ({item, onSaveClick, onDeleteClick, onUpdate}) => {
+export const WorkoutUpdatePagePresenter: FC<WorkoutUpdatePagePresenterProps> = ({item, onSaveClick, onDeleteClick, onUpdate}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   return (
     <PageContainer>
@@ -27,7 +27,7 @@ export const UpdateWorkoutPagePresenter: FC<UpdateWorkoutPagePresenterProps> = (
       </div>
       <AppBlock className="max-w-5xl">
         <AppBlockHeader>{t(i18n.workouts.update.heading)} {item.id.toString()}</AppBlockHeader>
-        <UpdateWorkoutForm item={item} onUpdate={onUpdate}/>
+        <WorkoutUpdateForm item={item} onUpdate={onUpdate}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
         <div className="mt-5 flex flex-row">
           <AppLink to="/entries">{translations.utils.generic.buttons.back}</AppLink>

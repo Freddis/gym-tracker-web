@@ -1,5 +1,5 @@
-import {WorkoutExercise} from '../../../../../../frontend/utils/openapi-client';
 import {workoutExerciseRowValidator} from '../../../../DrizzleService/types/WorkoutExerciseRow';
+import {WorkoutExercise} from '../../../../WorkoutService/types/WorkoutExercise';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {exerciseValidator} from '../../exercises/validators/exerciseValidator';
@@ -15,7 +15,14 @@ export const workoutExerciseValidatorDescriptions: OpenApiDescriptions<WorkoutEx
   exercise: 'Library excercise',
   sets: 'List of sets performed for this excercise',
 };
-const validator = workoutExerciseRowValidator.extend({
+const validator = workoutExerciseRowValidator.omit({
+  createdAt: true,
+  userId: true,
+  updatedAt: true,
+  exerciseId: true,
+  id: true,
+  workoutId: true,
+}).extend({
   exercise: exerciseValidator,
   sets: workoutExerciseSetValidator.array(),
 });

@@ -3,12 +3,12 @@ import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDi
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {
-  UpdateWorkoutPagePresenter,
-} from '../../../../src/frontend/components/pages/Workouts/UpdateWorkoutPage/components/UpdateWorkoutPagePresenter';
+  WorkoutUpdatePagePresenter,
+} from '../../../../src/frontend/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
 
 const meta = {
   title: 'Pages/Workouts/Edit',
-  component: UpdateWorkoutPagePresenter,
+  component: WorkoutUpdatePagePresenter,
   tags: ['autodocs'],
   globals: {
   },
@@ -29,7 +29,7 @@ const meta = {
   decorators: [
     (Story) => <StoryBookDisplay story={<Story/>} column type={StoryBookDisplayType.Page}/>,
   ],
-} satisfies Meta<typeof UpdateWorkoutPagePresenter>;
+} satisfies Meta<typeof WorkoutUpdatePagePresenter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

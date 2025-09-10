@@ -7,7 +7,7 @@ export const dictionary: Translation = {
         0: 'Понедельник',
         1: 'Вторник',
         2: 'Среда',
-        3: 'Чертверг',
+        3: 'Четверг',
         4: 'Пятница',
         5: 'Суббота',
         6: 'Воскресенье',
@@ -450,13 +450,19 @@ export const dictionary: Translation = {
           labels: {
             exercises: 'Упражнения: ',
           },
+          toasts: {
+            success: 'Тренировка успешно изменена',
+          },
         },
       },
-      add: {
+      create: {
         heading: 'Добавить Запись',
         buttons: {
           addWorkout: 'Добавить Тренировку',
           addWeight: 'Добавить Вес',
+        },
+        toasts: {
+          success: 'Тренировака успешно добавлена',
         },
       },
       weight: {

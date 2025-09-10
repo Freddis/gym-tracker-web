@@ -392,10 +392,6 @@ export type WorkoutUpdateDto = {
    */
   end: Date | null;
   /**
-   * The time workout has been deleted. Users cannot access deleted workouts
-   */
-  deletedAt: Date | null;
-  /**
    * List of the performed exercises
    */
   exercises: Array<{
@@ -408,14 +404,6 @@ export type WorkoutUpdateDto = {
      */
     sets: Array<WorkoutExerciseSetUpdateDto>;
   }>;
-  /**
-   * Time when the workout was created. Not changeable by user
-   */
-  createdAt: Date;
-  /**
-   * The last time the workout was updated
-   */
-  updatedAt: Date | null;
 };
 
 export type WorkoutExerciseSetUpdateDto = {
@@ -435,14 +423,6 @@ export type WorkoutExerciseSetUpdateDto = {
    * Number of repetitions
    */
   reps: number | null;
-  /**
-   * The date set was created
-   */
-  createdAt: Date;
-  /**
-   * The date set was last time updated
-   */
-  updatedAt: Date | null;
 };
 
 /**
@@ -496,30 +476,6 @@ export type Workout = {
  */
 export type WorkoutExercise = {
   /**
-   * Id of the workout exercise
-   */
-  id: number;
-  /**
-   * Id of the workout
-   */
-  workoutId: number;
-  /**
-   * Id of the user
-   */
-  userId: number;
-  /**
-   * Id of the exercise
-   */
-  exerciseId: number;
-  /**
-   * The date the workout excercise was created
-   */
-  createdAt: Date;
-  /**
-   * The last time  the workout excercise was updated
-   */
-  updatedAt: Date | null;
-  /**
    * Library excercise
    */
   exercise: Exercise;
@@ -533,26 +489,6 @@ export type WorkoutExercise = {
  * Set is a group of repetitionss performed back to back one after
  */
 export type WorkoutExerciseSet = {
-  /**
-   * Id of the set
-   */
-  id: number;
-  /**
-   * Id of the excercise performed
-   */
-  exerciseId: number;
-  /**
-   * Id of the workout
-   */
-  workoutId: number;
-  /**
-   * User that performed this set
-   */
-  userId: number;
-  /**
-   * Id of the Workout Excercise.
-   */
-  workoutExerciseId: number;
   /**
    * The time when set started
    */
@@ -569,14 +505,6 @@ export type WorkoutExerciseSet = {
    * Number of repetitions
    */
   reps: number | null;
-  /**
-   * The date set was created
-   */
-  createdAt: Date;
-  /**
-   * The date set was last time updated
-   */
-  updatedAt: Date | null;
 };
 
 /**
@@ -620,18 +548,6 @@ export type WorkoutUpsertDto = {
    */
   exercises: Array<{
     /**
-     * Id of the exercise
-     */
-    exerciseId: number;
-    /**
-     * The date the workout excercise was created
-     */
-    createdAt: Date;
-    /**
-     * The last time  the workout excercise was updated
-     */
-    updatedAt: Date | null;
-    /**
      * List of sets performed for this excercise
      */
     sets: Array<{
@@ -664,6 +580,14 @@ export type WorkoutUpsertDto = {
        */
       updatedAt: Date | null;
     }>;
+    /**
+     * The date the workout excercise was created
+     */
+    createdAt: Date;
+    /**
+     * The last time  the workout excercise was updated
+     */
+    updatedAt: Date | null;
   }>;
 };
 

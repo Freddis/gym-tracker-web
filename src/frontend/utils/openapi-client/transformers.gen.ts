@@ -97,18 +97,10 @@ const workoutExerciseSetSchemaResponseTransformer = (data: any) => {
   if (data.end) {
     data.end = new Date(data.end);
   }
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
   return data;
 };
 
 const workoutExerciseSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
   data.exercise = exerciseSchemaResponseTransformer(data.exercise);
   data.sets = data.sets.map((item: any) => {
     return workoutExerciseSetSchemaResponseTransformer(item);

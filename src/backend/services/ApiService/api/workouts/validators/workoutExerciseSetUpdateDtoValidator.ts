@@ -1,7 +1,8 @@
+import {workoutExerciseSetRowValidator} from '../../../../DrizzleService/types/WorkoutExerciseSetRow';
 import {RouteFactory} from '../../../utils/RouteFactory';
-import {workoutExerciseSetValidator, workoutExerciseSetValidatorDescriptions} from './workoutExerciseSetValidator';
+import {workoutExerciseSetValidatorDescriptions} from './workoutExerciseSetValidator';
 
-const validator = workoutExerciseSetValidator.omit({
+const validator = workoutExerciseSetRowValidator.omit({
   userId: true,
   workoutId: true,
   workoutExerciseId: true,
@@ -11,8 +12,6 @@ const validator = workoutExerciseSetValidator.omit({
   id: true,
 })
 .extend({
-  createdAt: RouteFactory.validators.strings.datetime,
-  updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   end: RouteFactory.validators.strings.datetime.nullable(),
   start: RouteFactory.validators.strings.datetime.nullable(),
 });

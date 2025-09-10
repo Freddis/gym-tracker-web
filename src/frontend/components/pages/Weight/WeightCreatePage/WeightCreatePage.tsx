@@ -40,7 +40,7 @@ export const WeightCreatePage: FC = () => {
         <div className="mb-5 -mt-5">
           <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
           <span className="mx-2">&gt;&gt;</span>
-          <AppLink to="/entries/add">{t(i18n.add.heading)}</AppLink>
+          <AppLink to="/entries/add">{t(i18n.create.heading)}</AppLink>
           <span className="mx-2">&gt;&gt;</span>
           <span>{t(i18n.weight.add.heading)}</span>
         </div>

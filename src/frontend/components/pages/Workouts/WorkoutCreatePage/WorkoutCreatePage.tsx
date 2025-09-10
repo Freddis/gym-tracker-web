@@ -7,12 +7,14 @@ import {useNavigate} from '@tanstack/react-router';
 import {useQueryClient} from '@tanstack/react-query';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {UpdateWorkoutForm} from '../common/UpdateWorkoutForm/UpdateWorkoutForm';
+import {WorkoutUpdateForm} from '../common/WorkoutUpdateForm/WorkoutUpdateForm';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
+import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();
+  const toasts = useToasts();
   const {showToastsAndSetErrors} = useResponseErrors();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   const client = useQueryClient();
@@ -35,7 +37,7 @@ export const WorkoutCreatePage: FC = () => {
     if (showToastsAndSetErrors(result)) {
       return;
     }
-
+    toasts.addSuccess(t(i18n.create.toasts.success));
     await client.invalidateQueries({queryKey: ['entries']});
     navigation({
       to: '/entries',
@@ -48,14 +50,14 @@ export const WorkoutCreatePage: FC = () => {
         <div className="mb-5 -mt-5">
           <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
           <span className="ml-2">&gt;&gt;</span>
-          <AppLink to="/entries/add">{t(i18n.add.heading)}</AppLink>
+          <AppLink to="/entries/add">{t(i18n.create.heading)}</AppLink>
           <span className="ml-2">&gt;&gt;</span>
           <span className="ml-2">{t(i18n.workouts.add.heading)}</span>
         </div>
       </div>
       <AppBlock className="max-w-5xl">
         <AppBlockHeader>{t(i18n.workouts.add.heading)}</AppBlockHeader>
-        <UpdateWorkoutForm item={item} onUpdate={setItemDto}/>
+        <WorkoutUpdateForm item={item} onUpdate={setItemDto}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
         <div className="mt-5 flex flex-row">
           <AppLink to="/entries/add">{translations.utils.generic.buttons.back}</AppLink>

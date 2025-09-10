@@ -22,11 +22,11 @@ export class WorkoutService {
     this.exerciseService = exerciseService;
   }
 
-  async create(data: WorkoutCreateDto): Promise<Workout> {
+  async create(userId: number, data: WorkoutCreateDto): Promise<Workout> {
     const db = await this.db.getDb();
     const entity: typeof this.table.$inferInsert = {
       createdAt: new Date(),
-      userId: data.userId,
+      userId: userId,
       start: new Date(),
       deletedAt: null,
       updatedAt: null,
@@ -39,9 +39,6 @@ export class WorkoutService {
     }
     const updated = await this.update(row.id, {
       ...data,
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-      deletedAt: row.deletedAt,
     });
     return updated;
   }
