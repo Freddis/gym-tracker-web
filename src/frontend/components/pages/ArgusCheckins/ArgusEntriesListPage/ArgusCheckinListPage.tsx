@@ -58,7 +58,7 @@ export function ArgusCheckinListPage() {
       <h1>{t(i18n.labels.entries)}</h1>
       <div className="flex flex-col gap-5 max-w-full w-2xl">
         <AppBlock className="">
-          <h3>{t(i18n.labels.types)}:</h3>
+          <h3>{t(i18n.labels.types)}</h3>
           <AppButton key="all" onClick={() => filterByType()} className="mr-2" >{t(i18n.buttons.all)}</AppButton>
           {typesResponse.data?.items.map((item) => (
             <AppButton key={item} onClick={() => filterByType(item)} className="capitalize mr-2 mb-2">{item}</AppButton>

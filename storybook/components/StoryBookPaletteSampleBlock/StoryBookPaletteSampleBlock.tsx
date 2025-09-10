@@ -11,7 +11,11 @@ import {AppToast} from '../../../src/frontend/components/atoms/AppToast/AppToast
 import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 
 export const StoryBookPaletteSampleBlock: FC = () => {
-  const updateDTO = StorybookDataUtils.getWorkout();
+  const workout = StorybookDataUtils.getWorkout();
+  const updateDTO = {
+    ...workout,
+    exercises: workout.exercises.slice(0, 1),
+  };
   const [item] = useState(updateDTO);
   const exercises = item.exercises.map((x) => ({
     exercise: x.exercise,
@@ -48,7 +52,7 @@ export const StoryBookPaletteSampleBlock: FC = () => {
               <AppLabel>Exercises:</AppLabel>
             </div>
           </Conditional>
-          <div style={{marginTop: 10}}>
+          <div className="mt-5">
             {exercises.map((row) => (
               <div>
                 <div className="pb-5 flex flex-row">

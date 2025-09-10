@@ -596,6 +596,8 @@ export const dictionary: Translation = {
         entries: 'Записи из Argus',
         types: 'Типы:',
         sets: 'Подходы',
+        calories: 'Калории:',
+        duration: 'Длительность:',
       },
       buttons: {
         all: 'Все',

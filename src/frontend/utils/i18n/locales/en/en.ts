@@ -583,6 +583,8 @@ export const dictionary = {
         entries: 'Argus Entries',
         types: 'Types:',
         sets: 'Sets',
+        calories: 'Calories',
+        duration: 'Duration',
       },
       buttons: {
         all: 'All',
