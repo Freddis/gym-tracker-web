@@ -7,8 +7,21 @@ export type FieldError = {
   field: string,
   message: string,
 }
+const selectPath = <T>(fn: (x: T) => unknown): string => {
+  const accesses: string[] = [];
+  const proxy = new Proxy({}, {
+    get(_, prop) {
+      accesses.push(String(prop));
+      return proxy;
+    },
+  });
+  fn(proxy as T);
+  return accesses.join('.');
+};
+type BrandedWithType<T, TBrand> = T & {__brand: TBrand}
+export type ErrorSlice<T extends object> = BrandedWithType<FieldError[], T>
 
-export const useResponseErrors = (existingErrors?: FieldError[]) => {
+export const useResponseErrors = <T extends object>(existingErrors?: FieldError[] | ErrorSlice<T>) => {
   const [errors, setErrors] = useState(existingErrors ?? []);
   const {translations} = useAppPartialTranslation((x) => x.pages.auth.login);
   const toasts = useToasts();
@@ -25,6 +38,24 @@ export const useResponseErrors = (existingErrors?: FieldError[]) => {
       }
     }
     return null;
+  };
+  const sliceErrors = <X extends object>(errors: FieldError[]| undefined, fn: (x: T) => X| undefined): ErrorSlice<X>|undefined => {
+    if (!errors) {
+      return undefined;
+    }
+    const path = selectPath(fn);
+    if (path.length === 0) {
+      return errors as ErrorSlice<X>;
+    }
+    const slice = errors.filter((x) => x.field.startsWith(path)).map((x) => ({
+      ...x,
+      field: x.field.substring(path.length + 1),
+    }));
+    return slice as ErrorSlice<X>;
+  };
+  const getSmartError = (fn: (x: T) => unknown): string | null => {
+    const path = selectPath(fn);
+    return getError(path);
   };
   const mySetErrors = (e: FieldError[]) => {
     setErrors(e);
@@ -52,5 +83,12 @@ export const useResponseErrors = (existingErrors?: FieldError[]) => {
     }
     return true;
   };
-  return {getError, setErrors: mySetErrors, errors, showToastsAndSetErrors} as const;
+  return {
+    getError,
+    getSmartError,
+    setErrors: mySetErrors,
+    sliceErrors,
+    errors,
+    showToastsAndSetErrors,
+  } as const;
 };

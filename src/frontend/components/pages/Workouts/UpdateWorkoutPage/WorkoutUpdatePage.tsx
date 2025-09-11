@@ -14,7 +14,7 @@ import {atom, getDefaultStore, useSetAtom} from 'jotai';
 const routeApi = getRouteApi('/workouts/update/$id');
 export const WorkoutUpdatePage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
-  const {showToastsAndSetErrors} = useResponseErrors();
+  const {showToastsAndSetErrors, errors, sliceErrors} = useResponseErrors<WorkoutUpdateDto>();
   const toasts = useToasts();
   const params = routeApi.useParams();
   const client = useQueryClient();
@@ -76,6 +76,12 @@ export const WorkoutUpdatePage: FC = () => {
   };
   const workout = response.data.data.item;
   return (
-   <WorkoutUpdatePagePresenter item={workout} onSaveClick={onSaveClick} onDeleteClick={onDeleteClick} onUpdate={setUpdateDto} />
+   <WorkoutUpdatePagePresenter
+   item={workout}
+   errors={sliceErrors(errors, (x) => x)}
+   onSaveClick={onSaveClick}
+   onDeleteClick={onDeleteClick}
+   onUpdate={setUpdateDto}
+   />
   );
 };

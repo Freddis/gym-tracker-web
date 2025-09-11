@@ -14,8 +14,15 @@ import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialT
 import {atom, getDefaultStore, useAtom, useSetAtom} from 'jotai';
 import {splitAtom} from 'jotai/utils';
 import {usePropAtom} from '../../../../../utils/usePropAtom';
+import {ErrorSlice, useResponseErrors} from '../../../../../utils/useResponseErrors';
+import {AppInputError} from '../../../../atoms/AppInputError/AppInputError';
 
-export const WorkoutUpdateForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dto: WorkoutUpdateDto) => void }> = (props) => {
+interface WorkoutUpdateFormProps {
+  item: Omit<Workout, 'id'>
+  onUpdate: (dto: WorkoutUpdateDto) => void
+  errors?: ErrorSlice<WorkoutUpdateDto>
+}
+export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
   const workoutAtom = useMemo(() => atom(props.item), []);
   const exercisesAtom = useMemo(() => atom(
@@ -24,8 +31,8 @@ export const WorkoutUpdateForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dto: W
       set(workoutAtom, {...get(workoutAtom), exercises: newExercises});
     }
   ), []);
+  const {getSmartError, sliceErrors} = useResponseErrors<WorkoutUpdateDto>(props.errors);
   const exerciseAtomSplat = useMemo(() => splitAtom(exercisesAtom), []);
-  const [x] = useAtom(exercisesAtom);
   const [exerciseAtoms] = useAtom(exerciseAtomSplat);
   const setJotaiItem = useSetAtom(workoutAtom);
   const [calories, setCalories] = usePropAtom(workoutAtom, 'calories');
@@ -123,7 +130,10 @@ export const WorkoutUpdateForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dto: W
         className="max-w-full w-auto" size={24} value={end?.toISOString()}/>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.calories}</AppLabel>
-        <AppTextInput className="w-20 max-w-full" onChange={(e) => setCaloriesFromString(e.target.value)} value={calories} />
+        <div>
+          <AppTextInput className="w-20 max-w-full" onChange={(e) => setCaloriesFromString(e.target.value)} value={calories} />
+          <AppInputError className="w-[327px] max-w-full" error={getSmartError((x) => x.calories)} />
+        </div>
         <div/>
       </div>
       <Conditional condition={exerciseAtoms.length > 0}>
@@ -137,8 +147,9 @@ export const WorkoutUpdateForm: FC<{item: Omit<Workout, 'id'>, onUpdate: (dto: W
             key={Math.random()}
             item={row}
             onDelete={() => deleteExercise(i)}
+            errors={sliceErrors(props.errors, (x) => x.exercises[i])}
           />
-          )), [exerciseAtoms])}
+          )), [exerciseAtoms, props.errors])}
         <div className="flex justify-center">
           <AppButton onClick={showAddExercisePopup}>{t(i18n.buttons.addExercise)}</AppButton>
         </div>

@@ -9,9 +9,12 @@ import {ExerciseSelectionPopup} from '../../../../../../blocks/ExerciseSelection
 import {useAppPartialTranslation} from '../../../../../../../utils/i18n/useAppPartialTranslation';
 import {FaX} from 'react-icons/fa6';
 import {useAtom} from 'jotai';
+import {AppInputError} from '../../../../../../atoms/AppInputError/AppInputError';
+import {useResponseErrors} from '../../../../../../../utils/useResponseErrors';
 
 export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
+  const {getSmartError} = useResponseErrors(props.errors);
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
   const [workoutExercise, setWorkoutExercise] = useAtom(props.item);
   const finalizeExerciseSwap = (selected: Exercise) => {
@@ -88,22 +91,25 @@ export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (pr
           </div>
           <div>
             {workoutExercise.sets.map((set, i) => (
-              <div key={i} className="mb-5 flex flex-row gap-3 items-center">
-                <span>{i + 1}:</span>
-                <AppTextInput
-                  onChange={(e) => updateSetWeight(set, e)}
-                  value={(set.weight ?? 0).toString()}
-                  className="w-15 text-center"
-                />
-                <span><FaX className="text-xs" /></span>
-                <AppTextInput
-                  onChange={(e) => updateSetReps(set, e)}
-                  value={(set.reps ?? 0).toString()}
-                  className="w-15 text-center"
-                />
-                <AppButton onClick={() => deleteSet(set)}>
-                  {translations.utils.generic.buttons.delete}
-                </AppButton>
+              <div key={i} className="mb-5 ">
+                <div className="flex flex-row gap-3 items-center">
+                  <span>{i + 1}:</span>
+                  <AppTextInput
+                    onChange={(e) => updateSetWeight(set, e)}
+                    value={(set.weight ?? 0).toString()}
+                    className="w-15 text-center"
+                  />
+                  <span><FaX className="text-xs" /></span>
+                  <AppTextInput
+                    onChange={(e) => updateSetReps(set, e)}
+                    value={(set.reps ?? 0).toString()}
+                    className="w-15 text-center"
+                  />
+                  <AppButton onClick={() => deleteSet(set)}>
+                    {translations.utils.generic.buttons.delete}
+                  </AppButton>
+                </div>
+                <AppInputError className="max-w-full" error={getSmartError((x) => x.sets[i]?.reps)} />
               </div>
             ))}
             <AppButton onClick={addSet}>{t(i18n.buttons.addSet)}</AppButton>
