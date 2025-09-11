@@ -1,7 +1,7 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
-import {FC} from 'react';
+import {FC, useMemo} from 'react';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {WorkoutUpdateDto, patchWorkoutsById, deleteWorkoutsById, getWorkoutsById} from '../../../../utils/openapi-client';
 import {WorkoutUpdatePagePresenter} from './components/WorkoutUpdatePagePresenter';
@@ -9,7 +9,7 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {useNonRenderingState} from '../../../../utils/useNonRenderingState';
+import {atom, getDefaultStore, useSetAtom} from 'jotai';
 
 const routeApi = getRouteApi('/workouts/update/$id');
 export const WorkoutUpdatePage: FC = () => {
@@ -19,7 +19,8 @@ export const WorkoutUpdatePage: FC = () => {
   const params = routeApi.useParams();
   const client = useQueryClient();
   const navigation = useNavigate();
-  const [itemDto, setItemDto] = useNonRenderingState<WorkoutUpdateDto|undefined>(undefined);
+  const dtoAtom = useMemo(() => atom<WorkoutUpdateDto>(), []);
+  const setUpdateDto = useSetAtom(dtoAtom);
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery({
     queryFn: () => getWorkoutsById({
@@ -44,11 +45,12 @@ export const WorkoutUpdatePage: FC = () => {
     );
   }
   const onSaveClick = async () => {
+    const jotaiDto = getDefaultStore().get(dtoAtom);
     const result = await patchWorkoutsById({
       path: {
         id: id,
       },
-      body: itemDto,
+      body: jotaiDto,
     });
     if (showToastsAndSetErrors(result)) {
       return;
@@ -74,6 +76,6 @@ export const WorkoutUpdatePage: FC = () => {
   };
   const workout = response.data.data.item;
   return (
-   <WorkoutUpdatePagePresenter item={workout} onSaveClick={onSaveClick} onDeleteClick={onDeleteClick} onUpdate={setItemDto} />
+   <WorkoutUpdatePagePresenter item={workout} onSaveClick={onSaveClick} onDeleteClick={onDeleteClick} onUpdate={setUpdateDto} />
   );
 };
