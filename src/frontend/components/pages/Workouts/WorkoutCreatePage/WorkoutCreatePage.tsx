@@ -1,5 +1,5 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {FC, useState} from 'react';
+import {FC} from 'react';
 import {postWorkouts, Workout, WorkoutUpdateDto} from '../../../../utils/openapi-client';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppLink} from '../../../atoms/AppLink/AppLink';
@@ -11,6 +11,7 @@ import {WorkoutUpdateForm} from '../common/WorkoutUpdateForm/WorkoutUpdateForm';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
+import {useNonRenderingState} from '../../../../utils/useNonRenderingState';
 
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();
@@ -18,8 +19,14 @@ export const WorkoutCreatePage: FC = () => {
   const {showToastsAndSetErrors} = useResponseErrors();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   const client = useQueryClient();
-  const [itemDto, setItemDto] = useState<WorkoutUpdateDto>();
-  const [item] = useState<Omit<Workout, 'id'>>({
+  const [itemDto, setItemDto] = useNonRenderingState<WorkoutUpdateDto>({
+    typeId: null,
+    calories: 0,
+    start: new Date(),
+    end: null,
+    exercises: [],
+  });
+  const item: Omit<Workout, 'id'> = {
     typeId: null,
     userId: 0,
     calories: 0,
@@ -29,7 +36,7 @@ export const WorkoutCreatePage: FC = () => {
     updatedAt: null,
     deletedAt: null,
     exercises: [],
-  });
+  };
   const save = async () => {
     const result = await postWorkouts({
       body: itemDto,

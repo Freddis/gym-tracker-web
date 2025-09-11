@@ -1,4 +1,4 @@
-import {ChangeEventHandler, FC, useContext, useState} from 'react';
+import {ChangeEventHandler, FC, useContext, useEffect, useMemo, useState} from 'react';
 import {Exercise, WorkoutType, WorkoutTypeExercise} from '../../../utils/openapi-client';
 import {AppLabel} from '../../atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../atoms/AppTextInput/AppTextInput';
@@ -7,6 +7,7 @@ import {PopupContext} from '../../atoms/Popup/PopupContext';
 import {WorkoutTypeExerciseUpdateForm} from './WorkoutTypeExerciseUpdateForm';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {ExerciseSelectionPopup} from '../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {useNonRenderingState} from '../../../utils/useNonRenderingState';
 
 type Updated<T> = Omit<T, 'id'>
 interface WorkoutTypeUpdateFormProps {
@@ -19,23 +20,23 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
   const [name, setName] = useState(props.item.name ?? '');
   const [description, setDescription] = useState(props.item.description ?? '');
   const popupContext = useContext(PopupContext);
-  const [exercises, setExercises] = useState<WorkoutTypeExercise[]>(props.item.exercises);
+  const [exercises, setExercises] = useNonRenderingState<WorkoutTypeExercise[]>(props.item.exercises, () => {
+    props.onUpdate({
+      ...props.item,
+      exercises,
+    });
+  });
+  useEffect(() => {
+    props.onUpdate({
+      ...props.item,
+      exercises,
+    });
+  }, [name, description]);
   const onNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
-    notify({name: e.target.value});
   };
   const onDescriptionChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setDescription(e.target.value);
-    notify({description: e.target.value});
-  };
-
-  const notify = (update: Partial<WorkoutType>) => {
-    props.onUpdate({
-      ...props.item,
-      name,
-      description,
-      ...update,
-    });
   };
   const addExerciseButtonClicked = () => {
     popupContext.setContent(<ExerciseSelectionPopup onSelect={addExercise}/>);
@@ -48,21 +49,22 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
       sets: [],
     };
     const newExercises = [...exercises, row];
-    setExercises(newExercises);
+    setExercises(newExercises, true);
     popupContext.setContent(null);
-    notify({exercises: newExercises});
   };
   const deleteExercise = (exercise: WorkoutTypeExercise) => {
     const newExercises = [...exercises.filter((x) => x !== exercise)];
-    setExercises(newExercises);
-    notify({exercises: newExercises});
+    setExercises(newExercises, true);
   };
   const updateExercise = (exercise: WorkoutTypeExercise) => {
     const newExercises = exercises.map((e) => e.index === exercise.index ? exercise : e);
     setExercises(newExercises);
-    notify({exercises: newExercises});
   };
-
+  const renderedExercises = useMemo(() => {
+    return exercises.map((exercise) => (
+      <WorkoutTypeExerciseUpdateForm key={exercise.index} item={exercise} onDelete={deleteExercise} onUpdate={updateExercise} />
+    ));
+  }, [exercises]);
   return (
     <>
       <div className="mb-5 flex flex-col items-start justify-start">
@@ -74,9 +76,7 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
         <AppTextInput onChange={onDescriptionChange} value={description}/>
       </div>
       <div>
-        {exercises.map((exercise) => (
-          <WorkoutTypeExerciseUpdateForm key={exercise.index} item={exercise} onDelete={deleteExercise} onUpdate={updateExercise} />
-        ))}
+        {renderedExercises}
       </div>
       <AppButton onClick={addExerciseButtonClicked}>{t(i18n.buttons.addExercise)}</AppButton>
     </>

@@ -12,7 +12,7 @@ import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
-import {useLocalRefState} from '../../../utils/useLocalRefState';
+import {useNonRenderingState} from '../../../utils/useNonRenderingState';
 
 const routeApi = getRouteApi('/workouts/types/update/$id');
 export const WorkoutTypeUpdatePage: FC = () => {
@@ -29,10 +29,10 @@ export const WorkoutTypeUpdatePage: FC = () => {
         id,
       },
     }),
-    queryKey: ['workout-type', id],
+    queryKey: ['workout-types', id],
   }
   );
-  const [workoutType, setWorkoutPlan] = useLocalRefState<Omit<WorkoutType, 'id'>>({
+  const [workoutType, setWorkoutPlan] = useNonRenderingState<Omit<WorkoutType, 'id'>>({
     name: '',
     description: '',
     userId: 0,
@@ -73,7 +73,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
     if (showToastsAndSetErrors(result)) {
       return;
     }
-    await client.invalidateQueries({queryKey: ['workout-types', 'workout-type']});
+    await client.invalidateQueries({queryKey: ['workout-types']});
     toasts.addSuccess(t(i18n.toasts.success));
     navigate({
       to: '/workouts/types',
@@ -100,7 +100,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
     if (showToastsAndSetErrors(result)) {
       return;
     }
-    await client.invalidateQueries({queryKey: ['workout-types', 'workout-type']});
+    await client.invalidateQueries({queryKey: ['workout-types']});
     toasts.addSuccess(t(i18n.toasts.success));
     navigate({
       to: '/workouts/types',

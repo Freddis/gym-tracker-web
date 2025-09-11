@@ -32,7 +32,7 @@ for (const exercise of exercises) {
     newImages.push(newUrl);
   }
   if (newImages.length === 0) {
-    console.log('No images found');
+    logger.info('No images found');
     continue;
   }
   exercise.images = newImages;

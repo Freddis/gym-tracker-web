@@ -197,6 +197,12 @@ export const dictionary = {
     },
   },
   components: {
+    errorDisplay: {
+      NotFound: 'Requested entity not found',
+      Unauthorized: 'You have to be logged in to view this page',
+      ValidationFailed: 'Validation errors in API request:',
+      Unknown: 'Looks like we have an unexpected error on the server. Please reach our support and we will fix it.',
+    },
     workoutPlanBlock: {
       buttons: {
         addWorkout: 'Add Workout',

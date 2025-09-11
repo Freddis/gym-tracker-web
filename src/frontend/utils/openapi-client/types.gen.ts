@@ -548,6 +548,18 @@ export type WorkoutUpsertDto = {
    */
   exercises: Array<{
     /**
+     * Id of the exercise
+     */
+    exerciseId: number;
+    /**
+     * The date the workout excercise was created
+     */
+    createdAt: Date;
+    /**
+     * The last time  the workout excercise was updated
+     */
+    updatedAt: Date | null;
+    /**
      * List of sets performed for this excercise
      */
     sets: Array<{
@@ -580,14 +592,6 @@ export type WorkoutUpsertDto = {
        */
       updatedAt: Date | null;
     }>;
-    /**
-     * The date the workout excercise was created
-     */
-    createdAt: Date;
-    /**
-     * The last time  the workout excercise was updated
-     */
-    updatedAt: Date | null;
   }>;
 };
 

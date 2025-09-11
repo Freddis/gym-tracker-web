@@ -1,9 +1,9 @@
-import {FC, useContext, useState, ChangeEvent} from 'react';
+import {FC, useContext, useState, ChangeEvent, useEffect} from 'react';
 import {WorkoutExerciseUpdateFormProps} from './types/WorkoutExerciseUpdateFormProps';
 import {AppButton} from '../../../../../../atoms/AppButton/AppButton';
 import {AppTextInput} from '../../../../../../atoms/AppTextInput/AppTextInput';
 import {PopupContext} from '../../../../../../atoms/Popup/PopupContext';
-import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto, WorkoutExercise} from '../../../../../../../utils/openapi-client';
+import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../../utils/openapi-client';
 import {AppImage} from '../../../../../../atoms/AppImage/AppImage';
 import {ExerciseSelectionPopup} from '../../../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {useAppPartialTranslation} from '../../../../../../../utils/i18n/useAppPartialTranslation';
@@ -20,12 +20,15 @@ export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (pr
       exercise: selected,
     });
   };
+  useEffect(() => {
+    props.onUpdate(workoutExercise);
+  }, [workoutExercise]);
   const popup = <ExerciseSelectionPopup onSelect={finalizeExerciseSwap}/>;
   const swapExercise = () => {
     popupContext.setContent(popup);
   };
-  const deleteExercise = (exercise: WorkoutExercise) => {
-    props.onDelete(exercise);
+  const deleteExercise = () => {
+    props.onDelete(props.item);
   };
   const addSet = () => {
     const set: WorkoutExerciseSet = {
@@ -81,7 +84,7 @@ export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (pr
           <div className="flex flex-row">
             <b>{exercise.name}</b>
             <div className="grow flex flex-row-reverse gap-2">
-              <AppButton onClick={() => deleteExercise(props.item)} >
+              <AppButton onClick={deleteExercise} >
                 {translations.utils.generic.buttons.delete}
               </AppButton>
               <AppButton onClick={swapExercise}>{t(i18n.buttons.swapExercise)}</AppButton>

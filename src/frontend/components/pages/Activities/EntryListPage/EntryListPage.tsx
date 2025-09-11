@@ -33,7 +33,6 @@ export function EntryListPage() {
   });
   const navigate = routeApi.useNavigate();
   const onPageChanged = (page: number) => {
-    console.log(searchParams);
     navigate({
       search: {
         ...searchParams,

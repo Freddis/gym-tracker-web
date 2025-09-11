@@ -37,7 +37,7 @@ export const StoryBookColorDisplay: FC<{name: string, value: string}> = (props) 
       return;
     }
     const color = cssColorToHex(getComputedStyle(ref.current).backgroundColor);
-    console.log(color, ref.current, getComputedStyle(ref.current).backgroundColor, name, className);
+    // console.log(color, ref.current, getComputedStyle(ref.current).backgroundColor, name, className);
     setColor(color);
   });
   const style = className ? undefined : {backgroundColor: props.value};

@@ -2,27 +2,27 @@ import {FC} from 'react';
 import {AppToast} from '../AppToast/AppToast';
 import {Color} from '../../../utils/design-system/types/Color';
 import {GetExercisesBuiltInError, GetExercisesError, GetWorkoutsError} from '../../../utils/openapi-client';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 
 interface AppApiErrorDisplayProps {
   error: GetExercisesBuiltInError['error'] | GetWorkoutsError['error'] | GetExercisesError['error'] | undefined
 }
 
 export const AppApiErrorDisplay: FC<AppApiErrorDisplayProps> = (props) => {
-  let message = [
-    'Looks like we have an unexpected error on the server. Please reach our support and we will fix it.',
-  ].join('\n');
+  const {t, i18n} = useAppPartialTranslation((x) => x.components.errorDisplay);
+  let message = t(i18n.Unknown);
   if (props.error && props.error.code === 'ActionError') {
     message = props.error.humanReadable;
   }
   if (props.error && props.error.code === 'NotFound') {
-    message = 'Requested entity not found';
+    message = t(i18n.NotFound);
   }
   if (props.error && props.error.code === 'Unauthorized') {
-    message = 'You have to be logged in to view this page';
+    message = t(i18n.Unauthorized);
   }
   if (props.error && props.error.code === 'ValidationFailed') {
     const lines: string[] = [
-      'Validation errors in API request:',
+      t(i18n.ValidationFailed),
     ];
     for (const err of props.error.fieldErrors) {
       if (!err.field) {

@@ -1,7 +1,7 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
-import {FC, useState} from 'react';
+import {FC} from 'react';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {WorkoutUpdateDto, patchWorkoutsById, deleteWorkoutsById, getWorkoutsById} from '../../../../utils/openapi-client';
 import {WorkoutUpdatePagePresenter} from './components/WorkoutUpdatePagePresenter';
@@ -9,6 +9,7 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {useNonRenderingState} from '../../../../utils/useNonRenderingState';
 
 const routeApi = getRouteApi('/workouts/update/$id');
 export const WorkoutUpdatePage: FC = () => {
@@ -18,7 +19,7 @@ export const WorkoutUpdatePage: FC = () => {
   const params = routeApi.useParams();
   const client = useQueryClient();
   const navigation = useNavigate();
-  const [itemDto, setItemDto] = useState<WorkoutUpdateDto>();
+  const [itemDto, setItemDto] = useNonRenderingState<WorkoutUpdateDto|undefined>(undefined);
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery({
     queryFn: () => getWorkoutsById({
@@ -28,7 +29,6 @@ export const WorkoutUpdatePage: FC = () => {
     }),
     queryKey: ['entries', id],
   });
-
   if (response.isLoading) {
     return (
         <PageContainer>
@@ -43,7 +43,6 @@ export const WorkoutUpdatePage: FC = () => {
       </PageContainer>
     );
   }
-
   const onSaveClick = async () => {
     const result = await patchWorkoutsById({
       path: {

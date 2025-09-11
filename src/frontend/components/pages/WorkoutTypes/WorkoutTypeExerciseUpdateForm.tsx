@@ -18,7 +18,6 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
   const deleteExercise = () => {
     props.onDelete(props.item);
   };
-  console.log(props.item.exercise.name);
   const addSet = () => {
     const set: WorkoutTypeExerciseSet = {
       reps: 0,
@@ -42,13 +41,12 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
 
   const updateSetReps = (set: WorkoutTypeExerciseSet, e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     const value = !isNaN(Number(e.target.value)) ? Number(e.target.value) : 0;
-    const targetSet = workoutTypeExercise.sets.find((x) => x === set);
-    if (!targetSet) {
-      return;
-    }
-    targetSet.reps = value;
-    setWorkoutExercise({...workoutTypeExercise});
-    props.onUpdate({...workoutTypeExercise});
+    const updatedSets = workoutTypeExercise.sets.map(
+      (s) => s === set ? {...s, reps: value} : s
+    );
+    const updatedWorkoutTypeExercise = {...workoutTypeExercise, sets: updatedSets};
+    setWorkoutExercise(updatedWorkoutTypeExercise);
+    props.onUpdate(updatedWorkoutTypeExercise);
   };
   return (
     <div>
