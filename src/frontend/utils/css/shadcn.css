@@ -38,11 +38,11 @@
 }
 
 .dark, .theme-dark {
-  --background: var(--color-neutral-300);
+  --background:var(--color-neutral-900);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
+  --popover:var(--color-neutral-900);
   --popover-foreground: oklch(0.985 0 0);
   --primary:var(--color-accent);
   --primary-foreground: oklch(0.205 0 0);

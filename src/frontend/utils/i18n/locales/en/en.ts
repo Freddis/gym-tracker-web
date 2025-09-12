@@ -464,6 +464,9 @@ export const dictionary = {
           heading: 'Update Workout',
           labels: {
             exercises: 'Exercises: ',
+            findWorkoutType: 'Find Workout type',
+            selectWorkoutType: 'Select workout type',
+            noWorkoutTypesFound: 'No types found',
           },
           buttons: {
             addSet: 'Add Set',

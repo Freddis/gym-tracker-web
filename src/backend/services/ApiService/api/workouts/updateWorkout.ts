@@ -1,11 +1,14 @@
-import {OpenApiMethod} from 'snap-on-openapi';
-import {object} from 'zod';
+import {OpenApiMethod, OpenApiValidationError, OpenApiValidationLocation} from 'snap-on-openapi';
+import {object, ZodError} from 'zod';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {workoutUpdateDtoValidator} from './validators/workoutUpdateDtoValidator';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {workoutValidator} from './validators/workoutValidator';
+import {WorkoutNotFoundError} from '../../../WorkoutService/types/WorkoutNotFoundError';
+import {InvalidEndDateError} from '../../../WorkoutService/types/InvalidEndDateError';
+import {validationErrorMessages} from '../../utils/validationErrorMessages';
 
 export const updateWorkout = RouteFactory.createRoute({
   method: OpenApiMethod.PATCH,
@@ -26,7 +29,23 @@ export const updateWorkout = RouteFactory.createRoute({
     if (!ctx.services.models.workout.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
       throw new ApiError(ApiErrorCode.Unauthorized);
     }
-    const workout = await ctx.services.models.workout.update(ctx.params.path.id, ctx.params.body);
-    return workout;
+    try {
+      const workout = await ctx.services.models.workout.update(ctx.params.path.id, ctx.params.body);
+      return workout;
+    } catch (e: unknown) {
+      if (e instanceof WorkoutNotFoundError) {
+        throw new ApiError(ApiErrorCode.NotFound);
+      }
+      if (e instanceof InvalidEndDateError) {
+        const zodError = ZodError.create([]);
+        zodError.addIssue({
+          code: 'custom',
+          path: ['end'],
+          message: validationErrorMessages.WorkoutEndDateBeforeStartDate,
+        });
+        throw new OpenApiValidationError(zodError, OpenApiValidationLocation.Body);
+      }
+      throw e;
+    }
   },
 });

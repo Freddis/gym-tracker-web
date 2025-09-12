@@ -23,6 +23,8 @@ import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/typ
 import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
 import {routeTree} from '../../../src/routeTree.gen';
 import {cn} from '../../../src/frontend/utils/cn';
+import {Locale} from 'date-fns';
+import {enUS} from 'date-fns/locale';
 const queryClient = new QueryClient();
 
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
@@ -58,6 +60,9 @@ export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
     language: language,
     setLanguage: function(l): void {
       setLanguage(l);
+    },
+    getLocale: function(): Locale {
+      return enUS;
     },
   };
   const mdFlexDiraction = props.column ? 'md:flex-col' : 'md:flex-row';

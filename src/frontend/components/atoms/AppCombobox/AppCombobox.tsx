@@ -17,7 +17,7 @@ export const AppCombobox: FC<AppComboboxProps> = ({className, values, selected, 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className={cn('h-10 bg-cavity border-in-cavity border-1 cursor-pointer flex items-center gap-3 p-3 rounded-xs', className)}>
+        <div className={cn('h-10 bg-cavity border-in-cavity border-1 cursor-pointer flex items-center gap-3 p-3 rounded-sm', className)}>
           <div className="capitalize text-base">{value ? values.find((val) => val.label === value)?.label : defaultValue}</div>
           <div className="grow flex flex-row-reverse">
             <div className="inline-block">

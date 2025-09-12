@@ -11,11 +11,12 @@ import {useQuery} from '@tanstack/react-query';
 import {ComboValue} from '../../../../atoms/AppCombobox/types/ComboValue';
 import {ExerciseSelectionPopup} from '../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
-import {atom, getDefaultStore, useAtom, useSetAtom} from 'jotai';
-import {splitAtom} from 'jotai/utils';
+import {atom, getDefaultStore, useSetAtom} from 'jotai';
 import {usePropAtom} from '../../../../../utils/usePropAtom';
 import {ErrorSlice, useResponseErrors} from '../../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../../atoms/AppInputError/AppInputError';
+import {AppDatepicker} from '../../../../atoms/AppDatepicker/AppDatepicker';
+import {useSplitAtom} from '../../../../../utils/useSplitAtom';
 
 interface WorkoutUpdateFormProps {
   item: Omit<Workout, 'id'>
@@ -24,21 +25,19 @@ interface WorkoutUpdateFormProps {
 }
 export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
-  const workoutAtom = useMemo(() => atom(props.item), []);
-  const exercisesAtom = useMemo(() => atom(
-    (get) => get(workoutAtom).exercises,
-    (get, set, newExercises: WorkoutExercise[]) => {
-      set(workoutAtom, {...get(workoutAtom), exercises: newExercises});
-    }
-  ), []);
   const {getSmartError, sliceErrors} = useResponseErrors<WorkoutUpdateDto>(props.errors);
-  const exerciseAtomSplat = useMemo(() => splitAtom(exercisesAtom), []);
-  const [exerciseAtoms] = useAtom(exerciseAtomSplat);
+  const workoutAtom = useMemo(() => atom(props.item), []);
+  const exerciseAtoms = useSplitAtom(workoutAtom, (x) => x.exercises);
   const setJotaiItem = useSetAtom(workoutAtom);
   const [calories, setCalories] = usePropAtom(workoutAtom, 'calories');
   const [workoutTypeId, setWorkoutTypeId] = usePropAtom(workoutAtom, 'typeId');
-  const [start] = usePropAtom(workoutAtom, 'start');
-  const [end] = usePropAtom(workoutAtom, 'end');
+  const [start, setStart] = usePropAtom(workoutAtom, 'start');
+  const [end, setEnd] = usePropAtom(workoutAtom, 'end');
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
+  const response = useQuery({
+    queryFn: () => getWorkoutTypes(),
+    queryKey: [],
+  });
   useEffect(() => {
     notify();
     const unsubscribe = getDefaultStore().sub(workoutAtom, notify);
@@ -46,12 +45,6 @@ export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
       unsubscribe();
     };
   }, [workoutAtom]);
-
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
-  const response = useQuery({
-    queryFn: () => getWorkoutTypes(),
-    queryKey: [],
-  });
 
   const setCaloriesFromString = (calories: string) => {
     const value = !isNaN(Number(calories)) ? Number(calories) : 0;
@@ -110,29 +103,36 @@ export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
   const selectedType = response.data?.data?.items.find((x) => x.id === workoutTypeId) ?? null;
   return (
     <>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-[auto_auto_1fr] sm:gap-5 mb-5">
+      <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
         <AppLabel>{translations.utils.objects.workout.fields.typeId}</AppLabel>
-        <AppCombobox
-          className="max-w-full"
-          placeholder={'Find Workout type'}
-          defaultValue={'Select workout type'}
-          notFound={'No types found'}
-          values={workoutTypesValues}
-          selected={selectedType?.name}
-        />
+        <div className="relative">
+          <AppCombobox
+            className="max-w-full"
+            placeholder={t(i18n.labels.findWorkoutType)}
+            defaultValue={t(i18n.labels.selectWorkoutType)}
+            notFound={t(i18n.labels.noWorkoutTypesFound)}
+            values={workoutTypesValues}
+            selected={selectedType?.name}
+          />
+          <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.typeId)} />
+        </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.start}</AppLabel>
-        <AppTextInput
-         className="max-w-full" size={24} value={start.toISOString()}/>
+        <div className="relative">
+          <AppDatepicker value={start} onChange={setStart}/>
+          <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.start)} />
+        </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.end}</AppLabel>
-        <AppTextInput
-        className="max-w-full w-auto" size={24} value={end?.toISOString()}/>
+        <div className="relative">
+          <AppDatepicker value={end ?? undefined} onChange={setEnd} />
+          <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.end)} />
+        </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.calories}</AppLabel>
-        <div>
+        <div className="relative">
           <AppTextInput className="w-20 max-w-full" onChange={(e) => setCaloriesFromString(e.target.value)} value={calories} />
-          <AppInputError className="w-[327px] max-w-full" error={getSmartError((x) => x.calories)} />
+          <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.exercises)} />
         </div>
         <div/>
       </div>

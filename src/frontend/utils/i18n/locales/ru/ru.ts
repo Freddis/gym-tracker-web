@@ -455,6 +455,9 @@ export const dictionary: Translation = {
           },
           labels: {
             exercises: 'Упражнения: ',
+            findWorkoutType: 'Поиск',
+            selectWorkoutType: 'Выберите тип тренировки',
+            noWorkoutTypesFound: 'Ничего не найдено',
           },
           toasts: {
             success: 'Тренировка успешно изменена',

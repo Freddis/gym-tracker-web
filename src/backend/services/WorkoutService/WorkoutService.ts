@@ -13,6 +13,8 @@ import {Exercise} from '../ExerciseService/types/Exercise';
 import {WorkoutUpdateDto} from './types/WorkoutUpdateDto';
 import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';
 import {WorkoutCreateDto} from './types/WorkoutCreateDto';
+import {InvalidEndDateError} from './types/InvalidEndDateError';
+import {WorkoutNotFoundError} from './types/WorkoutNotFoundError';
 export class WorkoutService {
   protected db: DrizzleService;
   protected exerciseService: ExerciseService;
@@ -45,9 +47,12 @@ export class WorkoutService {
 
   async update(id: number, data: WorkoutUpdateDto): Promise<Workout> {
     const db = await this.db.getDb();
+    if (data?.end && data.end.getTime() < data.start.getTime()) {
+      throw new InvalidEndDateError();
+    }
     const workout = await this.get(id);
     if (!workout) {
-      throw new Error('Workout not found');
+      throw new WorkoutNotFoundError();
     }
     const updatedWorkout = await db.transaction(async (db) => {
       await db.update(this.table)

@@ -4,6 +4,8 @@ import {Cookie} from '../../../utils/Cookie/Cookie';
 import {CookieName} from '../../../types/CookieName';
 import {Language} from './enums/Language';
 import {LanguageContext} from './context/LanguageContext';
+import * as locales from 'date-fns/locale';
+import {Locale} from 'date-fns/locale';
 
 export const LanguageProvider: FC<{children: ReactNode}> = (props) => {
   const cookie = new Cookie();
@@ -33,8 +35,17 @@ export const LanguageProvider: FC<{children: ReactNode}> = (props) => {
     cookie.set(CookieName.Language, theme);
     setLanguageState(theme);
   };
+  const getLocale = (): Locale => {
+    const map: Record<Language, keyof typeof locales> = {
+      [Language.English]: 'enUS',
+      [Language.Russian]: Language.Russian,
+    };
+  // eslint-disable-next-line import/namespace
+    return locales[map[language]];
+  };
+
   return (
-  <LanguageContext.Provider value={{language, setLanguage}}>
+  <LanguageContext.Provider value={{language, setLanguage, getLocale}}>
       {props.children}
   </LanguageContext.Provider>
   );

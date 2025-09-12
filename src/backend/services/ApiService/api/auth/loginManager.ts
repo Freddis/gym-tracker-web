@@ -5,6 +5,7 @@ import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {authUserValidator} from './validators/authUserValidator';
+import {validationErrorMessages} from '../../utils/validationErrorMessages';
 
 export const loginManager = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
@@ -30,7 +31,7 @@ export const loginManager = RouteFactory.createRoute({
         zodError.addIssue({
           code: 'custom',
           path: ['password'],
-          message: 'Incorrect email or password',
+          message: validationErrorMessages.IncorrectEmailOrPassword,
         });
         throw new OpenApiValidationError(zodError, OpenApiValidationLocation.Body);
       }

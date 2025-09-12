@@ -1,5 +1,5 @@
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {FC, useEffect} from 'react';
+import {FC, useContext, useEffect} from 'react';
 import {ExerciseBlock} from './components/ExerciseBlock';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
@@ -17,12 +17,14 @@ import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
 import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
 import {AppCombobox} from '../../../atoms/AppCombobox/AppCombobox';
 import {ComboValue} from '../../../atoms/AppCombobox/types/ComboValue';
+import {LanguageContext} from '../../../layout/LanguageProvider/context/LanguageContext';
 
 const routeApi = getRouteApi('/exercises/');
 export const ExerciseLibraryPage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises.list);
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
+  const langauge = useContext(LanguageContext).language;
   const {ref, inView} = useInView({
     rootMargin: '50%',
   });
@@ -39,7 +41,7 @@ export const ExerciseLibraryPage: FC = () => {
           page: pageParam,
         },
       }),
-      queryKey: [searchParams, 'exercises'],
+      queryKey: [searchParams, 'exercises', langauge],
       getNextPageParam: (lastPage) => {
         if (!lastPage.data) {
           return null;
