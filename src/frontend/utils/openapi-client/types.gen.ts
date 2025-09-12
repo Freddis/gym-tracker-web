@@ -5302,11 +5302,11 @@ export type GetCrmManagersResponse =
 export type PostCrmAuthLoginData = {
   body?: {
     /**
-     * Email for the manager account
+     * Email for the user account
      */
     email: string;
     /**
-     * Password for the manager account
+     * Password for the user account
      */
     password: string;
   };

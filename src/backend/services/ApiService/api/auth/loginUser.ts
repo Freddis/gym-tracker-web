@@ -1,11 +1,12 @@
-import {object, string, ZodError} from 'zod';
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
-import {OpenApiMethod, OpenApiValidationError, OpenApiValidationLocation} from 'snap-on-openapi';
+import {OpenApiMethod} from 'snap-on-openapi';
 import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {authUserValidator} from './validators/authUserValidator';
-import {validationErrorMessages} from '../../utils/validationErrorMessages';
+import {ValidationErrorCode} from '../../types/ValidationErrorCode';
+import {QuickTranslatedValidationError} from '../../errors/QuickTranslatedValidationError';
+import {loginRequestValidator} from './validators/loginRequestValidator';
 
 export const loginUser = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
@@ -13,12 +14,7 @@ export const loginUser = RouteFactory.createRoute({
   description: 'Logins a user',
   path: '/login',
   validators: {
-    body: object({
-      email: string().email().openapi({description: 'Email for the user account'}),
-      password: string()
-        .min(5, 'Password must be at least 5 characters long')
-        .openapi({description: 'Password for the user account'}),
-    }),
+    body: loginRequestValidator,
     response: authUserValidator,
   },
   handler: async (ctx) => {
@@ -27,13 +23,7 @@ export const loginUser = RouteFactory.createRoute({
       return result;
     } catch (error) {
       if (error instanceof ActionError && error.getActionErrorCode() === ActionErrorCode.InvalidPassword) {
-        const zodError = ZodError.create([]);
-        zodError.addIssue({
-          code: 'custom',
-          path: ['password'],
-          message: validationErrorMessages.IncorrectEmailOrPassword,
-        });
-        throw new OpenApiValidationError(zodError, OpenApiValidationLocation.Body);
+        throw new QuickTranslatedValidationError(loginRequestValidator, 'password', ValidationErrorCode.IncorrectEmailOrPassword);
       }
       throw error;
     }

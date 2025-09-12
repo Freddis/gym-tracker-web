@@ -8,6 +8,8 @@ import {UserRouteContext} from './UserRouteContext';
 import {PublicRouteContext} from './PublicRouteContext';
 import {ManagerRouteContext} from './ManagerRouteContext';
 import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
+import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {nativeEnum} from 'zod';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
   protected factory: GlobalServiceFactory;
@@ -24,9 +26,11 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       if (!viewer) {
         throw new ApiError(ApiErrorCode.Unauthorized);
       }
+      const language = this.getRequestLangauge(ctx.request);
       return {
         services: services,
         viewer,
+        language,
       };
     },
   };
@@ -39,7 +43,10 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.NotFound]: true,
     },
-    contextFactory: async () => ({services: await this.createRequestServices()}),
+    contextFactory: async (ctx) => ({
+      services: await this.createRequestServices(),
+      language: this.getRequestLangauge(ctx.request),
+    }),
   };
   User: OpenApiRouteConfig<ApiRouteType.User, ApiErrorCode, undefined, UserRouteContext > = {
     authorization: true,
@@ -57,9 +64,11 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       if (!viewer) {
         throw new ApiError(ApiErrorCode.Unauthorized);
       }
+      const language = this.getRequestLangauge(ctx.request);
       return {
         services: services,
         viewer,
+        language,
       };
     },
   };
@@ -71,6 +80,18 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       [ActionErrorCode.WorkoutNotFound]: 'Workout not found',
     };
     return result;
+  }
+  public getRequestLangauge(request: Request): Language {
+    const header = request.headers.get('Locale');
+    const deafaultLang = Language.English;
+    if (!header) {
+      return deafaultLang;
+    }
+    const validated = nativeEnum(Language).safeParse(header);
+    if (!validated.success) {
+      return deafaultLang;
+    }
+    return validated.data;
   }
   protected async createRequestServices(): Promise<ApiRequestServices> {
 

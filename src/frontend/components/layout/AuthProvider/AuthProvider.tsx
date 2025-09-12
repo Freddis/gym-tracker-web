@@ -1,4 +1,4 @@
-import {FC, ReactNode, useMemo, useState} from 'react';
+import {FC, ReactNode, useContext, useMemo, useState} from 'react';
 import {AuthContext} from './AuthContext';
 import {authUserValidator, AuthUser} from './types/AuthUser';
 import {Cookie} from '../../../utils/Cookie/Cookie';
@@ -6,10 +6,12 @@ import {CookieName} from '../../../types/CookieName';
 import {client} from '../../../utils/openapi-client/client.gen';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
+import {LanguageContext} from '../LanguageProvider/context/LanguageContext';
 
 export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: CookieName}> = (props) => {
   const cookies = new Cookie();
   const {t, i18n} = useAppPartialTranslation((x) => x.layout);
+  const language = useContext(LanguageContext).language;
   const toasts = useToasts();
   const storedUser = useMemo(() => {
     const user = cookies.get(props.cookieName);
@@ -37,6 +39,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: Co
       throwOnError: false,
       headers: {
         Authorization: authHeader,
+        Locale: language,
       },
     };
   };

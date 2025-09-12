@@ -1,5 +1,5 @@
-import {OpenApiMethod, OpenApiValidationError, OpenApiValidationLocation} from 'snap-on-openapi';
-import {object, ZodError} from 'zod';
+import {OpenApiMethod} from 'snap-on-openapi';
+import {object} from 'zod';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';
@@ -8,7 +8,8 @@ import {RouteFactory} from '../../utils/RouteFactory';
 import {workoutValidator} from './validators/workoutValidator';
 import {WorkoutNotFoundError} from '../../../WorkoutService/types/WorkoutNotFoundError';
 import {InvalidEndDateError} from '../../../WorkoutService/types/InvalidEndDateError';
-import {validationErrorMessages} from '../../utils/validationErrorMessages';
+import {ValidationErrorCode} from '../../types/ValidationErrorCode';
+import {QuickTranslatedValidationError} from '../../errors/QuickTranslatedValidationError';
 
 export const updateWorkout = RouteFactory.createRoute({
   method: OpenApiMethod.PATCH,
@@ -37,13 +38,7 @@ export const updateWorkout = RouteFactory.createRoute({
         throw new ApiError(ApiErrorCode.NotFound);
       }
       if (e instanceof InvalidEndDateError) {
-        const zodError = ZodError.create([]);
-        zodError.addIssue({
-          code: 'custom',
-          path: ['end'],
-          message: validationErrorMessages.WorkoutEndDateBeforeStartDate,
-        });
-        throw new OpenApiValidationError(zodError, OpenApiValidationLocation.Body);
+        throw new QuickTranslatedValidationError(workoutUpdateDtoValidator, 'end', ValidationErrorCode.WorkoutEndDateBeforeStartDate);
       }
       throw e;
     }

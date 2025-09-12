@@ -1,6 +1,9 @@
+import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
 import {ValidationErrorCode} from '../types/ValidationErrorCode';
+import {en} from './error-translations/validation/en';
+import {ru} from './error-translations/validation/ru';
 
-export const validationErrorMessages: Record<ValidationErrorCode, string> = {
-  [ValidationErrorCode.WorkoutEndDateBeforeStartDate]: 'Workout cannot end before it started',
-  [ValidationErrorCode.IncorrectEmailOrPassword]: 'Incorrect email or password',
+export const validationErrorMessages: Record<Language, Record<ValidationErrorCode, string>> = {
+  [Language.English]: en,
+  [Language.Russian]: ru,
 };

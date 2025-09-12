@@ -19,6 +19,11 @@ import {UnknownErrorResponse} from '../validators/UnknownErrorResponse';
 import {ValidationErrorResponse} from '../validators/ValidationErrorResponse';
 import {NotFoundErrorResponse} from '../validators/NotFoundErrorResponse';
 import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
+import {tryToTranslateValidationError} from '../utils/tryToTranslateValidationError';
+import {getErrorMap} from 'zod';
+import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {translateZodError} from '../utils/translateZodError';
+import {zodErrorMessages} from '../utils/zodErrorMessages';
 
 export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
   basePath = '/api' as const;
@@ -35,7 +40,7 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
     this.routes = new ApiRouteConfig(factory);
   }
 
-  handleError(e: unknown): OpenApiErrorResponse<ApiErrorCode, OpenApiErrorConfigMap<ApiErrorCode>> {
+  handleError(e: unknown, req: Request): OpenApiErrorResponse<ApiErrorCode, OpenApiErrorConfigMap<ApiErrorCode>> {
     if (e instanceof PermissionError) {
       const permissionError: PermissionErrorResponse = {
         error: {
@@ -49,10 +54,22 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
     if (e instanceof OpenApiValidationError) {
       const zodError = e.getZodError();
       const map: OpenApiFieldError[] = [];
+      const lang = this.routes.getRequestLangauge(req);
       for (const issue of zodError.issues) {
+        const defaultMessage = getErrorMap()(issue, {
+          defaultError: '',
+          data: undefined,
+        }).message;
+        let finalMessage = issue.message;
+        if (issue.message === defaultMessage && lang !== Language.English) {
+          const dictionary = zodErrorMessages[lang];
+          finalMessage = translateZodError(issue, dictionary);
+        } else {
+          finalMessage = tryToTranslateValidationError(issue.message, lang);
+        }
         map.push({
           field: issue.path.map((x) => x.toString()).join('.'),
-          message: issue.message,
+          message: finalMessage,
         });
       }
       if (e.getLocation() !== OpenApiValidationLocation.Response) {
