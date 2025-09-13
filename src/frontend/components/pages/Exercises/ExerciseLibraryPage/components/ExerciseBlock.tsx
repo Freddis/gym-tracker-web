@@ -31,7 +31,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   return (
     <AppBlock className={cn(props.className)}>
       <div className="flex flex-col sm:flex-row gap-2 items-start">
-        <div className="flex w-full justify-center sm:block sm:w-auto">
+        <div className="flex w-full justify-center sm:block sm:w-auto shrink-0">
         <AppImage src={item.images[0]} className="md:mt-1 w-auto h-auto max-h-80 sm:w-20 sm:h-20" />
         </div>
         <div className="grow">

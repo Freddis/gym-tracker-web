@@ -10,6 +10,7 @@ import {and, inArray, isNull, desc} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
 import {Workout} from '../WorkoutService/types/Workout';
+import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
 
 
 export class EntryService {
@@ -114,7 +115,8 @@ export class EntryService {
       page?: number,
       perPage?: number,
       userId?: number[],
-      type?: T[]
+      type?: T[],
+      language?:Language
     }
   ): Promise<PaginatedResult<Entry & {type: T}>> {
 
@@ -143,7 +145,7 @@ export class EntryService {
       ));
 
     const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
-    const workouts = await this.workoutService.getAll({id: workoutIds, perPage: limit});
+    const workouts = await this.workoutService.getAll({id: workoutIds, perPage: limit, language: params?.language});
     const workoutMap = workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
     const weightIds = rows.map((x) => x.weightId).filter((x) => x !== null);
     const weight = await this.weightService.getAll({id: weightIds, perPage: limit});

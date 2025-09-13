@@ -134,6 +134,27 @@
       "when": 1757318034372,
       "tag": "0018_workoutTypeNameNonNull",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1757718482907,
+      "tag": "0019_translations",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1757771921732,
+      "tag": "0020_numeric_keys_for_translations",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1757773043773,
+      "tag": "0021_numeric_keys_type_fix",
+      "breakpoints": true
     }
   ]
 }

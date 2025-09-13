@@ -11,6 +11,7 @@ import {FaX} from 'react-icons/fa6';
 import {useAtom} from 'jotai';
 import {AppInputError} from '../../../../../../atoms/AppInputError/AppInputError';
 import {useResponseErrors} from '../../../../../../../utils/useResponseErrors';
+import {AppLink} from '../../../../../../atoms/AppLink/AppLink';
 
 export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
@@ -81,7 +82,9 @@ export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (pr
         <AppImage className="w-25 h-25 mt-1" key={exercise.images[0]} src={exercise.images[0]} />
         <div className="pl-5 grow">
           <div className="flex flex-row">
-            <b>{exercise.name}</b>
+            <AppLink className="text-on-surface" to="/exercises/$exerciseId" params={{exerciseId: exercise.id.toString()}} >
+              <b>{exercise.name}</b>
+            </AppLink>
             <div className="grow flex flex-row-reverse gap-2">
               <AppButton onClick={deleteExercise} >
                 {translations.utils.generic.buttons.delete}

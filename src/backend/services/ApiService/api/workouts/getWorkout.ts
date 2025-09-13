@@ -20,7 +20,7 @@ export const getWorkout = RouteFactory.createRoute({
     }).openapi({description: 'Workout'}),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.workout.get(ctx.params.path.id, ctx.viewer.id);
+    const result = await ctx.services.models.workout.get(ctx.params.path.id, ctx.viewer.id, ctx.language);
     if (!result) {
       throw new ApiError(ApiErrorCode.NotFound);
     }

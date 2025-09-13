@@ -1,9 +1,11 @@
-import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean} from 'drizzle-orm/pg-core';
+import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean, unique} from 'drizzle-orm/pg-core';
 import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
 import {Equipment} from '../../../types/Equipment';
 import {EntryType} from '../../EntryService/types/EntryType';
 import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
+import {TranslationType} from '../../TranslationService/types/TranslationType';
+import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -18,6 +20,12 @@ export const entryTypeEnum = gymTracker.enum('EntryType', entryTypeValues);
 
 const entryVisibilityValues = array(nativeEnum(EntryVisibility)).nonempty().parse(Object.values(EntryVisibility));
 export const entryVisibilityEnum = gymTracker.enum('EntryVisibility', entryVisibilityValues);
+
+const translationTypeEnumValues = array(nativeEnum(TranslationType)).nonempty().parse(Object.values(TranslationType));
+export const translationTypeEnum = gymTracker.enum('TranslationType', translationTypeEnumValues);
+
+const languageEnumValues = array(nativeEnum(Language)).nonempty().parse(Object.values(Language));
+export const languageEnum = gymTracker.enum('language', languageEnumValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -229,3 +237,26 @@ export const entries = gymTracker.table('entries', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
+
+export const translations = gymTracker.table('translations', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  key: varchar().notNull(),
+  numericKey: integer(),
+  value: text().notNull(),
+  type: translationTypeEnum().notNull(),
+  language: languageEnum().notNull(),
+  auto: boolean().notNull(),
+  locked: boolean().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+},
+ (table) => [
+   unique().on(table.key, table.type, table.language),
+   unique().on(table.numericKey, table.type, table.language),
+   index().on(table.type),
+   index().on(table.language, table.type, table.numericKey),
+   index().on(table.language, table.type, table.key),
+   index().on(table.createdAt),
+   index().on(table.updatedAt),
+ ]);

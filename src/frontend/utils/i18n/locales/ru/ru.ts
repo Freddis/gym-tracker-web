@@ -199,7 +199,7 @@ export const dictionary: Translation = {
       },
       contacts: {
         heading: 'Контакты',
-        address: 'Сочи, пгт. Сириус, Войтенко 27',
+        address: 'Грузия, Тбилиси, ул. Шардена, 12',
       },
       links: {
         heading: 'Ссылки',

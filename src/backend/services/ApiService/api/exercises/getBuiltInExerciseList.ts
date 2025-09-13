@@ -18,6 +18,7 @@ export const getBuiltInExerciseList = RouteFactory.createRoute({
       ...ctx.params.query,
       parentsOnly: true,
       userId: null,
+      language: ctx.language,
     });
     return result;
   },

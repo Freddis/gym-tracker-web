@@ -17,6 +17,7 @@ export const getExerciseList = RouteFactory.createRoute({
     const result = await ctx.services.models.exercise.getPage({
       ...ctx.params.query,
       userId: ctx.viewer.id,
+      language: ctx.language,
     });
     return result;
   },

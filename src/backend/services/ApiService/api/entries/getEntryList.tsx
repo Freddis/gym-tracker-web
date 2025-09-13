@@ -18,7 +18,10 @@ export const getEntryList = RouteFactory.createRoute({
     }),
   },
   handler: async (ctx): Promise<PaginatedResult<Entry>> => {
-    const result = await ctx.services.models.entry.getAll(ctx.params.query);
+    const result = await ctx.services.models.entry.getAll({
+      ...ctx.params.query,
+      language: ctx.language,
+    });
     return result;
   },
 });

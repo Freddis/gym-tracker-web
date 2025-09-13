@@ -1,3 +1,4 @@
+import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
 import {Equipment} from '../../../types/Equipment';
 import {Filter} from '../../../types/ModelService/Filter';
 import {Muscle} from '../../../types/Muscle';
@@ -10,4 +11,5 @@ export interface ExerciseFilter extends Filter{
     updatedAfter?: Date,
     parentIds?: number[] | null,
     includeBuiltIn?: boolean,
+    language?: Language
   }

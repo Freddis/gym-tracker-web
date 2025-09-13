@@ -1,0 +1,3 @@
+ALTER TABLE "gym_tracker"."translations" ADD COLUMN "numericKey" varchar;--> statement-breakpoint
+CREATE INDEX "translations_language_type_numericKey_index" ON "gym_tracker"."translations" USING btree ("language","type","numericKey");--> statement-breakpoint
+ALTER TABLE "gym_tracker"."translations" ADD CONSTRAINT "translations_numericKey_type_language_unique" UNIQUE("numericKey","type","language");

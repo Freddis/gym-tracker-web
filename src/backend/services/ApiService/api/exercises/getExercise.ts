@@ -18,7 +18,7 @@ export const getExercise = RouteFactory.createRoute({
     response: exerciseValidator,
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.exercise.get(ctx.params.path.id);
+    const result = await ctx.services.models.exercise.get(ctx.params.path.id, undefined, ctx.language);
     if (!result) {
       throw new ApiError(ApiErrorCode.NotFound);
     }

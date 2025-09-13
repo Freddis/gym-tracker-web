@@ -15,6 +15,7 @@ import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';
 import {WorkoutCreateDto} from './types/WorkoutCreateDto';
 import {InvalidEndDateError} from './types/InvalidEndDateError';
 import {WorkoutNotFoundError} from './types/WorkoutNotFoundError';
+import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
 export class WorkoutService {
   protected db: DrizzleService;
   protected exerciseService: ExerciseService;
@@ -194,7 +195,7 @@ export class WorkoutService {
       );
   }
 
-  async get(id: number, userId?: number): Promise<Workout | null> {
+  async get(id: number, userId?: number, language?: Language): Promise<Workout | null> {
     const db = await this.db.getDb();
     const table = db._.fullSchema.workouts;
     const result = await db.select({
@@ -206,11 +207,11 @@ export class WorkoutService {
           userId ? eq(table.userId, userId ?? 0) : undefined,
         ),
     );
-    const workouts = await this.load(result.map((x) => x.id));
+    const workouts = await this.load(result.map((x) => x.id), language);
     return workouts[0] ?? null;
   }
 
-  async load(ids: number[]): Promise<Workout[]> {
+  async load(ids: number[], language?: Language): Promise<Workout[]> {
     const db = await this.db.getDb();
     const rows = await db.query.workouts.findMany({
       where: (t, op) => op.inArray(t.id, ids),
@@ -230,7 +231,7 @@ export class WorkoutService {
       },
     });
     const exerciseIds = rows.flatMap((r) => r.exercises.map((e) => e.exerciseId));
-    const exercises = await this.exerciseService.getPage({ids: exerciseIds, perPage: 1000});
+    const exercises = await this.exerciseService.getPage({ids: exerciseIds, perPage: 1000, language});
     const eMap = new Map<number, Exercise>();
     for (const exercise of exercises.items) {
       eMap.set(exercise.id, exercise);
@@ -274,6 +275,7 @@ export class WorkoutService {
     page?: number,
     perPage?: number,
     updatedAfter?: Date
+    language?: Language,
   }): Promise<PaginatedResult<Workout>> {
     const db = await this.db.getDb();
     const page = params?.page ?? 1;
@@ -298,7 +300,7 @@ export class WorkoutService {
     const count = await db.$count(dbSchema.workouts, where);
     const workoutQueryResult = await query;
     const workoutIds = workoutQueryResult.map((x) => x.id);
-    const items = await this.load(workoutIds);
+    const items = await this.load(workoutIds, params?.language);
     const result: PaginatedResult<Workout> = {
       items,
       info: {

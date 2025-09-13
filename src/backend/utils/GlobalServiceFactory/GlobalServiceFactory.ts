@@ -16,6 +16,7 @@ import {WeightService} from '../../services/WeightService/WeightService';
 import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheckinService';
 import {WorkoutPlanService} from '../../services/WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../services/WorkoutTypeService/WorkoutTypeService';
+import {TranslationService} from '../../services/TranslationService/TranslationService';
 
 export class GlobalServiceFactory {
 
@@ -75,7 +76,7 @@ export class GlobalServiceFactory {
   }
 
   async exercise(): Promise<ExerciseService> {
-    return new ExerciseService(await this.drizzle());
+    return new ExerciseService(await this.drizzle(), await this.translation());
   }
 
   async workout(): Promise<WorkoutService> {
@@ -124,4 +125,7 @@ export class GlobalServiceFactory {
     return new UserService(await this.drizzle());
   }
 
+  async translation(): Promise<TranslationService> {
+    return new TranslationService(await this.drizzle());
+  }
 }

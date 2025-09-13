@@ -21,6 +21,7 @@ export const getOwnEntryList = RouteFactory.createRoute({
     const result = await ctx.services.models.entry.getAll({
       ...ctx.params.query,
       userId: [ctx.viewer.id],
+      language: ctx.language,
     });
     return result;
   },

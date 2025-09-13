@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."translations" ALTER COLUMN "numericKey" SET DATA TYPE integer USING "numericKey"::integer;

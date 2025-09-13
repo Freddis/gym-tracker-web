@@ -1,4 +1,4 @@
-import {and, inArray, eq, exists, isNull, asc, or, gte, ilike} from 'drizzle-orm';
+import {and, inArray, eq, exists, isNull, asc, or, gte, ilike, sql, not} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
@@ -7,16 +7,22 @@ import {Exercise} from './types/Exercise';
 import {Muscle} from '../../types/Muscle';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ExerciseFilter} from './types/ExerciseFilter';
+import {TranslationService} from '../TranslationService/TranslationService';
+import {TranslationType} from '../TranslationService/types/TranslationType';
+import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
 
 export class ExerciseService {
-  protected db: DrizzleService;
-  constructor(db: DrizzleService) {
-    this.db = db;
+  protected drizzle: DrizzleService;
+  protected translations: TranslationService;
+
+  constructor(drizzle: DrizzleService, translations: TranslationService) {
+    this.drizzle = drizzle;
+    this.translations = translations;
   }
 
   async create(data: Omit<Exercise, 'id'|'variations'|'createdAt'|'updatedAt'>): Promise<Exercise> {
-    const db = await this.db.getDb();
-    const dbSchema = this.db.getSchema();
+    const db = await this.drizzle.getDb();
+    const dbSchema = this.drizzle.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
       ...data,
       createdAt: new Date(),
@@ -60,8 +66,8 @@ export class ExerciseService {
   }
 
   async update(id: number, data: {name: string; description: string | null;}): Promise<void> {
-    const db = await this.db.getDb();
-    const dbSchema = this.db.getSchema();
+    const db = await this.drizzle.getDb();
+    const dbSchema = this.drizzle.getSchema();
     await db.update(dbSchema.exercises)
       .set({
         ...data,
@@ -72,8 +78,8 @@ export class ExerciseService {
   }
 
   async delete(exerciseId: number): Promise<void> {
-    const db = await this.db.getDb();
-    const dbSchema = this.db.getSchema();
+    const db = await this.drizzle.getDb();
+    const dbSchema = this.drizzle.getSchema();
     const now = new Date();
     await db.update(dbSchema.exercises)
       .set({
@@ -86,8 +92,8 @@ export class ExerciseService {
   }
 
   async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<Exercise[]> {
-    const db = await this.db.getDb();
-    const schema = this.db.getSchema();
+    const db = await this.drizzle.getDb();
+    const schema = this.drizzle.getSchema();
     if (data.length === 0) {
       return [];
     }
@@ -99,14 +105,14 @@ export class ExerciseService {
     }));
     const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
       target: schema.exercises.id,
-      set: this.db.generateConflictUpdateSetAllColumns(schema.exercises),
+      set: this.drizzle.generateConflictUpdateSetAllColumns(schema.exercises),
     }).returning();
     const items = this.nestExercises(inserted, []);
     return items;
   }
 
-  async get(exerciseId: number, userId?: number): Promise<Exercise | null> {
-    const exercises = await this.getPage({ids: [exerciseId], userId});
+  async get(exerciseId: number, userId?: number, language?: Language): Promise<Exercise | null> {
+    const exercises = await this.getPage({ids: [exerciseId], userId, language});
     const result = exercises.items[0];
     return result ?? null;
   }
@@ -130,6 +136,7 @@ export class ExerciseService {
       parentIds: parents.items.map((x) => x.id),
       perPage: 1000, // no limit
     });
+    await this.translate([...parents.items, ...children.items], params?.language);
     const items = await this.nestExercises(parents.items, children.items);
     const result: PaginatedResult<Exercise> = {
       items,
@@ -138,8 +145,23 @@ export class ExerciseService {
     return result;
   }
 
+  protected async translate(items: ExerciseRow[], language?: Language): Promise<void> {
+    if (!language || language === this.translations.getDefaultLanguage()) {
+      return;
+    }
+    const keys = [...items.map((x) => x.id.toString())];
+    const map = await this.translations.getMap(TranslationType.ExeciseName, keys, language);
+    for (const item of items) {
+      item.name = map.get(item.id.toString()) ?? item.name;
+    }
+    const map2 = await this.translations.getMap(TranslationType.ExeciseDescription, keys, language);
+    for (const item of items) {
+      item.description = map2.get(item.id.toString()) ?? item.description;
+    }
+  }
+
   protected async paginateRows(params?: ExerciseFilter): Promise<PaginatedResult<ExerciseRow>> {
-    const db = await this.db.getDb();
+    const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
     const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
@@ -167,8 +189,15 @@ export class ExerciseService {
           ) : undefined
         ),
       params?.updatedAfter ? gte(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
-      params?.filter ? and(
-        ...params.filter.trim().split(' ').map((filter) => ilike(db._.fullSchema.exercises.name, `%${filter}%`))
+      params?.filter ? or(
+        and(
+          isNull(db._.fullSchema.translations.value),
+          ...params.filter.trim().split(' ').map((filter) => ilike(db._.fullSchema.exercises.name, `%${filter}%`))
+        ),
+        and(
+          not(isNull(db._.fullSchema.translations.value)),
+          ...params.filter.trim().split(' ').map((filter) => ilike(db._.fullSchema.translations.value, `%${filter}%`))
+        )
       ) : undefined,
       params?.ids ? inArray(db._.fullSchema.exercises.id, params.ids) : undefined,
       params?.muscle ? and(...muscleSubsqueries) : undefined,
@@ -179,19 +208,37 @@ export class ExerciseService {
       ),
       isNull(db._.fullSchema.exercises.deletedAt)
     );
+    const joinOn = and(
+      eq(db._.fullSchema.translations.type, TranslationType.ExeciseName),
+      params?.language ? eq(db._.fullSchema.translations.language, params.language) : sql`FALSE`,
+      eq(db._.fullSchema.translations.numericKey, db._.fullSchema.exercises.id),
+    );
     const rows = await db.select()
     .from(db._.fullSchema.exercises)
+    .leftJoin(db._.fullSchema.translations, joinOn)
     .where(where)
     .orderBy(
+        asc(db._.fullSchema.translations.value),
         asc(db._.fullSchema.exercises.name),
         asc(db._.fullSchema.exercises.id),
     )
     .limit(limit)
     .offset(offset);
 
-    const count = await db.$count(db._.fullSchema.exercises, where);
+    // const count = await db.$count(db._.fullSchema.exercises, where);
+    const countRows = await db.select({
+      count: sql<number>`COUNT(*)::int`,
+    })
+    .from(db._.fullSchema.exercises)
+    .leftJoin(db._.fullSchema.translations, joinOn)
+    .where(where);
+    const count = countRows[0]?.count;
+    if (count === undefined) {
+      throw new Error("Couldn't count");
+    }
+
     const result: PaginatedResult<ExerciseRow> = {
-      items: rows,
+      items: rows.map((x) => x.exercises),
       info: {
         page,
         count,
@@ -203,7 +250,7 @@ export class ExerciseService {
 
   protected async nestExercises(exercises: ExerciseRow[], variations: ExerciseRow[]): Promise<Exercise[]> {
     const exerciseIds = [...exercises.map((x) => x.id), ...variations.map((x) => x.id)];
-    const db = await this.db.getDb();
+    const db = await this.drizzle.getDb();
     const muscles = await db.select({
       exersizeId: db._.fullSchema.muscles.exerciseId,
       muscle: db._.fullSchema.muscles.muscle,
@@ -254,7 +301,7 @@ export class ExerciseService {
   }
 
   async hasWriteAccess(exerciseId: number, userId: number): Promise<boolean> {
-    const db = await this.db.getDb();
+    const db = await this.drizzle.getDb();
     const item = await db.query.exercises.findFirst({
       where: (t, op) =>
         op.and(
