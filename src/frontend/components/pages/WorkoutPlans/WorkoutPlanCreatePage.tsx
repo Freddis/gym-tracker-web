@@ -11,6 +11,7 @@ import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
+import {route, RouteId} from '../../../utils/route';
 
 export const WorkoutPlanCreatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutPlans.create);
@@ -53,7 +54,7 @@ export const WorkoutPlanCreatePage: FC = () => {
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
       <div className="mb-5 -mt-5">
-        <RouteLink to={route(RouteId.WorkoutPlans)}>{translations.pages.workoutPlans.list.heading}</RouteLink>
+        <RouteLink to={route(RouteId.WorkoutPlanList)}>{translations.pages.workoutPlans.list.heading}</RouteLink>
         <span className="ml-2">&gt;&gt;</span>
         <span className="ml-2">{t(i18n.heading)}</span>
       </div>
@@ -62,7 +63,7 @@ export const WorkoutPlanCreatePage: FC = () => {
           <WorkoutPlanUpdateForm item={workoutPlan} onUpdate={onFormUpdate} />
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
             <div className="mt-5 flex flex-row">
-              <RouteLink to={route(RouteId.WorkoutPlans)}>{translations.utils.generic.buttons.back}</RouteLink>
+              <RouteLink to={route(RouteId.WorkoutPlanList)}>{translations.utils.generic.buttons.back}</RouteLink>
               <div className="grow flex flex-row-reverse gap-2">
                 <AppButton onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
               </div>

@@ -13,6 +13,7 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {useQuery} from '@tanstack/react-query';
 import {getWeightByIdOptions} from '../../../../utils/openapi-client/@tanstack/react-query.gen';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
+import {route, RouteId} from '../../../../utils/route';
 
 const routeApi = getRouteApi('/weight/update/$id');
 export const WeightUpdatePage: FC = () => {

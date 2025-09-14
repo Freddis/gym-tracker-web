@@ -11,6 +11,7 @@ import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
+import {route, RouteId} from '../../../utils/route';
 
 export const WorkoutTypeCreatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutTypes.create);
@@ -63,7 +64,7 @@ export const WorkoutTypeCreatePage: FC = () => {
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
       <div className="mb-5 -mt-5">
-        <RouteLink to={route(RouteId.WorkoutTypes)}>{translations.pages.workoutTypes.list.heading}</RouteLink>
+        <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.pages.workoutTypes.list.heading}</RouteLink>
         <span className="ml-2">&gt;&gt;</span>
         <span className="ml-2">{t(i18n.heading)}</span>
       </div>
@@ -72,7 +73,7 @@ export const WorkoutTypeCreatePage: FC = () => {
           <WorkoutTypeUpdateForm item={workoutType} onUpdate={onFormUpdate} />
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
             <div className="mt-5 flex flex-row">
-              <RouteLink to={route(RouteId.WorkoutTypes)}>{translations.utils.generic.buttons.back}</RouteLink>
+              <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.utils.generic.buttons.back}</RouteLink>
               <div className="grow flex flex-row-reverse gap-2">
                 <AppButton onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
               </div>
