@@ -1,6 +1,6 @@
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {Equipment} from '../../../types/Equipment';
-import {Filter} from '../../../types/ModelService/Filter';
+import {Filter} from '../../../types/ModelService/types/Filter';
 import {Muscle} from '../../../types/Muscle';
 
 export interface ExerciseFilter extends Filter{

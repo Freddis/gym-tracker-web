@@ -36,7 +36,7 @@ export const ManagerListPage:FC = () => {
     <AppBlockHeader className="text-left">Manager List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
     {response.data && !response.data.error && (
-      <AppBlock className="w-full h-full table-fixed">
+      <AppBlock className="w-full table-fixed">
         <table className="w-full table">
           <thead >
             <tr className="font-medium">

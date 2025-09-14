@@ -26,6 +26,7 @@ import type {
   GetEntriesResponse,
   GetEntriesOwnResponse,
   GetCrmManagersResponse,
+  GetCrmTranslationsResponse,
 } from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -344,6 +345,26 @@ export const getCrmManagersResponseTransformer = async (
 ): Promise<GetCrmManagersResponse> => {
   data.items = data.items.map((item: any) => {
     return managerSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const translationSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getCrmTranslationsResponseTransformer = async (
+  data: any,
+): Promise<GetCrmTranslationsResponse> => {
+  data.items = data.items.map((item: any) => {
+    return translationSchemaResponseTransformer(item);
   });
   return data;
 };

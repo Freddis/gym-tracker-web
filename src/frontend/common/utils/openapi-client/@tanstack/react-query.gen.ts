@@ -37,6 +37,7 @@ import {
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
+  getCrmTranslations,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -138,6 +139,9 @@ import type {
   PostCrmAuthLoginData,
   PostCrmAuthLoginError,
   PostCrmAuthLoginResponse,
+  GetCrmTranslationsData,
+  GetCrmTranslationsError,
+  GetCrmTranslationsResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -1829,4 +1833,79 @@ export const postCrmAuthLoginMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getCrmTranslationsQueryKey = (
+  options?: Options<GetCrmTranslationsData>,
+) => createQueryKey("getCrmTranslations", options);
+
+/**
+ * Returns list of translations
+ */
+export const getCrmTranslationsOptions = (
+  options?: Options<GetCrmTranslationsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmTranslations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmTranslationsQueryKey(options),
+  });
+};
+
+export const getCrmTranslationsInfiniteQueryKey = (
+  options?: Options<GetCrmTranslationsData>,
+): QueryKey<Options<GetCrmTranslationsData>> =>
+  createQueryKey("getCrmTranslations", options, true);
+
+/**
+ * Returns list of translations
+ */
+export const getCrmTranslationsInfiniteOptions = (
+  options?: Options<GetCrmTranslationsData>,
+) => {
+  return infiniteQueryOptions<
+    GetCrmTranslationsResponse,
+    AxiosError<GetCrmTranslationsError>,
+    InfiniteData<GetCrmTranslationsResponse>,
+    QueryKey<Options<GetCrmTranslationsData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmTranslationsData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmTranslationsData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getCrmTranslations({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmTranslationsInfiniteQueryKey(options),
+    },
+  );
 };

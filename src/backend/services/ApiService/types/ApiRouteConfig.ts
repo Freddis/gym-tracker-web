@@ -107,6 +107,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
         manager: await this.factory.manager(),
         workoutPlan: await this.factory.workoutPlan(),
         workoutType: await this.factory.workoutType(),
+        translation: await this.factory.translation(),
       },
     };
     return services;

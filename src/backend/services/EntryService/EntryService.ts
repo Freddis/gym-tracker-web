@@ -32,7 +32,7 @@ export class EntryService {
   }
 
   async createWeightEntry(userId: number, entry: WeightEntryCreateDto): Promise<WeightEntry> {
-    const user = await this.userService.get(userId);
+    const user = await this.userService.getById(userId);
     if (!user) {
       throw new Error('User not found');
     }
@@ -69,7 +69,7 @@ export class EntryService {
   }
 
   async createWorkoutEntry(userId: number, entry: WorkoutEntryCreateDto): Promise<WorkoutEntry> {
-    const user = await this.userService.get(userId);
+    const user = await this.userService.getById(userId);
     if (!user) {
       throw new Error('User not found');
     }
@@ -151,7 +151,7 @@ export class EntryService {
     const weight = await this.weightService.getAll({id: weightIds, perPage: limit});
     const weightMap = weight.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
     const userIds = rows.map((x) => x.userId);
-    const users = await this.userService.getAll({ids: userIds, perPage: limit});
+    const users = await this.userService.paginate({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {

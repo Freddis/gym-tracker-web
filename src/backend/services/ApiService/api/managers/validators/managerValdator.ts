@@ -1,7 +1,7 @@
-import {managerRowValidator} from '../../../../../DrizzleService/types/ManagerRow';
-import {RouteFactory} from '../../../../utils/RouteFactory';
-import {OpenApiDescriptions} from '../../../../types/OpenApiDescriptions';
-import {Manager} from '../../../../../ManagerService/types/Manager';
+import {managerRowValidator} from '../../../../DrizzleService/types/ManagerRow';
+import {Manager} from '../../../../ManagerService/types/Manager';
+import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
+import {RouteFactory} from '../../../utils/RouteFactory';
 
 
 const managerValidatorDescriptions: OpenApiDescriptions<Manager> = {
@@ -14,7 +14,9 @@ const managerValidatorDescriptions: OpenApiDescriptions<Manager> = {
   updatedAt: 'Last time manager was updated',
   deletedAt: "The date manager deleted from CRM. Deleted managers don't appear on most pages",
 };
-const validator = managerRowValidator;
+const validator = managerRowValidator.omit({
+  password: true,
+});
 
 export const managerValidator = RouteFactory.validators.describeShape(validator, managerValidatorDescriptions).openapi({
   ref: 'Manager',

@@ -1,16 +1,30 @@
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
-import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Translation} from './types/Translation';
 import {TranslationType} from './types/TranslationType';
-import {eq} from 'drizzle-orm';
+import {and, eq, SQL} from 'drizzle-orm';
 import {NewModel} from '../../types/NewModel';
 import translator from 'open-google-translator';
-export class TranslationService {
+import {ModelService} from '../../types/ModelService/ModelService';
+import {TranslationRow} from '../DrizzleService/types/TranslationRow';
+import {Filter} from '../../types/ModelService/types/Filter';
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {EntityService} from '../../types/ModelService/types/EntityService';
 
-  protected drizzle: DrizzleService;
+export class TranslationService
+extends ModelService<TranslationRow, Translation, Filter>
+implements EntityService<Translation> {
 
-  constructor(drizzle: DrizzleService) {
-    this.drizzle = drizzle;
+  protected getTable() {
+    return this.drizzle.getSchema().translations;
+  }
+  protected getWhere(): SQL<unknown> | undefined {
+    return and(undefined);
+  }
+  protected async decorateRows(rows: TranslationRow[]): Promise<Translation[]> {
+    return rows;
+  }
+  protected getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return this.drizzle.getSchema().translations.key;
   }
 
   public getDefaultLanguage(): Language {

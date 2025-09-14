@@ -1,6 +1,6 @@
 import {SQL, and, desc, eq, gte, inArray, isNull} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
-import {ModelService} from '../../types/ModelService/ModelService';
+import {UserModelService} from '../../types/ModelService/UserModelService';
 import {NewModelDto} from '../../types/NewModelDto';
 import {NewModel} from '../../types/NewModel';
 import {WorkoutType} from './types/WorkoutType';
@@ -12,7 +12,7 @@ import {AppDb, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {WorkoutTypeExerciseSetRow} from '../DrizzleService/types/WorkoutTypeExerciseSetRow';
 
-export class WorkoutTypeService extends ModelService<WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
+export class WorkoutTypeService extends UserModelService<WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
   protected exerciseService: ExerciseService;
 
   constructor(drizzle: DrizzleService, exerciseService: ExerciseService) {

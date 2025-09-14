@@ -1,8 +1,8 @@
 import {OpenApiMethod} from 'snap-on-openapi';
 import {object} from 'zod';
-import {ApiRouteType} from '../../../types/ApiRouteType';
-import {RouteFactory} from '../../../utils/RouteFactory';
 import {managerValidator} from './validators/managerValdator';
+import {ApiRouteType} from '../../types/ApiRouteType';
+import {RouteFactory} from '../../utils/RouteFactory';
 
 
 export const getManagerList = RouteFactory.createRoute({
@@ -21,7 +21,7 @@ export const getManagerList = RouteFactory.createRoute({
     }),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.manager.getAll({
+    const result = await ctx.services.models.manager.paginate({
       ...ctx.params.query,
       perPage: 10,
     });

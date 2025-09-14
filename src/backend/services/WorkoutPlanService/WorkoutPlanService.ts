@@ -4,12 +4,10 @@ import {WorkoutPlan} from './types/WorkoutPlan';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {NewModel} from '../../types/NewModel';
 import {NewModelDto} from '../../types/NewModelDto';
-import {ModelService} from '../../types/ModelService/ModelService';
+import {UserModelService} from '../../types/ModelService/UserModelService';
 import {WorkoutPlanFilter} from './types/WorkoutPlanFilter';
 import {WorkoutPlanRow} from '../DrizzleService/types/WorkoutPlanRow';
-
-
-export class WorkoutPlanService extends ModelService<WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
+export class WorkoutPlanService extends UserModelService<WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
 
   protected table: AppDbSchema['workoutPlans'];
 

@@ -21,7 +21,6 @@ import {upsertWorkouts} from '../api/workouts/upsertWorkouts';
 import {getEntryList} from '../api/entries/getEntryList';
 import {getUserList} from '../api/users/getUserList';
 import {loginManager} from '../api/auth/loginManager';
-import {getManagerList} from '../api/crm/managers/getManagerList';
 import {getOwnEntryList} from '../api/entries/getOwnEntryList';
 import {getWeight} from '../api/weight/getWeight';
 import {updateWeight} from '../api/weight/updateWeight';
@@ -35,6 +34,8 @@ import {deleteWorkoutType} from '../api/workoutTypes/deleteWorkoutType';
 import {createWorkoutType} from '../api/workoutTypes/createWorkoutType';
 import {getWorkoutType} from '../api/workoutTypes/getWorkoutType';
 import {updateWorkoutType} from '../api/workoutTypes/updateWorkoutType';
+import {getManagerList} from '../api/managers/getManagerList';
+import {getTranslationList} from '../api/translations/getTranslationList';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -93,5 +94,8 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/crm/auth': [
     loginManager,
+  ],
+  '/crm/translations': [
+    getTranslationList,
   ],
 };

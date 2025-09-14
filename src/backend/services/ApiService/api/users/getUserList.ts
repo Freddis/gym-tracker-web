@@ -20,7 +20,7 @@ export const getUserList = RouteFactory.createRoute({
     }),
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.user.getAll({
+    const result = await ctx.services.models.user.paginate({
       ...ctx.params.query,
       perPage: 10,
     });

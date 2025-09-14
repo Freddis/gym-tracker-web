@@ -107,6 +107,9 @@ import type {
   PostCrmAuthLoginData,
   PostCrmAuthLoginResponses,
   PostCrmAuthLoginErrors,
+  GetCrmTranslationsData,
+  GetCrmTranslationsResponses,
+  GetCrmTranslationsErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -135,6 +138,7 @@ import {
   getEntriesResponseTransformer,
   getEntriesOwnResponseTransformer,
   getCrmManagersResponseTransformer,
+  getCrmTranslationsResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -997,5 +1001,23 @@ export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Returns list of translations
+ */
+export const getCrmTranslations = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmTranslationsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmTranslationsResponses,
+    GetCrmTranslationsErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getCrmTranslationsResponseTransformer,
+    url: "/crm/translations",
+    ...options,
   });
 };

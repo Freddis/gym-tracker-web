@@ -1,55 +1,29 @@
-import {and, desc, inArray} from 'drizzle-orm';
-import {PaginatedResult} from '../ApiService/types/PaginatedResult';
-import {DrizzleService} from '../DrizzleService/DrizzleService';
+import {and, desc, inArray, SQL} from 'drizzle-orm';
 import {User} from './types/User';
+import {ModelService} from '../../types/ModelService/ModelService';
+import {UserRow} from '../DrizzleService/types/UserRow';
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {Filter} from '../../types/ModelService/types/Filter';
 
+export class UserService extends ModelService<UserRow, User> {
 
-export class UserService {
-  protected drizzle: DrizzleService;
-
-  constructor(drizzle: DrizzleService) {
-    this.drizzle = drizzle;
+  protected override getTable() {
+    return this.drizzle.getSchema().users;
   }
-
-  async get(id: number): Promise<User | null> {
-    const exercises = await this.getAll({ids: [id]});
-    const result = exercises.items[0];
-    return result ?? null;
-  }
-
-  async getAll(params: { ids?: number[], page?: number, perPage?: number}): Promise<PaginatedResult<User>> {
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 100;
-    const offset = (page - 1) * limit;
-
+  protected override getWhere(params: Partial<Filter>): SQL<unknown> | undefined {
     const where = and(
-      params.ids ? inArray(db._.fullSchema.users.id, params.ids) : undefined
+      params.ids ? inArray(this.getTable().id, params.ids) : undefined
     );
-    const count = await db.$count(db._.fullSchema.users, where);
-    const rows = await db.select()
-      .from(db._.fullSchema.users)
-      .where(where)
-      .orderBy(
-        desc(db._.fullSchema.users.id)
-      )
-      .limit(limit)
-      .offset(offset);
-    const items: User[] = rows.map((row) => ({
-      id: row.id,
-      email: row.email,
-      name: row.name,
+    return where;
+  }
+  protected override async decorateRows(rows: UserRow[]): Promise<User[]> {
+    return rows.map((x) => ({
+      ...x,
       profilePicture: '',
     }));
-    const result: PaginatedResult<User> = {
-      items,
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
-    return result;
+  }
+  protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return desc(this.getTable().id);
   }
 
 }

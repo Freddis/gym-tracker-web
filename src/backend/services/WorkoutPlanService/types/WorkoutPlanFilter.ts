@@ -1,4 +1,4 @@
-import {Filter} from '../../../types/ModelService/Filter';
+import {Filter} from '../../../types/ModelService/types/Filter';
 
 export interface WorkoutPlanFilter extends Filter {
   updatedAfter?: Date,

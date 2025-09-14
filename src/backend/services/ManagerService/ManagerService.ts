@@ -1,16 +1,12 @@
-import {and, desc, isNull} from 'drizzle-orm';
-import {PaginatedResult} from '../ApiService/types/PaginatedResult';
-import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
+import {and, desc, eq, inArray, isNull, SQL} from 'drizzle-orm';
 import {Manager} from './types/Manager';
+import {EntityService} from '../../types/ModelService/types/EntityService';
+import {ModelService} from '../../types/ModelService/ModelService';
+import {ManagerRow} from '../DrizzleService/types/ManagerRow';
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {ManagerFilter} from './types/ManagerFilter';
 
-export class ManagerService {
-  protected drizzle: DrizzleService;
-  protected table: AppDbSchema['managers'];
-
-  constructor(db: DrizzleService) {
-    this.drizzle = db;
-    this.table = db.getSchema().managers;
-  }
+export class ManagerService extends ModelService<ManagerRow, Manager, ManagerFilter> implements EntityService<Manager, ManagerFilter> {
 
   async create(manager: Omit<Manager, 'id'|'createdAt'|'updatedAt'|'deletedAt'>): Promise<Manager> {
     const db = await this.drizzle.getDb();
@@ -28,51 +24,29 @@ export class ManagerService {
   }
 
   async getByEmail(email: string): Promise<Manager | null> {
-    const result = await this.getAll({
-      email: [email],
+    const result = await this.get({
+      email: email,
     });
-    return result.items[0] ?? null;
-  }
-
-  async getById(id: number): Promise<Manager | null> {
-    const result = await this.getAll({
-      id: [id],
-    });
-    return result.items[0] ?? null;
-  }
-
-  async getAll(params?: {
-    id?: number[],
-    email?: string[],
-    page?: number,
-    perPage?: number,
-  }): Promise<PaginatedResult<Manager>> {
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 10;
-    const offset = (page - 1) * limit;
-    const where = and(
-        isNull(this.table.deletedAt),
-      );
-    const rows = await db.select()
-    .from(this.table)
-    .where(where)
-    .orderBy(
-      desc(this.table.createdAt)
-    )
-    .limit(params?.perPage ?? 10)
-    .offset(offset);
-
-    const count = await db.$count(this.table, where);
-    const result: PaginatedResult<Manager> = {
-      items: rows,
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
     return result;
+  }
+
+  protected getTable() {
+    return this.drizzle.getSchema().managers;
+  }
+
+  protected getWhere(params: Partial<ManagerFilter>): SQL<unknown> | undefined {
+    const where = and(
+        params?.ids ? inArray(this.getTable().id, params.ids) : undefined,
+        params?.email ? eq(this.getTable().email, params.email) : undefined,
+        isNull(this.getTable().deletedAt),
+      );
+    return where;
+  }
+  protected async decorateRows(rows: ManagerRow[]): Promise<Manager[]> {
+    return rows;
+  }
+  protected getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return desc(this.getTable().id);
   }
 
 }

@@ -878,6 +878,56 @@ export type Manager = {
   deletedAt: Date | null;
 };
 
+/**
+ * Translation Record
+ */
+export type Translation = {
+  /**
+   * Id of the manager
+   */
+  id: number;
+  /**
+   * Key that identifies the translation
+   */
+  key: string;
+  /**
+   * Technical
+   */
+  numericKey: number | null;
+  /**
+   * Translated text
+   */
+  value: string;
+  /**
+   * Type of translation. Usually identifies which object translations describe
+   */
+  type: "ExeciseName" | "ExeciseDescription";
+  /**
+   * Language of the translation
+   */
+  language: "en" | "ru";
+  /**
+   * If true, it record was translation via automated translation (google-translate) last time.
+   */
+  auto: boolean;
+  /**
+   * If true, the record will not be vaild for automated translation in future
+   */
+  locked: boolean;
+  /**
+   * Date record was added to CRM
+   */
+  createdAt: Date;
+  /**
+   * Last time record was updated
+   */
+  updatedAt: Date | null;
+  /**
+   * The date record was deleted from CRM. Deleted records don't appear on most pages
+   */
+  deletedAt: Date | null;
+};
+
 export type PostAuthRegisterData = {
   body?: {
     /**
@@ -5403,6 +5453,60 @@ export type PostCrmAuthLoginResponses = {
 
 export type PostCrmAuthLoginResponse =
   PostCrmAuthLoginResponses[keyof PostCrmAuthLoginResponses];
+
+export type GetCrmTranslationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/crm/translations";
+};
+
+export type GetCrmTranslationsErrors = {
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmTranslationsError =
+  GetCrmTranslationsErrors[keyof GetCrmTranslationsErrors];
+
+export type GetCrmTranslationsResponses = {
+  /**
+   * List of translations
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Translation>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetCrmTranslationsResponse =
+  GetCrmTranslationsResponses[keyof GetCrmTranslationsResponses];
 
 export type ClientOptions = {
   baseURL: `${string}://${string}/api` | (string & {});

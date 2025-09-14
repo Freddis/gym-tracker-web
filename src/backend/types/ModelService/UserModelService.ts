@@ -4,15 +4,16 @@ import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
 import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
+import {UserIdColumn} from './types/UserIdColumn';
 
-export abstract class ModelService<TRow extends {id:number}, TModel, TFilter extends Filter = Filter> {
+export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter extends Filter> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;
   }
 
-  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn}
+  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn, userId: UserIdColumn}
   protected abstract getWhere(params: Partial<TFilter>):SQL<unknown> | undefined
   protected abstract decorateRows(rows: TRow[]): Promise<TModel[]>
   protected abstract getOrderBy(): PgColumn | SQL | SQL.Aliased
@@ -45,7 +46,7 @@ export abstract class ModelService<TRow extends {id:number}, TModel, TFilter ext
     return result;
   }
 
-  async paginate(params: Partial<TFilter>): Promise<PaginatedResult<TModel>> {
+  async paginate(userId: number, params: Partial<TFilter>): Promise<PaginatedResult<TModel>> {
     const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
     const limit = params?.perPage ?? 30;
@@ -76,34 +77,22 @@ export abstract class ModelService<TRow extends {id:number}, TModel, TFilter ext
   }
 
 
-  async getById(id: number): Promise<TModel | null> {
+  async getById(userId: number, id: number): Promise<TModel | null> {
     const params: Partial<TFilter> = {};
     params.ids = [id];
-    const result = await this.get(params);
-    return result;
-  }
-
-  async get(filter: Partial<TFilter>): Promise<TModel | null> {
-    const records = await this.getMany(filter);
-    const result = records[0];
+    const record = await this.paginate(userId, params);
+    const result = record.items[0];
     return result ?? null;
   }
 
-  async getMany(params: Partial<TFilter>): Promise<TModel[]> {
-    const where: SQL<unknown> | undefined = this.getWhere(params);
-    const db = await this.drizzle.getDb();
-    const rows = await db.select({
-      id: this.getTable().id,
-    })
-    .from(this.getTable())
-    .where(where)
-    .orderBy(
-     this.getOrderBy()
-    );
-    return this.decorateMany(rows.map((x) => x.id));
+  async get(filter: TFilter, userId: number): Promise<TModel | null> {
+    const record = await this.paginate(userId, filter);
+    const result = record.items[0];
+    return result ?? null;
   }
-  async deleteById(id: number) {
-    const plan = await this.getById(id);
+
+  async deleteById(userId: number, id: number) {
+    const plan = await this.getById(userId, id);
     if (!plan) {
       throw new Error('Plan not found');
     }

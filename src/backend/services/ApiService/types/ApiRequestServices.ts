@@ -8,6 +8,7 @@ import {UserService} from '../../UserService/UserService';
 import {ManagerService} from '../../ManagerService/ManagerService';
 import {WorkoutPlanService} from '../../WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
+import {TranslationService} from '../../TranslationService/TranslationService';
 
 export interface ApiRequestServices {
   auth: AuthService
@@ -21,5 +22,6 @@ export interface ApiRequestServices {
     entry: EntryService
     user: UserService
     manager: ManagerService
+    translation: TranslationService
   }
 }

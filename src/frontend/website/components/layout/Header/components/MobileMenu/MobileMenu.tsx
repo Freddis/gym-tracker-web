@@ -56,7 +56,7 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
           <HeaderLink to={route(RouteId.Login)}>{t(i18n.menu.signIn)}</HeaderLink>
         </Conditional>
           <Conditional condition={!!auth.user}>
-          <HeaderLink onClick={logout} to={'/'}>{t(i18n.menu.signOut)}</HeaderLink>
+          <HeaderLink onClick={logout} to={route(RouteId.Home)}>{t(i18n.menu.signOut)}</HeaderLink>
         </Conditional>
       </div>
 

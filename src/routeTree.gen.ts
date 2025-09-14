@@ -29,6 +29,7 @@ import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/pri
 import { Route as WorkoutsTypesIndexRouteImport } from './routes/workouts/types/index'
 import { Route as WorkoutsPlansIndexRouteImport } from './routes/workouts/plans/index'
 import { Route as CrmUsersIndexRouteImport } from './routes/crm/users/index'
+import { Route as CrmTranslationsIndexRouteImport } from './routes/crm/translations/index'
 import { Route as CrmManagersIndexRouteImport } from './routes/crm/managers/index'
 import { Route as WorkoutsUpdateIdRouteImport } from './routes/workouts/update/$id'
 import { Route as WorkoutsTypesCreateRouteImport } from './routes/workouts/types/create'
@@ -134,6 +135,11 @@ const CrmUsersIndexRoute = CrmUsersIndexRouteImport.update({
   path: '/crm/users/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CrmTranslationsIndexRoute = CrmTranslationsIndexRouteImport.update({
+  id: '/crm/translations/',
+  path: '/crm/translations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CrmManagersIndexRoute = CrmManagersIndexRouteImport.update({
   id: '/crm/managers/',
   path: '/crm/managers/',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
+  '/crm/translations': typeof CrmTranslationsIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
   '/workouts/plans': typeof WorkoutsPlansIndexRoute
   '/workouts/types': typeof WorkoutsTypesIndexRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers': typeof CrmManagersIndexRoute
+  '/crm/translations': typeof CrmTranslationsIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
   '/workouts/plans': typeof WorkoutsPlansIndexRoute
   '/workouts/types': typeof WorkoutsTypesIndexRoute
@@ -275,6 +283,7 @@ export interface FileRoutesById {
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
   '/crm/managers/': typeof CrmManagersIndexRoute
+  '/crm/translations/': typeof CrmTranslationsIndexRoute
   '/crm/users/': typeof CrmUsersIndexRoute
   '/workouts/plans/': typeof WorkoutsPlansIndexRoute
   '/workouts/types/': typeof WorkoutsTypesIndexRoute
@@ -305,6 +314,7 @@ export interface FileRouteTypes {
     | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers'
+    | '/crm/translations'
     | '/crm/users'
     | '/workouts/plans'
     | '/workouts/types'
@@ -333,6 +343,7 @@ export interface FileRouteTypes {
     | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers'
+    | '/crm/translations'
     | '/crm/users'
     | '/workouts/plans'
     | '/workouts/types'
@@ -361,6 +372,7 @@ export interface FileRouteTypes {
     | '/workouts/types/create'
     | '/workouts/update/$id'
     | '/crm/managers/'
+    | '/crm/translations/'
     | '/crm/users/'
     | '/workouts/plans/'
     | '/workouts/types/'
@@ -390,6 +402,7 @@ export interface RootRouteChildren {
   WorkoutsTypesCreateRoute: typeof WorkoutsTypesCreateRoute
   WorkoutsUpdateIdRoute: typeof WorkoutsUpdateIdRoute
   CrmManagersIndexRoute: typeof CrmManagersIndexRoute
+  CrmTranslationsIndexRoute: typeof CrmTranslationsIndexRoute
   CrmUsersIndexRoute: typeof CrmUsersIndexRoute
   WorkoutsPlansIndexRoute: typeof WorkoutsPlansIndexRoute
   WorkoutsTypesIndexRoute: typeof WorkoutsTypesIndexRoute
@@ -558,6 +571,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmUsersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crm/translations/': {
+      id: '/crm/translations/'
+      path: '/crm/translations'
+      fullPath: '/crm/translations'
+      preLoaderRoute: typeof CrmTranslationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/crm/managers/': {
       id: '/crm/managers/'
       path: '/crm/managers'
@@ -671,6 +691,7 @@ const rootRouteChildren: RootRouteChildren = {
   WorkoutsTypesCreateRoute: WorkoutsTypesCreateRoute,
   WorkoutsUpdateIdRoute: WorkoutsUpdateIdRoute,
   CrmManagersIndexRoute: CrmManagersIndexRoute,
+  CrmTranslationsIndexRoute: CrmTranslationsIndexRoute,
   CrmUsersIndexRoute: CrmUsersIndexRoute,
   WorkoutsPlansIndexRoute: WorkoutsPlansIndexRoute,
   WorkoutsTypesIndexRoute: WorkoutsTypesIndexRoute,

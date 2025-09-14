@@ -21,6 +21,7 @@
     "strictFunctionTypes": true,
     "noImplicitReturns": true,
     "alwaysStrict": true,
+    "noImplicitOverride": true,
     "baseUrl": ".",
     "types": ["vite/client"],
     "paths": {

@@ -13,7 +13,7 @@ export const CrmLayout: FC = () => {
   return (
     <>
       <div className="flex flex-col grow">
-        <div className="flex items-start">
+        <div className="flex items-stretch">
           <CrmSideMenu/>
           <div className="w-full min-h-screen p-10">
             <Outlet />

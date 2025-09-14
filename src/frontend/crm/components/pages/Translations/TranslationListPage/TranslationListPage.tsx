@@ -3,22 +3,22 @@ import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {keepPreviousData, useQuery} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
-import {getCrmUsers} from '../../../../../common/utils/openapi-client';
+import {getCrmTranslations} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
 
-const routeApi = getRouteApi('/crm/users/');
-export const UserListPage:FC = () => {
+const routeApi = getRouteApi('/crm/translations/');
+export const TranslationListPage:FC = () => {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
   const response = useQuery({
-    queryFn: () => getCrmUsers({
+    queryFn: () => getCrmTranslations({
       query: {
         page: searchParams.page,
       },
     }),
-    queryKey: ['users', searchParams],
+    queryKey: ['translations', searchParams],
     placeholderData: keepPreviousData,
   });
 
@@ -33,7 +33,7 @@ export const UserListPage:FC = () => {
 
   return (
   <>
-    <AppBlockHeader className="text-left">User List</AppBlockHeader>
+    <AppBlockHeader className="text-left">Translation List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
@@ -41,20 +41,28 @@ export const UserListPage:FC = () => {
           <thead >
             <tr className="font-medium">
               <td className="p-4 border-b-main border-b-1">Id</td>
-              <td className="p-4 border-b-main border-b-1">Name</td>
+              <td className="p-4 border-b-main border-b-1">Type</td>
+              <td className="p-4 border-b-main border-b-1">Key</td>
+              <td className="p-4 border-b-main border-b-1">Translation</td>
+              <td className="p-4 border-b-main border-b-1">Auto-Translated</td>
+              <td className="p-4 border-b-main border-b-1">Locked</td>
               <td className="p-4 border-b-main border-b-1">Created</td>
               <td className="p-4 border-b-main border-b-1">Updated</td>
             </tr>
           </thead>
           <tbody>
-            {response.data.data.items.map((user) => (
-              <tr key={user.id} className="border-b-red-200 p1">
-                <td className="p-4 border-b-main border-b-1 min-w-20">{user.id}</td>
-                <td className="p-4 border-b-main border-b-1 w-full">
-                  <AppLink className="text-on-main">{user.name}</AppLink>
+            {response.data.data.items.map((row) => (
+              <tr key={row.id} className="border-b-red-200 p1">
+                <td className="p-4 border-b-main border-b-1 min-w-20">{row.id}</td>
+                <td className="p-4 border-b-main border-b-1">{row.type}</td>
+                <td className="p-4 border-b-main border-b-1">
+                  <AppLink className="text-on-main">{row.key}</AppLink>
                 </td>
-                <td className="p-4 border-b-main border-b-1"></td>
-                <td className="p-4 border-b-main border-b-1"></td>
+                <td className="p-4 border-b-main border-b-1 w-full">{row.value}</td>
+                <td className="p-4 border-b-main border-b-1 w-full">{row.auto ? 'Yes' : 'No'}</td>
+                <td className="p-4 border-b-main border-b-1 w-full">{row.locked ? 'Yes' : 'No'}</td>
+                <td className="p-4 border-b-main border-b-1">{row.createdAt.toISOString()}</td>
+                <td className="p-4 border-b-main border-b-1">{row.updatedAt?.toISOString() ?? '-'}</td>
             </tr>
             ))}
           </tbody>
