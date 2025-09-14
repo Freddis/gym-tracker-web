@@ -1,7 +1,7 @@
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {Translation} from './types/Translation';
 import {TranslationType} from './types/TranslationType';
-import {and, eq, SQL} from 'drizzle-orm';
+import {and, eq, inArray, SQL} from 'drizzle-orm';
 import {NewModel} from '../../types/NewModel';
 import translator from 'open-google-translator';
 import {ModelService} from '../../types/ModelService/ModelService';
@@ -17,8 +17,10 @@ implements EntityService<Translation> {
   protected getTable() {
     return this.drizzle.getSchema().translations;
   }
-  protected getWhere(): SQL<unknown> | undefined {
-    return and(undefined);
+  protected getWhere(filter: Filter): SQL<unknown> | undefined {
+    return and(
+      filter.ids ? inArray(this.getTable().id, filter.ids) : undefined
+    );
   }
   protected async decorateRows(rows: TranslationRow[]): Promise<Translation[]> {
     return rows;
@@ -104,6 +106,24 @@ implements EntityService<Translation> {
       throw new Error("Couldn't insert entity");
     }
     return result[0];
+  }
+
+  public async updateTranslationById(id: number, value: string, auto?: boolean): Promise<Translation> {
+    const db = await this.drizzle.getDb();
+    const update: Partial<Translation> = {
+      updatedAt: new Date(),
+      auto: auto,
+      locked: !auto,
+      value: value,
+    };
+    await db.update(db._.fullSchema.translations).set(update).where(
+        eq(db._.fullSchema.translations.id, id)
+      );
+    const translaton = await this.getById(id);
+    if (!translaton) {
+      throw new Error("Caouldn't update tranlsation");
+    }
+    return translaton;
   }
 
   public async translate(text: string, to: Language, from: Language = Language.English): Promise<string> {

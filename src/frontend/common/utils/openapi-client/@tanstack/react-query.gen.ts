@@ -37,6 +37,8 @@ import {
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
+  getCrmTranslationsById,
+  patchCrmTranslationsById,
   getCrmTranslations,
 } from "../sdk.gen";
 import {
@@ -139,6 +141,10 @@ import type {
   PostCrmAuthLoginData,
   PostCrmAuthLoginError,
   PostCrmAuthLoginResponse,
+  GetCrmTranslationsByIdData,
+  PatchCrmTranslationsByIdData,
+  PatchCrmTranslationsByIdError,
+  PatchCrmTranslationsByIdResponse,
   GetCrmTranslationsData,
   GetCrmTranslationsError,
   GetCrmTranslationsResponse,
@@ -1825,6 +1831,57 @@ export const postCrmAuthLoginMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postCrmAuthLogin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCrmTranslationsByIdQueryKey = (
+  options: Options<GetCrmTranslationsByIdData>,
+) => createQueryKey("getCrmTranslationsById", options);
+
+/**
+ * Returns translation
+ */
+export const getCrmTranslationsByIdOptions = (
+  options: Options<GetCrmTranslationsByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmTranslationsById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmTranslationsByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updates translation
+ */
+export const patchCrmTranslationsByIdMutation = (
+  options?: Partial<Options<PatchCrmTranslationsByIdData>>,
+): UseMutationOptions<
+  PatchCrmTranslationsByIdResponse,
+  AxiosError<PatchCrmTranslationsByIdError>,
+  Options<PatchCrmTranslationsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchCrmTranslationsByIdResponse,
+    AxiosError<PatchCrmTranslationsByIdError>,
+    Options<PatchCrmTranslationsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchCrmTranslationsById({
         ...options,
         ...localOptions,
         throwOnError: true,

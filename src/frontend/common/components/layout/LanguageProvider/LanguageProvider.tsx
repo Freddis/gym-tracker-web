@@ -7,7 +7,7 @@ import {Locale} from 'date-fns/locale';
 import {Cookie} from '../../../utils/Cookie/Cookie';
 import {CookieName} from '../../../types/CookieName';
 
-export const LanguageProvider: FC<{children: ReactNode}> = (props) => {
+export const LanguageProvider: FC<{children: ReactNode, language?: Language}> = (props) => {
   const cookie = new Cookie();
   const defaultLanguage = Language.English;
   const detectCurrentLanguage = () => {
@@ -30,7 +30,7 @@ export const LanguageProvider: FC<{children: ReactNode}> = (props) => {
     }
   };
   useEffect(checkBrowserLanguage);
-  const [language, setLanguageState] = useState<Language>(detectCurrentLanguage());
+  const [language, setLanguageState] = useState<Language>(props.language ?? detectCurrentLanguage());
   const setLanguage = (theme: Language) => {
     cookie.set(CookieName.Language, theme);
     setLanguageState(theme);

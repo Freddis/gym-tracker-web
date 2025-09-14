@@ -36,6 +36,8 @@ import {getWorkoutType} from '../api/workoutTypes/getWorkoutType';
 import {updateWorkoutType} from '../api/workoutTypes/updateWorkoutType';
 import {getManagerList} from '../api/managers/getManagerList';
 import {getTranslationList} from '../api/translations/getTranslationList';
+import {getTranslation} from '../api/translations/getTranslation';
+import {updateTranslation} from '../api/translations/updateTranslation';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -96,6 +98,8 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     loginManager,
   ],
   '/crm/translations': [
+    getTranslation,
     getTranslationList,
+    updateTranslation,
   ],
 };

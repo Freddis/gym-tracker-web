@@ -107,6 +107,12 @@ import type {
   PostCrmAuthLoginData,
   PostCrmAuthLoginResponses,
   PostCrmAuthLoginErrors,
+  GetCrmTranslationsByIdData,
+  GetCrmTranslationsByIdResponses,
+  GetCrmTranslationsByIdErrors,
+  PatchCrmTranslationsByIdData,
+  PatchCrmTranslationsByIdResponses,
+  PatchCrmTranslationsByIdErrors,
   GetCrmTranslationsData,
   GetCrmTranslationsResponses,
   GetCrmTranslationsErrors,
@@ -138,6 +144,8 @@ import {
   getEntriesResponseTransformer,
   getEntriesOwnResponseTransformer,
   getCrmManagersResponseTransformer,
+  getCrmTranslationsByIdResponseTransformer,
+  patchCrmTranslationsByIdResponseTransformer,
   getCrmTranslationsResponseTransformer,
 } from "./transformers.gen";
 
@@ -1000,6 +1008,46 @@ export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
     headers: {
       "Content-Type": "application/json",
       ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns translation
+ */
+export const getCrmTranslationsById = <ThrowOnError extends boolean = false>(
+  options: Options<GetCrmTranslationsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetCrmTranslationsByIdResponses,
+    GetCrmTranslationsByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getCrmTranslationsByIdResponseTransformer,
+    url: "/crm/translations/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updates translation
+ */
+export const patchCrmTranslationsById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchCrmTranslationsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchCrmTranslationsByIdResponses,
+    PatchCrmTranslationsByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: patchCrmTranslationsByIdResponseTransformer,
+    url: "/crm/translations/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
     },
   });
 };

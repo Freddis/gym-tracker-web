@@ -8,7 +8,7 @@ import {useToasts} from '../../atoms/AppToast/hooks/useToasts';
 import {Cookie} from '../../../utils/Cookie/Cookie';
 import {client} from '../../../utils/openapi-client/client.gen';
 
-export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: CookieName}> = (props) => {
+export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: CookieName, sendLanguage?: boolean}> = (props) => {
   const cookies = new Cookie();
   const {t, i18n} = useAppPartialTranslation((x) => x.layout);
   const language = useContext(LanguageContext).language;
@@ -39,7 +39,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: Co
       throwOnError: false,
       headers: {
         Authorization: authHeader,
-        Locale: language,
+        Locale: props.sendLanguage ? language : undefined,
       },
     };
   };

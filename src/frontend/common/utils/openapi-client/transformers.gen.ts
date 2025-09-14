@@ -26,6 +26,8 @@ import type {
   GetEntriesResponse,
   GetEntriesOwnResponse,
   GetCrmManagersResponse,
+  GetCrmTranslationsByIdResponse,
+  PatchCrmTranslationsByIdResponse,
   GetCrmTranslationsResponse,
 } from "./types.gen";
 
@@ -357,6 +359,20 @@ const translationSchemaResponseTransformer = (data: any) => {
   if (data.deletedAt) {
     data.deletedAt = new Date(data.deletedAt);
   }
+  return data;
+};
+
+export const getCrmTranslationsByIdResponseTransformer = async (
+  data: any,
+): Promise<GetCrmTranslationsByIdResponse> => {
+  data = translationSchemaResponseTransformer(data);
+  return data;
+};
+
+export const patchCrmTranslationsByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchCrmTranslationsByIdResponse> => {
+  data = translationSchemaResponseTransformer(data);
   return data;
 };
 

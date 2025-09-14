@@ -861,10 +861,6 @@ export type Manager = {
    */
   profilePicture: string | null;
   /**
-   * Hashed Password
-   */
-  password: string;
-  /**
    * Date manager was added to CRM
    */
   createdAt: Date;
@@ -5453,6 +5449,75 @@ export type PostCrmAuthLoginResponses = {
 
 export type PostCrmAuthLoginResponse =
   PostCrmAuthLoginResponses[keyof PostCrmAuthLoginResponses];
+
+export type GetCrmTranslationsByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the translation record
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/crm/translations/{id}";
+};
+
+export type GetCrmTranslationsByIdErrors = {
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmTranslationsByIdError =
+  GetCrmTranslationsByIdErrors[keyof GetCrmTranslationsByIdErrors];
+
+export type GetCrmTranslationsByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: Translation;
+};
+
+export type GetCrmTranslationsByIdResponse =
+  GetCrmTranslationsByIdResponses[keyof GetCrmTranslationsByIdResponses];
+
+export type PatchCrmTranslationsByIdData = {
+  body?: {
+    /**
+     * Text of the translation
+     */
+    value: string;
+  };
+  path: {
+    /**
+     * Id of the translation
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/crm/translations/{id}";
+};
+
+export type PatchCrmTranslationsByIdErrors = {
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchCrmTranslationsByIdError =
+  PatchCrmTranslationsByIdErrors[keyof PatchCrmTranslationsByIdErrors];
+
+export type PatchCrmTranslationsByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: Translation;
+};
+
+export type PatchCrmTranslationsByIdResponse =
+  PatchCrmTranslationsByIdResponses[keyof PatchCrmTranslationsByIdResponses];
 
 export type GetCrmTranslationsData = {
   body?: never;

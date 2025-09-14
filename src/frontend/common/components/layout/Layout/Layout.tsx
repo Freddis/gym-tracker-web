@@ -27,7 +27,7 @@ export function Layout() {
           <LanguageProvider>
             <ThemeProvider>
               <ToastProvider>
-                <AuthProvider cookieName={isCrm ? CookieName.Manager : CookieName.User}>
+                <AuthProvider cookieName={isCrm ? CookieName.Manager : CookieName.User} sendLanguage={!isCrm}>
                   <PopupProvider>
                     <div className="flex min-h-screen flex-col font-extralight palette-neutral bg-main">
                       { isCrm ? <CrmLayout /> : <WebsiteLayout/>}

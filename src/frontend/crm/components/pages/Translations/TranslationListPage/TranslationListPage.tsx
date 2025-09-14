@@ -6,9 +6,10 @@ import {getRouteApi} from '@tanstack/react-router';
 import {getCrmTranslations} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
-import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
+import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
+import {route, routeId, RouteId} from '../../../../../common/utils/route';
 
-const routeApi = getRouteApi('/crm/translations/');
+const routeApi = getRouteApi(routeId(RouteId.CrmTranslationList));
 export const TranslationListPage:FC = () => {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
@@ -53,12 +54,22 @@ export const TranslationListPage:FC = () => {
           <tbody>
             {response.data.data.items.map((row) => (
               <tr key={row.id} className="border-b-red-200 p1">
-                <td className="p-4 border-b-main border-b-1 min-w-20">{row.id}</td>
+                <td className="p-4 border-b-main border-b-1 min-w-20">
+                  <RouteLink to={route(RouteId.CrmTranslationUpdate)} params={{id: row.id.toString()}} className="text-on-main">
+                    {row.id}
+                  </RouteLink>
+                  </td>
                 <td className="p-4 border-b-main border-b-1">{row.type}</td>
                 <td className="p-4 border-b-main border-b-1">
-                  <AppLink className="text-on-main">{row.key}</AppLink>
+                  <RouteLink to={route(RouteId.CrmTranslationUpdate)} params={{id: row.id.toString()}} className="text-on-main">
+                    {row.key}
+                  </RouteLink>
                 </td>
-                <td className="p-4 border-b-main border-b-1 w-full">{row.value}</td>
+                <td className="p-4 border-b-main border-b-1 w-full">
+                  <RouteLink to={route(RouteId.CrmTranslationUpdate)} params={{id: row.id.toString()}} className="text-on-main">
+                    {row.value}
+                  </RouteLink>
+                </td>
                 <td className="p-4 border-b-main border-b-1 w-full">{row.auto ? 'Yes' : 'No'}</td>
                 <td className="p-4 border-b-main border-b-1 w-full">{row.locked ? 'Yes' : 'No'}</td>
                 <td className="p-4 border-b-main border-b-1">{row.createdAt.toISOString()}</td>

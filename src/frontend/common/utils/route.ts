@@ -16,9 +16,6 @@ export enum RouteId {
   Register,
   EntryAdd,
   WorkoutCreate,
-  Crm,
-  CrmUsers,
-  CrmManagers,
   ExerciseUpdate,
   WorkoutTypeList,
   WorkoutTypeUpdate,
@@ -28,7 +25,11 @@ export enum RouteId {
   WorkoutPlanList,
   WorkoutPlanCreate,
   WorkoutPlanUpdate,
-  CrmTranslations,
+  Crm,
+  CrmUsers,
+  CrmManagers,
+  CrmTranslationList,
+  CrmTranslationUpdate,
 }
 
 type Inverted<T extends Record<string | number, string | number>> = {
@@ -80,7 +81,8 @@ const baseRouteMap = createRouteMap({
   '/crm': RouteId.Crm,
   '/crm/managers': RouteId.CrmManagers,
   '/crm/users': RouteId.CrmUsers,
-  '/crm/translations': RouteId.CrmTranslations,
+  '/crm/translations': RouteId.CrmTranslationList,
+  '/crm/translations/update/$id': RouteId.CrmTranslationUpdate,
 });
 
 type NonUniqueKeys<T> = {
@@ -109,4 +111,8 @@ const routeIdMap: Prettify<Inverted<typeof checkedRouteMap>> = swapKeysAndValues
  */
 export const route = <T extends RouteId>(id: T): typeof routeIdMap[T] => {
   return routeIdMap[id];
+};
+
+export const routeId = <T extends RouteId>(id: T): `${typeof routeIdMap[T]}/` => {
+  return `${routeIdMap[id]}/`;
 };

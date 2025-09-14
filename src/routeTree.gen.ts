@@ -38,6 +38,7 @@ import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/types/update/$id'
 import { Route as WorkoutsPlansUpdateIdRouteImport } from './routes/workouts/plans/update/$id'
+import { Route as CrmTranslationsUpdateIdRouteImport } from './routes/crm/translations/update/$id'
 import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
 import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
 import { ServerRoute as SchemaServerRouteImport } from './routes/schema'
@@ -181,6 +182,11 @@ const WorkoutsPlansUpdateIdRoute = WorkoutsPlansUpdateIdRouteImport.update({
   path: '/workouts/plans/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CrmTranslationsUpdateIdRoute = CrmTranslationsUpdateIdRouteImport.update({
+  id: '/crm/translations/update/$id',
+  path: '/crm/translations/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SwaggerServerRoute = SwaggerServerRouteImport.update({
   id: '/swagger',
   path: '/swagger',
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/crm/users': typeof CrmUsersIndexRoute
   '/workouts/plans': typeof WorkoutsPlansIndexRoute
   '/workouts/types': typeof WorkoutsTypesIndexRoute
+  '/crm/translations/update/$id': typeof CrmTranslationsUpdateIdRoute
   '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
   '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/crm/users': typeof CrmUsersIndexRoute
   '/workouts/plans': typeof WorkoutsPlansIndexRoute
   '/workouts/types': typeof WorkoutsTypesIndexRoute
+  '/crm/translations/update/$id': typeof CrmTranslationsUpdateIdRoute
   '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
   '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
@@ -287,6 +295,7 @@ export interface FileRoutesById {
   '/crm/users/': typeof CrmUsersIndexRoute
   '/workouts/plans/': typeof WorkoutsPlansIndexRoute
   '/workouts/types/': typeof WorkoutsTypesIndexRoute
+  '/crm/translations/update/$id': typeof CrmTranslationsUpdateIdRoute
   '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
   '/workouts/types/update/$id': typeof WorkoutsTypesUpdateIdRoute
 }
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/crm/users'
     | '/workouts/plans'
     | '/workouts/types'
+    | '/crm/translations/update/$id'
     | '/workouts/plans/update/$id'
     | '/workouts/types/update/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -347,6 +357,7 @@ export interface FileRouteTypes {
     | '/crm/users'
     | '/workouts/plans'
     | '/workouts/types'
+    | '/crm/translations/update/$id'
     | '/workouts/plans/update/$id'
     | '/workouts/types/update/$id'
   id:
@@ -376,6 +387,7 @@ export interface FileRouteTypes {
     | '/crm/users/'
     | '/workouts/plans/'
     | '/workouts/types/'
+    | '/crm/translations/update/$id'
     | '/workouts/plans/update/$id'
     | '/workouts/types/update/$id'
   fileRoutesById: FileRoutesById
@@ -406,6 +418,7 @@ export interface RootRouteChildren {
   CrmUsersIndexRoute: typeof CrmUsersIndexRoute
   WorkoutsPlansIndexRoute: typeof WorkoutsPlansIndexRoute
   WorkoutsTypesIndexRoute: typeof WorkoutsTypesIndexRoute
+  CrmTranslationsUpdateIdRoute: typeof CrmTranslationsUpdateIdRoute
   WorkoutsPlansUpdateIdRoute: typeof WorkoutsPlansUpdateIdRoute
   WorkoutsTypesUpdateIdRoute: typeof WorkoutsTypesUpdateIdRoute
 }
@@ -634,6 +647,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkoutsPlansUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crm/translations/update/$id': {
+      id: '/crm/translations/update/$id'
+      path: '/crm/translations/update/$id'
+      fullPath: '/crm/translations/update/$id'
+      preLoaderRoute: typeof CrmTranslationsUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 declare module '@tanstack/react-start/server' {
@@ -695,6 +715,7 @@ const rootRouteChildren: RootRouteChildren = {
   CrmUsersIndexRoute: CrmUsersIndexRoute,
   WorkoutsPlansIndexRoute: WorkoutsPlansIndexRoute,
   WorkoutsTypesIndexRoute: WorkoutsTypesIndexRoute,
+  CrmTranslationsUpdateIdRoute: CrmTranslationsUpdateIdRoute,
   WorkoutsPlansUpdateIdRoute: WorkoutsPlansUpdateIdRoute,
   WorkoutsTypesUpdateIdRoute: WorkoutsTypesUpdateIdRoute,
 }
