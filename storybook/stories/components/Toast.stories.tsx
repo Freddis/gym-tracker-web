@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {AppToast} from '../../../src/frontend/components/atoms/AppToast/AppToast';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {AppToast} from '../../../src/frontend/common/components/atoms/AppToast/AppToast';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
 
 const meta = {

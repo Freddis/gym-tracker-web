@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {HeaderLink} from '../../../src/frontend/components/layout/Header/components/HeaderLink';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {HeaderLink} from '../../../src/frontend/website/components/layout/Header/components/HeaderLink';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-import {route, RouteId} from '../../../src/frontend/utils/route';
+import {route, RouteId} from '../../../src/frontend/common/utils/route';
 
 const meta = {
   title: 'Components/HeaderLink',

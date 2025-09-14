@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-import {Footer} from '../../../src/frontend/components/layout/Footer/Footer';
+import {Footer} from '../../../src/frontend/website/components/layout/Footer/Footer';
 
 const meta = {
   title: 'Layout/Footer',

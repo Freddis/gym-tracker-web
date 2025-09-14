@@ -1,9 +1,9 @@
 import {FC, useState} from 'react';
-import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
+import {AppBlock} from '../../../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppButton} from '../../../../../src/frontend/components/atoms/AppButton/AppButton';
-import {dateToEntryString} from '../../../../../src/frontend/utils/dateToEntryString';
+import {AppButton} from '../../../../../src/frontend/common/components/atoms/AppButton/AppButton';
+import {dateToEntryString} from '../../../../../src/frontend/website/utils/dateToEntryString';
 
 export const WeightEntryAddScreen: FC<{weight?: number, date?: Date}> = (props) => {
 

@@ -1,6 +1,6 @@
 import {createFileRoute} from '@tanstack/react-router';
 import {z} from 'zod';
-import {ArgusCheckinListPage} from '../../frontend/components/pages/ArgusCheckins/ArgusEntriesListPage/ArgusCheckinListPage';
+import {ArgusCheckinListPage} from '../../frontend/website/components/pages/ArgusCheckins/ArgusEntriesListPage/ArgusCheckinListPage';
 
 const queryParams = z.object({
   page: z.number().optional(),

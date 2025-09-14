@@ -1,10 +1,10 @@
 import {FC} from 'react';
-import {AppAvatar} from '../../../../../src/frontend/components/atoms/AppAvatar/AppAvatar';
-import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
-import {Entry, Weight} from '../../../../../src/frontend/utils/openapi-client';
+import {AppAvatar} from '../../../../../src/frontend/common/components/atoms/AppAvatar/AppAvatar';
+import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
+import {Entry, Weight} from '../../../../../src/frontend/common/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
-import {dateToEntryString} from '../../../../../src/frontend/utils/dateToEntryString';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
+import {dateToEntryString} from '../../../../../src/frontend/website/utils/dateToEntryString';
 
 export const MobileWeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);

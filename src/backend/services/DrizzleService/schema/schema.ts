@@ -5,7 +5,7 @@ import {Equipment} from '../../../types/Equipment';
 import {EntryType} from '../../EntryService/types/EntryType';
 import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 import {TranslationType} from '../../TranslationService/types/TranslationType';
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 
 export const gymTracker = pgSchema('gym_tracker');
 

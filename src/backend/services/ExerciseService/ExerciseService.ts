@@ -9,7 +9,7 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ExerciseFilter} from './types/ExerciseFilter';
 import {TranslationService} from '../TranslationService/TranslationService';
 import {TranslationType} from '../TranslationService/types/TranslationType';
-import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 
 export class ExerciseService {
   protected drizzle: DrizzleService;

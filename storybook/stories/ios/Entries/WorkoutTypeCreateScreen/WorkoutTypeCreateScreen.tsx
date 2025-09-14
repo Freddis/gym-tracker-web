@@ -1,16 +1,16 @@
 import {FC, useState} from 'react';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppInputError} from '../../../../../src/frontend/components/atoms/AppInputError/AppInputError';
-import {AppLabel} from '../../../../../src/frontend/components/atoms/AppLabel/AppLabel';
-import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
-import {FieldError, useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
-import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
+import {AppInputError} from '../../../../../src/frontend/common/components/atoms/AppInputError/AppInputError';
+import {AppLabel} from '../../../../../src/frontend/common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../../../src/frontend/common/components/atoms/AppTextInput/AppTextInput';
+import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
+import {FieldError, useResponseErrors} from '../../../../../src/frontend/common/utils/useResponseErrors';
+import {WorkoutType} from '../../../../../src/frontend/common/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
-import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
+import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppImage/AppImage';
 import {FaPlus, FaXmark} from 'react-icons/fa6';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
 
 export const WorkoutTypeCreateScreen: FC<{type?: WorkoutType, errors?: FieldError[]}> = (props) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.workoutTypes.form);

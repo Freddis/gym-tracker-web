@@ -1,9 +1,9 @@
 
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
-import {WeightEntryBlock} from '../../../../src/frontend/components/blocks/EntryBlock/components/WeightEntryBlock';
+import {WeightEntryBlock} from '../../../../src/frontend/website/components/blocks/EntryBlock/components/WeightEntryBlock';
 
 const meta = {
   title: 'Blocks/Weight',

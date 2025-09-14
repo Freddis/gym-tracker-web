@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {IphoneDisplay} from '../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppLogo} from '../../../../src/frontend/components/atoms/AppLogo/AppLogo';
+import {AppLogo} from '../../../../src/frontend/common/components/atoms/AppLogo/AppLogo';
 
 
 export const SplashScreen: FC = () => (

@@ -1,14 +1,14 @@
 
 import {FC, useState} from 'react';
-import {AppBlock} from '../../../src/frontend/components/atoms/AppBlock/AppBlock';
+import {AppBlock} from '../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
 import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUtils';
-import {AppButton} from '../../../src/frontend/components/atoms/AppButton/AppButton';
-import {AppLabel} from '../../../src/frontend/components/atoms/AppLabel/AppLabel';
-import {AppTextInput} from '../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
-import {AppInputError} from '../../../src/frontend/components/atoms/AppInputError/AppInputError';
-import {AppToast} from '../../../src/frontend/components/atoms/AppToast/AppToast';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {AppButton} from '../../../src/frontend/common/components/atoms/AppButton/AppButton';
+import {AppLabel} from '../../../src/frontend/common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../src/frontend/common/components/atoms/AppTextInput/AppTextInput';
+import {Conditional} from '../../../src/frontend/website/components/layout/Header/Header';
+import {AppInputError} from '../../../src/frontend/common/components/atoms/AppInputError/AppInputError';
+import {AppToast} from '../../../src/frontend/common/components/atoms/AppToast/AppToast';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 
 export const StoryBookPaletteSampleBlock: FC = () => {
   const workout = StorybookDataUtils.getWorkout();

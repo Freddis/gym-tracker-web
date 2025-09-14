@@ -1,4 +1,4 @@
-import {Exercise} from '../../../../src/frontend/utils/openapi-client';
+import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const barbellShrug: Exercise = {
   id: 317,

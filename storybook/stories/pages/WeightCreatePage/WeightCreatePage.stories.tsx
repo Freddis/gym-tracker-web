@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {WeightCreatePage} from '../../../../src/frontend/components/pages/Weight/WeightCreatePage/WeightCreatePage';
+import {WeightCreatePage} from '../../../../src/frontend/website/components/pages/Weight/WeightCreatePage/WeightCreatePage';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 
 const meta = {

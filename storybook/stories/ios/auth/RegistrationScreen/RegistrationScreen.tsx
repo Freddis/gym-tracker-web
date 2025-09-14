@@ -1,13 +1,13 @@
 import {FC, useState} from 'react';
-import {AppLogo} from '../../../../../src/frontend/components/atoms/AppLogo/AppLogo';
+import {AppLogo} from '../../../../../src/frontend/common/components/atoms/AppLogo/AppLogo';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppButton} from '../../../../../src/frontend/components/atoms/AppButton/AppButton';
-import {AppInputError} from '../../../../../src/frontend/components/atoms/AppInputError/AppInputError';
-import {AppLabel} from '../../../../../src/frontend/components/atoms/AppLabel/AppLabel';
-import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
-import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
-import {FieldError, useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
+import {AppButton} from '../../../../../src/frontend/common/components/atoms/AppButton/AppButton';
+import {AppInputError} from '../../../../../src/frontend/common/components/atoms/AppInputError/AppInputError';
+import {AppLabel} from '../../../../../src/frontend/common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../../../src/frontend/common/components/atoms/AppTextInput/AppTextInput';
+import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
+import {FieldError, useResponseErrors} from '../../../../../src/frontend/common/utils/useResponseErrors';
 
 export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);

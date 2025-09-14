@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {AppDropdownMenu} from '../../../../src/frontend/components/atoms/AppDropdownMenu/AppDropdownMenu';
+import {AppDropdownMenu} from '../../../../src/frontend/common/components/atoms/AppDropdownMenu/AppDropdownMenu';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {
   ProfileDropdownMenu,
-} from '../../../../src/frontend/components/layout/Header/components/ProfileDropdownMenu/ProfileDropdownMenu';
-import {AppLanguageDropdown} from '../../../../src/frontend/components/atoms/AppLanguageDropdown/AppLanguageDropdown';
+} from '../../../../src/frontend/website/components/layout/Header/components/ProfileDropdownMenu/ProfileDropdownMenu';
+import {AppLanguageDropdown} from '../../../../src/frontend/common/components/atoms/AppLanguageDropdown/AppLanguageDropdown';
 
 const meta = {
   title: 'Components/DropdownMenu',

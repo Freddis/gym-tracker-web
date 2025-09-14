@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {ArticlePage} from '../../../../src/frontend/components/pages/ArticlePage/ArticlePage';
-import {Article} from '../../../../src/frontend/components/pages/ArticlePage/types/Article';
+import {ArticlePage} from '../../../../src/frontend/website/components/pages/ArticlePage/ArticlePage';
+import {Article} from '../../../../src/frontend/website/components/pages/ArticlePage/types/Article';
 
 const meta = {
   title: 'Pages/Static/Articles',

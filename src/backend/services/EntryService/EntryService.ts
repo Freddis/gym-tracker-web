@@ -10,7 +10,7 @@ import {and, inArray, isNull, desc} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
 import {Workout} from '../WorkoutService/types/Workout';
-import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 
 
 export class EntryService {

@@ -1,7 +1,7 @@
 import {FC} from 'react';
-import {Color} from '../../../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplayProps} from '../../types/StoryBookDisplayProps';
-import {PopupContentWrapper} from '../../../../../src/frontend/components/atoms/Popup/components/PopupContentWrapper';
+import {PopupContentWrapper} from '../../../../../src/frontend/common/components/atoms/Popup/components/PopupContentWrapper';
 
 
 export const StoryBookPopupDisplay: FC<StoryBookDisplayProps> = (props) => {

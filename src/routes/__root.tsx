@@ -1,8 +1,8 @@
 import {createRootRoute} from '@tanstack/react-router';
-import {Layout} from '../frontend/components/layout/Layout/Layout';
-import {NotFoundPage} from '../frontend/components/pages/NotFound/NotFoundPage';
-import appCss from '../frontend/utils/css/app.css?url';
-import {ErrorPage} from '../frontend/components/pages/ErrorPage/ErrorPage';
+import {Layout} from '../frontend/common/components/layout/Layout/Layout';
+import {NotFoundPage} from '../frontend/website/components/pages/NotFound/NotFoundPage';
+import appCss from '../frontend/common/utils/css/app.css?url';
+import {ErrorPage} from '../frontend/website/components/pages/ErrorPage/ErrorPage';
 
 export const Route = createRootRoute({
   head: () => ({

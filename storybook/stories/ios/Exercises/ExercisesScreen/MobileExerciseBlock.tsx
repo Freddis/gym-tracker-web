@@ -1,12 +1,12 @@
 import {FC, MouseEventHandler, useState} from 'react';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa6';
-import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
-import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
+import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppImage/AppImage';
+import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
 import
 {ExerciseBlockProps,
-} from '../../../../../src/frontend/components/pages/Exercises/ExerciseLibraryPage/components/types/ExerciseBlockProps';
+} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/types/ExerciseBlockProps';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
 
 export const MobileExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;

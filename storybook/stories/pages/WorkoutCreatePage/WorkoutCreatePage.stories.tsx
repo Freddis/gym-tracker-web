@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {WorkoutCreatePage} from '../../../../src/frontend/components/pages/Workouts/WorkoutCreatePage/WorkoutCreatePage';
+import {WorkoutCreatePage} from '../../../../src/frontend/website/components/pages/Workouts/WorkoutCreatePage/WorkoutCreatePage';
 
 const meta = {
   title: 'Pages/Workouts/Create',

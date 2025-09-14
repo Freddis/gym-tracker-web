@@ -1,8 +1,8 @@
 
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-import {AppSwitch} from '../../../src/frontend/components/atoms/AppSwitch/AppSwitch';
+import {AppSwitch} from '../../../src/frontend/common/components/atoms/AppSwitch/AppSwitch';
 
 const meta = {
   title: 'Components/Switch',

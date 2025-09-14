@@ -1,0 +1,60 @@
+import {PageContainer} from '../../../../../common/components/layout/PageContainer/PageContainer';
+import {useState} from 'react';
+import {useNavigate} from '@tanstack/react-router';
+import {postExercises} from '../../../../../common/utils/openapi-client';
+import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
+import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
+import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
+import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/AppTextInput';
+import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
+import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
+import {route, RouteId} from '../../../../../common/utils/route';
+
+export function ExerciseCreatePage() {
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises);
+  const [name, setName] = useState('');
+  const {showToastsAndSetErrors, getError} = useResponseErrors();
+  const navigation = useNavigate();
+  const saveButtonClicked = async () => {
+    const result = await postExercises({
+      body: {
+        name,
+      },
+    });
+    if (showToastsAndSetErrors(result)) {
+      return;
+    }
+    navigation({
+      to: '/exercises',
+    });
+  };
+  return (
+    <PageContainer>
+      <div className="flex flex-col max-w-5xl w-full">
+        <div className="mb-5 -mt-5">
+          <RouteLink to={route(RouteId.ExerciseLibrary)}>{t(i18n.list.heading)}</RouteLink>
+          <span className="ml-2">&gt;&gt;</span>
+          <span className="ml-2">{t(i18n.create.heading)}</span>
+        </div>
+        <AppBlock className="max-w-5xl">
+          <div>
+            <AppLabel>{translations.utils.objects.exercise.fields.name}</AppLabel>
+            <div>
+              <AppTextInput onChange={(e) => setName(e.target.value)} type="text" className="w-100 max-w-full" />
+            </div>
+            <AppInputError data-testid="error-password" error={getError('name')} />
+          </div>
+          <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+          <div className="mt-5 flex flex-row">
+            <RouteLink to={route(RouteId.ExerciseLibrary)}>{translations.utils.generic.buttons.back}</RouteLink>
+            <div className="grow flex flex-row-reverse gap-2">
+              <AppButton onClick={saveButtonClicked}>{translations.utils.generic.buttons.save}</AppButton>
+            </div>
+          </div>
+        </AppBlock>
+      </div>
+    </PageContainer>
+  );
+}

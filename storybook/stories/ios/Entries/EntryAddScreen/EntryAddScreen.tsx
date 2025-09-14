@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {FaChevronRight} from 'react-icons/fa6';
-import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
+import {AppBlock} from '../../../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 

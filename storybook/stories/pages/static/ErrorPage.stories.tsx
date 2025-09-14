@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {ErrorPagePresenter} from '../../../../src/frontend/components/pages/ErrorPage/components/ErrorPagePresenter';
+import {ErrorPagePresenter} from '../../../../src/frontend/website/components/pages/ErrorPage/components/ErrorPagePresenter';
 
 const meta = {
   title: 'Pages/Static/Error',

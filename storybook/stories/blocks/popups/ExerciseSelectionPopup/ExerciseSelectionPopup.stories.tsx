@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {ExerciseSelectionPopup} from '../../../../../src/frontend/components/blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {ExerciseSelectionPopup} from '../../../../../src/frontend/website/components/blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
 
 const meta = {
   title: 'Blocks/Popups/ExerciseSelectionPopup',

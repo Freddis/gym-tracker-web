@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {StoryBookColorDisplay} from '../StoryBookColorDisplay/StoryBookColorDisplay';
 import {StoryBookPaletteSampleBlock} from '../StoryBookPaletteSampleBlock/StoryBookPaletteSampleBlock';
-import {Palette} from '../../../src/frontend/utils/design-system/types/Palette';
+import {Palette} from '../../../src/frontend/common/utils/design-system/types/Palette';
 
 export const StoryBookPaletteDisplay: FC<{palette: Palette}> = (props) => {
   return (

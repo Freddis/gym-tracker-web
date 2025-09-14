@@ -1,4 +1,4 @@
-import {Equipment, Exercise, Muscle} from '../../../../src/frontend/utils/openapi-client';
+import {Equipment, Exercise, Muscle} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const benchPress: Exercise = {
   id: 10,

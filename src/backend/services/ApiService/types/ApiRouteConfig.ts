@@ -8,7 +8,7 @@ import {UserRouteContext} from './UserRouteContext';
 import {PublicRouteContext} from './PublicRouteContext';
 import {ManagerRouteContext} from './ManagerRouteContext';
 import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {nativeEnum} from 'zod';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {

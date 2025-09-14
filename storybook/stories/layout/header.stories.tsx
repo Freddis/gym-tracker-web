@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-import {Header} from '../../../src/frontend/components/layout/Header/Header';
+import {Header} from '../../../src/frontend/website/components/layout/Header/Header';
 
 const meta = {
   title: 'Layout/Header',

@@ -15,7 +15,7 @@ import {WorkoutUpsertDto} from './types/WorkoutUpsertDto';
 import {WorkoutCreateDto} from './types/WorkoutCreateDto';
 import {InvalidEndDateError} from './types/InvalidEndDateError';
 import {WorkoutNotFoundError} from './types/WorkoutNotFoundError';
-import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 export class WorkoutService {
   protected db: DrizzleService;
   protected exerciseService: ExerciseService;

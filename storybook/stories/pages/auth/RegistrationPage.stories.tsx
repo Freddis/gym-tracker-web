@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {RegistrationPage} from '../../../../src/frontend/components/pages/Auth/RegistationPage/RegistrationPage';
+import {RegistrationPage} from '../../../../src/frontend/website/components/pages/Auth/RegistationPage/RegistrationPage';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 
 const meta = {

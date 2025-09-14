@@ -21,7 +21,7 @@ import {NotFoundErrorResponse} from '../validators/NotFoundErrorResponse';
 import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
 import {tryToTranslateValidationError} from '../utils/tryToTranslateValidationError';
 import {getErrorMap} from 'zod';
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {translateZodError} from '../utils/translateZodError';
 import {zodErrorMessages} from '../utils/zodErrorMessages';
 

@@ -1,0 +1,50 @@
+import {ChangeEventHandler, FC, useEffect, useState} from 'react';
+import {WorkoutPlan} from '../../../../common/utils/openapi-client';
+import {AppLabel} from '../../../../common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../../common/components/atoms/AppTextInput/AppTextInput';
+import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+
+type Updated<T> = Omit<T, 'id'>
+interface WorkoutPlanUpdateFormProps {
+  item: Updated<WorkoutPlan>
+  onUpdate: (dto: Updated<WorkoutPlan>) => void
+}
+
+export const WorkoutPlanUpdateForm: FC<WorkoutPlanUpdateFormProps> = (props) => {
+  const [name, setName] = useState(props.item.name ?? '');
+  const [description, setDescription] = useState(props.item.description ?? '');
+  const {t, i18n} = useAppPartialTranslation((x) => x.utils.objects.workoutPlan);
+  useEffect(() => {
+  }, [props.item.name, props.item.description]);
+
+  const onNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setName(e.target.value);
+    notify({name: e.target.value});
+  };
+  const onDescriptionChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setDescription(e.target.value);
+    notify({description: e.target.value});
+  };
+
+  const notify = (update: Partial<WorkoutPlan>) => {
+    props.onUpdate({
+      ...props.item,
+      name,
+      description,
+      ...update,
+    });
+  };
+
+  return (
+    <>
+      <div className="mb-5 flex flex-col items-start justify-start">
+        <AppLabel>{t(i18n.fields.name)}</AppLabel>
+        <AppTextInput onChange={onNameChange} value={name}/>
+      </div>
+      <div className="mb-5 flex flex-col items-start">
+        <AppLabel >{t(i18n.fields.description)}</AppLabel>
+        <AppTextInput onChange={onDescriptionChange} value={description}/>
+      </div>
+    </>
+  );
+};

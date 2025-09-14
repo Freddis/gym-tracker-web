@@ -1,4 +1,4 @@
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {Equipment} from '../../../types/Equipment';
 import {Filter} from '../../../types/ModelService/Filter';
 import {Muscle} from '../../../types/Muscle';

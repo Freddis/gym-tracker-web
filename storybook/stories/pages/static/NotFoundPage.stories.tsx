@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {NotFoundPage} from '../../../../src/frontend/components/pages/NotFound/NotFoundPage';
+import {NotFoundPage} from '../../../../src/frontend/website/components/pages/NotFound/NotFoundPage';
 
 const meta = {
   title: 'Pages/Static/Not found',

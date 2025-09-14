@@ -1,4 +1,4 @@
-import {Language} from '../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Translation} from './types/Translation';
 import {TranslationType} from './types/TranslationType';

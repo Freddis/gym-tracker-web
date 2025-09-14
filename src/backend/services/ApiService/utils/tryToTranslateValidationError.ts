@@ -1,5 +1,5 @@
 import {nativeEnum} from 'zod';
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {ValidationErrorCode} from '../types/ValidationErrorCode';
 import {validationErrorMessages} from './validationErrorMessages';
 

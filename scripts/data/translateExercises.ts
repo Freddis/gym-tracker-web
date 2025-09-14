@@ -3,7 +3,7 @@ import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory
 import {Logger} from '../../src/backend/utils/Logger/Logger';
 import {argv} from 'process';
 import {nativeEnum} from 'zod';
-import {Language} from '../../src/frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../src/frontend/common/components/layout/LanguageProvider/enums/Language';
 import {TranslationType} from '../../src/backend/services/TranslationService/types/TranslationType';
 
 const logger = new Logger('Translate Exercises');

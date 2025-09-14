@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {AppBlock} from '../../../../src/frontend/components/atoms/AppBlock/AppBlock';
-import {AppButton} from '../../../../src/frontend/components/atoms/AppButton/AppButton';
+import {AppBlock} from '../../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
+import {AppButton} from '../../../../src/frontend/common/components/atoms/AppButton/AppButton';
 
 const meta = {
   title: 'Components/Block',

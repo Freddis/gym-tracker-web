@@ -4,7 +4,7 @@ import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDat
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {
   WorkoutUpdatePagePresenter,
-} from '../../../../src/frontend/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
+} from '../../../../src/frontend/website/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
 
 const meta = {
   title: 'Pages/Workouts/Edit',

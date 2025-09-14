@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {FaChevronRight, FaPlus} from 'react-icons/fa6';
-import {Entry, Weight, Workout} from '../../../../../src/frontend/utils/openapi-client';
-import {AppBlock} from '../../../../../src/frontend/components/atoms/AppBlock/AppBlock';
+import {Entry, Weight, Workout} from '../../../../../src/frontend/common/utils/openapi-client';
+import {AppBlock} from '../../../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 import {MobileWorkoutEntryBlock} from './MobileWorkoutEntryBlock';

@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {FaPlus} from 'react-icons/fa6';
-import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
+import {WorkoutType} from '../../../../../src/frontend/common/utils/openapi-client';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 import {MobileWorkoutTypeBlock} from './MobileWorkoutTypeBlock';

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {FaCalendar, FaChevronLeft, FaDumbbell, FaGear} from 'react-icons/fa6';
-import {cn} from '../../../src/frontend/utils/cn';
-import {AppLink} from '../../../src/frontend/components/atoms/AppLink/AppLink';
+import {cn} from '../../../src/frontend/common/utils/cn';
+import {AppLink} from '../../../src/frontend/common/components/atoms/AppLink/AppLink';
 
 interface IphoneDisplayProps {
   title?: string; children: React.ReactNode

@@ -1,10 +1,10 @@
 import {FC} from 'react';
-import {AppAvatar} from '../../../../../src/frontend/components/atoms/AppAvatar/AppAvatar';
-import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
-import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
-import {Entry, Workout} from '../../../../../src/frontend/utils/openapi-client';
+import {AppAvatar} from '../../../../../src/frontend/common/components/atoms/AppAvatar/AppAvatar';
+import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppImage/AppImage';
+import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
+import {Entry, Workout} from '../../../../../src/frontend/common/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
+import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
 
 export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);

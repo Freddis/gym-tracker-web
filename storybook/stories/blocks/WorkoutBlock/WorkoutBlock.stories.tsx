@@ -1,8 +1,8 @@
 
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
+import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {WorkoutEntryBlock} from '../../../../src/frontend/components/blocks/EntryBlock/components/WorkoutEntryBlock';
+import {WorkoutEntryBlock} from '../../../../src/frontend/website/components/blocks/EntryBlock/components/WorkoutEntryBlock';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
 
 const meta = {

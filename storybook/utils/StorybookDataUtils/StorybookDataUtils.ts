@@ -1,11 +1,11 @@
-import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
+import {AuthUser} from '../../../src/frontend/common/components/layout/AuthProvider/types/AuthUser';
 import {
   Entry,
   Exercise,
   Weight,
   Workout,
   WorkoutType,
-} from '../../../src/frontend/utils/openapi-client';
+} from '../../../src/frontend/common/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
 import {barbellSquat} from './data/barbellSquat';

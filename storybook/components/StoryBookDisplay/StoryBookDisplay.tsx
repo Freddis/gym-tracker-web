@@ -2,27 +2,27 @@ import {RouterProvider, createMemoryHistory,
   createRouter as tnCreateRouter,
   } from '@tanstack/react-router';
 import {FC, useState} from 'react';
-import {AuthContext} from '../../../src/frontend/components/layout/AuthProvider/AuthContext';
-import {AuthContextValue} from '../../../src/frontend/components/layout/AuthProvider/types/AuthContextValue';
+import {AuthContext} from '../../../src/frontend/common/components/layout/AuthProvider/AuthContext';
+import {AuthContextValue} from '../../../src/frontend/common/components/layout/AuthProvider/types/AuthContextValue';
 import {
   LanguageContext,
   LanguageContextValue,
-} from '../../../src/frontend/components/layout/LanguageProvider/context/LanguageContext';
-import {Language} from '../../../src/frontend/components/layout/LanguageProvider/enums/Language';
-import {ThemeContext} from '../../../src/frontend/components/layout/ThemeProvider/context/ThemeContext';
-import {Theme} from '../../../src/frontend/components/layout/ThemeProvider/enums/Theme';
+} from '../../../src/frontend/common/components/layout/LanguageProvider/context/LanguageContext';
+import {Language} from '../../../src/frontend/common/components/layout/LanguageProvider/enums/Language';
+import {ThemeContext} from '../../../src/frontend/common/components/layout/ThemeProvider/context/ThemeContext';
+import {Theme} from '../../../src/frontend/common/components/layout/ThemeProvider/enums/Theme';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {StoryBookComponentDisplay} from './components/StoryBookComponentDisplay/StoryBookComponentDisplay';
 import {StoryBookPageDisplay} from './components/StoryBookPageDisplay/StoryBookPageDisplay';
 import {StoryBookDisplayProps} from './types/StoryBookDisplayProps';
 import {StoryBookDisplayType} from './enums/StoryBookDisplayType';
-import {Conditional} from '../../../src/frontend/components/layout/Header/Header';
+import {Conditional} from '../../../src/frontend/website/components/layout/Header/Header';
 import {StoryBookPopupDisplay} from './components/StoryBookPopupDisplay/StoryBookPopupDisplay';
 import {StorybookDataUtils} from '../../utils/StorybookDataUtils/StorybookDataUtils';
-import {AuthUser} from '../../../src/frontend/components/layout/AuthProvider/types/AuthUser';
-import {client} from '../../../src/frontend/utils/openapi-client/client.gen';
+import {AuthUser} from '../../../src/frontend/common/components/layout/AuthProvider/types/AuthUser';
+import {client} from '../../../src/frontend/common/utils/openapi-client/client.gen';
 import {routeTree} from '../../../src/routeTree.gen';
-import {cn} from '../../../src/frontend/utils/cn';
+import {cn} from '../../../src/frontend/common/utils/cn';
 import {Locale} from 'date-fns';
 import {enUS} from 'date-fns/locale';
 const queryClient = new QueryClient();

@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
-import {HomePage} from '../../../../src/frontend/components/pages/Home/HomPage';
-import {Color} from '../../../../src/frontend/utils/design-system/types/Color';
+import {HomePage} from '../../../../src/frontend/website/components/pages/Home/HomPage';
+import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
 
 const meta = {
   title: 'Pages/Static/Home',

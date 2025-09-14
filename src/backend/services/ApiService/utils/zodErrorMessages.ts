@@ -1,4 +1,4 @@
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {en} from './error-translations/zod/en';
 import {ru} from './error-translations/zod/ru';
 import {ZodTranslations} from '../types/ZodTranslations';

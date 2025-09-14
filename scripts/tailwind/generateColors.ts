@@ -1,3 +1,3 @@
-import {generateTailwindColorsOnUpdate} from '../../src/frontend/utils/design-system/generateTailwindColors';
+import {generateTailwindColorsOnUpdate} from '../../src/frontend/common/utils/design-system/generateTailwindColors';
 
 generateTailwindColorsOnUpdate();

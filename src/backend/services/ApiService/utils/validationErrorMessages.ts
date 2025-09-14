@@ -1,4 +1,4 @@
-import {Language} from '../../../../frontend/components/layout/LanguageProvider/enums/Language';
+import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {ValidationErrorCode} from '../types/ValidationErrorCode';
 import {en} from './error-translations/validation/en';
 import {ru} from './error-translations/validation/ru';
