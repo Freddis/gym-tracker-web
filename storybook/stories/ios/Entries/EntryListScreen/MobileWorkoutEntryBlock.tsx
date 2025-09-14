@@ -1,10 +1,10 @@
 import {FC} from 'react';
 import {AppAvatar} from '../../../../../src/frontend/components/atoms/AppAvatar/AppAvatar';
 import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
 import {Entry, Workout} from '../../../../../src/frontend/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
+import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 
 export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
@@ -25,7 +25,7 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
         <div className="text font-normal">
           {!own && 'Leg Day'}
           {own && (
-            <AppLink to="/workouts/update/$id" params={{id: workout.id.toString()}}>Leg Day</AppLink>
+            <AppLink>Leg Day</AppLink>
           )}
         </div>
       </div>

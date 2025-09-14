@@ -1,7 +1,7 @@
 import {FC, useState} from 'react';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
 import {WeightUpdateForm} from '../common/WeightUpdateForm';
@@ -60,7 +60,7 @@ export const WeightUpdatePage: FC = () => {
     <PageContainer>
        <div className="flex flex-col max-w-5xl w-full">
         <div className="mb-5 -mt-5">
-          <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
+          <RouteLink to={route(RouteId.EntryList)}>{t(i18n.list.heading)}</RouteLink>
           <span className="mx-2">&gt;&gt;</span>
           <span>{t(i18n.weight.update.heading)}</span>
         </div>
@@ -70,7 +70,7 @@ export const WeightUpdatePage: FC = () => {
           <WeightUpdateForm item={response.data} onUpdate={setWeight} errors={errors}/>
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
           <div className="mt-5 flex flex-row">
-            <AppLink to="/entries">{translations.utils.generic.buttons.back}</AppLink>
+            <RouteLink to={route(RouteId.EntryList)}>{translations.utils.generic.buttons.back}</RouteLink>
             <div className="grow flex flex-row-reverse gap-2">
               <AppButton disabled={!weight} onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
             </div>

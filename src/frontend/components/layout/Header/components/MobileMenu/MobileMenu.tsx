@@ -5,6 +5,7 @@ import {AuthContext} from '../../../AuthProvider/AuthContext';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {Animated} from '../../../../atoms/Animated/Animated';
 import {ThemeUtilityBar} from '../ThemeUtilityBar/ThemeUtilityBar';
+import {route, RouteId} from '../../../../../utils/route';
 
 export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
   const [displayed, setDisplayed] = useState(true);
@@ -45,17 +46,17 @@ export const MobileMenu: FC<{onClose: () => void}> = ({onClose}) => {
         <ThemeUtilityBar/>
       </div>
       <div className="flex flex-col gap-5" onClick={close}>
-        <HeaderLink to="/" >{t(i18n.menu.home)}</HeaderLink>
-        <HeaderLink to="/feed" >{t(i18n.menu.feed)}</HeaderLink>
+        <HeaderLink to={route(RouteId.Home)} >{t(i18n.menu.home)}</HeaderLink>
+        <HeaderLink to={route(RouteId.Feed)} >{t(i18n.menu.feed)}</HeaderLink>
         <Conditional condition={!!auth.user}>
-          <HeaderLink to="/entries">{t(i18n.menu.activities)}</HeaderLink>
+          <HeaderLink to={route(RouteId.EntryList)}>{t(i18n.menu.activities)}</HeaderLink>
         </Conditional>
-        <HeaderLink to="/exercises">{t(i18n.menu.exerciseLibrary)}</HeaderLink>
+        <HeaderLink to={route(RouteId.ExerciseLibrary)}>{t(i18n.menu.exerciseLibrary)}</HeaderLink>
         <Conditional condition={!auth.user}>
-          <HeaderLink to="/auth/login">{t(i18n.menu.signIn)}</HeaderLink>
+          <HeaderLink to={route(RouteId.Login)}>{t(i18n.menu.signIn)}</HeaderLink>
         </Conditional>
           <Conditional condition={!!auth.user}>
-          <HeaderLink onClick={logout}>{t(i18n.menu.signOut)}</HeaderLink>
+          <HeaderLink onClick={logout} to={'/'}>{t(i18n.menu.signOut)}</HeaderLink>
         </Conditional>
       </div>
 

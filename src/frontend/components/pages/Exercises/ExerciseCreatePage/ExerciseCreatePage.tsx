@@ -4,12 +4,13 @@ import {useNavigate} from '@tanstack/react-router';
 import {postExercises} from '../../../../utils/openapi-client';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
 import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
+import {route, RouteId} from '../../../../utils/route';
 
 export function ExerciseCreatePage() {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises);
@@ -33,7 +34,7 @@ export function ExerciseCreatePage() {
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
         <div className="mb-5 -mt-5">
-          <AppLink to="/entries">{t(i18n.list.heading)}</AppLink>
+          <RouteLink to={route(RouteId.ExerciseLibrary)}>{t(i18n.list.heading)}</RouteLink>
           <span className="ml-2">&gt;&gt;</span>
           <span className="ml-2">{t(i18n.create.heading)}</span>
         </div>
@@ -47,7 +48,7 @@ export function ExerciseCreatePage() {
           </div>
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
           <div className="mt-5 flex flex-row">
-            <AppLink to="/exercises">{translations.utils.generic.buttons.back}</AppLink>
+            <RouteLink to={route(RouteId.ExerciseLibrary)}>{translations.utils.generic.buttons.back}</RouteLink>
             <div className="grow flex flex-row-reverse gap-2">
               <AppButton onClick={saveButtonClicked}>{translations.utils.generic.buttons.save}</AppButton>
             </div>

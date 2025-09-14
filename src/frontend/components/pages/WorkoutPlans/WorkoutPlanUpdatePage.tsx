@@ -1,7 +1,7 @@
 import {FC, useState} from 'react';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
-import {AppLink} from '../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {AppBlock} from '../../atoms/AppBlock/AppBlock';
 import {deleteWorkoutPlansById, getWorkoutPlansById, patchWorkoutPlansById, WorkoutPlan} from '../../../utils/openapi-client';
 import {WorkoutPlanUpdateForm} from './WorkoutPlanUpdateForm';
@@ -12,6 +12,7 @@ import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
+import {route, RouteId} from '../../../utils/route';
 
 const routeApi = getRouteApi('/workouts/plans/update/$id');
 export const WorkoutPlanUpdatePage: FC = () => {
@@ -89,9 +90,9 @@ export const WorkoutPlanUpdatePage: FC = () => {
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
       <div className="mb-5 -mt-5">
-        <AppLink to="/entries">{translations.pages.activities.list.heading}</AppLink>
+        <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
         <span className="mx-2">&gt;&gt;</span>
-        <AppLink to="/workouts/plans">{translations.pages.workoutPlans.list.heading}</AppLink>
+        <RouteLink to={route(RouteId.WorkoutPlanList)}>{translations.pages.workoutPlans.list.heading}</RouteLink>
         <span className="mx-2">&gt;&gt;</span>
         <span>{t(i18n.heading)} {item.id.toString()}</span>
       </div>
@@ -100,7 +101,7 @@ export const WorkoutPlanUpdatePage: FC = () => {
           <WorkoutPlanUpdateForm item={item} onUpdate={onFormUpdate} />
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
             <div className="mt-5 flex flex-row">
-              <AppLink to="/workouts/plans">{translations.utils.generic.buttons.back}</AppLink>
+              <RouteLink to={route(RouteId.WorkoutPlanList)}>{translations.utils.generic.buttons.back}</RouteLink>
               <div className="grow flex flex-row-reverse gap-2">
                 <AppButton onClick={saveButtonClick}>{translations.utils.generic.buttons.save}</AppButton>
                 <AppButton onClick={deleteButtonClick}>{translations.utils.generic.buttons.delete}</AppButton>

@@ -10,8 +10,9 @@ import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorD
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {atom, getDefaultStore, useSetAtom} from 'jotai';
-
+import {route, RouteId} from '../../../../utils/route';
 const routeApi = getRouteApi('/workouts/update/$id');
+
 export const WorkoutUpdatePage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
   const {showToastsAndSetErrors, errors, sliceErrors} = useResponseErrors<WorkoutUpdateDto>();
@@ -56,11 +57,13 @@ export const WorkoutUpdatePage: FC = () => {
       return;
     }
     toasts.addSuccess(t(i18n.toasts.success));
+
     await client.invalidateQueries({queryKey: ['entries']});
     navigation({
-      to: '/entries',
+      to: route(RouteId.EntryList),
     });
   };
+
   const onDeleteClick = async () => {
     const result = await deleteWorkoutsById({
       path: {
@@ -71,17 +74,17 @@ export const WorkoutUpdatePage: FC = () => {
       return;
     }
     navigation({
-      to: '/entries',
+      to: route(RouteId.EntryList),
     });
   };
   const workout = response.data.data.item;
   return (
    <WorkoutUpdatePagePresenter
-   item={workout}
-   errors={sliceErrors(errors, (x) => x)}
-   onSaveClick={onSaveClick}
-   onDeleteClick={onDeleteClick}
-   onUpdate={setUpdateDto}
+    item={workout}
+    errors={sliceErrors(errors, (x) => x)}
+    onSaveClick={onSaveClick}
+    onDeleteClick={onDeleteClick}
+    onUpdate={setUpdateDto}
    />
   );
 };

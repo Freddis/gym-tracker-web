@@ -4,7 +4,7 @@ import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
 import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
@@ -13,6 +13,7 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
+import {route, RouteId} from '../../../../utils/route';
 
 export const RegistrationPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.registration);
@@ -75,7 +76,7 @@ export const RegistrationPage: FC = () => {
         <AppInputError error={getError('passwordConfirmation')} />
 
         <div className="flex flex-col sm:flex-row items-center gap-5 mt-5 ">
-          <AppLink to="/auth/login">{t(i18n.form.buttons.signIn)}</AppLink>
+          <RouteLink to={route(RouteId.Login)}>{t(i18n.form.buttons.signIn)}</RouteLink>
           <div className="grow flex flex-row-reverse">
             <AppButton onClick={register}>{t(i18n.form.buttons.register)}</AppButton>
           </div>

@@ -1,15 +1,16 @@
 import {FC, Fragment} from 'react';
 import {WorkoutType} from '../../../utils/openapi-client';
 import {AppBlock} from '../../atoms/AppBlock/AppBlock';
-import {AppLink} from '../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {AppImage} from '../../atoms/AppImage/AppImage';
+import {route, RouteId} from '../../../utils/route';
 
 export const WorkoutTypeBlock: FC<{item: WorkoutType}> = ({item}) => {
   return (
     <AppBlock>
       <div className="flex flex-col sm:flex-row">
         <div className="text-lg font-normal mb-5">
-          <AppLink to="/workouts/types/update/$id" params={{id: item.id.toString()}}>{item.name}</AppLink>
+          <RouteLink to={route(RouteId.WorkoutTypeUpdate)} params={{id: item.id.toString()}}>{item.name}</RouteLink>
         </div>
       </div>
        <div className="">

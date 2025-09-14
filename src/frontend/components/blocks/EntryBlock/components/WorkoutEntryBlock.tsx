@@ -4,7 +4,8 @@ import {Entry, Workout} from '../../../../utils/openapi-client';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppImage} from '../../../atoms/AppImage/AppImage';
 import {AppAvatar} from '../../../atoms/AppAvatar/AppAvatar';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../utils/route';
 
 export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
@@ -25,7 +26,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
         <div className="text-lg font-normal mb-5">
           {!own && `${t(i18n.type)}: ${workout.id}`}
           {own && (
-            <AppLink to="/workouts/update/$id" params={{id: workout.id.toString()}}>{t(i18n.type)}: {workout.id}</AppLink>
+            <RouteLink to={route(RouteId.WorkoutUpdate)} params={{id: workout.id.toString()}}>{t(i18n.type)}: {workout.id}</RouteLink>
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">

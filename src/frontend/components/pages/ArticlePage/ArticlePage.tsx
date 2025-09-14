@@ -1,9 +1,9 @@
-import {FC, ReactNode} from 'react';
+import {ComponentProps, FC, ReactNode} from 'react';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {Article} from './types/Article';
 import {TermsOfServiceArticle} from './components/TermsOfServiceArticle';
 import {PrivacyPolicy} from './components/PrivacyPolicy';
-import {AppLink, AppLinkProps} from '../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {AppPageHeading} from '../../atoms/AppPageHeading/AppPageHeading';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {AppSidebarBlock} from '../../atoms/AppSidebarBlock/AppSidebarBlock';
@@ -14,7 +14,7 @@ export const ArticlePage: FC<{article: Article}> = ({article}) => {
     [Article.TermsOfService]: <TermsOfServiceArticle />,
     [Article.PrivacyPolicy]: <PrivacyPolicy />,
   };
-  const links: Record<Article, {to: AppLinkProps['to'], name: string}> = {
+  const links: Record<Article, {to: ComponentProps<typeof RouteLink>['to'], name: string}> = {
     [Article.TermsOfService]: {to: '/articles/terms-of-service', name: t(i18n.articles.termsOfService)},
     [Article.PrivacyPolicy]: {to: '/articles/privacy-policy', name: t(i18n.articles.privacyPolicy)},
   };
@@ -29,7 +29,7 @@ export const ArticlePage: FC<{article: Article}> = ({article}) => {
             <h2 className="text-left text-lg  mb-3">{t(i18n.labels.categories)}</h2>
             <div className="flex flex-col gap-2">
             {Object.keys(links).map((x) => (
-              <AppLink to={links[x].to} className={x !== article ? 'text-on-surface' : 'font-normal'}>{links[x].name}</AppLink>
+              <RouteLink to={links[x].to} className={x !== article ? 'text-on-surface' : 'font-normal'}>{links[x].name}</RouteLink>
             ))}
             </div>
           </AppSidebarBlock>

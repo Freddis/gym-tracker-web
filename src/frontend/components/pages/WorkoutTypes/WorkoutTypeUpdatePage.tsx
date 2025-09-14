@@ -1,7 +1,7 @@
 import {FC, useEffect} from 'react';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
-import {AppLink} from '../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {AppBlock} from '../../atoms/AppBlock/AppBlock';
 import {deleteWorkoutTypesById, getWorkoutTypesById, patchWorkoutTypesById, WorkoutType} from '../../../utils/openapi-client';
 import {AppButton} from '../../atoms/AppButton/AppButton';
@@ -13,6 +13,7 @@ import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../utils/useResponseErrors';
 import {useNonRenderingState} from '../../../utils/useNonRenderingState';
+import {route, RouteId} from '../../../utils/route';
 
 const routeApi = getRouteApi('/workouts/types/update/$id');
 export const WorkoutTypeUpdatePage: FC = () => {
@@ -111,9 +112,9 @@ export const WorkoutTypeUpdatePage: FC = () => {
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
       <div className="mb-5 -mt-5">
-        <AppLink to="/entries">{translations.pages.activities.list.heading}</AppLink>
+        <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
         <span className="mx-2">&gt;&gt;</span>
-        <AppLink to="/workouts/types">{translations.pages.workoutTypes.list.heading}</AppLink>
+        <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.pages.workoutTypes.list.heading}</RouteLink>
         <span className="mx-2">&gt;&gt;</span>
         <span>{t(i18n.heading)} {item.id.toString()}</span>
       </div>
@@ -122,7 +123,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
           <WorkoutTypeUpdateForm item={item} onUpdate={onFormUpdate} />
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
             <div className="mt-5 flex flex-row">
-              <AppLink to="/workouts/types">{translations.utils.generic.buttons.back}</AppLink>
+              <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.utils.generic.buttons.back}</RouteLink>
               <div className="grow flex flex-row-reverse gap-2">
                 <AppButton onClick={saveButtonClick}>{translations.utils.generic.buttons.save}</AppButton>
                 <AppButton onClick={deleteButtonClick}>{translations.utils.generic.buttons.delete}</AppButton>

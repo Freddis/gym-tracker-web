@@ -23,6 +23,7 @@ interface WorkoutUpdateFormProps {
   onUpdate: (dto: WorkoutUpdateDto) => void
   errors?: ErrorSlice<WorkoutUpdateDto>
 }
+
 export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
   const popupContext = useContext(PopupContext);
   const {getSmartError, sliceErrors} = useResponseErrors<WorkoutUpdateDto>(props.errors);

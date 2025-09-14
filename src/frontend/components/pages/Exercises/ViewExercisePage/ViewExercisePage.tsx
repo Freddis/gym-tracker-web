@@ -6,12 +6,14 @@ import {ExerciseBlock} from '../ExerciseLibraryPage/components/ExerciseBlock';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
 import {AppImage} from '../../../atoms/AppImage/AppImage';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
 import {AppSpinner} from '../../../atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {getExercisesById} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {route, RouteId} from '../../../../utils/route';
 
 const routeApi = getRouteApi('/exercises/$exerciseId');
 
@@ -56,7 +58,7 @@ export const ViewExercisePage:FC = () => {
     <PageContainer>
       <div className="w-full max-w-5xl">
         <div className="mb-5 -mt-5">
-          <AppLink to="/exercises">{translations.pages.exercises.list.heading}</AppLink>
+          <RouteLink to={route(RouteId.ExerciseLibrary)}>{translations.pages.exercises.list.heading}</RouteLink>
           <span className="ml-2">&gt;&gt;</span>
           <span className="ml-2">{item.name}</span>
         </div>
@@ -74,29 +76,29 @@ export const ViewExercisePage:FC = () => {
                   <div>
                     <span className="font-normal">{t(i18n.labels.equipment)} </span>
                     {item.equipment && (
-                    <AppLink
+                    <RouteLink
                     className="capitalize"
-                    to="/exercises"
+                    to={route(RouteId.ExerciseLibrary)}
                     search={{equipment: item.equipment}}
 
-                    >{translations.utils.objects.equipment[item.equipment]}</AppLink>
+                    >{translations.utils.objects.equipment[item.equipment]}</RouteLink>
                     )}
                     {!item.equipment && <span>{t(i18n.placeholders.none)}</span>}
                   </div>
                   <div>
                     <span className="font-normal">{t(i18n.labels.primaryMuscles)} </span>
                     {item.muscles.primary.map((muscle, i) => (
-                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className="mr-1">
+                      <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={{muscles: [muscle]}} className="mr-1">
                         {translations.utils.objects.muscles[muscle]}
-                        </AppLink>
+                        </RouteLink>
                     ))}
                     </div>
                   <div>
                     <span className="font-normal">{t(i18n.labels.secondaryMuscles)} </span>
                     {item.muscles.secondary.slice(0, 3).map((muscle, i) => (
-                      <AppLink key={i} to="/exercises" search={{muscles: [muscle]}} className=" mr-1 ">
+                      <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={{muscles: [muscle]}} className=" mr-1 ">
                         {translations.utils.objects.muscles[muscle]}
-                      </AppLink>
+                      </RouteLink>
                     ))}
                     {item.muscles.secondary.length > 3 && <span className="text-xs">{t(i18n.placeholders.andMore)}</span>}
                   </div>

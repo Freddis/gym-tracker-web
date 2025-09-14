@@ -1,14 +1,15 @@
-import {Link, LinkComponentProps} from '@tanstack/react-router';
-import {FC, ReactNode} from 'react';
+import {AnchorHTMLAttributes, forwardRef, ReactNode} from 'react';
 import {cn} from '../../../utils/cn';
 
-export type AppLinkProps = LinkComponentProps & { variant?: 'bold' | 'normal', accented?: boolean, children: ReactNode };
+export interface AppLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  variant?: 'bold' | 'normal',
+  accented?: boolean,
+  children: ReactNode
+}
 
-export const AppLink: FC<AppLinkProps> = (props) => {
-  const accented = props.accented === undefined ? true : props.accented;
-  if (props.href) {
-    return <a {...props} className={cn('hover:text-accent', accented ? 'text-accent' : '', props.className)}></a>;
-  };
-
-  return <Link {...props} className={cn('hover:text-accent', accented ? 'text-accent' : '', props.className)}/>;
-};
+export const AppLink = forwardRef<HTMLAnchorElement, AppLinkProps>(
+  (props, ref) => {
+    const accented = props.accented === undefined ? true : props.accented;
+    return <a ref={ref} {...props} className={cn('hover:text-accent', accented ? 'text-accent' : '', props.className)}/>;
+  },
+);

@@ -9,9 +9,10 @@ import {AppSpinner} from '../../atoms/AppSpinner/AppSpinner';
 import {AppToast} from '../../atoms/AppToast/AppToast';
 import {PageContainer} from '../../layout/PageContainer/PageContainer';
 import {useInView} from 'react-intersection-observer';
-import {AppLink} from '../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {WorkoutPlanBlock} from './WorkoutPlanBlock';
 import {AppButton} from '../../atoms/AppButton/AppButton';
+import {route, RouteId} from '../../../utils/route';
 
 const routeApi = getRouteApi('/workouts/plans/');
 export const WorkoutPlanListPage: FC = () => {
@@ -59,7 +60,7 @@ export const WorkoutPlanListPage: FC = () => {
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
       <div className="mb-5 -mt-5">
-        <AppLink to="/entries">{translations.pages.activities.list.heading}</AppLink>
+        <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
         <span className="ml-2">&gt;&gt;</span>
         <span className="ml-2">{t(i18n.heading)}</span>
       </div>
@@ -72,9 +73,9 @@ export const WorkoutPlanListPage: FC = () => {
             <div ref={ref}></div>
           </div>
           <div className="flex flex-row justify-center w-full">
-            <AppLink to="/workouts/plans/create">
+            <RouteLink to={route(RouteId.WorkoutPlanCreate)}>
               <AppButton>{t(i18n.heading)}</AppButton>
-            </AppLink>
+            </RouteLink>
           </div>
         </div>
       </div>

@@ -1,15 +1,15 @@
 import {FC} from 'react';
 import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
 import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
+import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 
 export const MobileWorkoutTypeBlock: FC<{item: WorkoutType}> = ({item}) => {
   return (
     <MobileBlock>
       <div className="flex flex-col sm:flex-row">
         <div className="text-base font-normal mb-2">
-          <AppLink to="/workouts/types/update/$id" params={{id: item.id.toString()}}>{item.name}</AppLink>
+          <AppLink>{item.name}</AppLink>
         </div>
       </div>
        <div className="">

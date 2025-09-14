@@ -1,6 +1,5 @@
 import {FC, MouseEventHandler, useState} from 'react';
 import {AppImage} from '../../../../atoms/AppImage/AppImage';
-import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
 import {ExerciseLibraryQueryParams} from '../types/ExercisesLibraryQuery';
@@ -8,6 +7,9 @@ import {ExerciseBlockProps} from './types/ExerciseBlockProps';
 import {Equipment, Muscle} from '../../../../../utils/openapi-client';
 import {cn} from '../../../../../utils/cn';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
+import {RouteLink} from '../../../../atoms/RouteLink/RouteLink';
+import {AppLink} from '../../../../atoms/AppLink/AppLink';
+import {route, RouteId} from '../../../../../utils/route';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;
@@ -36,35 +38,39 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
         </div>
         <div className="grow">
           <div className="mb-2">
-            <AppLink to="/exercises/$exerciseId" params={{exerciseId: item.id.toString()}}>
+            <RouteLink to={route(RouteId.Exercise)} params={{exerciseId: item.id.toString()}}>
               <b>{item.name}</b>
-            </AppLink>
+            </RouteLink>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end">
             <div className="text-base grow">
               <div>
                 <span className="font-normal">{t(i18n.labels.equipment)} </span>
                 {item.equipment && (
-                  <AppLink className="text-on-surface capitalize" search={getEquipmentSearch(item.equipment)}>
+                  <RouteLink
+                    className="text-on-surface capitalize"
+                    to={route(RouteId.ExerciseLibrary)}
+                    search={getEquipmentSearch(item.equipment)}
+                  >
                     {translations.utils.objects.equipment[item.equipment]}
-                  </AppLink>
+                  </RouteLink>
                 )}
                 {!item.equipment && <span>{t(i18n.placeholders.none)}</span>}
               </div>
               <div>
                 <span className="font-normal">{t(i18n.labels.primaryMuscles)} </span>
                 {props.item.muscles.primary.map((muscle, i) => (
-                  <AppLink key={i} search={getMuscleSearch(muscle)} className="text-on-surface mr-1">
+                  <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1">
                     {translations.utils.objects.muscles[muscle]}
-                  </AppLink>
+                  </RouteLink>
                 ))}
                 </div>
               <div>
                 <span className="font-normal">{t(i18n.labels.secondaryMuscles)} </span>
                 {props.item.muscles.secondary.slice(0, 3).map((muscle, i) => (
-                  <AppLink key={i} search={getMuscleSearch(muscle)} className="text-on-surface mr-1 ">
+                  <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1 ">
                     {translations.utils.objects.muscles[muscle]}
-                  </AppLink>
+                  </RouteLink>
                 ))}
                 {props.item.muscles.secondary.length > 3 && <span className="text-xs">{t(i18n.placeholders.andMore)}</span>}
               </div>

@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {HeaderLink} from '../../../src/frontend/components/layout/Header/components/HeaderLink';
 import {Color} from '../../../src/frontend/utils/design-system/types/Color';
 import {StoryBookDisplay} from '../../components/StoryBookDisplay/StoryBookDisplay';
-
+import {route, RouteId} from '../../../src/frontend/utils/route';
 
 const meta = {
   title: 'Components/HeaderLink',
@@ -24,5 +24,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Accent: Story = {
-  render: () => <HeaderLink>Click Me</HeaderLink>,
+  render: () => <HeaderLink to={route(RouteId.Home)}>Click Me</HeaderLink>,
 };

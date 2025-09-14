@@ -6,11 +6,11 @@ import {AppLabel} from '../../../../../src/frontend/components/atoms/AppLabel/Ap
 import {AppTextInput} from '../../../../../src/frontend/components/atoms/AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../../../src/frontend/utils/i18n/useAppPartialTranslation';
 import {FieldError, useResponseErrors} from '../../../../../src/frontend/utils/useResponseErrors';
-import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 import {WorkoutType} from '../../../../../src/frontend/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 import {AppImage} from '../../../../../src/frontend/components/atoms/AppImage/AppImage';
 import {FaPlus, FaXmark} from 'react-icons/fa6';
+import {AppLink} from '../../../../../src/frontend/components/atoms/AppLink/AppLink';
 
 export const WorkoutTypeCreateScreen: FC<{type?: WorkoutType, errors?: FieldError[]}> = (props) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.workoutTypes.form);

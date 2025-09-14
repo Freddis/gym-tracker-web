@@ -14,7 +14,8 @@ import {AppPageHeading} from '../../../atoms/AppPageHeading/AppPageHeading';
 import {AppSidebarBlock} from '../../../atoms/AppSidebarBlock/AppSidebarBlock';
 import {AppSwitch} from '../../../atoms/AppSwitch/AppSwitch';
 import {EntryBlock} from '../../../blocks/EntryBlock/EntryBlock';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../utils/route';
 
 const routeApi = getRouteApi('/entries/');
 export function EntryListPage() {
@@ -77,12 +78,12 @@ export function EntryListPage() {
            <div className="w-full text-left mb-5 flex">
              <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
              <div className="grow flex flex-row-reverse gap-5 items-center">
-              <Link to="/entries/add" className="z-0">
+              <Link to={route(RouteId.EntryAdd)} className="z-0">
                 <AppButton>{t(i18n.buttons.addEntry)}</AppButton>
               </Link>
-              <AppLink to="/workouts/types" className="z-0">
+              <RouteLink to={route(RouteId.WorkoutTypeList)} className="z-0">
                 {t(i18n.buttons.types)}
-              </AppLink>
+              </RouteLink>
               </div>
            </div>
            <div className="flex flex-col md:flex-row gap-5 items-start">

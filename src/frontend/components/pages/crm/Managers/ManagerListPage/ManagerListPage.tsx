@@ -1,5 +1,4 @@
 import {FC} from 'react';
-import {AppLink} from '../../../../atoms/AppLink/AppLink';
 import {AppBlock} from '../../../../atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../../atoms/AppBlock/components/AppBlockHeader';
 import {keepPreviousData, useQuery} from '@tanstack/react-query';
@@ -7,6 +6,7 @@ import {getRouteApi} from '@tanstack/react-router';
 import {getCrmManagers} from '../../../../../utils/openapi-client';
 import {AppSpinner} from '../../../../atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../atoms/Pagination/Pagination';
+import {AppLink} from '../../../../atoms/AppLink/AppLink';
 
 const routeApi = getRouteApi('/crm/managers/');
 export const ManagerListPage:FC = () => {

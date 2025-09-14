@@ -22,7 +22,7 @@ export const CrmSideMenu: FC = () => {
       <div className="flex flex-col gap-5">
         <CrmSideMenuLink to={'/crm/users'}>Users</CrmSideMenuLink>
         <CrmSideMenuLink to={'/crm/managers'}>Managers</CrmSideMenuLink>
-        <CrmSideMenuLink onClick={logout}>Logout</CrmSideMenuLink>
+        <CrmSideMenuLink to={'/'} onClick={logout}>Logout</CrmSideMenuLink>
       </div>
     </div>
   );

@@ -2,7 +2,9 @@ import {FC} from 'react';
 import {IoIosMail} from 'react-icons/io';
 import {LiaAddressCard} from 'react-icons/lia';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
+import {RouteLink} from '../../atoms/RouteLink/RouteLink';
 import {AppLink} from '../../atoms/AppLink/AppLink';
+import {route, RouteId} from '../../../utils/route';
 
 export const Footer: FC = () => {
   const {i18n, t} = useAppPartialTranslation((x) => x.layout.footer);
@@ -17,8 +19,12 @@ export const Footer: FC = () => {
           <div>
             <h5 className="uppercase font-bold mb-4">{t(i18n.links.heading)}</h5>
             <div className="flex flex-col gap-2">
-              <AppLink to="/articles/terms-of-service" className="text-on-main text-sm">{t(i18n.links.links.termsOfService)}</AppLink>
-              <AppLink to="/articles/privacy-policy" className="text-on-main text-sm">{t(i18n.links.links.privacyPolicy)}</AppLink>
+              <RouteLink to={route(RouteId.TermsOfService)} className="text-on-main text-sm">
+                {t(i18n.links.links.termsOfService)}
+              </RouteLink>
+              <RouteLink to={route(RouteId.PrivacyPolicy)} className="text-on-main text-sm">
+                {t(i18n.links.links.privacyPolicy)}
+                </RouteLink>
             </div>
           </div>
           <div>

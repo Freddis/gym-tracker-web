@@ -3,7 +3,8 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 import {Entry, Weight} from '../../../../utils/openapi-client';
 import {AppBlock} from '../../../atoms/AppBlock/AppBlock';
 import {AppAvatar} from '../../../atoms/AppAvatar/AppAvatar';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../utils/route';
 
 export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
@@ -15,7 +16,7 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}>
         <div className="text-lg font-normal mb-5">
           {!own && `${t(i18n.type)}: ${weight.id}`}
           {own && (
-            <AppLink to="/weight/update/$id" params={{id: weight.id.toString()}}>{t(i18n.type)}: {weight.id}</AppLink>
+            <RouteLink to={route(RouteId.WeightUpdate)} params={{id: weight.id.toString()}}>{t(i18n.type)}: {weight.id}</RouteLink>
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">

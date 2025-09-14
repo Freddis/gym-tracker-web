@@ -4,7 +4,7 @@ import {useResponseErrors} from '../../../../utils/useResponseErrors';
 import {AppButton} from '../../../atoms/AppButton/AppButton';
 import {AppInputError} from '../../../atoms/AppInputError/AppInputError';
 import {AppLabel} from '../../../atoms/AppLabel/AppLabel';
-import {AppLink} from '../../../atoms/AppLink/AppLink';
+import {RouteLink} from '../../../atoms/RouteLink/RouteLink';
 import {AppTextInput} from '../../../atoms/AppTextInput/AppTextInput';
 import {AuthContext} from '../../../layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../layout/PageContainer/PageContainer';
@@ -13,6 +13,7 @@ import {postAuthLogin} from '../../../../utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../../atoms/AppToast/hooks/useToasts';
 import {AppBlockHeader} from '../../../atoms/AppBlock/components/AppBlockHeader';
+import {route, RouteId} from '../../../../utils/route';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -66,9 +67,9 @@ export const LoginPage: FC = () => {
             <AppInputError data-testid="error-password" error={getError('password')} />
           </div>
           <div className="flex flex-row gap-10 justify-center">
-            <AppLink to="/auth/register" onClick={forgotPasswordClick} className="text-accent">
+            <RouteLink to={route(RouteId.Register)} onClick={forgotPasswordClick} className="text-accent">
               {t(i18n.form.buttons.forgotPassword)}
-            </AppLink>
+            </RouteLink>
           </div>
           <div className="mt-10 flex items-center justify-center">
               <AppButton className="w-30 inline-block" onClick={loginButtonPress}>
@@ -77,9 +78,9 @@ export const LoginPage: FC = () => {
           </div>
           <div className="grow mt-10 flex justify-center">
             <span>{t(i18n.registerCta)}</span>
-            <AppLink to="/auth/register" className="text-accent ml-3">
+            <RouteLink to={route(RouteId.Register)} className="text-accent ml-3">
               {t(i18n.form.buttons.register)}
-            </AppLink>
+            </RouteLink>
           </div>
           </AppBlock>
     </PageContainer>
