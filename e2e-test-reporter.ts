@@ -29,8 +29,8 @@ class E2eTestReporter implements Reporter {
       const content = readFileSync(file);
       const coverage : {result: Awaited<ReturnType<Coverage['stopJSCoverage']>>} = JSON.parse(content.toString());
       for (const entry of coverage.result) {
-        if (!entry.url.includes('/src/') || !this.exclusions.some((x) => entry.url.includes(x))) {
-          continue; // skip React, node_modules, etc.
+        if (!entry.url.includes('/src/') || this.exclusions.some((x) => entry.url.includes(x))) {
+          continue;
         }
         const localPath = entry.url
         .replace('http://localhost:3000/src/', 'src/') // map served URL → local file
