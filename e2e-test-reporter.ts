@@ -11,7 +11,7 @@ import {join, resolve} from 'path';
 class E2eTestReporter implements Reporter {
   protected logger = new Logger('E2E');
   protected exclusions = ['@fs', 'src/backend'];
-  protected resultsDir = 'test-results'
+  protected resultsDir = 'test-results';
 
   onTestBegin(test: TestCase): void {
     this.logger.info(`[starting] ${test.title}`);
@@ -24,9 +24,8 @@ class E2eTestReporter implements Reporter {
     this.logger.info('All done, time to collect coverage');
     const coverageMap = libCoverage.createCoverageMap({});
     this.addFilesToCoverage(resolve('src'), coverageMap);
-    
-    if(existsSync(this.resultsDir)) {
-      
+
+    if (existsSync(this.resultsDir)) {
       const files = this.findFilesByNameSync(this.resultsDir, 'v8-coverage.json');
       for (const file of files) {
         const content = readFileSync(file);

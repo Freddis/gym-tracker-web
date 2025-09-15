@@ -29,7 +29,36 @@ export abstract class BasePageTestUtils {
     return toast;
   }
 
+  async clickBody(): Promise<void> {
+    await this.page.mouse.click(1, 1);
+  }
+
+  async selectLanguage(lang: 'ru' | 'en') {
+    await this.clickOnLangaugeDropdown();
+    await this.page.getByTestId(new RegExp(`language-${lang}`)).click();
+  }
+
   getUserNameInHeader(): Locator {
     return this.page.getByTestId('my-name');
   }
+
+  getLanguageDrowdownButton(): Locator {
+    return this.page.getByTestId('dropdown-languages');
+  }
+
+  async getSelectedLanguage(): Promise<string | null> {
+    return await this.page.getByTestId('selected-language').textContent();
+  }
+
+  async clickOnLangaugeDropdown(): Promise<void> {
+    await this.getLanguageDrowdownButton().click();
+  }
+
+  async getLanguageDropdownLanguages(): Promise<string[]> {
+    await this.clickOnLangaugeDropdown();
+    const locators = await this.page.getByTestId(/^language-.*/).allTextContents();
+    await this.clickBody();
+    return locators;
+  }
+
 }

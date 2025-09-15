@@ -16,9 +16,9 @@ export const AppLanguageDropdown: FC<{className?: string}> = ({className}) => {
   return (
     <div className={cn(className)} onClick={() => setOpened(!opened)}>
       <AppDropdownMenu open={opened} onOpenChange={(e) => setOpened(e)}>
-        <AppDropdownMenuTrigger className="text-lg">
+        <AppDropdownMenuTrigger className="text-lg" data-testid="dropdown-languages">
         <div className={'flex gap-0.5 items-center cursor-pointer'}>
-          <span className="text-base w-5 ">{language.language}</span>
+          <span className="text-base w-5 " data-testid="selected-language">{language.language}</span>
           {!opened && <FiChevronDown className=" relative" />}
           {opened && <FiChevronUp className=" relative" />}
         </div>
@@ -29,6 +29,7 @@ export const AppLanguageDropdown: FC<{className?: string}> = ({className}) => {
               key={lang}
               onClick={() => language.setLanguage(lang)}
               className="focus:bg-inherit cursor-pointer focus:text-accent"
+              data-testid={`language-${lang}}`}
               >{lang}</AppDropdownMenuItem>
           ))}
         </AppDropdownMenuContent>
