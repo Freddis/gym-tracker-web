@@ -10,7 +10,11 @@ import {join, resolve} from 'path';
 
 class E2eTestReporter implements Reporter {
   protected logger = new Logger('E2E');
-  protected exclusions = ['@fs', 'src/backend'];
+  protected exclusions = [
+    '@fs',
+    'src/backend',
+    '.e2e.spec.',
+  ];
   protected resultsDir = 'test-results';
 
   onTestBegin(test: TestCase): void {
@@ -37,7 +41,7 @@ class E2eTestReporter implements Reporter {
           const localPath = entry.url
           .replace('http://localhost:3000/src/', 'src/') // map served URL → local file
           .split('?')[0]!; // strip cache-busting query params
-
+          // todo: still some files with '?' pop-up, not critical but would be nice to remove them completely
           const converter = v8toIstanbul(resolve(localPath), 0, {source: entry.source!});
           await converter.load();
           converter.applyCoverage(entry.functions);

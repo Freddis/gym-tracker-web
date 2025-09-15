@@ -2,7 +2,6 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
-// @ts-ignore
 import * as eslintImport from 'eslint-plugin-import';
 import reactPlugin from 'eslint-plugin-react';
 import tsParser from '@typescript-eslint/parser';
@@ -10,7 +9,7 @@ import tsParser from '@typescript-eslint/parser';
 // This eslint has a bug with globals, seems like some peer deps load old globals package.
 const fixedBrowserGlobals = {};
 for (const key of Object.keys(globals.browser)) {
-  // @ts-ignore
+  // @ts-expect-error Keys in JS files are type of any
   fixedBrowserGlobals[key.trim()] = globals.browser[key];
 }
 export default tseslint.config(
