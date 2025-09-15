@@ -101,7 +101,7 @@ export function EntryListPage() {
                  ))}
                </div>
              </AppSidebarBlock>
-             <div className="flex flex-col gap-5 grow w-full">
+             <div className="flex flex-col gap-5 grow w-full" data-testid="main-content">
                 {response.data && response.data.data.items.length > 0 && (
                   <>
                     {response.data?.data.items.map((item) => <EntryBlock key={item.id} entry={item} own />)}

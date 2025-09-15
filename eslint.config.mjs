@@ -189,6 +189,7 @@ export default tseslint.config(
     'temp/**',
     'src/frontend/common/utils/openapi-client/**',
     'html/**',
+    'coverage-e2e/**',
   ],
   languageOptions: {
     parser: tsParser,

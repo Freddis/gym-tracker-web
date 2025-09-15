@@ -70,7 +70,7 @@ export const WorkoutCreatePage: FC = () => {
         <div className="mt-5 flex flex-row">
           <RouteLink to={route(RouteId.EntryAdd)}>{translations.utils.generic.buttons.back}</RouteLink>
           <div className="grow flex flex-row-reverse gap-2">
-            <AppButton onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
+            <AppButton onClick={save} data-testid="save">{translations.utils.generic.buttons.save}</AppButton>
           </div>
         </div>
       </AppBlock>

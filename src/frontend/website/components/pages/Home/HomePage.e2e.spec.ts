@@ -1,5 +1,5 @@
-import {test, expect} from '@playwright/test';
 import {TestUtils} from '../../../../../backend/utils/TestUtils/TestUtils';
+import {expect, test} from '../../../../../backend/utils/TestUtils/utils/FrontendUtils/utils/test';
 
 test.describe('HomePage', () => {
 

@@ -21,7 +21,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
 
   const weekDayString = translations.utils.time.weekDays[date.getDay()];
   return (
-    <AppBlock>
+    <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
         <div className="text-lg font-normal mb-5">
           {!own && `${t(i18n.type)}: ${workout.id}`}
