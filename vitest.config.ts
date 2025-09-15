@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     exclude: [
       '**/*.e2e.spec.ts',
+      '**/*.e2e.spec.tsx',
       'node_modules/**',
     ],
     reporters: ['verbose', 'html'],
