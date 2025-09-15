@@ -1,7 +1,7 @@
 import {FullResult, Reporter, TestCase, TestResult} from '@playwright/test/reporter';
 import {Logger} from './src/backend/utils/Logger/Logger';
 import {Coverage} from 'playwright/test';
-import {readdirSync, readFileSync, statSync} from 'fs';
+import {existsSync, readdirSync, readFileSync, statSync} from 'fs';
 import libCoverage, {CoverageMap} from 'istanbul-lib-coverage';
 import reports from 'istanbul-reports';
 import {createContext} from 'istanbul-lib-report';
@@ -11,6 +11,7 @@ import {join, resolve} from 'path';
 class E2eTestReporter implements Reporter {
   protected logger = new Logger('E2E');
   protected exclusions = ['@fs', 'src/backend'];
+  protected resultsDir = 'test-results'
 
   onTestBegin(test: TestCase): void {
     this.logger.info(`[starting] ${test.title}`);
@@ -20,26 +21,29 @@ class E2eTestReporter implements Reporter {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async onEnd(result: FullResult): Promise<void> {
-    console.log('All done, time to collect coverage');
+    this.logger.info('All done, time to collect coverage');
     const coverageMap = libCoverage.createCoverageMap({});
     this.addFilesToCoverage(resolve('src'), coverageMap);
+    
+    if(existsSync(this.resultsDir)) {
+      
+      const files = this.findFilesByNameSync(this.resultsDir, 'v8-coverage.json');
+      for (const file of files) {
+        const content = readFileSync(file);
+        const coverage : {result: Awaited<ReturnType<Coverage['stopJSCoverage']>>} = JSON.parse(content.toString());
+        for (const entry of coverage.result) {
+          if (!entry.url.includes('/src/') || this.exclusions.some((x) => entry.url.includes(x))) {
+            continue;
+          }
+          const localPath = entry.url
+          .replace('http://localhost:3000/src/', 'src/') // map served URL → local file
+          .split('?')[0]!; // strip cache-busting query params
 
-    const files = this.findFilesByNameSync('test-results', 'v8-coverage.json');
-    for (const file of files) {
-      const content = readFileSync(file);
-      const coverage : {result: Awaited<ReturnType<Coverage['stopJSCoverage']>>} = JSON.parse(content.toString());
-      for (const entry of coverage.result) {
-        if (!entry.url.includes('/src/') || this.exclusions.some((x) => entry.url.includes(x))) {
-          continue;
+          const converter = v8toIstanbul(resolve(localPath), 0, {source: entry.source!});
+          await converter.load();
+          converter.applyCoverage(entry.functions);
+          coverageMap.merge(converter.toIstanbul());
         }
-        const localPath = entry.url
-        .replace('http://localhost:3000/src/', 'src/') // map served URL → local file
-        .split('?')[0]!; // strip cache-busting query params
-
-        const converter = v8toIstanbul(resolve(localPath), 0, {source: entry.source!});
-        await converter.load();
-        converter.applyCoverage(entry.functions);
-        coverageMap.merge(converter.toIstanbul());
       }
     }
     const ctx = createContext({

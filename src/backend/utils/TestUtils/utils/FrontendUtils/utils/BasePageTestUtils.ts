@@ -12,8 +12,15 @@ export abstract class BasePageTestUtils {
   }
 
   async open() {
-    await this.page.goto(`${this.baseUrl}${this.path}`);
+    const response = await this.page.goto(`${this.baseUrl}${this.path}`);
     await this.page.waitForLoadState('networkidle');
+    return response;
+  }
+
+  async navigate(path: `/${string}`) {
+    const response = await this.page.goto(`${this.baseUrl}${path}`);
+    await this.page.waitForLoadState('networkidle');
+    return response;
   }
 
   async waitForToast(type: 'success' | 'danger' | 'warning'): Promise<Locator> {

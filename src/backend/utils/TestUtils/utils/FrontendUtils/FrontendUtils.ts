@@ -8,11 +8,13 @@ import {UserRow} from '../../../../services/DrizzleService/types/UserRow';
 import {CookieName} from '../../../../../frontend/common/types/CookieName';
 import {AuthUser} from '../../../../services/AuthService/types/AuthUser';
 import {EntryListPageTestUtils} from './utils/EntryListPageTestUtils';
+import {NotFoundPageUtils} from './utils/NotFoundPageUtils';
 
 export class FrontendUtils {
   static readonly registration = (page: Page) => new RegistrationPageTestUtils(page);
   static readonly login = (page: Page) => new LoginPageTestUtils(page);
   static readonly home = (page: Page) => new HomePageTestUtils(page);
+  static readonly notFound = (page: Page) => new NotFoundPageUtils(page);
   static readonly entries = (page: Page) => new EntryListPageTestUtils(page);
 
   static readonly workouts = {

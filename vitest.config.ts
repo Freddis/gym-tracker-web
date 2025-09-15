@@ -11,13 +11,18 @@ export default defineConfig({
       reportsDirectory: 'html/coverage',
       exclude: [
         'html/**',
+        'coverage-e2e/**',
         'storybook',
         '.output/**',
         '.vinxi/**',
         '.tanstack/**',
         '.nitro/**',
         'eslint.config.mjs',
+        'e2e-test-reporter.ts',
+        'vite.config.ts',
+        'playwright.config.ts',
         'src/frontend/**',
+        'scripts',
       ],
       reporter: [
         ['html-spa', {subdir: 'spa'}],
