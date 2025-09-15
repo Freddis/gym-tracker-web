@@ -23,7 +23,12 @@ export default defineConfig({
         'vite.config.ts',
         'playwright.config.ts',
         'src/frontend/**',
+        'src/routes/**',
+        'src/router.tsx',
+        'src/client.tsx',
+        'src/routeTree.gen.ts',
         'scripts',
+        '**/FrontendUtils/**', // want to see usage on test utils, but not frontend
       ],
       reporter: [
         ['html-spa', {subdir: 'spa'}],
