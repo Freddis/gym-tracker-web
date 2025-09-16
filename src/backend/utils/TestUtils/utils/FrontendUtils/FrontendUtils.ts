@@ -3,12 +3,14 @@ import {RegistrationPageTestUtils} from './utils/RegistrationPageTestUtils';
 import {HomePageTestUtils} from './utils/HomePageTestUtils';
 import {LoginPageTestUtils} from './utils/LoginPageTestUtils';
 import {WorkoutCreatePageTestUtils} from './utils/WorkoutCreatePageTestUtils';
+import {WeightCreatePageTestUtils} from './utils/WeightCreatePageTestUtils';
 import {BusinessUtils} from '../BusinessUtils';
 import {UserRow} from '../../../../services/DrizzleService/types/UserRow';
 import {CookieName} from '../../../../../frontend/common/types/CookieName';
 import {AuthUser} from '../../../../services/AuthService/types/AuthUser';
 import {EntryListPageTestUtils} from './utils/EntryListPageTestUtils';
 import {NotFoundPageUtils} from './utils/NotFoundPageUtils';
+import {ExerciseLibraryPageTestUtils} from './utils/ExerciseLibraryPageTestUtils';
 
 export class FrontendUtils {
   static readonly registration = (page: Page) => new RegistrationPageTestUtils(page);
@@ -19,6 +21,14 @@ export class FrontendUtils {
 
   static readonly workouts = {
     create: (page: Page) => new WorkoutCreatePageTestUtils(page),
+  };
+
+  static readonly weight = {
+    create: (page: Page) => new WeightCreatePageTestUtils(page),
+  };
+
+  static readonly exercises = {
+    library: (page: Page) => new ExerciseLibraryPageTestUtils(page),
   };
 
   static async authenticateAsUser(user: UserRow, context: BrowserContext) {

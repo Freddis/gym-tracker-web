@@ -7,4 +7,5 @@ export interface AppComboboxProps {
   className?: string,
   values: ComboValue[]
   selected?: string
+  'data-testid'?: string
 }

@@ -30,5 +30,5 @@ export const AppSearchInput: FC<AppSearchInputProps> = (props) => {
     setTimeoutHandle(timeout as any);
   };
 
-  return <AppTextInput onChange={onChange} value={searchValue} />;
+  return <AppTextInput {...props} onChange={onChange} value={searchValue} />;
 };

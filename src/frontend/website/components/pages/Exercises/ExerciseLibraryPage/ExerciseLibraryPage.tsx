@@ -111,17 +111,23 @@ export const ExerciseLibraryPage: FC = () => {
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
         <div className="w-full text-left mb-5">
-          <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
+          <AppPageHeading data-testid="exercise-library-heading">{t(i18n.heading)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
           <AppSidebarBlock className="hidden md:block">
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
             <div className="mb-5">
-              <AppSearchInput debounce={1000} value={searchParams.filter} onSearch={filterByName}/>
+              <AppSearchInput
+                data-testid="exercise-search-input"
+                debounce={1000}
+                value={searchParams.filter}
+                onSearch={filterByName}
+              />
             </div>
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
             <div className="mb-5">
                <AppCombobox
+                  data-testid="equipment-combobox"
                   placeholder={t(i18n.filter.labels.searchEquipment)}
                   notFound={t(i18n.filter.labels.noEquipmentFound)}
                   defaultValue={t(i18n.filter.labels.selectEquipment)}
@@ -133,6 +139,7 @@ export const ExerciseLibraryPage: FC = () => {
               {Object.values(Muscle).sort().map((x) => (
                 <AppSwitch
                 key={x}
+                data-testid={`muscle-switch-${x.toLowerCase()}`}
                 label={translations.utils.objects.muscles[x]}
                 checked={searchParams.muscles?.includes(x) ?? false}
                 onCheckedChange={(e) => filterByMuscle(x, e)}
@@ -146,7 +153,13 @@ export const ExerciseLibraryPage: FC = () => {
             )}
             {response.isLoading && <AppSpinner />}
             {items.map((item) => (
-              <ExerciseBlock className="w-full" key={item.id} item={item} params={searchParams} />
+              <ExerciseBlock
+                className="w-full"
+                key={item.id}
+                item={item}
+                params={searchParams}
+                data-testid={`exercise-block-${item.id}`}
+              />
             ))}
             <div ref={ref}></div>
             {response.isFetchingNextPage ? <AppSpinner/> : null}
@@ -156,3 +169,4 @@ export const ExerciseLibraryPage: FC = () => {
     </PageContainer>
   );
 };
+

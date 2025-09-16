@@ -8,7 +8,8 @@ import {Popover, PopoverTrigger, PopoverContent} from '@radix-ui/react-popover';
 import {ScrollArea} from '@radix-ui/react-scroll-area';
 import {CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem} from 'cmdk';
 
-export const AppCombobox: FC<AppComboboxProps> = ({className, values, selected, placeholder, notFound, defaultValue}) => {
+export const AppCombobox: FC<AppComboboxProps> = (props) => {
+  const {'data-testid': testid, className, values, selected, placeholder, notFound, defaultValue} = props;
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(selected ?? null);
   useEffect(() => {
@@ -17,7 +18,10 @@ export const AppCombobox: FC<AppComboboxProps> = ({className, values, selected, 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className={cn('h-10 bg-cavity border-in-cavity border-1 cursor-pointer flex items-center gap-3 p-3 rounded-sm', className)}>
+        <div
+          data-testid={testid}
+          className={cn('h-10 bg-cavity border-in-cavity border-1 cursor-pointer flex items-center gap-3 p-3 rounded-sm', className)}
+        >
           <div className="capitalize text-base">{value ? values.find((val) => val.label === value)?.label : defaultValue}</div>
           <div className="grow flex flex-row-reverse">
             <div className="inline-block">

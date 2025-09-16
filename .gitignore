@@ -11,6 +11,7 @@ temp
 .env
 *storybook.log
 html
+.continue
 
 # Playwright
 /test-results/
