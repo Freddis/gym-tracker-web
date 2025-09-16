@@ -38,6 +38,7 @@ import {getManagerList} from '../api/managers/getManagerList';
 import {getTranslationList} from '../api/translations/getTranslationList';
 import {getTranslation} from '../api/translations/getTranslation';
 import {updateTranslation} from '../api/translations/updateTranslation';
+import {getManagedExerciseList} from '../api/exercises/managed-exercises/getManagedExerciseList';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -101,5 +102,8 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     getTranslation,
     getTranslationList,
     updateTranslation,
+  ],
+  '/crm/exercises': [
+    getManagedExerciseList,
   ],
 };

@@ -29,6 +29,7 @@ import type {
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
   GetCrmTranslationsResponse,
+  GetCrmExercisesResponse,
 } from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -381,6 +382,15 @@ export const getCrmTranslationsResponseTransformer = async (
 ): Promise<GetCrmTranslationsResponse> => {
   data.items = data.items.map((item: any) => {
     return translationSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getCrmExercisesResponseTransformer = async (
+  data: any,
+): Promise<GetCrmExercisesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return exerciseSchemaResponseTransformer(item);
   });
   return data;
 };

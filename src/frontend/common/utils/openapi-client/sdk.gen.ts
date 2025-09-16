@@ -116,6 +116,9 @@ import type {
   GetCrmTranslationsData,
   GetCrmTranslationsResponses,
   GetCrmTranslationsErrors,
+  GetCrmExercisesData,
+  GetCrmExercisesResponses,
+  GetCrmExercisesErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -147,6 +150,7 @@ import {
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
   getCrmTranslationsResponseTransformer,
+  getCrmExercisesResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -968,6 +972,12 @@ export const getCrmUsers = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
     url: "/crm/users",
     ...options,
   });
@@ -985,6 +995,12 @@ export const getCrmManagers = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
     responseTransformer: getCrmManagersResponseTransformer,
     url: "/crm/managers",
     ...options,
@@ -1024,6 +1040,12 @@ export const getCrmTranslationsById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
     responseTransformer: getCrmTranslationsByIdResponseTransformer,
     url: "/crm/translations/{id}",
     ...options,
@@ -1042,6 +1064,12 @@ export const patchCrmTranslationsById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
     responseTransformer: patchCrmTranslationsByIdResponseTransformer,
     url: "/crm/translations/{id}",
     ...options,
@@ -1064,8 +1092,38 @@ export const getCrmTranslations = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
     responseTransformer: getCrmTranslationsResponseTransformer,
     url: "/crm/translations",
+    ...options,
+  });
+};
+
+/**
+ * Returns data on exercises
+ */
+export const getCrmExercises = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmExercisesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmExercisesResponses,
+    GetCrmExercisesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getCrmExercisesResponseTransformer,
+    url: "/crm/exercises",
     ...options,
   });
 };

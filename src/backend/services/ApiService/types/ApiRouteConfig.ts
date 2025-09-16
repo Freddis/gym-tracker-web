@@ -18,8 +18,15 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
   }
 
   Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, ManagerRouteContext> = {
-    authorization: false,
+    authorization: true,
     extraProps: undefined,
+    errors: {
+      [ApiErrorCode.UnknownError]: true,
+      [ApiErrorCode.ValidationFailed]: true,
+      [ApiErrorCode.ActionError]: true,
+      [ApiErrorCode.Unauthorized]: true,
+      [ApiErrorCode.NotFound]: true,
+    },
     contextFactory: async (ctx) => {
       const services = await this.createRequestServices();
       const viewer = await services.auth.getManagerFromRequest(ctx.request);

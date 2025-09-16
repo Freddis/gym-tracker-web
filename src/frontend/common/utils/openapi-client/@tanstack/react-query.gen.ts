@@ -40,6 +40,7 @@ import {
   getCrmTranslationsById,
   patchCrmTranslationsById,
   getCrmTranslations,
+  getCrmExercises,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -148,6 +149,9 @@ import type {
   GetCrmTranslationsData,
   GetCrmTranslationsError,
   GetCrmTranslationsResponse,
+  GetCrmExercisesData,
+  GetCrmExercisesError,
+  GetCrmExercisesResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -1963,6 +1967,81 @@ export const getCrmTranslationsInfiniteOptions = (
         return data;
       },
       queryKey: getCrmTranslationsInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const getCrmExercisesQueryKey = (
+  options?: Options<GetCrmExercisesData>,
+) => createQueryKey("getCrmExercises", options);
+
+/**
+ * Returns data on exercises
+ */
+export const getCrmExercisesOptions = (
+  options?: Options<GetCrmExercisesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmExercises({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmExercisesQueryKey(options),
+  });
+};
+
+export const getCrmExercisesInfiniteQueryKey = (
+  options?: Options<GetCrmExercisesData>,
+): QueryKey<Options<GetCrmExercisesData>> =>
+  createQueryKey("getCrmExercises", options, true);
+
+/**
+ * Returns data on exercises
+ */
+export const getCrmExercisesInfiniteOptions = (
+  options?: Options<GetCrmExercisesData>,
+) => {
+  return infiniteQueryOptions<
+    GetCrmExercisesResponse,
+    AxiosError<GetCrmExercisesError>,
+    InfiniteData<GetCrmExercisesResponse>,
+    QueryKey<Options<GetCrmExercisesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmExercisesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmExercisesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getCrmExercises({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmExercisesInfiniteQueryKey(options),
     },
   );
 };

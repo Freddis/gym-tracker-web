@@ -22,6 +22,7 @@ export const CrmSideMenu: FC = () => {
       <AppLogo className="mb-10" />
       <div className="flex flex-col gap-5">
         <CrmSideMenuLink to={route(RouteId.CrmUsers)}>Users</CrmSideMenuLink>
+        <CrmSideMenuLink to={route(RouteId.CrmExerciseList)}>Exercises</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.CrmTranslationList)}>Translations</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.CrmManagers)}>Managers</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.Crm)} onClick={logout}>Logout</CrmSideMenuLink>
