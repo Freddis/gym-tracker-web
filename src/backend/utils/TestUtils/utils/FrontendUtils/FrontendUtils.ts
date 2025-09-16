@@ -12,6 +12,7 @@ import {EntryListPageTestUtils} from './utils/EntryListPageTestUtils';
 import {NotFoundPageUtils} from './utils/NotFoundPageUtils';
 import {ExerciseLibraryPageTestUtils} from './utils/ExerciseLibraryPageTestUtils';
 import {FeedPageTestUtils} from './utils/FeedPageTestUtils';
+import {ExerciseCreatePageTestUtils} from './utils/ExerciseCreatePageTestUtils';
 
 export class FrontendUtils {
   static readonly registration = (page: Page) => new RegistrationPageTestUtils(page);
@@ -31,6 +32,7 @@ export class FrontendUtils {
 
   static readonly exercises = {
     library: (page: Page) => new ExerciseLibraryPageTestUtils(page),
+    create: (page: Page) => new ExerciseCreatePageTestUtils(page),
   };
 
   static async authenticateAsUser(user: UserRow, context: BrowserContext) {

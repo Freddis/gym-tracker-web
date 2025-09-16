@@ -47,7 +47,7 @@ export const WeightCreatePage: FC = () => {
         </div>
       </div>
       <AppBlock className="max-w-5xl">
-        <AppBlockHeader>{t(i18n.weight.add.heading)}</AppBlockHeader>
+          <AppBlockHeader>{t(i18n.weight.add.heading)}</AppBlockHeader>
           <WeightUpdateForm onUpdate={setWeight} errors={errors}/>
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
           <div className="mt-5 flex flex-row">

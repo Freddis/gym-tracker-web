@@ -11,6 +11,7 @@ import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/
 import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 
 export function ExerciseCreatePage() {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.exercises);
@@ -39,6 +40,7 @@ export function ExerciseCreatePage() {
           <span className="ml-2">{t(i18n.create.heading)}</span>
         </div>
         <AppBlock className="max-w-5xl">
+          <AppBlockHeader>{t(i18n.create.heading)}</AppBlockHeader>
           <div>
             <AppLabel>{translations.utils.objects.exercise.fields.name}</AppLabel>
             <div>
