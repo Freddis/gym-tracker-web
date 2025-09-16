@@ -11,6 +11,7 @@ import {route, routeId, RouteId} from '../../../../../common/utils/route';
 import {CrmTable} from '../../../elements/CrmTable/CrmTable';
 import {CrmTd} from '../../../elements/CrmTable/CrmTd';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
+import {AppSearchInput} from '../../../../../common/components/atoms/AppSearchInput/AppSearchInput';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
@@ -20,6 +21,7 @@ export const ExerciseListPage:FC = () => {
     queryFn: () => getCrmExercises({
       query: {
         page: searchParams.page,
+        filter: searchParams.filter,
       },
     }),
     queryKey: ['exercises', searchParams],
@@ -34,13 +36,21 @@ export const ExerciseListPage:FC = () => {
       },
     });
   };
-
+  const onSearch = (value: string| null) => {
+    navigate({
+      search: {
+        filter: value?.trim() ?? undefined,
+        page: 1,
+      },
+    });
+  };
   return (
   <>
     <AppBlockHeader className="text-left">Exercise List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
+        <AppSearchInput placeholder="Search" className="max-w-100 mb-5" onSearch={onSearch} value={searchParams.filter} />
         <CrmTable className="w-full table">
           <thead >
             <tr className="font-medium">

@@ -1,8 +1,10 @@
 import {createFileRoute} from '@tanstack/react-router';
 import {ExerciseListPage} from '../../../frontend/crm/components/pages/Exercises/ExerciseListPage/ExerciseListPage';
-import {paginatedQueryValidator} from '../../../frontend/crm/utils/validators/paginatedQueryValidator';
+import {
+  exerciseListQueryValidator,
+} from '../../../frontend/crm/components/pages/Exercises/ExerciseListPage/validators/exerciseListQueryValidator';
 
 export const Route = createFileRoute('/crm/exercises/')({
   component: ExerciseListPage,
-  validateSearch: paginatedQueryValidator,
+  validateSearch: exerciseListQueryValidator,
 });

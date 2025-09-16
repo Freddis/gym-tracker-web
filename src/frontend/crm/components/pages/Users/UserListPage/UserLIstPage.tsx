@@ -7,7 +7,6 @@ import {getCrmUsers} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
-
 const routeApi = getRouteApi('/crm/users/');
 export const UserListPage:FC = () => {
   const searchParams = routeApi.useSearch();
