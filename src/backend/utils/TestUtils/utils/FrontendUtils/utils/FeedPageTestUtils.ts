@@ -19,7 +19,8 @@ export class FeedPageTestUtils extends BasePageTestUtils {
     await this.page.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);
     });
-    await new Promise((res) => setTimeout(res, 300));
+    // todo: get rid of that
+    await new Promise((res) => setTimeout(res, 1000));
     await this.page.waitForLoadState('networkidle');
   }
 
