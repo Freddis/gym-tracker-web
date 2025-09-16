@@ -11,6 +11,7 @@ import {AuthUser} from '../../../../services/AuthService/types/AuthUser';
 import {EntryListPageTestUtils} from './utils/EntryListPageTestUtils';
 import {NotFoundPageUtils} from './utils/NotFoundPageUtils';
 import {ExerciseLibraryPageTestUtils} from './utils/ExerciseLibraryPageTestUtils';
+import {FeedPageTestUtils} from './utils/FeedPageTestUtils';
 
 export class FrontendUtils {
   static readonly registration = (page: Page) => new RegistrationPageTestUtils(page);
@@ -18,6 +19,7 @@ export class FrontendUtils {
   static readonly home = (page: Page) => new HomePageTestUtils(page);
   static readonly notFound = (page: Page) => new NotFoundPageUtils(page);
   static readonly entries = (page: Page) => new EntryListPageTestUtils(page);
+  static readonly feed = (page: Page) => new FeedPageTestUtils(page);
 
   static readonly workouts = {
     create: (page: Page) => new WorkoutCreatePageTestUtils(page),

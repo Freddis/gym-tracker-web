@@ -25,6 +25,6 @@ export class ExerciseLibraryPageTestUtils extends BasePageTestUtils {
   }
 
   async getPageHeading() {
-    return this.page.getByTestId('exercise-library-heading');
+    return this.page.getByTestId('page-heading');
   }
 }

@@ -111,7 +111,7 @@ export const ExerciseLibraryPage: FC = () => {
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
         <div className="w-full text-left mb-5">
-          <AppPageHeading data-testid="exercise-library-heading">{t(i18n.heading)}</AppPageHeading>
+          <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
           <AppSidebarBlock className="hidden md:block">
