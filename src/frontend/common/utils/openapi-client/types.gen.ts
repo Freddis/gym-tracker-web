@@ -997,7 +997,8 @@ export type PostAuthRegisterErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1102,7 +1103,8 @@ export type PostAuthLoginErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1310,7 +1312,8 @@ export type GetExercisesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1446,7 +1449,8 @@ export type PostExercisesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1560,7 +1564,8 @@ export type PutExercisesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1783,7 +1788,8 @@ export type GetExercisesBuiltInErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1906,7 +1912,8 @@ export type DeleteExercisesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2026,7 +2033,8 @@ export type GetExercisesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2136,7 +2144,8 @@ export type PatchExercisesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2260,7 +2269,8 @@ export type GetWorkoutsErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2391,7 +2401,8 @@ export type PostWorkoutsErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2505,7 +2516,8 @@ export type PutWorkoutsErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2624,7 +2636,8 @@ export type DeleteWorkoutsByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2744,7 +2757,8 @@ export type GetWorkoutsByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2861,7 +2875,8 @@ export type PatchWorkoutsByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2980,7 +2995,8 @@ export type GetWorkoutPlansErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3124,7 +3140,8 @@ export type PostWorkoutPlansErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3239,7 +3256,8 @@ export type DeleteWorkoutPlansByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3356,7 +3374,8 @@ export type GetWorkoutPlansByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3483,7 +3502,8 @@ export type PatchWorkoutPlansByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3602,7 +3622,8 @@ export type GetWorkoutTypesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3758,7 +3779,8 @@ export type PostWorkoutTypesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3873,7 +3895,8 @@ export type DeleteWorkoutTypesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3990,7 +4013,8 @@ export type GetWorkoutTypesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4129,7 +4153,8 @@ export type PatchWorkoutTypesByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4244,7 +4269,8 @@ export type PostWeightErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4357,7 +4383,8 @@ export type GetWeightByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4476,7 +4503,8 @@ export type PatchWeightByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4609,7 +4637,8 @@ export type GetArgusCheckinErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4928,7 +4957,8 @@ export type GetArgusCheckinTypesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5038,7 +5068,8 @@ export type GetEntriesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5163,7 +5194,8 @@ export type GetEntriesOwnErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5299,7 +5331,8 @@ export type GetCrmUsersErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5435,7 +5468,8 @@ export type GetCrmManagersErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5576,7 +5610,8 @@ export type PostCrmAuthLoginErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5677,7 +5712,8 @@ export type GetCrmTranslationsByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5797,7 +5833,8 @@ export type PatchCrmTranslationsByIdErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5912,7 +5949,8 @@ export type GetCrmTranslationsErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6157,7 +6195,8 @@ export type GetCrmExercisesErrors = {
           actionErrorCode:
             | "InvalidPassword"
             | "EmailAlreadyExists"
-            | "WorkoutNotFound";
+            | "WorkoutNotFound"
+            | "ExerciseNotFound";
           /**
            * Description of the error. Can be safely displayed.
            */

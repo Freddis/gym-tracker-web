@@ -28,7 +28,7 @@ export class ZodHelper {
                 }),
     ]),
     numberOrStringNumber: z.union([
-      z.number(),
+      z.number({message: 'dasdas'}),
       z.string()
                 .refine((input) => {
                   try {
@@ -59,11 +59,11 @@ export class ZodHelper {
                   } catch {
                     return false;
                   }
-                }, 'Not a valid number string')
+                }, {message: 'Not a valid number string'})
                 .transform((x) => {
                   return Number(x);
                 }),
-    ]),
+    ], {errorMap: () => ({message: 'Not a valid number string'})}),
     bigIntOrString: z.union([
       z.bigint(),
       z.string()

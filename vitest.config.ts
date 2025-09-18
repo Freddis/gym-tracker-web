@@ -2,6 +2,12 @@ import {defineConfig} from 'vitest/config';
 
 export default defineConfig({
   test: {
+    // no parralelism, since tests use clean slate
+    maxWorkers: 1,
+    minWorkers: 1,
+    sequence: {
+      concurrent: false,
+    },
     exclude: [
       '**/*.e2e.spec.ts',
       '**/*.e2e.spec.tsx',

@@ -1,15 +1,30 @@
 
 import {OpenApiMethod} from 'snap-on-openapi';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
-import {openApiRoutes} from '../../../services/ApiService/utils/openApiRoutes';
 import {BusinessUtils} from './BusinessUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type OpenApiResponse = {status: number, body: any}
 
 export class OpenApiUtils {
+
+  static async delete(route: string, data?: object) {
+    const response = await this.sendRequest(route, OpenApiMethod.DELETE, undefined, data);
+    return response;
+  }
+
+  static async deleteWithUser(route: string, user: UserRow, data?: object) {
+    const response = await this.sendRequest(route, OpenApiMethod.DELETE, user, data);
+    return response;
+  }
+
   static async get(route: string): Promise<OpenApiResponse> {
     const response = await this.sendRequest(route, OpenApiMethod.GET);
+    return response;
+  }
+
+  static async getWithUser(route: string, user: UserRow): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.GET, user);
     return response;
   }
 
@@ -46,8 +61,8 @@ export class OpenApiUtils {
     const auth = await factory.auth();
     const openApi = await factory.openApi();
     const jwt = user ? auth.createToken(user) : '';
-    openApi.addRouteMap(openApiRoutes);
-    const req = new Request(`http://localhost/${openApi.getBasePath()}${route}`, {
+    const url = `http://localhost${openApi.getBasePath()}${route}`;
+    const req = new Request(url, {
       method,
       headers: {
         'content-type': 'application/json',

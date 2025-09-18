@@ -17,8 +17,7 @@ export const createExercise = RouteFactory.createRoute({
     response: exerciseValidator,
   },
   handler: async (ctx) => {
-    const exercise = await ctx.services.models.exercise.create({
-      userId: ctx.viewer.id,
+    const exercise = await ctx.services.models.exercise.createForUser(ctx.viewer.id, {
       name: ctx.params.body.name,
       params: [],
       equipment: null,

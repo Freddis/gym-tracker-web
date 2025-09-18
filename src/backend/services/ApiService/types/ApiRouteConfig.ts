@@ -1,7 +1,6 @@
 import {OpenApiAnyRouteConfigMap, OpenApiRouteConfig} from 'snap-on-openapi';
 import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
-import {ActionErrorCode} from './ActionErrorCode';
 import {ApiRequestServices} from './ApiRequestServices';
 import {ApiError} from '../errors/ApiError';
 import {UserRouteContext} from './UserRouteContext';
@@ -80,14 +79,6 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
     },
   };
 
-  protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {
-    const result: Record<ActionErrorCode, string> = {
-      [ActionErrorCode.InvalidPassword]: 'Invalid password',
-      [ActionErrorCode.EmailAlreadyExists]: 'Email already exists',
-      [ActionErrorCode.WorkoutNotFound]: 'Workout not found',
-    };
-    return result;
-  }
   public getRequestLangauge(request: Request): Language {
     const header = request.headers.get('Locale');
     const deafaultLang = Language.English;

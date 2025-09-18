@@ -3,7 +3,7 @@ import {describe, test} from 'vitest';
 import {TestUtils} from '../../../../utils/TestUtils/TestUtils';
 
 describe('getBuiltInExerciseList', () => {
-  test('Can get exercise', async () => {
+  test('Can get exercises', async () => {
     console.log('Prepare');
     await TestUtils.seed.wipeDb();
     await TestUtils.seed.createExercise({

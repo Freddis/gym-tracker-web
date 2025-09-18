@@ -1,5 +1,5 @@
-import {and, inArray, eq, exists, isNull, asc, or, gte, ilike, sql, not} from 'drizzle-orm';
-import {DrizzleService} from '../DrizzleService/DrizzleService';
+import {and, inArray, eq, exists, isNull, asc, or, gte, ilike, sql, not, Query} from 'drizzle-orm';
+import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
 import {SemiPartial} from 'src/backend/types/SemiPartial';
@@ -10,28 +10,42 @@ import {ExerciseFilter} from './types/ExerciseFilter';
 import {TranslationService} from '../TranslationService/TranslationService';
 import {TranslationType} from '../TranslationService/types/TranslationType';
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
+import {EntityService} from '../../types/ModelService/types/EntityService';
+import {ActionError} from '../ApiService/errors/ActionError';
+import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 
-export class ExerciseService {
+interface SelectPromise<T> extends Promise<T> {
+  limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
+  offset: (n: number) => Omit<SelectPromise<T>, 'limit'| 'offset'>
+  toSQL: () => Query
+}
+
+export class ExerciseService implements EntityService<Exercise, ExerciseFilter> {
   protected drizzle: DrizzleService;
   protected translations: TranslationService;
+  protected table: AppDbSchema['exercises'];
 
   constructor(drizzle: DrizzleService, translations: TranslationService) {
     this.drizzle = drizzle;
+    this.table = this.drizzle.getSchema().exercises;
     this.translations = translations;
   }
 
-  async create(data: Omit<Exercise, 'id'|'variations'|'createdAt'|'updatedAt'>): Promise<Exercise> {
+  async create(data: Omit<Exercise, 'id' | 'variations' | 'createdAt' | 'updatedAt'>) {
     const db = await this.drizzle.getDb();
     const dbSchema = this.drizzle.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
       ...data,
+      id: undefined,
       createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
     };
     const firstRow = await db.transaction(async (db) => {
       const result = await db.insert(dbSchema.exercises).values(entity).returning();
       const firstRow = result[0];
       if (!firstRow) {
-        throw new Error('Unable to get inserted user');
+        throw new Error('Unable to get inserted exercise');
       }
       if (data.muscles.primary.length > 0 || data.muscles.secondary.length > 0) {
         const muscles: typeof dbSchema.muscles.$inferInsert[] = [];
@@ -65,7 +79,15 @@ export class ExerciseService {
     return exercise;
   }
 
-  async update(id: number, data: {name: string; description: string | null;}): Promise<void> {
+  async createForUser(userId: number, data: Omit<Exercise, 'id' | 'userId' | 'variations' | 'createdAt' | 'updatedAt'>): Promise<Exercise> {
+    return await this.create({
+      ...data,
+      userId,
+    });
+  }
+
+  async update(userId: number, id: number, data: {name: string; description: string | null;}): Promise<void> {
+    await this.hasWriteAccess(id, userId);
     const db = await this.drizzle.getDb();
     const dbSchema = this.drizzle.getSchema();
     await db.update(dbSchema.exercises)
@@ -77,18 +99,9 @@ export class ExerciseService {
       );
   }
 
-  async delete(exerciseId: number): Promise<void> {
-    const db = await this.drizzle.getDb();
-    const dbSchema = this.drizzle.getSchema();
-    const now = new Date();
-    await db.update(dbSchema.exercises)
-      .set({
-        deletedAt: now,
-        updatedAt: now,
-      })
-      .where(
-        eq(dbSchema.exercises.id, exerciseId),
-      );
+  async delete(userId: number, exerciseId: number): Promise<void> {
+    await this.hasWriteAccess(exerciseId, userId);
+    await this.deleteById(exerciseId);
   }
 
   async upsert(userId: number, data: ExerciseUpsertDto[]): Promise<Exercise[]> {
@@ -107,40 +120,63 @@ export class ExerciseService {
       target: schema.exercises.id,
       set: this.drizzle.generateConflictUpdateSetAllColumns(schema.exercises),
     }).returning();
-    const items = this.nestExercises(inserted, []);
+    const items = this.decorateRows(inserted, {});
     return items;
   }
 
-  async get(exerciseId: number, userId?: number, language?: Language): Promise<Exercise | null> {
-    const exercises = await this.getPage({ids: [exerciseId], userId, language});
+  async get(filter: ExerciseFilter): Promise<Exercise | null> {
+    const exercises = await this.paginate(filter);
     const result = exercises.items[0];
     return result ?? null;
+  }
+
+
+  async getById(id: number, language?: Language): Promise<Exercise | null> {
+    return this.get({ids: [id], language});
+  }
+
+  async getMany(filter: ExerciseFilter): Promise<Exercise[]> {
+    const rows = await (await this.getQuery(filter)).query;
+    if (rows.length === 0) {
+      return [];
+    }
+    const items = await this.decorateRows(rows, filter);
+    return items;
+  }
+
+  async deleteById(id: number): Promise<void> {
+    const exercise = await this.getById(id);
+    if (!exercise) {
+      throw new ActionError(ActionErrorCode.ExerciseNotFound);
+    }
+    const table = this.drizzle.getSchema().exercises;
+    const db = await this.drizzle.getDb();
+    await db.update(table).set({
+      deletedAt: new Date(),
+    }).where(
+      eq(table.id, exercise.id)
+    );
   }
 
   /**
    * Gets list of exercises. If exercises have variations they're going to be nested.
    * <b>Variations are going to be present in the list on top level as well, unless parentsOnly = true</b>
    */
-  async getPage(params?: ExerciseFilter & {
-    /** Only include parent exercises in items. Children only going to be nested in that case */
-    parentsOnly?: boolean
-  }): Promise<PaginatedResult<Exercise>> {
-    // todo: this algorithm is flawed. Ideally we want include parents that don't match the criteria if their children match
-    const parents = await this.paginateRows({
-      ...params,
-      parentIds: params?.parentsOnly ? null : undefined,
-    });
-    const children = await this.paginateRows({
-      ...params,
-      ids: undefined,
-      parentIds: parents.items.map((x) => x.id),
-      perPage: 1000, // no limit
-    });
-    await this.translate([...parents.items, ...children.items], params?.language);
-    const items = await this.nestExercises(parents.items, children.items);
+  async paginate(params?: ExerciseFilter): Promise<PaginatedResult<Exercise>> {
+    const page = params?.page ?? 1;
+    const limit = params?.perPage ?? 30;
+    const offset = (page - 1) * limit;
+    const query = await this.getQuery(params);
+    const rows = await query.query.limit(limit).offset(offset);
+    const count = await this.count(query.query);
+    const items = await this.decorateRows(rows, params);
     const result: PaginatedResult<Exercise> = {
       items,
-      info: parents.info,
+      info: {
+        page,
+        count,
+        pageSize: limit,
+      },
     };
     return result;
   }
@@ -160,14 +196,12 @@ export class ExerciseService {
     }
   }
 
-  protected async paginateRows(params?: ExerciseFilter): Promise<PaginatedResult<ExerciseRow>> {
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
-    const offset = (page - 1) * limit;
-
+  protected async getQuery(
+    params?: ExerciseFilter,
+  ): Promise<{query: SelectPromise<ExerciseRow[]>}> {
     // For each muscle we need subquery to find if the muscle is attached to this exercise
     // All muscles have to be attached
+    const db = await this.drizzle.getDb();
     const muscleSubsqueries = params?.muscle?.map((muscle) => exists(
         db.select({id: db._.fullSchema.muscles.id})
           .from(db._.fullSchema.muscles)
@@ -213,7 +247,22 @@ export class ExerciseService {
       params?.language ? eq(db._.fullSchema.translations.language, params.language) : sql`FALSE`,
       eq(db._.fullSchema.translations.numericKey, db._.fullSchema.exercises.id),
     );
-    const rows = await db.select()
+
+    const query = db.select({
+      id: db._.fullSchema.exercises.id,
+      name: db._.fullSchema.exercises.name,
+      description: db._.fullSchema.exercises.description,
+      difficulty: db._.fullSchema.exercises.difficulty,
+      equipment: db._.fullSchema.exercises.equipment,
+      images: db._.fullSchema.exercises.images,
+      params: db._.fullSchema.exercises.params,
+      userId: db._.fullSchema.exercises.userId,
+      copiedFromId: db._.fullSchema.exercises.copiedFromId,
+      parentExerciseId: db._.fullSchema.exercises.parentExerciseId,
+      createdAt: db._.fullSchema.exercises.createdAt,
+      updatedAt: db._.fullSchema.exercises.updatedAt,
+      deletedAt: db._.fullSchema.exercises.deletedAt,
+    })
     .from(db._.fullSchema.exercises)
     .leftJoin(db._.fullSchema.translations, joinOn)
     .where(where)
@@ -221,34 +270,44 @@ export class ExerciseService {
         asc(db._.fullSchema.translations.value),
         asc(db._.fullSchema.exercises.name),
         asc(db._.fullSchema.exercises.id),
-    )
-    .limit(limit)
-    .offset(offset);
+    );
 
-    // const count = await db.$count(db._.fullSchema.exercises, where);
-    const countRows = await db.select({
-      count: sql<number>`COUNT(*)::int`,
-    })
-    .from(db._.fullSchema.exercises)
-    .leftJoin(db._.fullSchema.translations, joinOn)
-    .where(where);
-    const count = countRows[0]?.count;
-    if (count === undefined) {
-      throw new Error("Couldn't count");
-    }
-
-    const result: PaginatedResult<ExerciseRow> = {
-      items: rows.map((x) => x.exercises),
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
-    return result;
+    return {query};
   }
 
-  protected async nestExercises(exercises: ExerciseRow[], variations: ExerciseRow[]): Promise<Exercise[]> {
+
+  protected async count(q: {toSQL: () => Query}): Promise<number> {
+    const {sql: rawSql, params} = q.toSQL();
+    let stripped = rawSql;
+    let removedParams = 0;
+
+    stripped = stripped.replace(/offset\s+\$\d+\s*$/i, () => {
+      removedParams++;
+      return '';
+    });
+
+    stripped = stripped.replace(/limit\s+\$\d+\s*$/i, () => {
+      removedParams++;
+      return '';
+    });
+    const adjustedParams = removedParams > 0 ? params.slice(0, -removedParams) : params;
+    const countQuery = sql`select count(*) as count from (${sql.raw(stripped)}) as sub`;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const {sql: countSql} = countQuery.toQuery({} as any);
+    const result = await this.drizzle.getClient().query(countSql, adjustedParams);
+    if (result.rows[0]) {
+      return Number(result.rows[0].count);
+    }
+    throw new Error("Couldn't obtain record count");
+  }
+
+
+  protected async decorateRows(exercises: ExerciseRow[], params?: ExerciseFilter): Promise<Exercise[]> {
+    const variations = await this.getMany({
+      ...params,
+      ids: undefined,
+      parentIds: exercises.map((x) => x.id),
+    });
     const exerciseIds = [...exercises.map((x) => x.id), ...variations.map((x) => x.id)];
     const db = await this.drizzle.getDb();
     const muscles = await db.select({
@@ -279,6 +338,7 @@ export class ExerciseService {
       existing.push(exercise);
       variationMap.set(exercise.parentExerciseId, existing);
     }
+    await this.translate([...exercises, ...variations], params?.language);
     const items: Exercise[] = [];
     for (const item of exercises) {
       const nested: Exercise = {
@@ -300,7 +360,7 @@ export class ExerciseService {
     return items;
   }
 
-  async hasWriteAccess(exerciseId: number, userId: number): Promise<boolean> {
+  protected async hasWriteAccess(exerciseId: number, userId: number): Promise<boolean> {
     const db = await this.drizzle.getDb();
     const item = await db.query.exercises.findFirst({
       where: (t, op) =>
@@ -309,6 +369,9 @@ export class ExerciseService {
           op.eq(t.userId, userId)
         ),
     });
+    if (!item) {
+      throw new ActionError(ActionErrorCode.NoOwnerShip);
+    }
     return !!item;
   }
 

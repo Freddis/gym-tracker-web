@@ -23,7 +23,7 @@ if (validatedLanguage.error) {
 let processed = 0;
 let page = 1;
 while (true) {
-  const chunk = await exerciseService.getPage({page: page++});
+  const chunk = await exerciseService.paginate({page: page++});
   if (chunk.items.length === 0) {
     break;
   }

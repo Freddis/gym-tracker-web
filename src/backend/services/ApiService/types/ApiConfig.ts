@@ -24,6 +24,9 @@ import {getErrorMap} from 'zod';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {translateZodError} from '../utils/translateZodError';
 import {zodErrorMessages} from '../utils/zodErrorMessages';
+import {ActionError} from '../errors/ActionError';
+import {ActionErrorResponse} from '../validators/ActionErrorResponse';
+import {ActionErrorCode} from './ActionErrorCode';
 
 export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
   basePath = '/api' as const;
@@ -94,7 +97,17 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
         return {code: ApiErrorCode.ResponseValidationFailed, body: response};
       }
     }
-
+    if (e instanceof ActionError) {
+      const humanReadable = this.getActionErrorDescriptions()[e.getActionErrorCode()];
+      const error: ActionErrorResponse = {
+        error: {
+          code: ApiErrorCode.ActionError,
+          actionErrorCode: e.getActionErrorCode(),
+          humanReadable,
+        },
+      };
+      return {code: ApiErrorCode.ActionError, body: error};
+    }
     if (e instanceof ApiError) {
       if (e.getCode() === ApiErrorCode.Unauthorized) {
         const error: UnauthorizedErrorResponse = {
@@ -120,5 +133,16 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
       },
     };
     return {code: ApiErrorCode.UnknownError, body: unknownError};
+  }
+
+  protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {
+    const result: Record<ActionErrorCode, string> = {
+      [ActionErrorCode.InvalidPassword]: 'Invalid password',
+      [ActionErrorCode.EmailAlreadyExists]: 'Email already exists',
+      [ActionErrorCode.WorkoutNotFound]: 'Workout not found',
+      [ActionErrorCode.ExerciseNotFound]: 'Exercise not found',
+      [ActionErrorCode.NoOwnerShip]: "You don't have ownership of that object",
+    };
+    return result;
   }
 }

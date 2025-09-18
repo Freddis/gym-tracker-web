@@ -4,7 +4,6 @@ import {exerciseValidator} from './exerciseValidator';
 export const exerciseUpsertDtoValidator = exerciseValidator.omit({
   userId: true,
   parentExerciseId: true,
-  muscles: true,
   variations: true,
 }).extend({
   id: exerciseValidator.shape.id.nullable().openapi({description: 'Id of the exercise'}),

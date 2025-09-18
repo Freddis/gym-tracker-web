@@ -22,4 +22,5 @@ describe('createExercise', () => {
     expect(response.status).to.eq(401);
     expect(response.body.error.code).to.eq(ApiErrorCode.Unauthorized);
   });
+
 });

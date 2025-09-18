@@ -1,7 +1,5 @@
 import {boolean, object, string} from 'zod';
 import {OpenApiMethod} from 'snap-on-openapi';
-import {ApiError} from '../../errors/ApiError';
-import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
 
@@ -25,10 +23,7 @@ export const updateExercise = RouteFactory.createRoute({
     }).openapi({description: 'Indicator of successfult operation'}),
   },
   handler: async (ctx) => {
-    if (!ctx.services.models.exercise.hasWriteAccess(ctx.params.path.id, ctx.viewer.id)) {
-      throw new ApiError(ApiErrorCode.Unauthorized);
-    }
-    await ctx.services.models.exercise.update(ctx.params.path.id, ctx.params.body);
+    await ctx.services.models.exercise.update(ctx.viewer.id, ctx.params.path.id, ctx.params.body);
     return {success: true};
   },
 });

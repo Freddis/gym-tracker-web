@@ -52,4 +52,8 @@ export class DrizzleService {
   async end() {
     this.pgClient?.end();
   }
+
+  getClient() {
+    return this.pgClient!;
+  }
 }
