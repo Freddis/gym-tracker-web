@@ -372,6 +372,19 @@ export type ExerciseUpsertDto = {
    * Date of deletion. Deleted exercises are not accessible to users.
    */
   deletedAt: Date | null;
+  /**
+   * List of muscles involved in this excercise
+   */
+  muscles: {
+    /**
+     * List of primary muscles this exercise targets
+     */
+    primary: Array<Muscle>;
+    /**
+     * List of secondary muscles this exercise targets
+     */
+    secondary: Array<Muscle>;
+  };
 };
 
 export type WorkoutUpdateDto = {
@@ -924,6 +937,36 @@ export type Translation = {
   deletedAt: Date | null;
 };
 
+/**
+ * Image View for CRM managers
+ */
+export type ManagedImage = {
+  /**
+   * Id of the exercise
+   */
+  id: number;
+  /**
+   * URL of the image
+   */
+  url: string;
+  /**
+   * Id of the user who uploaded it
+   */
+  userId: number | null;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of deletion. Deleted exercises are not accessible to users.
+   */
+  deletedAt: Date | null;
+};
+
 export type PostAuthRegisterData = {
   body?: {
     /**
@@ -998,7 +1041,8 @@ export type PostAuthRegisterErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1104,7 +1148,8 @@ export type PostAuthLoginErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1313,7 +1358,8 @@ export type GetExercisesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1450,7 +1496,8 @@ export type PostExercisesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1565,7 +1612,8 @@ export type PutExercisesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1789,7 +1837,8 @@ export type GetExercisesBuiltInErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1913,7 +1962,8 @@ export type DeleteExercisesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2034,7 +2084,8 @@ export type GetExercisesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2145,7 +2196,8 @@ export type PatchExercisesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2270,7 +2322,8 @@ export type GetWorkoutsErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2402,7 +2455,8 @@ export type PostWorkoutsErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2517,7 +2571,8 @@ export type PutWorkoutsErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2637,7 +2692,8 @@ export type DeleteWorkoutsByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2758,7 +2814,8 @@ export type GetWorkoutsByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2876,7 +2933,8 @@ export type PatchWorkoutsByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2996,7 +3054,8 @@ export type GetWorkoutPlansErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3141,7 +3200,8 @@ export type PostWorkoutPlansErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3257,7 +3317,8 @@ export type DeleteWorkoutPlansByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3375,7 +3436,8 @@ export type GetWorkoutPlansByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3503,7 +3565,8 @@ export type PatchWorkoutPlansByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3623,7 +3686,8 @@ export type GetWorkoutTypesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3780,7 +3844,8 @@ export type PostWorkoutTypesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3896,7 +3961,8 @@ export type DeleteWorkoutTypesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4014,7 +4080,8 @@ export type GetWorkoutTypesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4154,7 +4221,8 @@ export type PatchWorkoutTypesByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4270,7 +4338,8 @@ export type PostWeightErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4384,7 +4453,8 @@ export type GetWeightByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4504,7 +4574,8 @@ export type PatchWeightByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4638,7 +4709,8 @@ export type GetArgusCheckinErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4958,7 +5030,8 @@ export type GetArgusCheckinTypesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5069,7 +5142,8 @@ export type GetEntriesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5195,7 +5269,8 @@ export type GetEntriesOwnErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5332,7 +5407,8 @@ export type GetCrmUsersErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5469,7 +5545,8 @@ export type GetCrmManagersErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5611,7 +5688,8 @@ export type PostCrmAuthLoginErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5713,7 +5791,8 @@ export type GetCrmTranslationsByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5834,7 +5913,8 @@ export type PatchCrmTranslationsByIdErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5950,7 +6030,8 @@ export type GetCrmTranslationsErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6025,6 +6106,258 @@ export type GetCrmTranslationsResponses = {
 
 export type GetCrmTranslationsResponse =
   GetCrmTranslationsResponses[keyof GetCrmTranslationsResponses];
+
+export type GetCrmExercisesByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the excercise
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/crm/exercises/{id}";
+};
+
+export type GetCrmExercisesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmExercisesByIdError =
+  GetCrmExercisesByIdErrors[keyof GetCrmExercisesByIdErrors];
+
+export type GetCrmExercisesByIdResponses = {
+  /**
+   * Good Response
+   */
+  200: Exercise;
+};
+
+export type GetCrmExercisesByIdResponse =
+  GetCrmExercisesByIdResponses[keyof GetCrmExercisesByIdResponses];
+
+export type PatchCrmExercisesByIdData = {
+  body?: {
+    /**
+     * Name of the exercise
+     */
+    name: string;
+    /**
+     * Description of the exercise
+     */
+    description: string | null;
+    /**
+     * Image for the exercise
+     */
+    image?: string;
+  };
+  path: {
+    /**
+     * Id of the excercise
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/crm/exercises/{id}";
+};
+
+export type PatchCrmExercisesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchCrmExercisesByIdError =
+  PatchCrmExercisesByIdErrors[keyof PatchCrmExercisesByIdErrors];
+
+export type PatchCrmExercisesByIdResponses = {
+  /**
+   * Indicator of successfult operation
+   */
+  200: {
+    /**
+     * Stub for response. Always true since otherwise error is thrown.
+     */
+    success: boolean;
+  };
+};
+
+export type PatchCrmExercisesByIdResponse =
+  PatchCrmExercisesByIdResponses[keyof PatchCrmExercisesByIdResponses];
 
 export type GetCrmExercisesData = {
   body?: never;
@@ -6196,7 +6529,8 @@ export type GetCrmExercisesErrors = {
             | "InvalidPassword"
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
-            | "ExerciseNotFound";
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6271,6 +6605,270 @@ export type GetCrmExercisesResponses = {
 
 export type GetCrmExercisesResponse =
   GetCrmExercisesResponses[keyof GetCrmExercisesResponses];
+
+export type GetCrmImagesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Page
+     */
+    page?: number;
+    /**
+     * Filters exercises by name
+     */
+    search?: string;
+  };
+  url: "/crm/images";
+};
+
+export type GetCrmImagesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmImagesError = GetCrmImagesErrors[keyof GetCrmImagesErrors];
+
+export type GetCrmImagesResponses = {
+  /**
+   * List of images
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<ManagedImage>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetCrmImagesResponse =
+  GetCrmImagesResponses[keyof GetCrmImagesResponses];
+
+export type DeleteCrmImagesByIdData = {
+  body?: unknown;
+  path: {
+    /**
+     * Id of the image
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/crm/images/{id}";
+};
+
+export type DeleteCrmImagesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type DeleteCrmImagesByIdError =
+  DeleteCrmImagesByIdErrors[keyof DeleteCrmImagesByIdErrors];
+
+export type DeleteCrmImagesByIdResponses = {
+  /**
+   * Indicator of successfult operation
+   */
+  200: {
+    /**
+     * Stub for response. Always true since otherwise error is thrown.
+     */
+    success: boolean;
+  };
+};
+
+export type DeleteCrmImagesByIdResponse =
+  DeleteCrmImagesByIdResponses[keyof DeleteCrmImagesByIdResponses];
 
 export type ClientOptions = {
   baseURL: `${string}://${string}/api` | (string & {});

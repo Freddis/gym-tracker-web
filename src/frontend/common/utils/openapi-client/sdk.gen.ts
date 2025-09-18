@@ -116,9 +116,21 @@ import type {
   GetCrmTranslationsData,
   GetCrmTranslationsResponses,
   GetCrmTranslationsErrors,
+  GetCrmExercisesByIdData,
+  GetCrmExercisesByIdResponses,
+  GetCrmExercisesByIdErrors,
+  PatchCrmExercisesByIdData,
+  PatchCrmExercisesByIdResponses,
+  PatchCrmExercisesByIdErrors,
   GetCrmExercisesData,
   GetCrmExercisesResponses,
   GetCrmExercisesErrors,
+  GetCrmImagesData,
+  GetCrmImagesResponses,
+  GetCrmImagesErrors,
+  DeleteCrmImagesByIdData,
+  DeleteCrmImagesByIdResponses,
+  DeleteCrmImagesByIdErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -150,7 +162,9 @@ import {
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
   getCrmTranslationsResponseTransformer,
+  getCrmExercisesByIdResponseTransformer,
   getCrmExercisesResponseTransformer,
+  getCrmImagesResponseTransformer,
 } from "./transformers.gen";
 
 export type Options<
@@ -1105,6 +1119,57 @@ export const getCrmTranslations = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Returns data on an exercise
+ */
+export const getCrmExercisesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetCrmExercisesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetCrmExercisesByIdResponses,
+    GetCrmExercisesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getCrmExercisesByIdResponseTransformer,
+    url: "/crm/exercises/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updates exercise
+ */
+export const patchCrmExercisesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchCrmExercisesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchCrmExercisesByIdResponses,
+    PatchCrmExercisesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/crm/exercises/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
  * Returns data on exercises
  */
 export const getCrmExercises = <ThrowOnError extends boolean = false>(
@@ -1125,5 +1190,56 @@ export const getCrmExercises = <ThrowOnError extends boolean = false>(
     responseTransformer: getCrmExercisesResponseTransformer,
     url: "/crm/exercises",
     ...options,
+  });
+};
+
+/**
+ * Returns data on images
+ */
+export const getCrmImages = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmImagesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmImagesResponses,
+    GetCrmImagesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getCrmImagesResponseTransformer,
+    url: "/crm/images",
+    ...options,
+  });
+};
+
+/**
+ * Deletes image
+ */
+export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteCrmImagesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteCrmImagesByIdResponses,
+    DeleteCrmImagesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/crm/images/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };

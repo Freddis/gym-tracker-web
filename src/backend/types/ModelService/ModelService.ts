@@ -1,11 +1,11 @@
-import {TableConfig, SQL, eq, inArray} from 'drizzle-orm';
+import {TableConfig, SQL, eq, inArray, and, ilike} from 'drizzle-orm';
 import {PgColumn, PgTable} from 'drizzle-orm/pg-core';
 import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
 import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
 
-export abstract class ModelService<TRow extends {id:number}, TModel, TFilter extends Filter = Filter> {
+export abstract class ModelService<TRow extends {id:number}, TModel extends {id: number}, TFilter extends Filter = Filter> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {
@@ -42,7 +42,7 @@ export abstract class ModelService<TRow extends {id:number}, TModel, TFilter ext
   async decorateMany(ids: number[]): Promise<TModel[]> {
     const rows = await this.loadRows(ids);
     const result = await this.decorateRows(rows);
-    return result;
+    return this.restoreOrder(ids, result);
   }
 
   async paginate(params: Partial<TFilter>): Promise<PaginatedResult<TModel>> {
@@ -105,7 +105,7 @@ export abstract class ModelService<TRow extends {id:number}, TModel, TFilter ext
   async deleteById(id: number) {
     const plan = await this.getById(id);
     if (!plan) {
-      throw new Error('Plan not found');
+      throw new Error('Object not found');
     }
     const db = await this.drizzle.getDb();
     await db.delete(this.getTable()).where(
@@ -126,6 +126,25 @@ export abstract class ModelService<TRow extends {id:number}, TModel, TFilter ext
       throw new Error(`Exercise '${key}' not found`);
     }
     return x;
+  }
+
+  protected restoreOrder<T extends {id: number}>(ordered: number[], unordered: T[]): T[] {
+    const map = ordered.reduce((acc, id, i) => acc.set(id, i), new Map<number, number>());
+    const result: T[] = [];
+    for (const obj of unordered) {
+      const i = map.get(obj.id) ?? 0;
+      result[i] = obj;
+    }
+    return result;
+  }
+
+  protected generateLikeConditions(column: PgColumn, search: string): SQL<unknown> | undefined {
+    return and(
+        ...search.trim()
+          .split(' ')
+          .filter((x) => !!x.trim())
+          .map((x) => ilike(column, `%${x.trim()}%`))
+      );
   }
 
 }

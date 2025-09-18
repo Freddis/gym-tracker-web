@@ -1,32 +1,37 @@
 import {FC} from 'react';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
-import {keepPreviousData, useQuery} from '@tanstack/react-query';
+import {keepPreviousData, useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
-import {getCrmExercises} from '../../../../../common/utils/openapi-client';
+import {deleteCrmImagesById, getCrmImages, ManagedImage} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
-import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
-import {route, routeId, RouteId} from '../../../../../common/utils/route';
+import {routeId, RouteId} from '../../../../../common/utils/route';
 import {CrmTable} from '../../../elements/CrmTable/CrmTable';
 import {CrmTd} from '../../../elements/CrmTable/CrmTd';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {AppSearchInput} from '../../../../../common/components/atoms/AppSearchInput/AppSearchInput';
+import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
-import {FaPlus} from 'react-icons/fa6';
+import {FaXmark} from 'react-icons/fa6';
+import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
+import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 
-const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
-export const ExerciseListPage:FC = () => {
+const routeApi = getRouteApi(routeId(RouteId.CrmImageList));
+export const ImageListPage:FC = () => {
   const searchParams = routeApi.useSearch();
+  const toasts = useToasts();
   const navigate = routeApi.useNavigate();
+  const {showToastsAndSetErrors} = useResponseErrors();
+  const client = useQueryClient();
   const response = useQuery({
-    queryFn: () => getCrmExercises({
+    queryFn: () => getCrmImages({
       query: {
         page: searchParams.page,
-        filter: searchParams.filter,
+        search: searchParams.search,
       },
     }),
-    queryKey: ['exercises', searchParams],
+    queryKey: ['images', searchParams],
     placeholderData: keepPreviousData,
   });
 
@@ -41,30 +46,43 @@ export const ExerciseListPage:FC = () => {
   const onSearch = (value: string| null) => {
     navigate({
       search: {
-        filter: value?.trim() ?? undefined,
+        search: value?.trim() ?? undefined,
         page: 1,
       },
     });
   };
+  const onDeleteClick = async (img: ManagedImage) => {
+    const result = await deleteCrmImagesById({
+      path: {
+        id: img.id,
+      },
+    });
+    if (showToastsAndSetErrors(result)) {
+      return;
+    }
+
+    await client.invalidateQueries({queryKey: ['images']});
+    toasts.addSuccess('Exercise successfully updated');
+  };
+  const fixImageUrl = (url: string):string => {
+    const parts = url.split('/');
+    parts[parts.length - 1] = encodeURIComponent(parts[parts.length - 1] ?? '');
+    return parts.join('/');
+  };
   return (
   <>
-    <AppBlockHeader className="text-left">Exercise List</AppBlockHeader>
+    <AppBlockHeader className="text-left">Image List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
-        <div className="flex items-center mb-5">
-        <AppSearchInput placeholder="Search" className="max-w-100 " onSearch={onSearch} value={searchParams.filter} />
-        <div className="grow flex flex-row-reverse">
-          <AppButton variant="lg" className="inline-block">Create <FaPlus className="inline-block"/></AppButton>
-        </div>
-        </div>
+        <AppSearchInput debounce={500} placeholder="Search" className="max-w-100 mb-5" onSearch={onSearch} value={searchParams.search} />
         <CrmTable className="w-full table">
           <thead >
             <tr className="font-medium">
               <CrmTd>Id</CrmTd>
               <CrmTd>Image</CrmTd>
-              <CrmTd>Name</CrmTd>
-              <CrmTd>Variations</CrmTd>
+              <CrmTd>User</CrmTd>
+              <CrmTd>Url</CrmTd>
               <CrmTd>Created</CrmTd>
               <CrmTd>Updated</CrmTd>
               <CrmTd>Actions</CrmTd>
@@ -74,25 +92,23 @@ export const ExerciseListPage:FC = () => {
             {response.data.data.items.map((row) => (
               <tr key={row.id} className="border-b-red-200 p1">
                 <CrmTd className="min-w-20">
-                  <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
                     {row.id}
-                  </RouteLink>
                 </CrmTd>
-              <CrmTd className="min-w-20">
-                  <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
-                    <AppImage src={row.images[0]}/>
-                  </RouteLink>
+                <CrmTd className="min-w-30">
+                  <AppImage src={fixImageUrl(row.url)}/>
                 </CrmTd>
-                <CrmTd>
-                  <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
-                    {row.name}
-                  </RouteLink>
+                <CrmTd>{row.userId ?? 'None'}</CrmTd>
+                <CrmTd className="max-w-100 break-all">
+                  <AppLink href={row.url} className="text-on-main">
+                    {fixImageUrl(row.url)}
+                  </AppLink>
                 </CrmTd>
-                <CrmTd>{row.variations.length}</CrmTd>
                 <CrmTd>{row.createdAt.toISOString()}</CrmTd>
                 <CrmTd>{row.updatedAt?.toISOString() ?? '-'}</CrmTd>
                 <CrmTd>
-                 ...
+                 <AppButton onClick={onDeleteClick.bind(null, row)}>
+                  <FaXmark/>
+                 </AppButton>
                 </CrmTd>
               </tr>
             ))}

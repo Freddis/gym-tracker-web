@@ -31,6 +31,8 @@ export enum RouteId {
   CrmTranslationList,
   CrmTranslationUpdate,
   CrmExerciseList,
+  CrmExerciseUpdate,
+  CrmImageList,
 }
 
 type Inverted<T extends Record<string | number, string | number>> = {
@@ -85,6 +87,8 @@ const baseRouteMap = createRouteMap({
   '/crm/translations': RouteId.CrmTranslationList,
   '/crm/translations/update/$id': RouteId.CrmTranslationUpdate,
   '/crm/exercises': RouteId.CrmExerciseList,
+  '/crm/exercises/update/$id': RouteId.CrmExerciseUpdate,
+  '/crm/images': RouteId.CrmImageList,
 });
 
 type NonUniqueKeys<T> = {

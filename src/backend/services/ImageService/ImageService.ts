@@ -1,15 +1,79 @@
-import {BucketAlreadyOwnedByYou, CreateBucketCommand, PutObjectCommand, S3Client, S3ServiceException} from '@aws-sdk/client-s3';
+import {
+  BucketAlreadyOwnedByYou,
+  CreateBucketCommand,
+  DeleteObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+  S3ServiceException,
+} from '@aws-sdk/client-s3';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
+import {ModelService} from '../../types/ModelService/ModelService';
+import {Image} from './types/Image';
+import {SQL, and, desc, inArray} from 'drizzle-orm';
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {ImageFilter} from './types/ImageFilter';
+import {Logger} from '../../utils/Logger/Logger';
 
-export class ImageService {
+export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
   protected bucket = 'gymtracker-images-23';
-  protected drizzle: DrizzleService;
   protected s3: S3Client;
+  protected logger = new Logger(ImageService.name);
 
   constructor(drizzle: DrizzleService) {
-    this.drizzle = drizzle;
+    super(drizzle);
     this.s3 = new S3Client({});
+  }
+
+  override async deleteById(id: number): Promise<void> {
+    this.logger.info(`Deleting image '${id}'`);
+    const image = await this.getById(id);
+    if (!image) {
+      throw new Error('Image not found');
+    }
+    const fileName = image.url!.split('/').pop()!;
+    await this.deleteFileFromS3(fileName);
+    super.deleteById(id);
+  }
+
+  protected async fileExistsInS3(name: string): Promise<boolean> {
+    try {
+      await this.s3.send(
+      new HeadObjectCommand({
+        Bucket: this.bucket,
+        Key: name,
+      })
+    );
+      return true;
+    } catch (err: unknown) {
+      if (err instanceof S3ServiceException && err.name === 'NotFound') {
+        return false;
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Delete a file from S3 bucket
+   * @param bucket - The S3 bucket name
+   * @param name - The name of the file to delete
+   */
+  protected async deleteFileFromS3(name: string) {
+    this.logger.info('Checking if image exists on S3');
+    const exists = await this.fileExistsInS3(name);
+    if (!exists) {
+      this.logger.info("Image doesn't exist, throwing");
+      throw new Error(`Image doesn't exist '${name}'`);
+    }
+
+    this.logger.info('Deleting from S3');
+    const command = new DeleteObjectCommand({
+      Bucket: this.bucket,
+      Key: name,
+    });
+    const response = await this.s3.send(command);
+    this.logger.info('S3 Response: ', {name, response});
   }
 
   async getImageByName(name: string): Promise<ImageRow| null> {
@@ -26,10 +90,17 @@ export class ImageService {
   }
 
   async createFromFile(file: Buffer, name: string): Promise<ImageRow> {
+    name = encodeURIComponent(name);
     const image = this.saveImageToDb(name);
     await this.createBucket(this.bucket);
     await this.uploadFile(file, this.bucket, name);
     return image;
+  }
+
+  async createFromBase64(data: string, name: string) {
+    const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
+    const buffer = Buffer.from(base64Data, 'base64');
+    return this.createFromFile(buffer, name);
   }
 
   protected async saveImageToDb(name:string): Promise<ImageRow> {
@@ -78,5 +149,25 @@ or the multipart upload API (5TB max).`,
       }
       throw e;
     }
+  }
+
+  protected override getTable() {
+    return this.drizzle.getSchema().images;
+  }
+  protected override getWhere(params: Partial<ImageFilter>): SQL<unknown> | undefined {
+    ;
+    const where = and(
+      params.ids ? inArray(this.getTable().id, params.ids) : undefined,
+      params.search ? this.generateLikeConditions(this.getTable().url, params.search) : undefined
+    );
+    return where;
+  }
+
+
+  protected override async decorateRows(rows: ImageRow[]):Promise<Image[]> {
+    return rows;
+  }
+  protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return desc(this.getTable().id);
   }
 }

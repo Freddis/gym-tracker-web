@@ -76,7 +76,11 @@ export class GlobalServiceFactory {
   }
 
   async exercise(): Promise<ExerciseService> {
-    return new ExerciseService(await this.drizzle(), await this.translation());
+    return new ExerciseService(
+      await this.drizzle(),
+      await this.translation(),
+      await this.image(),
+    );
   }
 
   async workout(): Promise<WorkoutService> {

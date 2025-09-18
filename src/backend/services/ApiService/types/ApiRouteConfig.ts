@@ -95,6 +95,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
 
     const services: ApiRequestServices = {
       auth: await this.factory.auth(),
+      image: await this.factory.image(),
       models: {
         argusCheckin: await this.factory.argusCheckin(),
         workout: await this.factory.workout(),

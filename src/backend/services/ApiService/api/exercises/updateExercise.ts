@@ -23,7 +23,7 @@ export const updateExercise = RouteFactory.createRoute({
     }).openapi({description: 'Indicator of successfult operation'}),
   },
   handler: async (ctx) => {
-    await ctx.services.models.exercise.update(ctx.viewer.id, ctx.params.path.id, ctx.params.body);
+    await ctx.services.models.exercise.updateForUser(ctx.viewer.id, ctx.params.path.id, ctx.params.body);
     return {success: true};
   },
 });

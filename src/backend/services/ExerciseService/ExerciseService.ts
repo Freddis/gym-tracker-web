@@ -13,6 +13,7 @@ import {Language} from '../../../frontend/common/components/layout/LanguageProvi
 import {EntityService} from '../../types/ModelService/types/EntityService';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
+import {ImageService} from '../ImageService/ImageService';
 
 interface SelectPromise<T> extends Promise<T> {
   limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
@@ -23,12 +24,14 @@ interface SelectPromise<T> extends Promise<T> {
 export class ExerciseService implements EntityService<Exercise, ExerciseFilter> {
   protected drizzle: DrizzleService;
   protected translations: TranslationService;
+  protected images: ImageService;
   protected table: AppDbSchema['exercises'];
 
-  constructor(drizzle: DrizzleService, translations: TranslationService) {
+  constructor(drizzle: DrizzleService, translations: TranslationService, images: ImageService) {
     this.drizzle = drizzle;
     this.table = this.drizzle.getSchema().exercises;
     this.translations = translations;
+    this.images = images;
   }
 
   async create(data: Omit<Exercise, 'id' | 'variations' | 'createdAt' | 'updatedAt'>) {
@@ -86,17 +89,31 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     });
   }
 
-  async update(userId: number, id: number, data: {name: string; description: string | null;}): Promise<void> {
-    await this.hasWriteAccess(id, userId);
+  async update(id: number, data: {name: string; description: string | null; image?: string}): Promise<void> {
+    const update: Partial<ExerciseRow> = {
+      name: data.name,
+      description: data.description,
+      updatedAt: new Date(),
+    };
+    if (data.image) {
+      const now = new Date().getTime().toString();
+      const mils = now.substring(now.length - 5);
+      const name = `${data.name.trim()}${mils}.jpg`;
+      const image = await this.images.createFromBase64(data.image, name);
+      update.images = [image.url];
+    }
     const db = await this.drizzle.getDb();
     const dbSchema = this.drizzle.getSchema();
     await db.update(dbSchema.exercises)
-      .set({
-        ...data,
-        updatedAt: new Date(),
-      }).where(
+      .set(update)
+      .where(
         eq(dbSchema.exercises.id, id)
       );
+  }
+
+  async updateForUser(userId: number, id: number, data: {name: string; description: string | null;}): Promise<void> {
+    await this.hasWriteAccess(id, userId);
+    return await this.update(id, data);
   }
 
   async delete(userId: number, exerciseId: number): Promise<void> {

@@ -29,7 +29,9 @@ import type {
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
   GetCrmTranslationsResponse,
+  GetCrmExercisesByIdResponse,
   GetCrmExercisesResponse,
+  GetCrmImagesResponse,
 } from "./types.gen";
 
 const exerciseSchemaResponseTransformer = (data: any) => {
@@ -386,11 +388,38 @@ export const getCrmTranslationsResponseTransformer = async (
   return data;
 };
 
+export const getCrmExercisesByIdResponseTransformer = async (
+  data: any,
+): Promise<GetCrmExercisesByIdResponse> => {
+  data = exerciseSchemaResponseTransformer(data);
+  return data;
+};
+
 export const getCrmExercisesResponseTransformer = async (
   data: any,
 ): Promise<GetCrmExercisesResponse> => {
   data.items = data.items.map((item: any) => {
     return exerciseSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const managedImageSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
+export const getCrmImagesResponseTransformer = async (
+  data: any,
+): Promise<GetCrmImagesResponse> => {
+  data.items = data.items.map((item: any) => {
+    return managedImageSchemaResponseTransformer(item);
   });
   return data;
 };

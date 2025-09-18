@@ -137,6 +137,5 @@ describe('upsertExercises', async () => {
     expect(inserted?.createdAt.toISOString()).to.eq(exercise.createdAt.toISOString());
     expect(inserted?.updatedAt?.toISOString()).to.eq(exercise.updatedAt.toISOString());
     expect(inserted?.deletedAt).to.eq(null);
-
   });
 });

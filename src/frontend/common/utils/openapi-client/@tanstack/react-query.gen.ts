@@ -40,7 +40,11 @@ import {
   getCrmTranslationsById,
   patchCrmTranslationsById,
   getCrmTranslations,
+  getCrmExercisesById,
+  patchCrmExercisesById,
   getCrmExercises,
+  getCrmImages,
+  deleteCrmImagesById,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -149,9 +153,19 @@ import type {
   GetCrmTranslationsData,
   GetCrmTranslationsError,
   GetCrmTranslationsResponse,
+  GetCrmExercisesByIdData,
+  PatchCrmExercisesByIdData,
+  PatchCrmExercisesByIdError,
+  PatchCrmExercisesByIdResponse,
   GetCrmExercisesData,
   GetCrmExercisesError,
   GetCrmExercisesResponse,
+  GetCrmImagesData,
+  GetCrmImagesError,
+  GetCrmImagesResponse,
+  DeleteCrmImagesByIdData,
+  DeleteCrmImagesByIdError,
+  DeleteCrmImagesByIdResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -1971,6 +1985,57 @@ export const getCrmTranslationsInfiniteOptions = (
   );
 };
 
+export const getCrmExercisesByIdQueryKey = (
+  options: Options<GetCrmExercisesByIdData>,
+) => createQueryKey("getCrmExercisesById", options);
+
+/**
+ * Returns data on an exercise
+ */
+export const getCrmExercisesByIdOptions = (
+  options: Options<GetCrmExercisesByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmExercisesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmExercisesByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updates exercise
+ */
+export const patchCrmExercisesByIdMutation = (
+  options?: Partial<Options<PatchCrmExercisesByIdData>>,
+): UseMutationOptions<
+  PatchCrmExercisesByIdResponse,
+  AxiosError<PatchCrmExercisesByIdError>,
+  Options<PatchCrmExercisesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchCrmExercisesByIdResponse,
+    AxiosError<PatchCrmExercisesByIdError>,
+    Options<PatchCrmExercisesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchCrmExercisesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getCrmExercisesQueryKey = (
   options?: Options<GetCrmExercisesData>,
 ) => createQueryKey("getCrmExercises", options);
@@ -2044,4 +2109,103 @@ export const getCrmExercisesInfiniteOptions = (
       queryKey: getCrmExercisesInfiniteQueryKey(options),
     },
   );
+};
+
+export const getCrmImagesQueryKey = (options?: Options<GetCrmImagesData>) =>
+  createQueryKey("getCrmImages", options);
+
+/**
+ * Returns data on images
+ */
+export const getCrmImagesOptions = (options?: Options<GetCrmImagesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmImagesQueryKey(options),
+  });
+};
+
+export const getCrmImagesInfiniteQueryKey = (
+  options?: Options<GetCrmImagesData>,
+): QueryKey<Options<GetCrmImagesData>> =>
+  createQueryKey("getCrmImages", options, true);
+
+/**
+ * Returns data on images
+ */
+export const getCrmImagesInfiniteOptions = (
+  options?: Options<GetCrmImagesData>,
+) => {
+  return infiniteQueryOptions<
+    GetCrmImagesResponse,
+    AxiosError<GetCrmImagesError>,
+    InfiniteData<GetCrmImagesResponse>,
+    QueryKey<Options<GetCrmImagesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetCrmImagesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetCrmImagesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getCrmImages({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getCrmImagesInfiniteQueryKey(options),
+    },
+  );
+};
+
+/**
+ * Deletes image
+ */
+export const deleteCrmImagesByIdMutation = (
+  options?: Partial<Options<DeleteCrmImagesByIdData>>,
+): UseMutationOptions<
+  DeleteCrmImagesByIdResponse,
+  AxiosError<DeleteCrmImagesByIdError>,
+  Options<DeleteCrmImagesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteCrmImagesByIdResponse,
+    AxiosError<DeleteCrmImagesByIdError>,
+    Options<DeleteCrmImagesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteCrmImagesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
