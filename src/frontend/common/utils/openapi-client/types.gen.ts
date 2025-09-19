@@ -6475,6 +6475,10 @@ export type GetCrmExercisesData = {
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
+    /**
+     * User ID
+     */
+    userId?: number;
   };
   url: "/crm/exercises";
 };

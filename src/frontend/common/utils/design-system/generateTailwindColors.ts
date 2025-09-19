@@ -24,6 +24,7 @@ const getPaletteVariables = (color: Color, mode: 'dark'|'light') => {
 
   lines.push(...[
     ...Object.values(palettes).map((x) => `--color-${x[mode].name}: ${x[mode].color};`),
+    ...Object.values(palettes).map((x) => `--color-on-${x[mode].name}: ${x[mode].text};`),
     `--color-main: ${palette.color};`,
     `--color-on-main: ${palette.text};`,
   ]);
@@ -77,6 +78,7 @@ export const generateTailwindColorsOnUpdate = async () => {
     ...alwaysPresentClasses,
     '@theme  inline {',
     ...Object.values(palettes).map((x) => `--color-${x.dark.name}: var(--color-${x.dark.name});`),
+    ...Object.values(palettes).map((x) => `--color-on-${x.dark.name}: var(--color-on-${x.dark.name});`),
     `--color-accent: ${palettes.accent.light.color};`,
     '--color-main: var(--color-main);',
     '--color-on-main: var(--color-on-main);',

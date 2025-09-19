@@ -10,7 +10,9 @@ export const getManagedExerciseList = RouteFactory.createRoute({
   description: 'Returns data on exercises',
   path: '/',
   validators: {
-    query: getExerciseListQueryValidator,
+    query: getExerciseListQueryValidator.extend({
+      userId: RouteFactory.validators.strings.number.optional().openapi({description: 'User ID'}),
+    }),
     response: RouteFactory.validators.paginatedResponse(exerciseValidator).openapi({description: 'List of excercises'}),
   },
   handler: async (ctx) => {

@@ -14,6 +14,7 @@ import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage
 import {AppSearchInput} from '../../../../../common/components/atoms/AppSearchInput/AppSearchInput';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {FaPlus} from 'react-icons/fa6';
+import {ZodHelper} from '../../../../../../backend/utils/ZodHelper/ZodHelper';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
@@ -24,6 +25,7 @@ export const ExerciseListPage:FC = () => {
       query: {
         page: searchParams.page,
         filter: searchParams.filter,
+        userId: searchParams.userId,
       },
     }),
     queryKey: ['exercises', searchParams],
@@ -38,10 +40,21 @@ export const ExerciseListPage:FC = () => {
       },
     });
   };
-  const onSearch = (value: string| null) => {
+  const onSearchChange = (value: string| null) => {
     navigate({
       search: {
+        ...searchParams,
         filter: value?.trim() ?? undefined,
+        page: 1,
+      },
+    });
+  };
+
+  const onUserChange = (value: string| null) => {
+    navigate({
+      search: {
+        ...searchParams,
+        userId: ZodHelper.quick((x) => x.numberOrStringNumber, value),
         page: 1,
       },
     });
@@ -52,8 +65,16 @@ export const ExerciseListPage:FC = () => {
     {response.isLoading && <AppSpinner/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
-        <div className="flex items-center mb-5">
-        <AppSearchInput placeholder="Search" className="max-w-100 " onSearch={onSearch} value={searchParams.filter} />
+        <div className="flex items-center mb-5 gap-5">
+        <AppSearchInput placeholder="Search" className="max-w-100" onSearch={onSearchChange} value={searchParams.filter} />
+        <AppSearchInput
+         placeholder="User ID"
+         minLength={1}
+         className="max-w-20"
+         validator={ZodHelper.validators.numberOrStringNumber}
+         onSearch={onUserChange}
+         value={searchParams.userId}
+        />
         <div className="grow flex flex-row-reverse">
           <AppButton variant="lg" className="inline-block">Create <FaPlus className="inline-block"/></AppButton>
         </div>
@@ -63,6 +84,7 @@ export const ExerciseListPage:FC = () => {
             <tr className="font-medium">
               <CrmTd>Id</CrmTd>
               <CrmTd>Image</CrmTd>
+              <CrmTd>User ID</CrmTd>
               <CrmTd>Name</CrmTd>
               <CrmTd>Variations</CrmTd>
               <CrmTd>Created</CrmTd>
@@ -78,10 +100,13 @@ export const ExerciseListPage:FC = () => {
                     {row.id}
                   </RouteLink>
                 </CrmTd>
-              <CrmTd className="min-w-20">
+                <CrmTd className="min-w-20">
                   <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
                     <AppImage src={row.images[0]}/>
                   </RouteLink>
+                </CrmTd>
+                <CrmTd className="min-w-20">
+                  {row.userId}
                 </CrmTd>
                 <CrmTd>
                   <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">

@@ -1,4 +1,4 @@
-import {z, ZodError} from 'zod';
+import {z, ZodError, TypeOf, ZodTypeAny} from 'zod';
 
 export class ZodHelper {
 
@@ -93,5 +93,13 @@ export class ZodHelper {
     }
     const path = firstError.path.length > 0 ? `${firstError.path.join('.')}: ` : '';
     return `${path}${firstError.message}`;
+  }
+
+  static quick<T extends ZodTypeAny>(val: (x: typeof ZodHelper['validators']) => T, value: unknown): TypeOf<T> | undefined {
+    const result = val(ZodHelper.validators).safeParse(value);
+    if (result.success) {
+      return result.data;
+    }
+    return undefined;
   }
 }
