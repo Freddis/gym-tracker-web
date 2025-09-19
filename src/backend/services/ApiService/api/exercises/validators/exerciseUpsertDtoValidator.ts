@@ -1,14 +1,17 @@
 import {RouteFactory} from '../../../utils/RouteFactory';
-import {exerciseValidator} from './exerciseValidator';
+import {excerciseValidatorDescriptions, exerciseValidator} from './exerciseValidator';
 
-export const exerciseUpsertDtoValidator = exerciseValidator.omit({
+const validator = exerciseValidator.omit({
   userId: true,
   parentExerciseId: true,
   variations: true,
 }).extend({
-  id: exerciseValidator.shape.id.nullable().openapi({description: 'Id of the exercise'}),
-  createdAt: RouteFactory.validators.strings.datetime.openapi({description: 'Date of last update'}),
-  updatedAt: RouteFactory.validators.strings.datetime.nullable().openapi({
-    description: 'Date of deletion. Deleted exercises are not accessible to users.',
-  }),
-}).openapi({ref: 'ExerciseUpsertDto'});
+  id: exerciseValidator.shape.id.nullable(),
+  createdAt: RouteFactory.validators.strings.datetime,
+  updatedAt: RouteFactory.validators.strings.datetime.nullable(),
+  deletedAt: RouteFactory.validators.strings.datetime.nullable(),
+});
+
+
+export const exerciseUpsertDtoValidator = RouteFactory.validators.describeShape(validator, excerciseValidatorDescriptions)
+  .openapi({ref: 'ExerciseUpsertDto'});

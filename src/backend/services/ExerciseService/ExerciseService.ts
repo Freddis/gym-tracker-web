@@ -14,6 +14,8 @@ import {EntityService} from '../../types/ModelService/types/EntityService';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ImageService} from '../ImageService/ImageService';
+import {ExerciseMuscleRow} from '../DrizzleService/types/ExerciseMuscleRow';
+import {NewModel} from '../../types/NewModel';
 
 interface SelectPromise<T> extends Promise<T> {
   limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
@@ -127,18 +129,61 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     if (data.length === 0) {
       return [];
     }
-    const attachedToUser: SemiPartial<ExerciseRow, 'id'>[] = data.map((x) => ({
-      ...x,
-      id: x.id ?? undefined,
-      userId: userId,
-      parentExerciseId: null,
-    }));
-    const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
-      target: schema.exercises.id,
-      set: this.drizzle.generateConflictUpdateSetAllColumns(schema.exercises),
-    }).returning();
-    const items = this.decorateRows(inserted, {});
-    return items;
+    const result = db.transaction(async (db) => {
+      const ids = data.map((x) => x.id).filter((x) => x !== null);
+      const existing = await this.getMany({ids});
+      if (existing.some((x) => x.userId !== userId)) {
+        throw new ActionError(ActionErrorCode.NoOwnerShip);
+      }
+      const muscleTable = this.drizzle.getSchema().muscles;
+      await db.delete(muscleTable).where(
+        inArray(muscleTable.exerciseId, ids)
+      );
+
+      const attachedToUser: SemiPartial<ExerciseRow, 'id'>[] = data.map((x) => ({
+        ...x,
+        id: x.id ?? undefined,
+        userId: userId,
+        parentExerciseId: null,
+      }));
+      const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
+        target: schema.exercises.id,
+        set: this.drizzle.generateConflictUpdateSetAllColumns(schema.exercises),
+      }).returning();
+      const muscles: NewModel<ExerciseMuscleRow>[] = [];
+      data.forEach((row, i) => {
+        if (!inserted[i]) {
+          throw new Error('Problem with inserted indexes'); // never
+        }
+        const exerciseId = inserted[i]?.id;
+        for (const muscle of row.muscles.primary) {
+          muscles.push({
+            muscle,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+            exerciseId: exerciseId,
+            isPrimary: true,
+          });
+        }
+        for (const muscle of row.muscles.secondary) {
+          muscles.push({
+            muscle,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+            exerciseId: exerciseId,
+            isPrimary: false,
+          });
+        }
+      });
+      if (muscles.length > 0) {
+        await db.insert(muscleTable).values(muscles);
+      }
+      const items = this.decorateRows(inserted, {});
+      return items;
+    });
+    return result;
   }
 
   async get(filter: ExerciseFilter): Promise<Exercise | null> {
@@ -233,12 +278,12 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
 
     const where = and(
       or(
-          params?.userId === null ? isNull(db._.fullSchema.exercises.userId) : undefined,
-          params?.userId ? or(
-            eq(db._.fullSchema.exercises.userId, params.userId),
-            params?.includeBuiltIn ? isNull(db._.fullSchema.exercises.userId) : undefined,
-          ) : undefined
-        ),
+        params?.userId === null ? isNull(db._.fullSchema.exercises.userId) : undefined,
+        params?.userId ? or(
+          eq(db._.fullSchema.exercises.userId, params.userId),
+          params?.includeBuiltIn ? isNull(db._.fullSchema.exercises.userId) : undefined,
+        ) : undefined
+      ),
       params?.updatedAfter ? gte(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
       params?.filter ? or(
         and(
@@ -257,7 +302,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
         params?.parentIds === null ? isNull(db._.fullSchema.exercises.parentExerciseId) : undefined,
         params?.parentIds ? inArray(db._.fullSchema.exercises.parentExerciseId, params.parentIds) : undefined,
       ),
-      isNull(db._.fullSchema.exercises.deletedAt)
+      !params?.includeDeleted ? isNull(db._.fullSchema.exercises.deletedAt) : undefined,
     );
     const joinOn = and(
       eq(db._.fullSchema.translations.type, TranslationType.ExeciseName),

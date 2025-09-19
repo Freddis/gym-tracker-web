@@ -324,9 +324,6 @@ export const Muscle = {
   ADDUCTORS: "Adductors",
 } as const;
 
-/**
- * Exercise. Either from built-in library or created by a user.
- */
 export type ExerciseUpsertDto = {
   /**
    * Id of the exercise
@@ -361,11 +358,11 @@ export type ExerciseUpsertDto = {
    */
   copiedFromId: number | null;
   /**
-   * Date of last update
+   * Date the creation
    */
   createdAt: Date;
   /**
-   * Date of deletion. Deleted exercises are not accessible to users.
+   * Date of last update
    */
   updatedAt: Date | null;
   /**

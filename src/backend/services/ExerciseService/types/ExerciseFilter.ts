@@ -10,7 +10,8 @@ export interface ExerciseFilter extends Filter{
     equipment?: Equipment,
     updatedAfter?: Date,
     parentIds?: number[] | null,
-    includeBuiltIn?: boolean,
     language?: Language,
     parentsOnly?: boolean
+    includeBuiltIn?: boolean,
+    includeDeleted?: boolean,
   }
