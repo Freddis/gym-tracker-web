@@ -1,0 +1,150 @@
+import {FC, useEffect, useState} from 'react';
+import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
+import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {getRouteApi} from '@tanstack/react-router';
+import {
+  getCrmExercisesById,
+  patchCrmExercisesById,
+  PatchCrmExercisesByIdData,
+} from '../../../../../common/utils/openapi-client';
+import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
+import {route, RouteId} from '../../../../../common/utils/route';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
+import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
+import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
+import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/AppTextInput';
+import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
+import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
+import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
+import {AppImageInput} from '../../../../../common/components/atoms/AppImageInput/AppImageInput';
+
+const routeApi = getRouteApi(route(RouteId.CrmExerciseUpdate));
+export const ExerciseUpdatePage: FC = () => {
+  const params = routeApi.useParams();
+  const navigate = routeApi.useNavigate();
+  const toasts = useToasts();
+  const client = useQueryClient();
+  const {getSmartError, showToastsAndSetErrors} =
+    useResponseErrors<
+      Exclude<PatchCrmExercisesByIdData['body'], undefined>
+    >();
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState<string | null>(null);
+  const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
+  const response = useQuery({
+    queryFn: () =>
+      getCrmExercisesById({
+        path: {
+          id,
+        },
+      }),
+    queryKey: ['exercises', id],
+    placeholderData: keepPreviousData,
+  });
+
+  useEffect(() => {
+    if (response.data?.data) {
+      setName(response.data.data.name);
+      setDescription(response.data.data.description ?? '');
+    }
+  }, [response.data?.data]);
+
+  if (response.isLoading) {
+    return <AppSpinner />;
+  }
+  if (!response.isSuccess || response.data.error) {
+    return <AppApiErrorDisplay error={response.data?.error?.error} />;
+  }
+
+  const onSaveClick = async () => {
+    const result = await patchCrmExercisesById({
+      path: {
+        id: id,
+      },
+      body: {
+        name,
+        description,
+        image: image ?? undefined,
+      },
+    });
+    if (showToastsAndSetErrors(result)) {
+      return;
+    }
+
+    await client.invalidateQueries({queryKey: ['translations']});
+    toasts.addSuccess('Exercise successfully updated');
+    navigate({
+      to: route(RouteId.CrmExerciseList),
+    });
+  };
+  const item = response.data.data;
+  return (
+    <>
+      <div className="flex flex-col max-w-5xl w-full">
+        <div className="mb-5 -mt-5">
+          <RouteLink to={route(RouteId.CrmExerciseList)}>
+            Exercise List
+          </RouteLink>
+          <span className="ml-2">&gt;&gt;</span>
+          <span className="ml-2">Edit Exercise {item.id.toString()}</span>
+        </div>
+      </div>
+      <AppBlock className="w-full table-fixed">
+        <AppBlock className="w-full">
+          <AppBlockHeader>Edit Exercise {item.id.toString()}</AppBlockHeader>
+          <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
+            <AppLabel>Name</AppLabel>
+            <div className="relative">
+              <AppTextInput
+                className="w-200 max-w-full"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+              <AppInputError
+                className="w-[327px] max-w-full "
+                error={getSmartError((x) => x.name)}
+              />
+            </div>
+            <div />
+            <AppLabel>Description</AppLabel>
+            <div className="relative">
+              <AppTextInput
+                className="w-200 max-w-full"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+              />
+              <AppInputError
+                className="w-[327px] max-w-full "
+                error={getSmartError((x) => x.description)}
+              />
+            </div>
+            <div />
+            <AppLabel>Image</AppLabel>
+            <div className="relative">
+              <AppImageInput url={item.images[0]} onUpdate={setImage} />
+                <AppInputError
+                className="w-[327px] max-w-full "
+                error={getSmartError((x) => x.image)}
+              />
+            </div>
+            <div />
+          </div>
+          <div className="mt-5 border-b-1 border-neutral-on-surface" />
+          <div className="mt-5 flex flex-row">
+            <RouteLink to={route(RouteId.CrmExerciseList)}>Back</RouteLink>
+            <div className="grow flex flex-row-reverse gap-2">
+              <AppButton onClick={onSaveClick}>Save</AppButton>
+            </div>
+          </div>
+        </AppBlock>
+      </AppBlock>
+    </>
+  );
+};
