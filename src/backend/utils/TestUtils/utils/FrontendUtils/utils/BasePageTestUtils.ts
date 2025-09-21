@@ -47,7 +47,7 @@ export abstract class BasePageTestUtils {
   }
 
   async getSelectedLanguage(): Promise<string | null> {
-    return await this.page.getByTestId('selected-language').textContent();
+    return await this.page.getByTestId('selected-language').getAttribute('alt');
   }
 
   async clickOnLangaugeDropdown(): Promise<void> {

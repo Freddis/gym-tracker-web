@@ -1,6 +1,5 @@
 import {FC, useContext, useState} from 'react';
 import {Language} from '../../layout/LanguageProvider/enums/Language';
-import {FiChevronDown, FiChevronUp} from 'react-icons/fi';
 import {AppDropdownMenu, AppDropdownMenuTrigger,
   AppDropdownMenuContent,
   AppDropdownMenuItem} from '../AppDropdownMenu/AppDropdownMenu';
@@ -13,14 +12,17 @@ export const AppLanguageDropdown: FC<{className?: string}> = ({className}) => {
   const theme = useContext(ThemeContext);
   const languages = Object.values(Language);
   const [opened, setOpened] = useState(false);
+  const flagUrl = (lang: Language) => {
+    const country = lang === Language.English ? 'US' : lang;
+    const ucCountry = country.toUpperCase();
+    return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${ucCountry}.svg`;
+  };
   return (
     <div className={cn(className)} onClick={() => setOpened(!opened)}>
       <AppDropdownMenu open={opened} onOpenChange={(e) => setOpened(e)}>
         <AppDropdownMenuTrigger className="text-lg" data-testid="dropdown-languages">
         <div className={'flex gap-0.5 items-center cursor-pointer'}>
-          <span className="text-base w-5 " data-testid="selected-language">{language.language}</span>
-          {!opened && <FiChevronDown className=" relative" />}
-          {opened && <FiChevronUp className=" relative" />}
+          <img alt={language.language} src={flagUrl(language.language)} className="w-5" data-testid="selected-language" />
         </div>
         </AppDropdownMenuTrigger>
         <AppDropdownMenuContent sideOffset={-2} className={`${theme.toLowerCase()}`}>
@@ -28,9 +30,14 @@ export const AppLanguageDropdown: FC<{className?: string}> = ({className}) => {
             <AppDropdownMenuItem
               key={lang}
               onClick={() => language.setLanguage(lang)}
-              className="focus:bg-inherit cursor-pointer focus:text-accent"
+              className="focus:bg-on-surface cursor-pointer focus:text-accent"
               data-testid={`language-${lang}}`}
-              >{lang}</AppDropdownMenuItem>
+              >
+              <div className="flex gap-2 items-center">
+                <img alt={lang} src={flagUrl(lang)} className="w-5" />
+                <span>{lang}</span>
+              </div>
+              </AppDropdownMenuItem>
           ))}
         </AppDropdownMenuContent>
       </AppDropdownMenu>
