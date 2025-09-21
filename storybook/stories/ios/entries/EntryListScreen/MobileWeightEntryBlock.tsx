@@ -4,11 +4,11 @@ import {useAppPartialTranslation} from '../../../../../src/frontend/website/util
 import {Entry, Weight} from '../../../../../src/frontend/common/utils/openapi-client';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
-import {dateToEntryString} from '../../../../../src/frontend/website/utils/dateToEntryString';
 
 export const MobileWeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
+  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
   const date = new Date(weight.createdAt);
+  const weekDayString = translations.utils.time.weekDays[date.getDay()];
   return (
     <MobileBlock>
       <div className="flex flex-col sm:flex-row">
@@ -19,7 +19,13 @@ export const MobileWeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boo
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">
-        {dateToEntryString(date)}
+          {date.toLocaleDateString()}
+        </div>
+      </div>
+       <div className="flex row ">
+        <div className="flex flex-col grow"></div>
+        <div className="flex flex-col text-right">
+          <div>{weekDayString}, {date.getHours().toString().padStart(2, '0')}:{date.getMinutes().toString().padStart(2, '0')}</div>
         </div>
       </div>
       <div className="flex row">

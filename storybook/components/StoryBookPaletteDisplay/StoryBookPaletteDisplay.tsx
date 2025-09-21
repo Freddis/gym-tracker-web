@@ -13,6 +13,12 @@ export const StoryBookPaletteDisplay: FC<{palette: Palette}> = (props) => {
           <>
           <StoryBookColorDisplay name="Surface Color" value={props.palette.surface.color}/>
           <StoryBookColorDisplay name="Surface Text" value={props.palette.surface.text}/>
+          {props.palette.surface.cavity && (
+            <>
+            <StoryBookColorDisplay name="Surface Cavity Color" value={props.palette.surface.cavity.color}/>
+            <StoryBookColorDisplay name="Surface Cavity Text" value={props.palette.surface.cavity.text}/>
+            </>
+          )}
           </>
         )}
         {props.palette.cavity && (

@@ -28,6 +28,9 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
             <AppLink>Leg Day</AppLink>
           )}
         </div>
+        <div className="grow flex flex-row sm:justify-end">
+          {date.toLocaleDateString()}
+        </div>
       </div>
       <div className="flex row ">
         <div className="flex flex-col grow">
@@ -35,8 +38,9 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
           <div className="grow">{t(i18n.calories)}: {workout.calories}</div>
         </div>
         <div className="flex flex-col text-right">
-          <div>{date.toLocaleDateString()}</div>
+          {/* <div>{date.toLocaleDateString()}</div> */}
           <div>{weekDayString}, {date.getHours().toString().padStart(2, '0')}:{date.getMinutes().toString().padStart(2, '0')}</div>
+          {/* <div className="grow">{t(i18n.duration)}: {time}</div> */}
         </div>
       </div>
       <div className="mt-2 flex flex-col">
