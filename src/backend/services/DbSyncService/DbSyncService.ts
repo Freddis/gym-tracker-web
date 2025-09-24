@@ -23,6 +23,7 @@ export class DbSyncService {
     this.logger.info('Starting sync');
     const localDb = await this.local.getDb();
     const tables: Array<[string, PgTable, PgColumn]> = [
+      ['managers', localDb._.fullSchema.managers, localDb._.fullSchema.managers.id],
       ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id],
       ['exercises', localDb._.fullSchema.exercises, localDb._.fullSchema.exercises.id],
       ['exercise muscles', localDb._.fullSchema.muscles, localDb._.fullSchema.muscles.id],
@@ -32,6 +33,7 @@ export class DbSyncService {
       ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id],
       ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id],
       ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id],
+      ['translations', localDb._.fullSchema.translations, localDb._.fullSchema.translations.id],
     ];
 
     for (const [name, table] of [...tables].reverse()) {
