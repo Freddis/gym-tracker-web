@@ -64,7 +64,6 @@ export const ExerciseLibraryPage: FC = () => {
   }, [inView, response.hasNextPage, response.isFetchingNextPage, response.fetchNextPage]);
 
   const filterByEquipment = (equipment: Equipment, checked: boolean) => {
-    console.group(equipment, checked);
     navigate({
       search: {
         ...searchParams,

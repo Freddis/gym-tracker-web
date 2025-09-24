@@ -10,7 +10,7 @@ type AppSearchInputProps = InputHTMLAttributes<HTMLInputElement> & {
   validator?: ZodTypeAny
 }
 export const AppSearchInput: FC<AppSearchInputProps> = (props) => {
-  const {minLength = 3, debounce = 1000, validator} = props;
+  const {minLength = 3, debounce = 1000, validator, onSearch, ...rest} = props;
   const [searchValue, setSearchValue] = useState(props.value ?? '');
   const hasError = validator && searchValue !== '' && !validator.safeParse(searchValue).success;
   const errorClasses = hasError ? 'border-1 border-on-danger text-on-danger' : undefined;
@@ -23,7 +23,7 @@ export const AppSearchInput: FC<AppSearchInputProps> = (props) => {
     setSearchValue(e.target.value);
     if (trimmed.length < minLength) {
       const timeout = setTimeout(() => {
-        props.onSearch(null);
+        onSearch(null);
       }, debounce);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setTimeoutHandle(timeout as any);
@@ -31,11 +31,11 @@ export const AppSearchInput: FC<AppSearchInputProps> = (props) => {
     }
 
     const timeout = setTimeout(() => {
-      props.onSearch(trimmed);
+      onSearch(trimmed);
     }, debounce);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setTimeoutHandle(timeout as any);
   };
 
-  return <AppTextInput {...props} className={cn(errorClasses, props.className)} onChange={onChange} value={searchValue} />;
+  return <AppTextInput {...rest} className={cn(errorClasses, props.className)} onChange={onChange} value={searchValue} />;
 };

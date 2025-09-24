@@ -1,12 +1,12 @@
 'use client';
 
-import {Check, ChevronsUpDown, Command} from 'lucide-react';
+import {Check, ChevronsUpDown} from 'lucide-react';
 import {cn} from '../../../utils/cn';
 import {FC, useEffect, useState} from 'react';
 import {AppComboboxProps} from './types/AppComboboxProps';
-import {Popover, PopoverTrigger, PopoverContent} from '@radix-ui/react-popover';
-import {ScrollArea} from '@radix-ui/react-scroll-area';
-import {CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem} from 'cmdk';
+import {Popover, PopoverContent, PopoverTrigger} from '../../shadcn/popover';
+import {ScrollArea} from '../../shadcn/scroll-area';
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from '../../shadcn/command';
 
 export const AppCombobox: FC<AppComboboxProps> = (props) => {
   const {'data-testid': testid, className, values, selected, placeholder, notFound, defaultValue} = props;

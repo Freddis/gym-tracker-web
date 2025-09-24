@@ -34,7 +34,7 @@ export default defineConfig({
         'src/client.tsx',
         'src/routeTree.gen.ts',
         'scripts',
-        '**/FrontendUtils/**', // want to see usage on test utils, but not frontend
+        '**/TestUtils/**', // want to see usage on test utils, but not frontend
       ],
       reporter: [
         ['html-spa', {subdir: 'spa'}],
