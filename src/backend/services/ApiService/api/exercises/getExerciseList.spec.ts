@@ -33,6 +33,7 @@ describe('getExerciseList', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     console.log('Test');
     const response = await TestUtils.openApi.getWithUser('/exercises', user);

@@ -1,9 +1,9 @@
 import {FC} from 'react';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
-import {keepPreviousData, useQuery} from '@tanstack/react-query';
+import {keepPreviousData, useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
-import {getCrmExercises} from '../../../../../common/utils/openapi-client';
+import {Exercise, getCrmExercises, patchCrmExercisesById} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
@@ -13,13 +13,19 @@ import {CrmTd} from '../../../elements/CrmTable/CrmTd';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {AppSearchInput} from '../../../../../common/components/atoms/AppSearchInput/AppSearchInput';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
-import {FaPlus} from 'react-icons/fa6';
+import {FaEye, FaEyeSlash, FaPlus} from 'react-icons/fa6';
 import {ZodHelper} from '../../../../../../backend/utils/ZodHelper/ZodHelper';
+import {Color} from '../../../../../common/utils/design-system/types/Color';
+import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
+import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
+  const client = useQueryClient();
+  const toasts = useToasts();
+  const {showToastsAndSetErrors} = useResponseErrors();
   const response = useQuery({
     queryFn: () => getCrmExercises({
       query: {
@@ -50,7 +56,7 @@ export const ExerciseListPage:FC = () => {
     });
   };
 
-  const onUserChange = (value: string| null) => {
+  const onUserTextInputChange = (value: string| null) => {
     navigate({
       search: {
         ...searchParams,
@@ -58,6 +64,23 @@ export const ExerciseListPage:FC = () => {
         page: 1,
       },
     });
+  };
+
+  const onArchiveClick = async (item: Exercise) => {
+    const result = await patchCrmExercisesById({
+      path: {
+        id: item.id,
+      },
+      body: {
+        isArchived: !item.isArchived,
+      },
+    });
+    if (showToastsAndSetErrors(result)) {
+      return;
+    }
+
+    await client.invalidateQueries({queryKey: ['exercises']});
+    toasts.addSuccess('Exercise successfully updated');
   };
   return (
   <>
@@ -72,7 +95,7 @@ export const ExerciseListPage:FC = () => {
          minLength={1}
          className="max-w-20"
          validator={ZodHelper.validators.numberOrStringNumber}
-         onSearch={onUserChange}
+         onSearch={onUserTextInputChange}
          value={searchParams.userId}
         />
         <div className="grow flex flex-row-reverse">
@@ -87,6 +110,7 @@ export const ExerciseListPage:FC = () => {
               <CrmTd>User ID</CrmTd>
               <CrmTd>Name</CrmTd>
               <CrmTd>Variations</CrmTd>
+              <CrmTd>Archived</CrmTd>
               <CrmTd>Created</CrmTd>
               <CrmTd>Updated</CrmTd>
               <CrmTd>Actions</CrmTd>
@@ -114,10 +138,22 @@ export const ExerciseListPage:FC = () => {
                   </RouteLink>
                 </CrmTd>
                 <CrmTd>{row.variations.length}</CrmTd>
+                <CrmTd>{row.isArchived ? 'Yes' : 'No'} </CrmTd>
                 <CrmTd>{row.createdAt.toISOString()}</CrmTd>
                 <CrmTd>{row.updatedAt?.toISOString() ?? '-'}</CrmTd>
                 <CrmTd>
-                 ...
+                <div className="flex gap-2">
+                {!!row.isArchived && (
+                  <AppButton palette={Color.Success} className="bg-on-main text-white" onClick={onArchiveClick.bind(null, row)}>
+                    <FaEye />
+                  </AppButton>
+                )}
+                {!row.isArchived && (
+                  <AppButton palette={Color.Danger} className="bg-on-main text-white" onClick={onArchiveClick.bind(null, row)}>
+                    <FaEyeSlash />
+                  </AppButton>
+                )}
+                </div>
                 </CrmTd>
               </tr>
             ))}

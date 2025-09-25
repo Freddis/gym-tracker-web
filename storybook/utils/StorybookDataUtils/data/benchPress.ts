@@ -56,7 +56,8 @@ export const benchPress: Exercise = {
         primary: [Muscle.PECS],
         secondary: [Muscle.FRONT_DELTOIDS, Muscle.TRICEPS],
       },
+      isArchived: false,
     },
   ],
-
+  isArchived: false,
 };

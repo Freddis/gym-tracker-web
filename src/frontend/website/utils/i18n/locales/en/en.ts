@@ -34,6 +34,7 @@ export const dictionary = {
           deletedAt: 'Deleted At',
           muscles: 'Muscles',
           variations: 'Variations',
+          isArchived: 'Archived',
         } satisfies Record<keyof Exercise, string>,
       },
       weight: {

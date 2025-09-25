@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const adduction: Exercise = {
   id: 1680,
   name: 'Selectorized Adduction',
-  description:
-    `<1>Sit on the seat and place feet on the platform. Your inner knees Touch the knee padding
+  description: `<1>Sit on the seat and place feet on the platform. Your inner knees Touch the knee padding
     .<2>Pull your legs towards the center of your body. Hold for one second. Return to starting position.`,
   difficulty: 0,
   equipment: 'selectorized',
@@ -21,4 +20,5 @@ export const adduction: Exercise = {
   deletedAt: null,
   muscles: {primary: ['Adductors'], secondary: []},
   variations: [],
+  isArchived: false,
 };

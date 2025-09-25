@@ -17,6 +17,7 @@ export const getBuiltInExerciseList = RouteFactory.createRoute({
     const result = await ctx.services.models.exercise.paginate({
       ...ctx.params.query,
       parentsOnly: true,
+      isArchived: false,
       userId: null,
       language: ctx.language,
     });

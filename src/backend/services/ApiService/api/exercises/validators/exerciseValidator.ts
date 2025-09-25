@@ -22,6 +22,7 @@ export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
   deletedAt: 'Date of deletion. Deleted exercises are not accessible to users.',
   muscles: 'List of muscles involved in this excercise',
   variations: 'List of variations of this excercise. This nesting is usually used to avoid cluttering in lists on the frontend side.',
+  isArchived: "Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts ",
 };
 
 const muscleValidator = nativeEnum(Muscle).openapi({ref: 'Muscle', description: 'Body Muscle'});

@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const deadLift: Exercise = {
   id: 182,
   name: 'Barbell Deadlift',
-  description:
-    '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
+  description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
     'with feet shoulder width apart. Lower yourself to grasp the barbell with overhand Grip. Keep your back ' +
     'straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are standing ' +
     'straight with your chest out. Hold for one second. Return to starting position.',
@@ -33,8 +32,7 @@ export const deadLift: Exercise = {
     {
       id: 183,
       name: 'Barbell Deadlift',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
         'with feet shoulder width apart. Lower yourself to grasp the barbell with overhand Grip. Keep your back ' +
         'straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are standing ' +
         'straight with your chest out. Hold for one second. Return to starting position.',
@@ -58,12 +56,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 2508,
       name: 'Barbell Deadlift (Platform)',
-      description:
-        '<1>Place barbell on the Floor. Stand on a low platform or secured weight plates. Position yourself so that ' +
+      description: '<1>Place barbell on the Floor. Stand on a low platform or secured weight plates. Position yourself so that ' +
         'your shins are close to the bar. Stand straight with feet shoulder width apart.<2>Lower yourself to grasp ' +
         'the barbell with overhand Grip. Keep your back straight. Bend knees slightly. Stick chest outward and look ' +
         'ahead. Pull barbell up until you are standing straight with your chest out. Hold for one second. Return to ' +
@@ -88,12 +86,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 201,
       name: 'Barbell Deadlift (Romanian)',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
         'with feet shoulder width apart. Lower yourself to grasp the barbell with overhand Grip. Keep your back ' +
         'straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are standing ' +
         'straight with your chest out. Hold for one second. Return to starting position.',
@@ -117,12 +115,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 286,
       name: 'Barbell Deadlift (Single Leg)',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Lower yourself to ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Lower yourself to ' +
         'grasp the barbell with overhand Grip. At the same time, lift one leg off the Floor. Keep your back straight. ' +
         'Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are standing straight ' +
         'with your chest out. Hold for one second. Return to starting position.',
@@ -146,12 +144,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 287,
       name: 'Barbell Deadlift (Stiff Leg and Back)',
-      description:
-        '<1>Stand straight with feet shoulder width apart. Hold onto the barbell with your chest out.<2>Lower ' +
+      description: '<1>Stand straight with feet shoulder width apart. Hold onto the barbell with your chest out.<2>Lower ' +
         'yourself towards the Floor. Keep your back and legs straight. Hold for one second. Return to starting ' +
         'position.',
       difficulty: 0,
@@ -174,12 +172,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps', 'Abductors',
         ],
       },
+      isArchived: false,
     },
     {
       id: 288,
       name: 'Barbell Deadlift (Stiff Leg)',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
         'with feet shoulder width apart. Lower yourself to grasp the barbell with overhand Grip. Keep your back and ' +
         'legs straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are ' +
         'standing straight with your chest out. Hold for one second. Return to starting position.',
@@ -203,12 +201,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps', 'Abductors',
         ],
       },
+      isArchived: false,
     },
     {
       id: 2509,
       name: 'Barbell Deadlift (Straddle)',
-      description:
-        '<1>Stand with feet wider than shoulder width, one foot more forward than the other. Place a barbell in ' +
+      description: '<1>Stand with feet wider than shoulder width, one foot more forward than the other. Place a barbell in ' +
         'between your legs.<2>Lower yourself to grasp the barbell with mixed Grip. Keep your back straight. Bend knees ' +
         'slightly. Stick chest outward and look ahead. Pull barbell up until you are standing straight with your chest ' +
         'out. Hold for one second. Return to starting position.',
@@ -232,12 +230,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 195,
       name: 'Barbell Deadlift (Suitcase)',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that the barbell is next to your foot. Stand straight ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that the barbell is next to your foot. Stand straight ' +
         'with feet shoulder width apart. Lower yourself to grasp the barbell with neutral Grip. Keep your back ' +
         'straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are standing ' +
         'straight with your chest out. Hold for one second. Return to starting position.',
@@ -261,12 +259,12 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
     {
       id: 289,
       name: 'Barbell Deadlift (Sumo)',
-      description:
-        '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
+      description: '<1>Place barbell on the Floor. Position yourself so that your shins are close to the bar. Stand straight ' +
         'with feet wider than shoulder width apart. Lower yourself to grasp the barbell with overhand Grip. Keep your ' +
         'back straight. Bend knees slightly. Stick chest outward and look ahead.<2>Pull barbell up until you are ' +
         'standing straight with your chest out. Hold for one second. Return to starting position.',
@@ -290,6 +288,8 @@ export const deadLift: Exercise = {
           'Trapezius', 'Quadriceps',
         ],
       },
+      isArchived: false,
     },
   ],
+  isArchived: false,
 };

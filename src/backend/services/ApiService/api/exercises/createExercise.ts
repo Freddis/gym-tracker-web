@@ -31,6 +31,7 @@ export const createExercise = RouteFactory.createRoute({
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     return exercise;
   },

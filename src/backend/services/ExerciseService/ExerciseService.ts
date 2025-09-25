@@ -16,12 +16,19 @@ import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ImageService} from '../ImageService/ImageService';
 import {ExerciseMuscleRow} from '../DrizzleService/types/ExerciseMuscleRow';
 import {NewModel} from '../../types/NewModel';
+import {ManagedExerciseUpdateDto} from './types/MangagedExerciseUpdateDto';
 
 interface SelectPromise<T> extends Promise<T> {
   limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
   offset: (n: number) => Omit<SelectPromise<T>, 'limit'| 'offset'>
   toSQL: () => Query
 }
+type Exact<Shape, Input> =
+  Input extends Shape
+    ? Exclude<keyof Input, keyof Shape> extends never
+      ? Input
+      : never
+    : never;
 
 export class ExerciseService implements EntityService<Exercise, ExerciseFilter> {
   protected drizzle: DrizzleService;
@@ -91,16 +98,23 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     });
   }
 
-  async update(id: number, data: {name: string; description: string | null; image?: string}): Promise<void> {
+  async update<T>(id: number, data: Exact<ManagedExerciseUpdateDto, T>): Promise<void> {
     const update: Partial<ExerciseRow> = {
       name: data.name,
       description: data.description,
+      isArchived: data.isArchived,
       updatedAt: new Date(),
     };
+    const existing = await this.getById(id);
+    if (!existing) {
+      throw new ActionError(ActionErrorCode.ExerciseNotFound);
+    }
+
     if (data.image) {
       const now = new Date().getTime().toString();
       const mils = now.substring(now.length - 5);
-      const name = `${data.name.trim()}${mils}.jpg`;
+      const imageName = data.name?.trim() ?? existing.name.trim();
+      const name = `${imageName}${mils}.jpg`;
       const image = await this.images.createFromBase64(data.image, name);
       update.images = [image.url];
     }
@@ -303,6 +317,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
         params?.parentIds ? inArray(db._.fullSchema.exercises.parentExerciseId, params.parentIds) : undefined,
       ),
       !params?.includeDeleted ? isNull(db._.fullSchema.exercises.deletedAt) : undefined,
+       params?.isArchived !== undefined ? eq(this.table.isArchived, params.isArchived) : undefined,
     );
     const joinOn = and(
       eq(db._.fullSchema.translations.type, TranslationType.ExeciseName),
@@ -324,6 +339,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
       createdAt: db._.fullSchema.exercises.createdAt,
       updatedAt: db._.fullSchema.exercises.updatedAt,
       deletedAt: db._.fullSchema.exercises.deletedAt,
+      isArchived: db._.fullSchema.exercises.isArchived,
     })
     .from(db._.fullSchema.exercises)
     .leftJoin(db._.fullSchema.translations, joinOn)
@@ -362,7 +378,6 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     }
     throw new Error("Couldn't obtain record count");
   }
-
 
   protected async decorateRows(exercises: ExerciseRow[], params?: ExerciseFilter): Promise<Exercise[]> {
     const variations = await this.getMany({

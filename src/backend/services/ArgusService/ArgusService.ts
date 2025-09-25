@@ -223,6 +223,7 @@ export class ArgusService {
         parentExerciseId: null,
         deletedAt: null,
         equipment: null,
+        isArchived: false,
       };
       exercises.push(row);
       const parent = map.get(baseName);

@@ -82,6 +82,10 @@ export type Exercise = {
    */
   parentExerciseId: number | null;
   /**
+   * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+   */
+  isArchived: boolean;
+  /**
    * Date the creation
    */
   createdAt: Date;
@@ -150,6 +154,10 @@ export type Exercise = {
      * Id of the parent exercises. If this id is not NULL then this excercise is a variation of another exercise
      */
     parentExerciseId: number | null;
+    /**
+     * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+     */
+    isArchived: boolean;
     /**
      * Date the creation
      */
@@ -357,6 +365,10 @@ export type ExerciseUpsertDto = {
    * Id of exercise from built-in library this excersize was copied from. Only relevant to exercises created by users
    */
   copiedFromId: number | null;
+  /**
+   * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+   */
+  isArchived: boolean;
   /**
    * Date the creation
    */
@@ -6224,17 +6236,21 @@ export type GetCrmExercisesByIdResponse =
 export type PatchCrmExercisesByIdData = {
   body?: {
     /**
-     * Name of the exercise
+     * Exercise Name
      */
-    name: string;
+    name?: string;
     /**
-     * Description of the exercise
+     * Description and instructions on how to perform this exercise
      */
-    description: string | null;
+    description?: string | null;
     /**
-     * Image for the exercise
+     * Image for the exercise. Base64 encoded string
      */
     image?: string;
+    /**
+     * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
+     */
+    isArchived?: boolean;
   };
   path: {
     /**

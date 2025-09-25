@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const pullUp: Exercise = {
   id: 2046,
   name: 'Backpack Pullup',
-  description:
-    '<1>While wearing a backpack, hold onto the bar with neutral Grip. Place your leg on a stable object that '
+  description: '<1>While wearing a backpack, hold onto the bar with neutral Grip. Place your leg on a stable object that '
     + 'you can push off from.<2>Pull yourself up until your head is above the bar. Hold for a brief moment and '
     + 'then return to starting position.',
   difficulty: 0,
@@ -25,8 +24,7 @@ export const pullUp: Exercise = {
     {
       id: 2048,
       name: 'Backpack Pullup (Neutral Grip)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with neutral Grip.<2>Pull yourself up until your head is '
+      description: '<1>While wearing a backpack, hold onto the bar with neutral Grip.<2>Pull yourself up until your head is '
         + 'above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
@@ -42,12 +40,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:32.115Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 3076,
       name: 'Backpack Pullup (Neutral Grip)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with neutral Grip.<2>Pull yourself up until your head is '
+      description: '<1>While wearing a backpack, hold onto the bar with neutral Grip.<2>Pull yourself up until your head is '
         + 'above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: null,
@@ -63,12 +61,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:40.225Z'),
       deletedAt: null,
       muscles: {primary: [], secondary: []},
+      isArchived: false,
     },
     {
       id: 2047,
       name: 'Backpack Pullup (Neutral Grip, Assisted)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with neutral Grip. Place your leg on a stable object '
+      description: '<1>While wearing a backpack, hold onto the bar with neutral Grip. Place your leg on a stable object '
         + 'that you can push off from.<2>Pull yourself up until your head is above the bar. Hold for a brief '
         + 'moment and then return to starting position.',
       difficulty: 0,
@@ -85,12 +83,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:32.474Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2050,
       name: 'Backpack Pullup (Regular Grip)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands shoulder '
+      description: '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands shoulder '
         + 'width apart.<2>Pull yourself up until your head is above the bar. Hold for a brief moment and then '
         + 'return to starting position.',
       difficulty: 0,
@@ -107,12 +105,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:32.493Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2049,
       name: 'Backpack Pullup (Regular Grip, Assisted)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands shoulder '
+      description: '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands shoulder '
         + 'width apart. Place your leg on a stable object that you can push off from.<2>Pull yourself up until '
         + 'your head is above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
@@ -129,12 +127,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:32.489Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2052,
       name: 'Backpack Pullup (Rock Climbing Grip)',
-      description:
-        '<1>While wearing a backpack, position your hands on rock climbing Grip.<2>Pull yourself up until your '
+      description: '<1>While wearing a backpack, position your hands on rock climbing Grip.<2>Pull yourself up until your '
         + 'head is above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
@@ -150,12 +148,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:43.406Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2051,
       name: 'Backpack Pullup (Rock Climbing Grip, Assisted)',
-      description:
-        '<1>While wearing a backpack, position your hands on rock climbing Grip. Place your leg on a stable '
+      description: '<1>While wearing a backpack, position your hands on rock climbing Grip. Place your leg on a stable '
         + 'object that you can push off from.<2>Pull yourself up until your head is above the bar. Hold for a '
         + 'brief moment and then return to starting position.',
       difficulty: 0,
@@ -172,12 +170,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:32.498Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2054,
       name: 'Backpack Pullup (Wide Grip)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands wider '
+      description: '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands wider '
         + 'than shoulder width apart.<2>Pull yourself up until your head is above the bar. Hold for a brief '
         + 'moment and then return to starting position.',
       difficulty: 0,
@@ -194,12 +192,12 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:33.768Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
     {
       id: 2053,
       name: 'Backpack Pullup (Wide Grip, Assisted)',
-      description:
-        '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands wider '
+      description: '<1>While wearing a backpack, hold onto the bar with an overhand Grip and position your hands wider '
         + 'than shoulder width apart. Place your leg on a stable object that you can push off from.<2>Pull '
         + 'yourself up until your head is above the bar. Hold for a brief moment and then return to starting '
         + 'position.',
@@ -217,6 +215,8 @@ export const pullUp: Exercise = {
       updatedAt: new Date('2025-08-05T08:54:43.410Z'),
       deletedAt: null,
       muscles: {primary: ['Lats'], secondary: ['Biceps', 'Forearms']},
+      isArchived: false,
     },
   ],
+  isArchived: false,
 };

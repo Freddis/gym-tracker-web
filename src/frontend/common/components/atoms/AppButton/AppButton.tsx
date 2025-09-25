@@ -19,7 +19,7 @@ export const AppButton: FC<AppButtonProps> = (props) => {
     ...sizes[variant],
     props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ];
-  const className = twMerge('px-2 py-1 font-normal  rounded-sm cursor-pointer ', classes, props.className);
+  const className = twMerge('px-2 py-1 font-normal rounded-sm cursor-pointer flex flex-row items-center gap-2', classes, props.className);
   return (
     <button {...props} className={className}>{props.children}</button>
   );

@@ -29,6 +29,7 @@ describe('upsertExercises', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     };
     // test
     const response = await TestUtils.openApi.put('/exercises', user, {
@@ -87,6 +88,7 @@ describe('upsertExercises', async () => {
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
+      isArchived: false,
       muscles: {
         primary: [],
         secondary: [],
@@ -160,6 +162,7 @@ describe('upsertExercises', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     const exercise: ExerciseUpsertDto = {
       id: null,
@@ -173,6 +176,7 @@ describe('upsertExercises', async () => {
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
+      isArchived: false,
       muscles: {
         primary: [Muscle.Abductors],
         secondary: [Muscle.Glutes],
@@ -282,6 +286,7 @@ describe('upsertExercises', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     // test
     const response = await TestUtils.openApi.put('/exercises', user, {

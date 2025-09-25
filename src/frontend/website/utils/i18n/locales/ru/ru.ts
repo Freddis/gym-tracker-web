@@ -139,6 +139,7 @@ export const dictionary: Translation = {
           deletedAt: 'Дата Удаления',
           muscles: 'Мышцы',
           variations: 'Вариации',
+          isArchived: 'В архиве',
         },
       },
     },

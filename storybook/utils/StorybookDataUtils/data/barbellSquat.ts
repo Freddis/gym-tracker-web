@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const barbellSquat: Exercise = {
   id: 331,
   name: 'Barbell Squat',
-  description:
-    `<1>Stand straight with feet shoulder width apart. Place barbell on the back of your shoulders. 
+  description: `<1>Stand straight with feet shoulder width apart. Place barbell on the back of your shoulders. 
     Hold barbell with overhand Grip. Distance between your hands should be wider than shoulder width apart. 
     Adjust feet to face slightly outward.<2>Lower yourself by bending your knees. 
     Your back is straight throughout the whole movement. Stop when your thighs are parallel with the ground.
@@ -33,4 +32,5 @@ export const barbellSquat: Exercise = {
     ],
   },
   variations: [],
+  isArchived: false,
 };

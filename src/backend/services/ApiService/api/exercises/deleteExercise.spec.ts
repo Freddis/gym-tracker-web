@@ -23,6 +23,7 @@ describe('deleteExercise', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     // test
     const actionResponse = await TestUtils.openApi.delete(`/exercises/${exercise.id}`);
@@ -46,6 +47,7 @@ describe('deleteExercise', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     // pre-check
     const response = await TestUtils.openApi.get(`/exercises/${exercise.id}`);
@@ -80,6 +82,7 @@ describe('deleteExercise', async () => {
         primary: [],
         secondary: [],
       },
+      isArchived: false,
     });
     // pre-check
     const response = await TestUtils.openApi.get(`/exercises/${exercise.id}`);

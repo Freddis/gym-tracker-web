@@ -44,6 +44,7 @@ export const UpdateExercisePage: FC = () => {
       secondary: [],
     },
     variations: [],
+    isArchived: false,
   });
   const id = !Number.isNaN(Number(params.exerciseId)) ? Number(params.exerciseId) : 0;
   const response = useQuery({

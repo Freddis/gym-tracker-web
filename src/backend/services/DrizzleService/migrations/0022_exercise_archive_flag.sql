@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."exercises" ADD COLUMN "isArchived" boolean DEFAULT false NOT NULL;

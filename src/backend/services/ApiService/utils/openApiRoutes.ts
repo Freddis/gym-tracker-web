@@ -39,7 +39,7 @@ import {getTranslationList} from '../api/translations/getTranslationList';
 import {getTranslation} from '../api/translations/getTranslation';
 import {updateTranslation} from '../api/translations/updateTranslation';
 import {getManagedExerciseList} from '../api/exercises/managed-exercises/getManagedExerciseList';
-import {getManagedExercise} from '../api/exercises/managed-exercises/getManagerExercise';
+import {getManagedExercise} from '../api/exercises/managed-exercises/getManagedExercise';
 import {updateManagedExercise} from '../api/exercises/managed-exercises/updateManagedExercise';
 import {getManagedImages} from '../api/images/managed-images/getManagedImages';
 import {deleteManagedImage} from '../api/images/managed-images/deleteManagedImage';

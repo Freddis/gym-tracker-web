@@ -48,6 +48,7 @@ export const exercises = gymTracker.table('exercises', {
   userId: integer(),
   copiedFromId: integer(),
   parentExerciseId: integer(),
+  isArchived: boolean().notNull().default(false),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),

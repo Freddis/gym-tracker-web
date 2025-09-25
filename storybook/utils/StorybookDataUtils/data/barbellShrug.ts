@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const barbellShrug: Exercise = {
   id: 317,
   name: 'Barbell Shrug',
-  description:
-    `<1>Stand straight with feet shoulder width apart. 
+  description: `<1>Stand straight with feet shoulder width apart. 
     Hold barbell with overhand Grip. Distance between your hands should be wider than shoulder width apart.
      Position barbell in front of your thighs.<2>Shrug your shoulders. Hold for one second. Return to starting position.`,
   difficulty: 0,
@@ -22,4 +21,5 @@ export const barbellShrug: Exercise = {
   deletedAt: null,
   muscles: {primary: ['Trapezius'], secondary: []},
   variations: [],
+  isArchived: false,
 };

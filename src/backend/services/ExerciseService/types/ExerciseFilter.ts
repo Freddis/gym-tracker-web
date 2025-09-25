@@ -12,6 +12,7 @@ export interface ExerciseFilter extends Filter{
     parentIds?: number[] | null,
     language?: Language,
     parentsOnly?: boolean
+    isArchived?: boolean,
     includeBuiltIn?: boolean,
     includeDeleted?: boolean,
   }

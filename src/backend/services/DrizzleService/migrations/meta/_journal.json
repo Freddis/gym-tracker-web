@@ -155,6 +155,13 @@
       "when": 1757773043773,
       "tag": "0021_numeric_keys_type_fix",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1758789788361,
+      "tag": "0022_exercise_archive_flag",
+      "breakpoints": true
     }
   ]
 }

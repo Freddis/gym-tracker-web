@@ -47,6 +47,7 @@ export class SeedUtils {
       copiedFromId: null,
       parentExerciseId: null,
       deletedAt: null,
+      isArchived: false,
       ...exercise,
     });
     return result;

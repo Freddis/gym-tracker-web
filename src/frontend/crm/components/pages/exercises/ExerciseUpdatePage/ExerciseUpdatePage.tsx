@@ -78,7 +78,7 @@ export const ExerciseUpdatePage: FC = () => {
       return;
     }
 
-    await client.invalidateQueries({queryKey: ['translations']});
+    await client.invalidateQueries({queryKey: ['exercises']});
     toasts.addSuccess('Exercise successfully updated');
     navigate({
       to: route(RouteId.CrmExerciseList),
@@ -128,7 +128,7 @@ export const ExerciseUpdatePage: FC = () => {
             <div />
             <AppLabel>Image</AppLabel>
             <div className="relative">
-              <AppImageInput url={item.images[0]} onUpdate={setImage} />
+              <AppImageInput url={item.images[0]} onUpdate={setImage} className="w-80 h-80" />
                 <AppInputError
                 className="w-[327px] max-w-full "
                 error={getSmartError((x) => x.image)}

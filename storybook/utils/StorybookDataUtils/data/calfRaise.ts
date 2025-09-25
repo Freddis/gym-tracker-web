@@ -3,8 +3,7 @@ import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 export const calfRaise: Exercise = {
   id: 1595,
   name: 'Plate Loaded Calf Raise (Seated)',
-  description:
-    `<1>Sit straight with your knees under the knee padding. Hold onto the handles. 
+  description: `<1>Sit straight with your knees under the knee padding. Hold onto the handles. 
     Position your feet so that your heels are off the platform.
     <2>Tiptoe so that your toes point away from you. Hold for one second. Return to starting position.`,
   difficulty: 0,
@@ -22,4 +21,5 @@ export const calfRaise: Exercise = {
   deletedAt: null,
   muscles: {primary: ['Soleus'], secondary: ['Gastrocnemius']},
   variations: [],
+  isArchived: false,
 };
