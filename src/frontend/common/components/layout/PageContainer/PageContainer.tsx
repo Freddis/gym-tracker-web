@@ -1,7 +1,7 @@
 import {ReactNode} from 'react';
-import {twMerge} from 'tailwind-merge';
+import {cn} from '../../../utils/cn';
 
 export function PageContainer(props: {children: ReactNode | ReactNode[], className?: string}) {
-  const className = twMerge('bg-main text-on-main flex flex-col items-center p-3 py-5 md:p-10 min-h-full grow', props.className);
+  const className = cn('bg-main text-on-main flex flex-col items-center p-3 py-5 md:p-10 min-h-full grow', props.className);
   return <div className={className}>{props.children}</div>;
 }

@@ -1,7 +1,7 @@
 import {ButtonHTMLAttributes, FC} from 'react';
-import {twMerge} from 'tailwind-merge';
 import {EnumMap} from '../../../../../backend/types/EnumMap';
 import {Color} from '../../../utils/design-system/types/Color';
+import {cn} from '../../../utils/cn';
 
 type AppButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {variant?: 'md' | 'lg', palette?: Color };
 
@@ -19,7 +19,7 @@ export const AppButton: FC<AppButtonProps> = (props) => {
     ...sizes[variant],
     props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ];
-  const className = twMerge('px-2 py-1 font-normal rounded-sm cursor-pointer flex flex-row items-center gap-2', classes, props.className);
+  const className = cn('px-2 py-1 font-normal rounded-sm cursor-pointer inline-flex flex-row items-center gap-2', classes, props.className);
   return (
     <button {...props} className={className}>{props.children}</button>
   );

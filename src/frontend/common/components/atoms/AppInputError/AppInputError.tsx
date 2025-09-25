@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {FaCircleXmark} from 'react-icons/fa6';
-import {twMerge} from 'tailwind-merge';
+import {cn} from '../../../utils/cn';
 
 export const AppInputError: FC<{error: string | null, className?: string}> = (props) => {
   const error = props.error ?? 'None';
@@ -9,7 +9,7 @@ export const AppInputError: FC<{error: string | null, className?: string}> = (pr
   const classes = `palette-danger text-on-main duration-1000 
   transition-opacity mt-1 mb-2 flex items-center rounded-xs ${opacity} ${visibility}`;
   return (
-    <div {...props} className={twMerge(classes, props.className)}>
+    <div {...props} className={cn(classes, props.className)}>
       {props.error && <FaCircleXmark className="inline mr-2"/>}
       <span>{error}</span>
     </div>
