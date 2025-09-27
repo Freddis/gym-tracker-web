@@ -18,6 +18,7 @@ import {ZodHelper} from '../../../../../../backend/utils/ZodHelper/ZodHelper';
 import {Color} from '../../../../../common/utils/design-system/types/Color';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
+import {TableDate} from '../../../elements/TableDate/TableDate';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
@@ -110,6 +111,7 @@ export const ExerciseListPage:FC = () => {
               <CrmTd>User ID</CrmTd>
               <CrmTd>Name</CrmTd>
               <CrmTd>Variations</CrmTd>
+              <CrmTd>Muscles</CrmTd>
               <CrmTd>Archived</CrmTd>
               <CrmTd>Created</CrmTd>
               <CrmTd>Updated</CrmTd>
@@ -137,10 +139,22 @@ export const ExerciseListPage:FC = () => {
                     {row.name}
                   </RouteLink>
                 </CrmTd>
+                <CrmTd>
+                  <div>
+                    {row.muscles.primary.join(', ')}
+                  </div>
+                  <div>
+                    {row.muscles.secondary.join(', ')}
+                  </div>
+                </CrmTd>
                 <CrmTd>{row.variations.length}</CrmTd>
                 <CrmTd>{row.isArchived ? 'Yes' : 'No'} </CrmTd>
-                <CrmTd>{row.createdAt.toISOString()}</CrmTd>
-                <CrmTd>{row.updatedAt?.toISOString() ?? '-'}</CrmTd>
+                <CrmTd>
+                  <TableDate>{row.createdAt}</TableDate>
+                </CrmTd>
+                <CrmTd>
+                  <TableDate>{row.createdAt}</TableDate>
+                </CrmTd>
                 <CrmTd>
                 <div className="flex gap-2">
                 {!!row.isArchived && (
