@@ -225,7 +225,7 @@ export class WorkoutService {
             },
           },
           orderBy: (t, op) => [
-            op.asc(t.createdAt),
+            op.asc(t.id),
           ],
         },
       },

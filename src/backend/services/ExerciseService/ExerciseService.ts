@@ -159,6 +159,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
         id: x.id ?? undefined,
         userId: userId,
         parentExerciseId: null,
+        isArchived: false,
       }));
       const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
         target: schema.exercises.id,
