@@ -6,7 +6,7 @@ import {z} from 'zod';
 import {Cookie} from '../../../utils/Cookie/Cookie';
 import {CookieName} from '../../../types/CookieName';
 
-export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
+export const ThemeProvider: FC<{children: ReactNode, useBodyContainer?: boolean, theme?: Theme}> = (props) => {
   const cookie = new Cookie();
   const detectCurrentTheme = () => {
     const storedTheme = cookie.get(CookieName.Theme);
@@ -25,7 +25,7 @@ export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
     }
   };
   useEffect(checkIfDarkThemeIsDefault);
-  const [theme, setThemeState] = useState<Theme>(detectCurrentTheme());
+  const [theme, setThemeState] = useState<Theme>(props.theme ?? detectCurrentTheme());
   const setTheme = (theme: Theme) => {
     cookie.set(CookieName.Theme, theme);
     setThemeState(theme);
@@ -34,9 +34,8 @@ export const ThemeProvider: FC<{children: ReactNode}> = (props) => {
   return (
   <ThemeContext.Provider value={theme}>
     <EditThemeContext.Provider value={{setTheme}}>
-      <body className={`${themeStr} bg-lightest font-extralight`}>
-        {props.children}
-      </body>
+      {props.useBodyContainer && <body className={`${themeStr} bg-lightest font-extralight`}>{props.children}</body>}
+      {!props.useBodyContainer && <div className={`${themeStr} bg-lightest font-extralight`}>{props.children}</div> }
     </EditThemeContext.Provider>
   </ThemeContext.Provider>
   );

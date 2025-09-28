@@ -11,10 +11,10 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "src/frontend/components",
-    "utils": "src/frontend/utils",
-    "ui": "src/frontend/components/shadcn",
-    "lib": "src/frontend/lib",
+    "components": "src/frontend/common/components",
+    "utils": "src/frontend/common/utils",
+    "ui": "src/frontend/common/components/shadcn",
+    "lib": "src/frontend/common/utils",
     "hooks": "src/frontend/hooks"
   },
   "iconLibrary": "lucide"

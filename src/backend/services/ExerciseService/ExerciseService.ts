@@ -35,10 +35,12 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
   protected translations: TranslationService;
   protected images: ImageService;
   protected table: AppDbSchema['exercises'];
+  protected muscleTable: AppDbSchema['muscles'];
 
   constructor(drizzle: DrizzleService, translations: TranslationService, images: ImageService) {
     this.drizzle = drizzle;
     this.table = this.drizzle.getSchema().exercises;
+    this.muscleTable = this.drizzle.getSchema().muscles;
     this.translations = translations;
     this.images = images;
   }
@@ -109,22 +111,49 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     if (!existing) {
       throw new ActionError(ActionErrorCode.ExerciseNotFound);
     }
-
-    if (data.image) {
-      const now = new Date().getTime().toString();
-      const mils = now.substring(now.length - 5);
-      const imageName = data.name?.trim() ?? existing.name.trim();
-      const name = `${imageName}${mils}.jpg`;
-      const image = await this.images.createFromBase64(data.image, name);
-      update.images = [image.url];
-    }
     const db = await this.drizzle.getDb();
-    const dbSchema = this.drizzle.getSchema();
-    await db.update(dbSchema.exercises)
-      .set(update)
-      .where(
-        eq(dbSchema.exercises.id, id)
-      );
+    await db.transaction(async (db) => {
+
+      if (data.image) {
+        const now = new Date().getTime().toString();
+        const mils = now.substring(now.length - 5);
+        const imageName = data.name?.trim() ?? existing.name.trim();
+        const name = `${imageName}${mils}.jpg`;
+        const image = await this.images.createFromBase64(data.image, name);
+        update.images = [image.url];
+      }
+      const dbSchema = this.drizzle.getSchema();
+      await db.update(dbSchema.exercises)
+        .set(update)
+        .where(
+          eq(dbSchema.exercises.id, id)
+        );
+      if (data.muscles) {
+        const values: NewModel<ExerciseMuscleRow>[] = [
+          ...data.muscles.primary.map((muscle) => ({
+            muscle,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+            exerciseId: id,
+            isPrimary: true,
+          })),
+          ...data.muscles.secondary.map((muscle) => ({
+            muscle,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+            exerciseId: id,
+            isPrimary: false,
+          })),
+        ];
+        await db.delete(this.muscleTable).where(
+          eq(this.muscleTable.exerciseId, id)
+        );
+        await db.insert(this.muscleTable).values(values);
+      }
+
+    });
   }
 
   async updateForUser(userId: number, id: number, data: {name: string; description: string | null;}): Promise<void> {

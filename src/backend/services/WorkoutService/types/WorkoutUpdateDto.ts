@@ -1,10 +1,10 @@
-import {StictOmit} from '../../../types/StrictOmit';
+import {StrictOmit} from '../../../types/StrictOmit';
 import {Workout} from './Workout';
 import {WorkoutExercise} from './WorkoutExercise';
 import {WorkoutExerciseSet} from './WorkoutExerciseSet';
 
-export interface WorkoutUpdateDto extends StictOmit<Workout, 'id'|'exercises'|'userId'|'createdAt'|'updatedAt'|'deletedAt'> {
-  exercises: (StictOmit<WorkoutExercise, 'id'|'createdAt'| 'updatedAt'| 'userId'| 'workoutId'|'exercise'|'sets'> & {
-    sets: StictOmit<WorkoutExerciseSet, 'id'|'userId' |'workoutId'| 'exerciseId'| 'workoutExerciseId'|'createdAt'|'updatedAt'>[]
+export interface WorkoutUpdateDto extends StrictOmit<Workout, 'id'|'exercises'|'userId'|'createdAt'|'updatedAt'|'deletedAt'> {
+  exercises: (StrictOmit<WorkoutExercise, 'id'|'createdAt'| 'updatedAt'| 'userId'| 'workoutId'|'exercise'|'sets'> & {
+    sets: StrictOmit<WorkoutExerciseSet, 'id'|'userId' |'workoutId'| 'exerciseId'| 'workoutExerciseId'|'createdAt'|'updatedAt'>[]
   })[]
 }

@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useState} from 'react';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {
@@ -17,12 +17,9 @@ import {route, RouteId} from '../../../../../common/utils/route';
 import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
-import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
-import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/AppTextInput';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
-import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
-import {AppImageInput} from '../../../../../common/components/atoms/AppImageInput/AppImageInput';
+import {ExerciseUpdateDto, ExerciseUpdateForm} from './components/ExerciseUpdateForm';
 
 const routeApi = getRouteApi(route(RouteId.CrmExerciseUpdate));
 export const ExerciseUpdatePage: FC = () => {
@@ -30,13 +27,11 @@ export const ExerciseUpdatePage: FC = () => {
   const navigate = routeApi.useNavigate();
   const toasts = useToasts();
   const client = useQueryClient();
-  const {getSmartError, showToastsAndSetErrors} =
+  const [dto, setDto] = useState<ExerciseUpdateDto| null>(null);
+  const {showToastsAndSetErrors} =
     useResponseErrors<
       Exclude<PatchCrmExercisesByIdData['body'], undefined>
     >();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState<string | null>(null);
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery({
     queryFn: () =>
@@ -48,14 +43,6 @@ export const ExerciseUpdatePage: FC = () => {
     queryKey: ['exercises', id],
     placeholderData: keepPreviousData,
   });
-
-  useEffect(() => {
-    if (response.data?.data) {
-      setName(response.data.data.name);
-      setDescription(response.data.data.description ?? '');
-    }
-  }, [response.data?.data]);
-
   if (response.isLoading) {
     return <AppSpinner />;
   }
@@ -68,11 +55,7 @@ export const ExerciseUpdatePage: FC = () => {
       path: {
         id: id,
       },
-      body: {
-        name,
-        description,
-        image: image ?? undefined,
-      },
+      body: dto ?? undefined,
     });
     if (showToastsAndSetErrors(result)) {
       return;
@@ -85,6 +68,7 @@ export const ExerciseUpdatePage: FC = () => {
     });
   };
   const item = response.data.data;
+
   return (
     <>
       <div className="flex flex-col max-w-5xl w-full">
@@ -100,41 +84,7 @@ export const ExerciseUpdatePage: FC = () => {
         <AppBlock className="w-full">
           <AppBlockHeader>Edit Exercise {item.id.toString()}</AppBlockHeader>
           <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
-            <AppLabel>Name</AppLabel>
-            <div className="relative">
-              <AppTextInput
-                className="w-200 max-w-full"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-              <AppInputError
-                className="w-[327px] max-w-full "
-                error={getSmartError((x) => x.name)}
-              />
-            </div>
-            <div />
-            <AppLabel>Description</AppLabel>
-            <div className="relative">
-              <AppTextInput
-                className="w-200 max-w-full"
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-              />
-              <AppInputError
-                className="w-[327px] max-w-full "
-                error={getSmartError((x) => x.description)}
-              />
-            </div>
-            <div />
-            <AppLabel>Image</AppLabel>
-            <div className="relative">
-              <AppImageInput url={item.images[0]} onUpdate={setImage} className="w-80 h-80" />
-                <AppInputError
-                className="w-[327px] max-w-full "
-                error={getSmartError((x) => x.image)}
-              />
-            </div>
-            <div />
+            <ExerciseUpdateForm exercise={item} onChange={setDto} />
           </div>
           <div className="mt-5 border-b-1 border-neutral-on-surface" />
           <div className="mt-5 flex flex-row">

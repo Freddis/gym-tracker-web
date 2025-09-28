@@ -25,7 +25,7 @@ export function Layout() {
       <StrictMode>
         <QueryClientProvider client={queryClient}>
           <LanguageProvider>
-            <ThemeProvider>
+            <ThemeProvider useBodyContainer>
               <ToastProvider>
                 <AuthProvider cookieName={isCrm ? CookieName.Manager : CookieName.User} sendLanguage={!isCrm}>
                   <PopupProvider>

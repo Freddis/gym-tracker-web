@@ -3,7 +3,7 @@ import {OpenApiMethod} from 'snap-on-openapi';
 import {ApiRouteType} from '../../../types/ApiRouteType';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {emptyOperationResponse} from '../../../validators/emptyOperationResponse';
-import {excerciseValidatorDescriptions} from '../validators/exerciseValidator';
+import {excerciseValidatorDescriptions, exerciseValidator} from '../validators/exerciseValidator';
 
 export const updateManagedExercise = RouteFactory.createRoute({
   method: OpenApiMethod.PATCH,
@@ -19,6 +19,7 @@ export const updateManagedExercise = RouteFactory.createRoute({
       description: string().optional().nullable().openapi({description: excerciseValidatorDescriptions.description}),
       image: string().optional().openapi({description: 'Image for the exercise. Base64 encoded string'}),
       isArchived: boolean().optional().openapi({description: excerciseValidatorDescriptions.isArchived}),
+      muscles: exerciseValidator.shape.muscles.optional().openapi({description: excerciseValidatorDescriptions.muscles}),
     }),
     response: emptyOperationResponse,
   },

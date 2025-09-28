@@ -6251,6 +6251,19 @@ export type PatchCrmExercisesByIdData = {
      * Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts
      */
     isArchived?: boolean;
+    /**
+     * List of muscles involved in this excercise
+     */
+    muscles?: {
+      /**
+       * List of primary muscles this exercise targets
+       */
+      primary: Array<Muscle>;
+      /**
+       * List of secondary muscles this exercise targets
+       */
+      secondary: Array<Muscle>;
+    };
   };
   path: {
     /**
