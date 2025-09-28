@@ -28,7 +28,7 @@ export const ViewExercisePage:FC = () => {
         id,
       },
     }),
-    queryKey: ['exercise', id],
+    queryKey: ['exercise', id, translations],
   });
   if (response.isLoading || !response.data) {
     return (
@@ -66,8 +66,8 @@ export const ViewExercisePage:FC = () => {
           <div className="flex flex-col gap-2 items-start">
             <AppBlockHeader>{item.name}</AppBlockHeader>
             <div className="flex justify-center w-full gap-5">
-              {item.images.map((image) => (
-                <AppImage src={image} className="mt-1 w-auto h-100 " />
+              {item.images.map((image, i) => (
+                <AppImage key={i.toString()} src={image} className="mt-1 w-auto h-100 " />
               ))}
             </div>
             <div >
@@ -107,7 +107,7 @@ export const ViewExercisePage:FC = () => {
             </div>
           </div>
           <div>
-            {descriptionParagraphs.map((x) => <p className="mb-5">{x}</p>)}
+            {descriptionParagraphs.map((x, i) => <p key={i.toString()} className="mb-5">{x}</p>)}
           </div>
           <div className="flex flex-row-reverse min-w-25">
             {item.variations.length > 0 && (
