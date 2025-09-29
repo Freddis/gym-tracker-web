@@ -81,7 +81,6 @@ export const ExerciseUpdatePage: FC = () => {
         </div>
       </div>
       <AppBlock className="w-full table-fixed">
-        <AppBlock className="w-full">
           <AppBlockHeader>Edit Exercise {item.id.toString()}</AppBlockHeader>
           <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
             <ExerciseUpdateForm exercise={item} onChange={setDto} />
@@ -93,7 +92,6 @@ export const ExerciseUpdatePage: FC = () => {
               <AppButton onClick={onSaveClick}>Save</AppButton>
             </div>
           </div>
-        </AppBlock>
       </AppBlock>
     </>
   );
