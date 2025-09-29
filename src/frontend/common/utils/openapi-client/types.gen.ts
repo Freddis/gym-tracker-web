@@ -1313,6 +1313,10 @@ export type GetExercisesData = {
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
+    /**
+     * Filters out exercises that are variations of other exercises.
+     */
+    parentsOnly?: boolean;
   };
   url: "/exercises";
 };
@@ -1792,6 +1796,10 @@ export type GetExercisesBuiltInData = {
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
+    /**
+     * Filters out exercises that are variations of other exercises.
+     */
+    parentsOnly?: boolean;
   };
   url: "/exercises/built-in";
 };
@@ -6501,6 +6509,10 @@ export type GetCrmExercisesData = {
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
+    /**
+     * Filters out exercises that are variations of other exercises.
+     */
+    parentsOnly?: boolean;
     /**
      * User ID
      */

@@ -11,7 +11,6 @@ export interface ExerciseFilter extends Filter{
     updatedAfter?: Date,
     parentIds?: number[] | null,
     language?: Language,
-    parentsOnly?: boolean
     isArchived?: boolean,
     includeBuiltIn?: boolean,
     includeDeleted?: boolean,

@@ -9,6 +9,12 @@ import {createTagValues} from '../../../../../../common/components/atoms/AppTagL
 import {AppTextArea} from '../../../../../../common/components/atoms/AppTextArea/AppTextArea';
 import {AppTextInput} from '../../../../../../common/components/atoms/AppTextInput/AppTextInput';
 import {ErrorSlice, useResponseErrors} from '../../../../../../common/utils/useResponseErrors';
+import {AppImage} from '../../../../../../common/components/atoms/AppImage/AppImage';
+import {FaXmark} from 'react-icons/fa6';
+import {AppButton} from '../../../../../../common/components/atoms/AppButton/AppButton';
+import {Color} from '../../../../../../common/utils/design-system/types/Color';
+import {RouteLink} from '../../../../../../common/components/atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../../../common/utils/route';
 
 export type ExerciseUpdateDto = Exclude<PatchCrmExercisesByIdData['body'], undefined>
 interface ExerciseUpdateFormProps {
@@ -110,9 +116,32 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
             notFound={'No Muscles Found'}
             />
             <AppInputError
-              className="w-[327px] max-w-full "
+              className="w-[327px] max-w-full"
               error={getSmartError((x) => x.muscles?.secondary)}
             />
+        </div>
+        <div />
+         <AppLabel>Variations</AppLabel>
+        <div className="relative inline-flex flex-col gap-5">
+            {item.variations.map((variation) => (
+              <div key={variation.id} className="flex flex-row items-center gap-5">
+                <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: variation.id.toString()}} >
+                  <AppImage src={variation.images[0]} />
+                </RouteLink>
+                <RouteLink
+                  to={route(RouteId.CrmExerciseUpdate)}
+                  className="text-on-surface flex-grow"
+                  params={{id: variation.id.toString()}}
+                >
+                  {variation.id}: {variation.name}
+                </RouteLink>
+                <div>
+                  <AppButton palette={Color.Danger} className="bg-on-main text-white">
+                    <FaXmark />
+                  </AppButton>
+                </div>
+              </div>
+            ))}
         </div>
         <div />
       </div>

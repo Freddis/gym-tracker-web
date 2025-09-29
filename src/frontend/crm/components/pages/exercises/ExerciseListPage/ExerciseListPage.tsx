@@ -19,6 +19,7 @@ import {Color} from '../../../../../common/utils/design-system/types/Color';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {TableDate} from '../../../elements/TableDate/TableDate';
+import {AppSwitch} from '../../../../../common/components/atoms/AppSwitch/AppSwitch';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
@@ -31,8 +32,9 @@ export const ExerciseListPage:FC = () => {
     queryFn: () => getCrmExercises({
       query: {
         page: searchParams.page,
-        filter: searchParams.filter,
+        filter: searchParams.search,
         userId: searchParams.userId,
+        parentsOnly: searchParams.parentsOnly,
       },
     }),
     queryKey: ['exercises', searchParams],
@@ -51,12 +53,20 @@ export const ExerciseListPage:FC = () => {
     navigate({
       search: {
         ...searchParams,
-        filter: value?.trim() ?? undefined,
+        search: value?.trim() ?? undefined,
         page: 1,
       },
     });
   };
-
+  const onParentsOnSwitchChange = (value: boolean) => {
+    navigate({
+      search: {
+        ...searchParams,
+        parentsOnly: value || undefined,
+        page: 1,
+      },
+    });
+  };
   const onUserTextInputChange = (value: string| null) => {
     navigate({
       search: {
@@ -90,7 +100,7 @@ export const ExerciseListPage:FC = () => {
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <div className="flex items-center mb-5 gap-5">
-        <AppSearchInput placeholder="Search" className="max-w-100" onSearch={onSearchChange} value={searchParams.filter} />
+        <AppSearchInput placeholder="Search" className="max-w-100" onSearch={onSearchChange} value={searchParams.search} />
         <AppSearchInput
          placeholder="User ID"
          minLength={1}
@@ -99,6 +109,7 @@ export const ExerciseListPage:FC = () => {
          onSearch={onUserTextInputChange}
          value={searchParams.userId}
         />
+        <AppSwitch checked={!!searchParams.parentsOnly} onCheckedChange={onParentsOnSwitchChange} label="Only Parents" />
         <div className="grow flex flex-row-reverse">
           <AppButton variant="lg" className="inline-block">Create <FaPlus className="inline-block"/></AppButton>
         </div>
@@ -110,6 +121,7 @@ export const ExerciseListPage:FC = () => {
               <CrmTd>Image</CrmTd>
               <CrmTd>User ID</CrmTd>
               <CrmTd>Name</CrmTd>
+              <CrmTd>Parent</CrmTd>
               <CrmTd>Variations</CrmTd>
               <CrmTd>Muscles</CrmTd>
               <CrmTd>Archived</CrmTd>
@@ -126,19 +138,32 @@ export const ExerciseListPage:FC = () => {
                     {row.id}
                   </RouteLink>
                 </CrmTd>
-                <CrmTd className="min-w-20">
+                <CrmTd className="min-w-30 shrink-0">
                   <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
                     <AppImage src={row.images[0]}/>
                   </RouteLink>
                 </CrmTd>
-                <CrmTd className="min-w-20">
+                <CrmTd className="min-w-10">
                   {row.userId}
                 </CrmTd>
-                <CrmTd>
+                <CrmTd className="grow">
                   <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
                     {row.name}
                   </RouteLink>
                 </CrmTd>
+                <CrmTd>
+                  {!row.parentExerciseId && '-'}
+                  {!!row.parentExerciseId && (
+                    <RouteLink
+                      to={route(RouteId.CrmExerciseUpdate)}
+                      params={{id: row.parentExerciseId.toString()}}
+                      className="text-on-main"
+                    >
+                      {row.parentExerciseId}
+                    </RouteLink>
+                  )}
+                </CrmTd>
+                <CrmTd>{row.variations.length}</CrmTd>
                 <CrmTd>
                   <div>
                     {row.muscles.primary.join(', ')}
@@ -147,7 +172,6 @@ export const ExerciseListPage:FC = () => {
                     {row.muscles.secondary.join(', ')}
                   </div>
                 </CrmTd>
-                <CrmTd>{row.variations.length}</CrmTd>
                 <CrmTd>{row.isArchived ? 'Yes' : 'No'} </CrmTd>
                 <CrmTd>
                   <TableDate>{row.createdAt}</TableDate>

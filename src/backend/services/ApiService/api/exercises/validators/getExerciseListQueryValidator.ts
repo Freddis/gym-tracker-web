@@ -15,4 +15,7 @@ export const getExerciseListQueryValidator = object({
   updatedAfter: RouteFactory.validators.strings.datetime.optional().openapi({
     description: 'Only return exercises updated after this date. Used for syncing.',
   }),
+  parentsOnly: RouteFactory.validators.strings.boolean.optional().openapi({
+    description: 'Filters out exercises that are variations of other exercises.',
+  }),
 });

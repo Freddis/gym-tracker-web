@@ -19,6 +19,7 @@ export const getManagedExerciseList = RouteFactory.createRoute({
     const result = await ctx.services.models.exercise.paginate({
       ...ctx.params.query,
       language: ctx.language,
+      parentIds: ctx.params.query.parentsOnly ? null : undefined,
     });
     return result;
   },
