@@ -3,16 +3,21 @@ import {Translation} from './types/Translation';
 import {TranslationType} from './types/TranslationType';
 import {and, eq, inArray, SQL} from 'drizzle-orm';
 import {NewModel} from '../../types/NewModel';
-import translator from 'open-google-translator';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {TranslationRow} from '../DrizzleService/types/TranslationRow';
 import {Filter} from '../../types/ModelService/types/Filter';
 import {PgColumn} from 'drizzle-orm/pg-core';
-import {EntityService} from '../../types/ModelService/types/EntityService';
+import {TranslationProvider} from './types/TranslationProvider';
+import {TranslationProviderType} from './types/TranslationProviderType';
+import {GoogleTranslationProvider} from './utils/GoogleTranslationProvider/GoogleTranslationProvider';
+import {LLMTranslationProvider} from './utils/LLMTranslationProvider/LLMTranslationProvider';
 
-export class TranslationService
-extends ModelService<TranslationRow, Translation, Filter>
-implements EntityService<Translation> {
+export class TranslationService extends ModelService<TranslationRow, Translation, Filter> {
+
+  protected providers: Record<TranslationProviderType, TranslationProvider> = {
+    [TranslationProviderType.Google]: new GoogleTranslationProvider(),
+    [TranslationProviderType.LocalLLM]: new LLMTranslationProvider(),
+  };
 
   protected getTable() {
     return this.drizzle.getSchema().translations;
@@ -58,8 +63,9 @@ implements EntityService<Translation> {
       to: Language,
       lazy?: boolean
       numericKey?: number
+      provider?: TranslationProviderType
   }): Promise<Translation> {
-    const {type, key, to, text, lazy = false, numericKey = null} = params;
+    const {type, key, to, text, lazy = false, numericKey = null, provider = TranslationProviderType.Google} = params;
     const existing = await this.getTranslation(type, key, to);
     const db = await this.drizzle.getDb();
     if (numericKey && numericKey.toString() !== key) {
@@ -73,7 +79,7 @@ implements EntityService<Translation> {
         throw new Error(`Translation '${existing.key}' is locked`);
       }
     }
-    const translated = await this.translate(text, to);
+    const translated = await this.translate(text, to, undefined, provider);
     if (existing) {
       const update: Partial<Translation> = {
         updatedAt: new Date(),
@@ -126,18 +132,13 @@ implements EntityService<Translation> {
     return translaton;
   }
 
-  public async translate(text: string, to: Language, from: Language = Language.English): Promise<string> {
-    const result = await translator.TranslateLanguageData({
-      listOfWordsToTranslate: [
-        text,
-      ],
-      fromLanguage: from,
-      toLanguage: to,
-    });
-    if (!result[0]) {
-      throw new Error(`Couldn't translate ${text}`);
-    }
-    return result[0].translation;
+  public async translate(
+    text: string,
+    to: Language,
+    from: Language = Language.English,
+    provider: TranslationProviderType = TranslationProviderType.Google
+  ): Promise<string> {
+    return this.providers[provider].translate(text, to, from);
   }
 
   async getMap(type: TranslationType, keys: string[], language: Language): Promise<Map<string, string>> {

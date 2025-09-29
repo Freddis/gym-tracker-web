@@ -5,6 +5,7 @@ import {argv} from 'process';
 import {nativeEnum} from 'zod';
 import {Language} from '../../src/frontend/common/components/layout/LanguageProvider/enums/Language';
 import {TranslationType} from '../../src/backend/services/TranslationService/types/TranslationType';
+import {TranslationProviderType} from '../../src/backend/services/TranslationService/types/TranslationProviderType';
 
 const logger = new Logger('Translate Exercises');
 const translationService = await globalServiceFactory.translation();
@@ -36,15 +37,18 @@ while (true) {
       text: item.name,
       to: Language.Russian,
       lazy: true,
+      provider: TranslationProviderType.LocalLLM,
     });
-    await translationService.upsertAutoTranslation({
+    logger.info(translation.value);
+    const tranlsation2 = await translationService.upsertAutoTranslation({
       type: TranslationType.ExeciseDescription,
       key: item.id.toString(),
       text: item.description ?? '',
       to: Language.Russian,
       lazy: true,
+      provider: TranslationProviderType.LocalLLM,
     });
-    logger.info(translation.value);
+    logger.info(tranlsation2.value);
   }
   if (chunk.items.length < chunk.info.pageSize) {
     break;
