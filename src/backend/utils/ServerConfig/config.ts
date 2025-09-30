@@ -5,6 +5,7 @@ import {EnvHelper} from '../EnvHelper/EnvHelper';
 import {ServerConfig} from './ServerConfig';
 
 export const serverConfig: ServerConfig = {
+  baseUrl: EnvHelper.getString('APP_BASE_URL'),
   services: {
     drizzle: {
       host: EnvHelper.getString('DB_HOST'),
@@ -37,5 +38,11 @@ export const serverConfig: ServerConfig = {
       ssl: EnvHelper.getOptinalBoolean('PROD_DB_SSL'),
       schema: EnvHelper.getOptionalString('PROD_DB_SCHEMA'),
     }),
+    email: {
+      from: EnvHelper.getString('EMAIL_FROM'),
+      awsRegion: '',
+      awsAccessKeyId: '',
+      awsAccessKeySecret: '',
+    },
   },
 };

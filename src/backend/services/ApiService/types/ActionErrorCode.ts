@@ -3,5 +3,7 @@ export enum ActionErrorCode {
   EmailAlreadyExists = 'EmailAlreadyExists',
   WorkoutNotFound = 'WorkoutNotFound',
   ExerciseNotFound = 'ExerciseNotFound',
-  NoOwnerShip = 'NoOwnerShip'
+  NoOwnerShip = 'NoOwnerShip',
+  PasswordResetTokenExpired = 'PasswordResetTokenExpired',
+  PasswordResetTokenMalformed = 'PasswordResetTokenMailformed'
 }

@@ -39,8 +39,8 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
     },
   } as const;
 
-  constructor(factory: GlobalServiceFactory) {
-    this.routes = new ApiRouteConfig(factory);
+  constructor(factory: GlobalServiceFactory, baseUrl: string) {
+    this.routes = new ApiRouteConfig(factory, baseUrl);
   }
 
   handleError(e: unknown, req: Request): OpenApiErrorResponse<ApiErrorCode, OpenApiErrorConfigMap<ApiErrorCode>> {
@@ -142,6 +142,8 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
       [ActionErrorCode.WorkoutNotFound]: 'Workout not found',
       [ActionErrorCode.ExerciseNotFound]: 'Exercise not found',
       [ActionErrorCode.NoOwnerShip]: "You don't have ownership of that object",
+      [ActionErrorCode.PasswordResetTokenExpired]: 'Password reset token expired',
+      [ActionErrorCode.PasswordResetTokenMalformed]: 'Password reset token malformed',
     };
     return result;
   }

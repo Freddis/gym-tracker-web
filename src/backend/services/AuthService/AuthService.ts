@@ -10,21 +10,30 @@ import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ManagerService} from '../ManagerService/ManagerService';
 import {Manager} from '../ManagerService/types/Manager';
+import {EmailService} from '../EmailService/EmailService';
+import {UserService} from '../UserService/UserService';
 
 export class AuthService {
   protected dbService: DrizzleService;
   protected config: AuthServiceConfig;
   protected logger = new Logger(AuthService.name);
   protected managerService: ManagerService;
+  protected emailService: EmailService;
+  protected userService: UserService;
 
   constructor(
     config: AuthServiceConfig,
     drizzleService: DrizzleService,
-    managerService: ManagerService
+    userService: UserService,
+    managerService: ManagerService,
+    emailService: EmailService,
   ) {
+    this.logger = new Logger(AuthService.name);
     this.config = config;
     this.dbService = drizzleService;
     this.managerService = managerService;
+    this.userService = userService;
+    this.emailService = emailService;
   }
 
   async getUserFromRequest(request: Request): Promise<UserRow | null> {
@@ -63,6 +72,72 @@ export class AuthService {
     }
     const token = this.createToken(user);
     return {...user, jwt: token};
+  }
+
+  async sendPasswordResetEmail(email: string, baseUrl: string): Promise<void> {
+    const user = await this.userService.get({email});
+    if (!user) {
+      this.logger.info(`Couldn't find user with email '${email}' for password reset`);
+      return;
+    }
+    const token = jwt.sign(
+      {
+        time: new Date().toISOString(),
+        email: email,
+      },
+      this.config.jwtSecret,
+      {
+        expiresIn: '10m',
+      }
+    );
+    const encodedToken = token;
+    const url = baseUrl + `/${encodedToken}`;
+    const subject = 'Password reset';
+    const bodyLines = [
+      '<p>We received a request to reset your password.</p>',
+      "<p>If that wasn't you please ignore this email</p>",
+      `<a href="${url}">Restore Password</a>`,
+    ];
+    await this.emailService.send(email, subject, bodyLines.join('\n'));
+  }
+
+  async resetPassword(token: string, password: string, passwordConfirmation: string): Promise<AuthUser> {
+    try {
+      jwt.verify(token, this.config.jwtSecret);
+    } catch (e: unknown) {
+      this.logger.error("Can't verify JWT token", e);
+      throw new ActionError(ActionErrorCode.PasswordResetTokenExpired);
+    }
+    const value = jwt.decode(token);
+    if (!value) {
+      throw new ActionError(ActionErrorCode.PasswordResetTokenMalformed);
+    }
+    const validatedData = z.object({email: z.string()}).safeParse(value);
+    if (!validatedData.success) {
+      throw new ActionError(ActionErrorCode.PasswordResetTokenMalformed);
+    }
+    const user = await this.userService.get({email: validatedData.data.email});
+    if (!user) {
+      this.logger.info(`Couldn't find user with email '${validatedData.data.email}' for password reset finalization`);
+      throw new ActionError(ActionErrorCode.PasswordResetTokenMalformed);
+    }
+    if (password !== passwordConfirmation) {
+      throw new ActionError(ActionErrorCode.InvalidPassword);
+    }
+    const hashedPassword = await this.hashString(password);
+    await this.userService.update(user.id, {
+      password: hashedPassword,
+    });
+
+    const authJwt = this.createToken({
+      ...user,
+      email: validatedData.data.email,
+    });
+    return {
+      ...user,
+      email: validatedData.data.email,
+      jwt: authJwt,
+    };
   }
 
   async loginManager(email: string, password: string): Promise<AuthUser> {

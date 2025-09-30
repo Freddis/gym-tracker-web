@@ -1,4 +1,4 @@
-import {BusinessUtils} from './utils/BusinessUtils';
+import {BusinessUtils} from './utils/BusinessUtils/BusinessUtils';
 import {FrontendUtils} from './utils/FrontendUtils/FrontendUtils';
 import {OpenApiUtils} from './utils/OpenApiUtils';
 import {SeedUtils} from './utils/SeedingUtils';
