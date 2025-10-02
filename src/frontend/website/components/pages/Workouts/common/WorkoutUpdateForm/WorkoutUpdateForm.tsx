@@ -114,45 +114,53 @@ export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
             notFound={t(i18n.labels.noWorkoutTypesFound)}
             values={workoutTypesValues}
             selected={selectedType?.name}
+            data-testid="workout-type-combobox"
           />
           <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.typeId)} />
         </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.start}</AppLabel>
         <div className="relative">
-          <AppDatepicker value={start} onChange={setStart}/>
+          <AppDatepicker value={start} onChange={setStart} data-testid="start-date-picker"/>
           <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.start)} />
         </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.end}</AppLabel>
         <div className="relative">
-          <AppDatepicker value={end ?? undefined} onChange={setEnd} />
+          <AppDatepicker value={end ?? undefined} onChange={setEnd} data-testid="end-date-picker"/>
           <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.end)} />
         </div>
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.calories}</AppLabel>
         <div className="relative">
-          <AppTextInput className="w-20 max-w-full" onChange={(e) => setCaloriesFromString(e.target.value)} value={calories} />
+          <AppTextInput
+            className="w-20 max-w-full"
+            onChange={(e) => setCaloriesFromString(e.target.value)}
+            value={calories}
+            data-testid="calories-input"
+          />
           <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.exercises)} />
         </div>
         <div/>
       </div>
       <Conditional condition={exerciseAtoms.length > 0}>
-        <div>
+        <div data-testid="exercises-section">
           <AppLabel>{t(i18n.labels.exercises)}</AppLabel>
         </div>
       </Conditional>
       <div className="mt-3">
-        {useMemo(() => exerciseAtoms.map((row, i) => (
-          <WorkoutExerciseUpdateForm
-            key={Math.random()}
-            item={row}
-            onDelete={() => deleteExercise(i)}
-            errors={sliceErrors(props.errors, (x) => x.exercises[i])}
-          />
-          )), [exerciseAtoms, props.errors])}
+        <div data-testid="exercises-list">
+          {useMemo(() => exerciseAtoms.map((row, i) => (
+            <WorkoutExerciseUpdateForm
+              key={Math.random()}
+              item={row}
+              onDelete={() => deleteExercise(i)}
+              errors={sliceErrors(props.errors, (x) => x.exercises[i])}
+            />
+            )), [exerciseAtoms, props.errors])}
+        </div>
         <div className="flex justify-center">
-          <AppButton onClick={showAddExercisePopup}>{t(i18n.buttons.addExercise)}</AppButton>
+          <AppButton onClick={showAddExercisePopup} data-testid="add-exercise-button">{t(i18n.buttons.addExercise)}</AppButton>
         </div>
       </div>
     </>
