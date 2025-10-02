@@ -8,6 +8,7 @@ import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppS
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, routeId, RouteId} from '../../../../../common/utils/route';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmTranslationList));
 export const TranslationListPage:FC = () => {
@@ -36,6 +37,7 @@ export const TranslationListPage:FC = () => {
   <>
     <AppBlockHeader className="text-left">Translation List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
+    {response.data?.error && <AppApiErrorDisplay error={response.data.error.error}/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <table className="w-full table">

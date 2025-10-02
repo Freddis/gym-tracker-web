@@ -7,6 +7,7 @@ import {getCrmUsers} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 const routeApi = getRouteApi('/crm/users/');
 export const UserListPage:FC = () => {
   const searchParams = routeApi.useSearch();
@@ -34,6 +35,7 @@ export const UserListPage:FC = () => {
   <>
     <AppBlockHeader className="text-left">User List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
+    {response.data?.error && <AppApiErrorDisplay error={response.data.error.error}/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <table className="w-full table">
