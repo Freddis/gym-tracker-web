@@ -16,10 +16,12 @@ import {dateToTimeString} from '../../../../website/utils/dateToTimeString';
 interface AppDatepickerProps {
   value?: Date;
   className?: string;
-  onChange?: (date: Date) => void
+  onChange?: (date: Date) => void;
+  'data-testid'?: string;
 }
 
 export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
+  const {'data-testid': testid} = props;
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(props.value);
   const timeStr = date ? dateToTimeString(date, true) : undefined;
@@ -66,6 +68,7 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
             <Button
               variant={'secondary'}
               data-empty={!date}
+              data-testid={testid}
               className={cn(
                 `data-[empty=true]:text-muted-foreground justify-start p-3 h-10
             text-left border-1 border-in-cavity cursor-pointer relative`,
