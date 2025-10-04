@@ -33,6 +33,8 @@ export enum RouteId {
   CrmExerciseList,
   CrmExerciseUpdate,
   CrmImageList,
+  PasswordResetStart,
+  PasswordResetComplete,
 }
 
 type Inverted<T extends Record<string | number, string | number>> = {
@@ -63,6 +65,8 @@ const baseRouteMap = createRouteMap({
   '/articles/terms-of-service': RouteId.TermsOfService,
   '/auth/login': RouteId.Login,
   '/auth/register': RouteId.Register,
+  '/auth/password-reset': RouteId.PasswordResetStart,
+  '/auth/password-reset-complete/$token': RouteId.PasswordResetComplete,
   '/argus': RouteId.Argus,
   '/feed': RouteId.Feed,
   '/entries': RouteId.EntryList,

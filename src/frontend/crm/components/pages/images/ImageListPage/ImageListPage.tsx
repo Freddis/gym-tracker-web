@@ -16,6 +16,7 @@ import {AppButton} from '../../../../../common/components/atoms/AppButton/AppBut
 import {FaXmark} from 'react-icons/fa6';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmImageList));
 export const ImageListPage:FC = () => {
@@ -73,6 +74,9 @@ export const ImageListPage:FC = () => {
   <>
     <AppBlockHeader className="text-left">Image List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
+    {response.data?.error && (
+      <AppApiErrorDisplay error={response.data.error.error}/>
+    )}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <AppSearchInput debounce={500} placeholder="Search" className="max-w-100 mb-5" onSearch={onSearch} value={searchParams.search} />

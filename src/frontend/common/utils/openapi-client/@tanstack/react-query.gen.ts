@@ -4,6 +4,8 @@ import {
   type Options,
   postAuthRegister,
   postAuthLogin,
+  postAuthPasswordReset,
+  postAuthPasswordResetComplete,
   getExercises,
   postExercises,
   putExercises,
@@ -59,6 +61,12 @@ import type {
   PostAuthLoginData,
   PostAuthLoginError,
   PostAuthLoginResponse,
+  PostAuthPasswordResetData,
+  PostAuthPasswordResetError,
+  PostAuthPasswordResetResponse,
+  PostAuthPasswordResetCompleteData,
+  PostAuthPasswordResetCompleteError,
+  PostAuthPasswordResetCompleteResponse,
   GetExercisesData,
   GetExercisesError,
   GetExercisesResponse,
@@ -293,6 +301,108 @@ export const postAuthLoginMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postAuthLogin({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postAuthPasswordResetQueryKey = (
+  options?: Options<PostAuthPasswordResetData>,
+) => createQueryKey("postAuthPasswordReset", options);
+
+/**
+ * Sends a password reset email for a user
+ */
+export const postAuthPasswordResetOptions = (
+  options?: Options<PostAuthPasswordResetData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthPasswordReset({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postAuthPasswordResetQueryKey(options),
+  });
+};
+
+/**
+ * Sends a password reset email for a user
+ */
+export const postAuthPasswordResetMutation = (
+  options?: Partial<Options<PostAuthPasswordResetData>>,
+): UseMutationOptions<
+  PostAuthPasswordResetResponse,
+  AxiosError<PostAuthPasswordResetError>,
+  Options<PostAuthPasswordResetData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostAuthPasswordResetResponse,
+    AxiosError<PostAuthPasswordResetError>,
+    Options<PostAuthPasswordResetData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postAuthPasswordReset({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postAuthPasswordResetCompleteQueryKey = (
+  options?: Options<PostAuthPasswordResetCompleteData>,
+) => createQueryKey("postAuthPasswordResetComplete", options);
+
+/**
+ * Resets the user password and logs the user in
+ */
+export const postAuthPasswordResetCompleteOptions = (
+  options?: Options<PostAuthPasswordResetCompleteData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postAuthPasswordResetComplete({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postAuthPasswordResetCompleteQueryKey(options),
+  });
+};
+
+/**
+ * Resets the user password and logs the user in
+ */
+export const postAuthPasswordResetCompleteMutation = (
+  options?: Partial<Options<PostAuthPasswordResetCompleteData>>,
+): UseMutationOptions<
+  PostAuthPasswordResetCompleteResponse,
+  AxiosError<PostAuthPasswordResetCompleteError>,
+  Options<PostAuthPasswordResetCompleteData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostAuthPasswordResetCompleteResponse,
+    AxiosError<PostAuthPasswordResetCompleteError>,
+    Options<PostAuthPasswordResetCompleteData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postAuthPasswordResetComplete({
         ...options,
         ...localOptions,
         throwOnError: true,

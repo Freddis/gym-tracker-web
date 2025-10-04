@@ -1051,7 +1051,9 @@ export type PostAuthRegisterErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1158,7 +1160,9 @@ export type PostAuthLoginErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1196,6 +1200,229 @@ export type PostAuthLoginResponses = {
 
 export type PostAuthLoginResponse =
   PostAuthLoginResponses[keyof PostAuthLoginResponses];
+
+export type PostAuthPasswordResetData = {
+  body?: {
+    /**
+     * Email of the user
+     */
+    email: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/auth/password-reset";
+};
+
+export type PostAuthPasswordResetErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostAuthPasswordResetError =
+  PostAuthPasswordResetErrors[keyof PostAuthPasswordResetErrors];
+
+export type PostAuthPasswordResetResponses = {
+  /**
+   * Indicator of successfult operation
+   */
+  200: {
+    /**
+     * Stub for response. Always true since otherwise error is thrown.
+     */
+    success: boolean;
+  };
+};
+
+export type PostAuthPasswordResetResponse =
+  PostAuthPasswordResetResponses[keyof PostAuthPasswordResetResponses];
+
+export type PostAuthPasswordResetCompleteData = {
+  body?: {
+    /**
+     * Token provided in the password reset email
+     */
+    token: string;
+    /**
+     * Password
+     */
+    password: string;
+    /**
+     * Confirmation of password. Protection from typos
+     */
+    passwordConfirmation: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/auth/password-reset-complete";
+};
+
+export type PostAuthPasswordResetCompleteErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostAuthPasswordResetCompleteError =
+  PostAuthPasswordResetCompleteErrors[keyof PostAuthPasswordResetCompleteErrors];
+
+export type PostAuthPasswordResetCompleteResponses = {
+  /**
+   * Good Response
+   */
+  200: AuthUser;
+};
+
+export type PostAuthPasswordResetCompleteResponse =
+  PostAuthPasswordResetCompleteResponses[keyof PostAuthPasswordResetCompleteResponses];
 
 export type GetExercisesData = {
   body?: never;
@@ -1372,7 +1599,9 @@ export type GetExercisesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1510,7 +1739,9 @@ export type PostExercisesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1626,7 +1857,9 @@ export type PutExercisesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1855,7 +2088,9 @@ export type GetExercisesBuiltInErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -1980,7 +2215,9 @@ export type DeleteExercisesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2102,7 +2339,9 @@ export type GetExercisesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2214,7 +2453,9 @@ export type PatchExercisesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2340,7 +2581,9 @@ export type GetWorkoutsErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2473,7 +2716,9 @@ export type PostWorkoutsErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2589,7 +2834,9 @@ export type PutWorkoutsErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2710,7 +2957,9 @@ export type DeleteWorkoutsByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2832,7 +3081,9 @@ export type GetWorkoutsByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2951,7 +3202,9 @@ export type PatchWorkoutsByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3072,7 +3325,9 @@ export type GetWorkoutPlansErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3218,7 +3473,9 @@ export type PostWorkoutPlansErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3335,7 +3592,9 @@ export type DeleteWorkoutPlansByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3454,7 +3713,9 @@ export type GetWorkoutPlansByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3583,7 +3844,9 @@ export type PatchWorkoutPlansByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3704,7 +3967,9 @@ export type GetWorkoutTypesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3862,7 +4127,9 @@ export type PostWorkoutTypesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3979,7 +4246,9 @@ export type DeleteWorkoutTypesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4098,7 +4367,9 @@ export type GetWorkoutTypesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4239,7 +4510,9 @@ export type PatchWorkoutTypesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4356,7 +4629,9 @@ export type PostWeightErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4471,7 +4746,9 @@ export type GetWeightByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4592,7 +4869,9 @@ export type PatchWeightByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4727,7 +5006,9 @@ export type GetArgusCheckinErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5048,7 +5329,9 @@ export type GetArgusCheckinTypesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5160,7 +5443,9 @@ export type GetEntriesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5287,7 +5572,9 @@ export type GetEntriesOwnErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5425,7 +5712,9 @@ export type GetCrmUsersErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5563,7 +5852,9 @@ export type GetCrmManagersErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5706,7 +5997,9 @@ export type PostCrmAuthLoginErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5809,7 +6102,9 @@ export type GetCrmTranslationsByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5931,7 +6226,9 @@ export type PatchCrmTranslationsByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6048,7 +6345,9 @@ export type GetCrmTranslationsErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6187,7 +6486,9 @@ export type GetCrmExercisesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6334,7 +6635,9 @@ export type PatchCrmExercisesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6572,7 +6875,9 @@ export type GetCrmExercisesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6715,7 +7020,9 @@ export type GetCrmImagesErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6853,7 +7160,9 @@ export type DeleteCrmImagesByIdErrors = {
             | "EmailAlreadyExists"
             | "WorkoutNotFound"
             | "ExerciseNotFound"
-            | "NoOwnerShip";
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
           /**
            * Description of the error. Can be safely displayed.
            */

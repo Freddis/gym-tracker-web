@@ -4,7 +4,7 @@ import {HomePageTestUtils} from './utils/HomePageTestUtils';
 import {LoginPageTestUtils} from './utils/LoginPageTestUtils';
 import {WorkoutCreatePageTestUtils} from './utils/WorkoutCreatePageTestUtils';
 import {WeightCreatePageTestUtils} from './utils/WeightCreatePageTestUtils';
-import {BusinessUtils} from '../BusinessUtils';
+import {BusinessUtils} from '../BusinessUtils/BusinessUtils';
 import {UserRow} from '../../../../services/DrizzleService/types/UserRow';
 import {CookieName} from '../../../../../frontend/common/types/CookieName';
 import {AuthUser} from '../../../../services/AuthService/types/AuthUser';

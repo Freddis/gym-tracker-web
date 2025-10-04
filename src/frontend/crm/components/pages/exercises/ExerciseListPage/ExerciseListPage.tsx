@@ -20,6 +20,7 @@ import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {TableDate} from '../../../elements/TableDate/TableDate';
 import {AppSwitch} from '../../../../../common/components/atoms/AppSwitch/AppSwitch';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 
 const routeApi = getRouteApi(routeId(RouteId.CrmExerciseList));
 export const ExerciseListPage:FC = () => {
@@ -97,6 +98,7 @@ export const ExerciseListPage:FC = () => {
   <>
     <AppBlockHeader className="text-left">Exercise List</AppBlockHeader>
     {response.isLoading && <AppSpinner/>}
+    {response.data?.error && <AppApiErrorDisplay error={response.data.error.error}/>}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <div className="flex items-center mb-5 gap-5">

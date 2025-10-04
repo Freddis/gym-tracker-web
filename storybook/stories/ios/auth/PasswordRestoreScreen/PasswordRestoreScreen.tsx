@@ -10,7 +10,7 @@ import {FieldError, useResponseErrors} from '../../../../../src/frontend/common/
 
 
 export const PasswordRestoreScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.passwordRestore);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.passwordReset);
   const [email, setEmail] = useState('');
   const {getError} = useResponseErrors(errors);
   const loginButtonPress = async () => {
@@ -36,7 +36,7 @@ export const PasswordRestoreScreen: FC<{errors?: FieldError[]}> = ({errors}) => 
           <div className="mt-10 flex items-center justify-center">
             <div className="relative">
               <AppButton className="w-30 inline-block" onClick={loginButtonPress}>
-                {t(i18n.form.buttons.restore)}
+                {t(i18n.form.buttons.reset)}
               </AppButton>
             </div>
           </div>

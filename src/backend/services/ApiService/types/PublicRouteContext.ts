@@ -3,5 +3,6 @@ import {ApiRequestServices} from './ApiRequestServices';
 
 export interface PublicRouteContext {
   language: Language
+  baseUrl: string,
   services: ApiRequestServices
 }

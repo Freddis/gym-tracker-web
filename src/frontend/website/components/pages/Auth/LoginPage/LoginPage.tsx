@@ -1,5 +1,5 @@
 import {useNavigate} from '@tanstack/react-router';
-import {FC, MouseEventHandler, useContext, useState} from 'react';
+import {FC, useContext, useState} from 'react';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
@@ -23,7 +23,6 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const {getError, showToastsAndSetErrors} = useResponseErrors();
   const toasts = useToasts();
-
   const loginButtonPress = async () => {
     const result = await postAuthLogin({
       body: {
@@ -36,13 +35,8 @@ export const LoginPage: FC = () => {
     }
     auth.login(result.data);
     toasts.addSuccess(t(i18n.toasts.loginSuccess));
-    navigate({to: '/entries'});
+    navigate({to: route(RouteId.EntryList)});
     return;
-  };
-
-  const forgotPasswordClick: MouseEventHandler<HTMLAnchorElement> = async (e) => {
-    e.preventDefault();
-    toasts.addWarning(t(i18n.toasts.notImplemented));
   };
 
   return (
@@ -67,7 +61,7 @@ export const LoginPage: FC = () => {
             <AppInputError data-testid="error-password" error={getError('password')} />
           </div>
           <div className="flex flex-row gap-10 justify-center">
-            <RouteLink to={route(RouteId.Register)} onClick={forgotPasswordClick} className="text-accent">
+            <RouteLink to={route(RouteId.PasswordResetStart)} className="text-accent">
               {t(i18n.form.buttons.forgotPassword)}
             </RouteLink>
           </div>

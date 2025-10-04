@@ -1,7 +1,7 @@
 
 import {OpenApiMethod} from 'snap-on-openapi';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
-import {BusinessUtils} from './BusinessUtils';
+import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type OpenApiResponse = {status: number, body: any}
@@ -18,8 +18,13 @@ export class OpenApiUtils {
     return response;
   }
 
-  static async get(route: string): Promise<OpenApiResponse> {
-    const response = await this.sendRequest(route, OpenApiMethod.GET);
+  static async get(route: string, headers?: Record<string, string>): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.GET, undefined, undefined, headers);
+    return response;
+  }
+
+  static async post(route: string, data?: object) {
+    const response = await this.sendRequest(route, OpenApiMethod.POST, undefined, data);
     return response;
   }
 
@@ -55,7 +60,8 @@ export class OpenApiUtils {
     route: string,
     method: OpenApiMethod,
     user?: UserRow,
-    data?: object
+    data?: object,
+    headers?: Record<string, string>,
   ): Promise<OpenApiResponse> {
     const factory = BusinessUtils.getFactory();
     const auth = await factory.auth();
@@ -67,6 +73,7 @@ export class OpenApiUtils {
       headers: {
         'content-type': 'application/json',
         'Authorization': `Bearer ${jwt}`,
+        ...headers,
       },
       body: data ? JSON.stringify(data) : undefined,
     });

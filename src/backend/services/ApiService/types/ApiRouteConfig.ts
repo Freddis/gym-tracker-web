@@ -12,8 +12,11 @@ import {nativeEnum} from 'zod';
 
 export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
   protected factory: GlobalServiceFactory;
-  constructor(factory: GlobalServiceFactory) {
+  protected baseUrl: string;
+
+  constructor(factory: GlobalServiceFactory, baseUrl: string) {
     this.factory = factory;
+    this.baseUrl = baseUrl;
   }
 
   Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, ManagerRouteContext> = {
@@ -34,6 +37,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       }
       const language = this.getRequestLangauge(ctx.request);
       return {
+        baseUrl: this.baseUrl,
         services: services,
         viewer,
         language,
@@ -50,6 +54,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       [ApiErrorCode.NotFound]: true,
     },
     contextFactory: async (ctx) => ({
+      baseUrl: this.baseUrl,
       services: await this.createRequestServices(),
       language: this.getRequestLangauge(ctx.request),
     }),
@@ -72,6 +77,7 @@ export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, Ap
       }
       const language = this.getRequestLangauge(ctx.request);
       return {
+        baseUrl: this.baseUrl,
         services: services,
         viewer,
         language,

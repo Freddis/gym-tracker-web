@@ -43,11 +43,15 @@ import {getManagedExercise} from '../api/exercises/managed-exercises/getManagedE
 import {updateManagedExercise} from '../api/exercises/managed-exercises/updateManagedExercise';
 import {getManagedImages} from '../api/images/managed-images/getManagedImages';
 import {deleteManagedImage} from '../api/images/managed-images/deleteManagedImage';
+import {passwordResetStart} from '../api/auth/passwordResetStart';
+import {passwordResetComplete} from '../api/auth/passwordResetComplete';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
     registerUser,
     loginUser,
+    passwordResetStart,
+    passwordResetComplete,
   ],
   '/exercises': [
     createExercise,

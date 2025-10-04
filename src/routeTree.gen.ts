@@ -23,6 +23,7 @@ import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
 import { Route as EntriesAddRouteImport } from './routes/entries/add'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthPasswordResetRouteImport } from './routes/auth/password-reset'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
 import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/privacy-policy'
@@ -38,6 +39,7 @@ import { Route as WorkoutsTypesCreateRouteImport } from './routes/workouts/types
 import { Route as WorkoutsPlansCreateRouteImport } from './routes/workouts/plans/create'
 import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
+import { Route as AuthPasswordResetCompleteTokenRouteImport } from './routes/auth/password-reset-complete.$token'
 import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/types/update/$id'
 import { Route as WorkoutsPlansUpdateIdRouteImport } from './routes/workouts/plans/update/$id'
 import { Route as CrmTranslationsUpdateIdRouteImport } from './routes/crm/translations/update/$id'
@@ -107,6 +109,11 @@ const EntriesAddRoute = EntriesAddRouteImport.update({
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/auth/register',
   path: '/auth/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthPasswordResetRoute = AuthPasswordResetRouteImport.update({
+  id: '/auth/password-reset',
+  path: '/auth/password-reset',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -185,6 +192,12 @@ const ExercisesUpdateExerciseIdRoute =
     path: '/exercises/update/$exerciseId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthPasswordResetCompleteTokenRoute =
+  AuthPasswordResetCompleteTokenRouteImport.update({
+    id: '/auth/password-reset-complete/$token',
+    path: '/auth/password-reset-complete/$token',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkoutsTypesUpdateIdRoute = WorkoutsTypesUpdateIdRouteImport.update({
   id: '/workouts/types/update/$id',
   path: '/workouts/types/update/$id',
@@ -231,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
@@ -242,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
+  '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -264,6 +279,7 @@ export interface FileRoutesByTo {
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
@@ -275,6 +291,7 @@ export interface FileRoutesByTo {
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
+  '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -298,6 +315,7 @@ export interface FileRoutesById {
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
@@ -309,6 +327,7 @@ export interface FileRoutesById {
   '/entries/': typeof EntriesIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
   '/feed/': typeof FeedIndexRoute
+  '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -333,6 +352,7 @@ export interface FileRouteTypes {
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
+    | '/auth/password-reset'
     | '/auth/register'
     | '/entries/add'
     | '/exercises/$exerciseId'
@@ -344,6 +364,7 @@ export interface FileRouteTypes {
     | '/entries'
     | '/exercises'
     | '/feed'
+    | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -366,6 +387,7 @@ export interface FileRouteTypes {
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
+    | '/auth/password-reset'
     | '/auth/register'
     | '/entries/add'
     | '/exercises/$exerciseId'
@@ -377,6 +399,7 @@ export interface FileRouteTypes {
     | '/entries'
     | '/exercises'
     | '/feed'
+    | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -399,6 +422,7 @@ export interface FileRouteTypes {
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
+    | '/auth/password-reset'
     | '/auth/register'
     | '/entries/add'
     | '/exercises/$exerciseId'
@@ -410,6 +434,7 @@ export interface FileRouteTypes {
     | '/entries/'
     | '/exercises/'
     | '/feed/'
+    | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -433,6 +458,7 @@ export interface RootRouteChildren {
   ArticlesPrivacyPolicyRoute: typeof ArticlesPrivacyPolicyRoute
   ArticlesTermsOfServiceRoute: typeof ArticlesTermsOfServiceRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthPasswordResetRoute: typeof AuthPasswordResetRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   EntriesAddRoute: typeof EntriesAddRoute
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
@@ -444,6 +470,7 @@ export interface RootRouteChildren {
   EntriesIndexRoute: typeof EntriesIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
   FeedIndexRoute: typeof FeedIndexRoute
+  AuthPasswordResetCompleteTokenRoute: typeof AuthPasswordResetCompleteTokenRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
   WeightUpdateIdRoute: typeof WeightUpdateIdRoute
   WorkoutsPlansCreateRoute: typeof WorkoutsPlansCreateRoute
@@ -581,6 +608,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/password-reset': {
+      id: '/auth/password-reset'
+      path: '/auth/password-reset'
+      fullPath: '/auth/password-reset'
+      preLoaderRoute: typeof AuthPasswordResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -686,6 +720,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesUpdateExerciseIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/password-reset-complete/$token': {
+      id: '/auth/password-reset-complete/$token'
+      path: '/auth/password-reset-complete/$token'
+      fullPath: '/auth/password-reset-complete/$token'
+      preLoaderRoute: typeof AuthPasswordResetCompleteTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workouts/types/update/$id': {
       id: '/workouts/types/update/$id'
       path: '/workouts/types/update/$id'
@@ -754,6 +795,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesPrivacyPolicyRoute: ArticlesPrivacyPolicyRoute,
   ArticlesTermsOfServiceRoute: ArticlesTermsOfServiceRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthPasswordResetRoute: AuthPasswordResetRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   EntriesAddRoute: EntriesAddRoute,
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
@@ -765,6 +807,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntriesIndexRoute: EntriesIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
   FeedIndexRoute: FeedIndexRoute,
+  AuthPasswordResetCompleteTokenRoute: AuthPasswordResetCompleteTokenRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
   WeightUpdateIdRoute: WeightUpdateIdRoute,
   WorkoutsPlansCreateRoute: WorkoutsPlansCreateRoute,

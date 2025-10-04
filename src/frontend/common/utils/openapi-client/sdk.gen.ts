@@ -8,6 +8,12 @@ import type {
   PostAuthLoginData,
   PostAuthLoginResponses,
   PostAuthLoginErrors,
+  PostAuthPasswordResetData,
+  PostAuthPasswordResetResponses,
+  PostAuthPasswordResetErrors,
+  PostAuthPasswordResetCompleteData,
+  PostAuthPasswordResetCompleteResponses,
+  PostAuthPasswordResetCompleteErrors,
   GetExercisesData,
   GetExercisesResponses,
   GetExercisesErrors,
@@ -218,6 +224,50 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
   >({
     responseType: "json",
     url: "/auth/login",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Sends a password reset email for a user
+ */
+export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthPasswordResetData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthPasswordResetResponses,
+    PostAuthPasswordResetErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    url: "/auth/password-reset",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Resets the user password and logs the user in
+ */
+export const postAuthPasswordResetComplete = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostAuthPasswordResetCompleteData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostAuthPasswordResetCompleteResponses,
+    PostAuthPasswordResetCompleteErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    url: "/auth/password-reset-complete",
     ...options,
     headers: {
       "Content-Type": "application/json",

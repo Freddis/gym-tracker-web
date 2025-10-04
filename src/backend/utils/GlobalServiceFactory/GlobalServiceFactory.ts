@@ -17,6 +17,7 @@ import {ArgusCheckinService} from '../../services/ArgusCheckinService/ArgusCheck
 import {WorkoutPlanService} from '../../services/WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../services/WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../services/TranslationService/TranslationService';
+import {EmailService} from '../../services/EmailService/EmailService';
 
 export class GlobalServiceFactory {
 
@@ -53,11 +54,19 @@ export class GlobalServiceFactory {
   async auth(): Promise<AuthService> {
     const drizzle = await this.drizzle();
     const managerService = await this.manager();
-    return new AuthService(serverConfig.services.auth, drizzle, managerService);
+    const userService = await this.user();
+    const email = await this.email();
+    return new AuthService(
+      serverConfig.services.auth,
+      drizzle,
+      userService,
+      managerService,
+      email
+    );
   }
 
   async openApi(): Promise<ReturnType<ApiService['createOpenApi']>> {
-    const helper = new ApiService(this);
+    const helper = new ApiService(this, this.config.baseUrl);
     const api = helper.createOpenApi();
     return api;
   }
@@ -131,5 +140,9 @@ export class GlobalServiceFactory {
 
   async translation(): Promise<TranslationService> {
     return new TranslationService(await this.drizzle());
+  }
+
+  async email(): Promise<EmailService> {
+    return new EmailService(this.config.services.email);
   }
 }

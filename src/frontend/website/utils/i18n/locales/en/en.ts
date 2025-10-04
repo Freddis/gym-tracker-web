@@ -578,10 +578,10 @@ export const dictionary = {
           },
         },
       },
-      passwordRestore: {
+      passwordReset: {
         heading: 'Restore Password',
         toasts: {
-          restorationSuccess: 'The email has been sent',
+          resetSuccess: 'The email has been sent',
         },
         form: {
           description: 'Enter your email and we will send you new password if your account exists',
@@ -589,7 +589,33 @@ export const dictionary = {
             email: 'Email',
           },
           buttons: {
-            restore: 'Send',
+            reset: 'Send',
+            signIn: 'Sign In',
+          },
+        },
+      },
+      passwordResetComplete: {
+        heading: 'Set New Password',
+        toasts: {
+          resetSuccess: 'Password has been reset successfully',
+        },
+        form: {
+          description: 'Enter your new password below',
+          labels: {
+            password: 'New Password',
+            passwordConfirmation: 'Confirm Password',
+          },
+          placeholders: {
+            password: 'Enter new password',
+            passwordConfirmation: 'Confirm new password',
+          },
+          errors: {
+            passwordMismatch: 'Passwords do not match',
+            passwordTooShort: 'Password must be at least 5 characters',
+          },
+          buttons: {
+            reset: 'Change Password',
+            signIn: 'Sign In',
           },
         },
       },
