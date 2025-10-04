@@ -549,6 +549,7 @@ export const dictionary: Translation = {
           },
           buttons: {
             reset: 'Отправить',
+            signIn: 'Войти',
           },
         },
       },
