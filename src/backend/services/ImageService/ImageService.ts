@@ -92,7 +92,8 @@ export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
   async createFromFile(file: Buffer, name: string): Promise<ImageRow> {
     name = encodeURIComponent(name);
     const image = this.saveImageToDb(name);
-    await this.createBucket(this.bucket);
+    // we don't automatically create buckets anymore
+    // await this.createBucket(this.bucket);
     await this.uploadFile(file, this.bucket, name);
     return image;
   }
