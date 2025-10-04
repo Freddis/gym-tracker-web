@@ -537,10 +537,10 @@ export const dictionary: Translation = {
           registrationSuccess: 'Вы успешно зарегистрировались',
         },
       },
-      passwordRestore: {
+      passwordReset: {
         heading: 'Восстановление пароля',
         toasts: {
-          restorationSuccess: 'Письмо успешно отравлено',
+          resetSuccess: 'Письмо успешно отравлено',
         },
         form: {
           description: 'Укажите адрес своей электронной почты. Если ваш аккаунт существует мы отправим письмо с новым паролем.',
@@ -548,7 +548,32 @@ export const dictionary: Translation = {
             email: 'Почта',
           },
           buttons: {
-            restore: 'Отправить',
+            reset: 'Отправить',
+          },
+        },
+      },
+      passwordResetComplete: {
+        heading: 'Установить новый пароль',
+        toasts: {
+          resetSuccess: 'Пароль успешно изменен',
+        },
+        form: {
+          description: 'Введите новый пароль ниже',
+          labels: {
+            password: 'Новый пароль',
+            passwordConfirmation: 'Подтвердите пароль',
+          },
+          placeholders: {
+            password: 'Введите новый пароль',
+            passwordConfirmation: 'Подтвердите новый пароль',
+          },
+          errors: {
+            passwordMismatch: 'Пароли не совпадают',
+            passwordTooShort: 'Пароль должен содержать минимум 5 символов',
+          },
+          buttons: {
+            reset: 'Изменить пароль',
+            signIn: 'Войти',
           },
         },
       },

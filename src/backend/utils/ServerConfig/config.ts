@@ -40,9 +40,7 @@ export const serverConfig: ServerConfig = {
     }),
     email: {
       from: EnvHelper.getString('EMAIL_FROM'),
-      awsRegion: '',
-      awsAccessKeyId: '',
-      awsAccessKeySecret: '',
+      fromName: EnvHelper.getString('EMAIL_FROM_NAME'),
     },
   },
 };

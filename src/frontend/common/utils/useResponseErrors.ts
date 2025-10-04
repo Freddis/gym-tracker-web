@@ -19,9 +19,9 @@ const selectPath = <T>(fn: (x: T) => unknown): string => {
   return accesses.join('.');
 };
 type BrandedWithType<T, TBrand> = T & {__brand: TBrand}
-export type ErrorSlice<T extends object> = BrandedWithType<FieldError[], T>
+export type ErrorSlice<T extends object| undefined> = BrandedWithType<FieldError[], Exclude<T, undefined>>
 
-export const useResponseErrors = <T extends object>(existingErrors?: FieldError[] | ErrorSlice<T>) => {
+export const useResponseErrors = <T extends object | undefined>(existingErrors?: FieldError[] | ErrorSlice<Exclude<T, undefined>>) => {
   const [errors, setErrors] = useState(existingErrors ?? []);
   const {translations} = useAppPartialTranslation((x) => x.pages.auth.login);
   const toasts = useToasts();
