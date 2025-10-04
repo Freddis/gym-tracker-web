@@ -38,6 +38,7 @@ export class EmailService {
       this.logger.info('Email sent successfully:', {MessageId: response.MessageId});
     } catch (err) {
       this.logger.error('Error sending email:', err);
+      throw err;
     }
   }
 }
