@@ -14,11 +14,10 @@ export class EmailService {
   }
 
   public async send(to: string, subject:string, body:string): Promise<void> {
-    this.logger.info('Sending email', {to, subject});
+    this.logger.info('Sending email', {from: this.config.from, to, subject});
     const source = this.config.fromName
       ? `"${this.config.fromName}" <${this.config.from}>`
       : this.config.from;
-
     const command = new SendEmailCommand({
       Source: source,
       Destination: {
