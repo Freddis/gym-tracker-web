@@ -129,16 +129,10 @@ export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
       });
       await this.s3.send(command);
     } catch (caught) {
-      if (caught instanceof S3ServiceException && caught.name === 'EntityTooLarge') {
-        console.error(`Error from S3 while uploading object to ${this.bucket}. \
-The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
-or the multipart upload API (5TB max).`,
-      );
-      } else if (caught instanceof S3ServiceException) {
-        console.error(`Error from S3 while uploading object to ${this.bucket}.  ${caught.name}: ${caught.message}`,);
-      } else {
-        throw caught;
+      if (caught instanceof S3ServiceException) {
+        console.error(`Error from S3 while uploading object to ${this.bucket}.  ${caught.name}: ${caught.message}`);
       }
+      throw caught;
     }
   }
 
