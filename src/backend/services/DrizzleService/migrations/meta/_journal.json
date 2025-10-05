@@ -162,6 +162,20 @@
       "when": 1758789788361,
       "tag": "0022_exercise_archive_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1759648672219,
+      "tag": "0023_image_types",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1759648682211,
+      "tag": "0024_image_types2",
+      "breakpoints": true
     }
   ]
 }

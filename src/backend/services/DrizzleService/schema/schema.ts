@@ -6,6 +6,7 @@ import {EntryType} from '../../EntryService/types/EntryType';
 import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 import {TranslationType} from '../../TranslationService/types/TranslationType';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
+import {ImageType} from '../../../types/ImageType';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -26,6 +27,9 @@ export const translationTypeEnum = gymTracker.enum('TranslationType', translatio
 
 const languageEnumValues = array(nativeEnum(Language)).nonempty().parse(Object.values(Language));
 export const languageEnum = gymTracker.enum('language', languageEnumValues);
+
+const imageTypeEnumValues = array(nativeEnum(ImageType)).nonempty().parse(Object.values(ImageType));
+export const imageTypeEnum = gymTracker.enum('ImageType', imageTypeEnumValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -210,6 +214,7 @@ export const workoutExerciseSets = gymTracker.table('workout_exercise_sets', {
 export const images = gymTracker.table('images', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   url: text().notNull().unique(),
+  imageType: imageTypeEnum().notNull(),
   userId: integer().references(() => users.id, {onDelete: 'set null'}),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),

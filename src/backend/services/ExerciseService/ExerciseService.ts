@@ -17,6 +17,7 @@ import {ImageService} from '../ImageService/ImageService';
 import {ExerciseMuscleRow} from '../DrizzleService/types/ExerciseMuscleRow';
 import {NewModel} from '../../types/NewModel';
 import {ManagedExerciseUpdateDto} from './types/MangagedExerciseUpdateDto';
+import {ImageType} from '../../types/ImageType';
 
 interface SelectPromise<T> extends Promise<T> {
   limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
@@ -119,7 +120,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
         const mils = now.substring(now.length - 5);
         const imageName = data.name?.trim() ?? existing.name.trim();
         const name = `${imageName}${mils}.jpg`;
-        const image = await this.images.createFromBase64(data.image, name);
+        const image = await this.images.createFromBase64(data.image, name, ImageType.Exercise);
         update.images = [image.url];
       }
       const dbSchema = this.drizzle.getSchema();

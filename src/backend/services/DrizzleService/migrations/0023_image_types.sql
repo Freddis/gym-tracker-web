@@ -1,0 +1,2 @@
+CREATE TYPE "gym_tracker"."ImageType" AS ENUM('Exercise', 'UserProfile');--> statement-breakpoint
+ALTER TABLE "gym_tracker"."images" ADD COLUMN "imageType" "gym_tracker"."ImageType" DEFAULT 'Exercise' NOT NULL;

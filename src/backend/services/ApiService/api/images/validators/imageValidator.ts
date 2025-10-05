@@ -11,6 +11,7 @@ export const imageValidatorDescriptions: OpenApiDescriptions<Image> = {
   createdAt: 'Date the creation',
   updatedAt: 'Date of last update',
   deletedAt: 'Date of deletion. Deleted exercises are not accessible to users.',
+  imageType: 'Type of object this image attaches to',
 };
 
 export const imageValidator = RouteFactory.validators.describeShape(imageRowValidator, imageValidatorDescriptions).openapi({

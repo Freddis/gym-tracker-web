@@ -3,6 +3,7 @@ import {readdirSync, readFileSync, realpathSync} from 'node:fs';
 import {join} from 'node:path';
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
 import {Logger} from '../../src/backend/utils/Logger/Logger';
+import {ImageType} from '../../src/backend/types/ImageType';
 
 const logger = new Logger('uploadImages');
 logger.info('Start');
@@ -19,7 +20,7 @@ for (const imgName of files) {
     logger.info('Already exists, skipping.');
     continue;
   }
-  const image = await service.createFromFile(file, imgName);
+  const image = await service.createFromFile(file, imgName, ImageType.Exercise);
   logger.info(`${image.url}`);
 }
 logger.info('Cleanup');

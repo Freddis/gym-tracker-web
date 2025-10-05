@@ -15,6 +15,7 @@ import {SQL, and, desc, inArray} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {ImageFilter} from './types/ImageFilter';
 import {Logger} from '../../utils/Logger/Logger';
+import {ImageType} from '../../types/ImageType';
 
 export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
   protected bucket = 'gymtracker-images-23';
@@ -89,25 +90,26 @@ export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
     return `https://${this.bucket}.s3.eu-central-1.amazonaws.com/${name}`;
   }
 
-  async createFromFile(file: Buffer, name: string): Promise<ImageRow> {
-    name = encodeURIComponent(name);
-    const image = this.saveImageToDb(name);
+  async createFromFile(file: Buffer, name: string, imageType: ImageType): Promise<ImageRow> {
+    name = encodeURIComponent(name.replaceAll(' ', '-'));
+    const image = this.saveImageToDb(name, imageType);
     // we don't automatically create buckets anymore
     // await this.createBucket(this.bucket);
     await this.uploadFile(file, this.bucket, name);
     return image;
   }
 
-  async createFromBase64(data: string, name: string) {
+  async createFromBase64(data: string, name: string, imageType: ImageType) {
     const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
     const buffer = Buffer.from(base64Data, 'base64');
-    return this.createFromFile(buffer, name);
+    return this.createFromFile(buffer, name, imageType);
   }
 
-  protected async saveImageToDb(name:string): Promise<ImageRow> {
+  protected async saveImageToDb(name: string, imageType: ImageType): Promise<ImageRow> {
     const db = await this.drizzle.getDb();
     const inserted = await db.insert(db._.fullSchema.images).values({
       url: this.generateUrl(name),
+      imageType: imageType,
       createdAt: new Date(),
     }).returning();
     const result = inserted[0];

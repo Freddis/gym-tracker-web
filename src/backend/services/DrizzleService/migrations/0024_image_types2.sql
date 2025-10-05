@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."images" ALTER COLUMN "imageType" DROP DEFAULT;
