@@ -959,6 +959,10 @@ export type ManagedImage = {
    */
   url: string;
   /**
+   * Type of object this image attaches to
+   */
+  imageType: "Exercise" | "UserProfile";
+  /**
    * Id of the user who uploaded it
    */
   userId: number | null;

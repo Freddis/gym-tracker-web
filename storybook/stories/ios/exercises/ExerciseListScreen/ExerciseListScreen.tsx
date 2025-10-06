@@ -6,7 +6,7 @@ import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay'
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 import {MobileExerciseBlock} from './MobileExerciseBlock';
 
-export const ExercisesScreen: FC<{exercises: Exercise[]}> = ({exercises}) => (
+export const ExerciseListScreen: FC<{exercises: Exercise[]}> = ({exercises}) => (
   <IphoneDisplay tab={2}>
    <MobileScreenContainer className="flex flex-col h-full">
       <div className="mb-3">
