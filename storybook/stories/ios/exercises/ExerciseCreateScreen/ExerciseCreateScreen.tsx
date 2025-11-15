@@ -52,13 +52,11 @@ export const ExerciseCreateScreen: FC<ExerciseCreateScreenProps> = () => {
   return (
     <IphoneDisplay tab={2} title="Add Custom Exercise" rightButton="Save">
       <MobileScreenContainer >
-
         <div className="flex-1 overflow-y-auto space-y-4">
           <div className="space-y-4">
             <AppLabel>Exercise Image:</AppLabel>
             <div className="flex justify">
               <AppImageInput
-                url={exercise.images[0]}
                 className="w-20 h-20 rounded-lg" onUpdate={() => {}} />
             </div>
           </div>

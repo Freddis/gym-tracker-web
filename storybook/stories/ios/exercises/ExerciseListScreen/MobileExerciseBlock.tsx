@@ -2,8 +2,8 @@ import {FC, MouseEventHandler, useState} from 'react';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa6';
 import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppImage/AppImage';
 import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
-import
-{ExerciseBlockProps,
+import {
+  ExerciseBlockProps,
 } from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/types/ExerciseBlockProps';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
@@ -67,7 +67,6 @@ export const MobileExerciseBlock: FC<ExerciseBlockProps> = (props) => {
             {item.variations?.map((row) => (
               <div>
                 <div className="border-b-1 border-on-surface/20 pb-2 mb-2 mx-3" />
-
                 <div className="px-3 flex flex-col sm:flex-row gap-2 items-start">
                   <AppImage src={row.images[0]} className="md:mt-1 w-15 h-15 object-cover" />
                   <div className="grow">
@@ -92,7 +91,6 @@ export const MobileExerciseBlock: FC<ExerciseBlockProps> = (props) => {
                               {translations.utils.objects.muscles[muscle]}
                             </AppLink>
                           ))}
-
                         </div>
                       </div>
                     </div>

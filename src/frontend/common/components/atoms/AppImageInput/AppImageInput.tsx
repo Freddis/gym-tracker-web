@@ -1,6 +1,7 @@
 import {FC, useState, useRef, ChangeEvent} from 'react';
 import {AppImage} from '../AppImage/AppImage';
 import {FaUpload} from 'react-icons/fa6';
+import {cn} from '../../../utils/cn';
 
 interface AppImageInputProps {
   url?: string,
@@ -26,11 +27,12 @@ export const AppImageInput: FC<AppImageInputProps> = (props) => {
     };
     reader.readAsDataURL(file);
   };
+  const opaqueIfNoImage = !image && !props.url ? 'opacity-100' : '';
   return (
   <div className={'relative inline-block cursor-pointer rounded-md'} onClick={onImageClick}>
      <div
-        className="hover:opacity-100 opacity-0 transition-all rounded-md
-        absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center"
+        className={cn(`hover:opacity-100 opacity-0 transition-all rounded-md
+        absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center`, opaqueIfNoImage)}
       >
       <FaUpload className="text-xl fill-white"/>
      </div>
