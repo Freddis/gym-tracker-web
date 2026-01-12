@@ -394,10 +394,6 @@ export const deleteExercisesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/exercises/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 
@@ -546,10 +542,6 @@ export const deleteWorkoutsById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workouts/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 
@@ -677,10 +669,6 @@ export const deleteWorkoutPlansById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workout-plans/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 
@@ -808,10 +796,6 @@ export const deleteWorkoutTypesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/workout-types/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };
 
@@ -1287,9 +1271,5 @@ export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/crm/images/{id}",
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
   });
 };

@@ -2,7 +2,8 @@ import {createFileRoute} from '@tanstack/react-router';
 import {ExerciseLibraryPage} from '../../frontend/website/components/pages/Exercises/ExerciseLibraryPage/ExerciseLibraryPage';
 import {
   exeriseLibraryQueryValidator,
-} from '../../frontend/website/components/pages/Exercises/ExerciseLibraryPage/types/ExercisesLibraryQuery';
+// eslint-disable-next-line max-len
+} from '../../frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseLibraryPagePresenter/types/ExercisesLibraryQuery';
 
 export const Route = createFileRoute('/exercises/')({
   component: ExerciseLibraryPage,

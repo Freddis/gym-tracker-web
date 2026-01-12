@@ -2157,7 +2157,7 @@ export type GetExercisesBuiltInResponse =
   GetExercisesBuiltInResponses[keyof GetExercisesBuiltInResponses];
 
 export type DeleteExercisesByIdData = {
-  body?: unknown;
+  body?: never;
   path: {
     /**
      * Id of the exercise
@@ -2899,7 +2899,7 @@ export type PutWorkoutsResponse =
   PutWorkoutsResponses[keyof PutWorkoutsResponses];
 
 export type DeleteWorkoutsByIdData = {
-  body?: unknown;
+  body?: never;
   path: {
     /**
      * Id of the workout
@@ -3534,7 +3534,7 @@ export type PostWorkoutPlansResponse =
   PostWorkoutPlansResponses[keyof PostWorkoutPlansResponses];
 
 export type DeleteWorkoutPlansByIdData = {
-  body?: unknown;
+  body?: never;
   path: {
     /**
      * Id of the workout plan
@@ -4188,7 +4188,7 @@ export type PostWorkoutTypesResponse =
   PostWorkoutTypesResponses[keyof PostWorkoutTypesResponses];
 
 export type DeleteWorkoutTypesByIdData = {
-  body?: unknown;
+  body?: never;
   path: {
     /**
      * Id of the workout type
@@ -7102,7 +7102,7 @@ export type GetCrmImagesResponse =
   GetCrmImagesResponses[keyof GetCrmImagesResponses];
 
 export type DeleteCrmImagesByIdData = {
-  body?: unknown;
+  body?: never;
   path: {
     /**
      * Id of the image

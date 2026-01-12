@@ -4,7 +4,8 @@ import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppI
 import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
 import {
   ExerciseBlockProps,
-} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/types/ExerciseBlockProps';
+// eslint-disable-next-line max-len
+} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock/types/ExerciseBlockProps';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
 

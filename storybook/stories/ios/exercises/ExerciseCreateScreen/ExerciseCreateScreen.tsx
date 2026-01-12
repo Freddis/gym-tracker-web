@@ -8,7 +8,6 @@ import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay'
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
 import {Equipment} from '../../../../../src/backend/types/Equipment';
 import {Muscle} from '../../../../../src/backend/types/Muscle';
-import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
 import {FieldError} from '../../../../../src/frontend/common/utils/useResponseErrors';
 import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
 
@@ -27,7 +26,6 @@ interface ExerciseFormData {
 }
 
 export const ExerciseCreateScreen: FC<ExerciseCreateScreenProps> = () => {
-  const exercise = StorybookDataUtils.getExercise();
   const [formData, setFormData] = useState<ExerciseFormData>({
     name: '',
     description: '',

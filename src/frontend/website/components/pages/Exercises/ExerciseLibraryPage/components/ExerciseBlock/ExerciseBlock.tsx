@@ -1,15 +1,15 @@
 import {FC, MouseEventHandler, useState} from 'react';
-import {AppImage} from '../../../../../../common/components/atoms/AppImage/AppImage';
-import {AppBlock} from '../../../../../../common/components/atoms/AppBlock/AppBlock';
+import {AppImage} from '../../../../../../../common/components/atoms/AppImage/AppImage';
+import {AppBlock} from '../../../../../../../common/components/atoms/AppBlock/AppBlock';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa';
-import {ExerciseLibraryQueryParams} from '../types/ExercisesLibraryQuery';
 import {ExerciseBlockProps} from './types/ExerciseBlockProps';
-import {Equipment, Muscle} from '../../../../../../common/utils/openapi-client';
-import {cn} from '../../../../../../common/utils/cn';
-import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
-import {RouteLink} from '../../../../../../common/components/atoms/RouteLink/RouteLink';
-import {AppLink} from '../../../../../../common/components/atoms/AppLink/AppLink';
-import {route, RouteId} from '../../../../../../common/utils/route';
+import {Equipment, Muscle} from '../../../../../../../common/utils/openapi-client';
+import {cn} from '../../../../../../../common/utils/cn';
+import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
+import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
+import {AppLink} from '../../../../../../../common/components/atoms/AppLink/AppLink';
+import {route, RouteId} from '../../../../../../../common/utils/route';
+import {ExerciseLibraryQueryParams} from '../ExerciseLibraryPagePresenter/types/ExercisesLibraryQuery';
 
 export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   const item = props.item;
