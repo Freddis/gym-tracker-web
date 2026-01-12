@@ -17,7 +17,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
-    ['./e2e-test-reporter.ts'],
+    // ['./e2e-test-reporter.ts'],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -66,9 +66,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: process.env.CI ? {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
-    // reuseExistingServer: !process.env.CI,
-  } : undefined,
+  // webServer: process.env.CI ? {
+  //   command: 'npm run dev',
+  //   url: 'http://localhost:3000',
+  //   // reuseExistingServer: !process.env.CI,
+  // } : undefined,
 });

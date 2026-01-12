@@ -14,7 +14,7 @@ export class LoginPageTestUtils extends BasePageTestUtils {
 
   async clickLoginButton() {
     const button = this.page.locator('button.palette-accent');
-    button.click();
+    await button.click();
   }
 
   async waitForPasswordError(): Promise<Locator> {

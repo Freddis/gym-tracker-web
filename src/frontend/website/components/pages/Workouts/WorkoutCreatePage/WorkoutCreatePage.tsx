@@ -1,5 +1,5 @@
 import {PageContainer} from '../../../../../common/components/layout/PageContainer/PageContainer';
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import {postWorkouts, Workout, WorkoutUpdateDto} from '../../../../../common/utils/openapi-client';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
@@ -13,10 +13,13 @@ import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {useNonRenderingState} from '../../../../../common/utils/useNonRenderingState';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
+import {AuthContext} from '../../../../../common/components/layout/AuthProvider/AuthContext';
 
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();
   const toasts = useToasts();
+  const auth = useContext(AuthContext);
   const {showToastsAndSetErrors} = useResponseErrors();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities);
   const client = useQueryClient();
@@ -51,6 +54,14 @@ export const WorkoutCreatePage: FC = () => {
       to: '/entries',
     });
   };
+
+  if (!auth.user) {
+    return (
+        <PageContainer>
+          <AppApiErrorDisplay error={{code: 'Unauthorized'}} />
+        </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
