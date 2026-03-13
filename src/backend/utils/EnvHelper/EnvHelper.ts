@@ -2,8 +2,7 @@ import dotenv from 'dotenv';
 import {Environment} from 'src/backend/types/Environment';
 import {EnumLike, z} from 'zod';
 import {LogLevel} from '../Logger/types/LogLevel';
-import {NestedPartial} from '../../types/NestedPartial';
-
+import {NestedDefinite} from './types/NestedDefinite';
 export class EnvHelper {
   protected static init = (() => {
     const logLevel = EnvHelper.getEnumValue('log_level', LogLevel, LogLevel.error);
@@ -100,13 +99,13 @@ export class EnvHelper {
     return this.returnUndefinedOrThrow(() => this.getBoolean(name));
   }
 
-  static getObjectOrNothing<T>(data: NestedPartial<T>): T | undefined {
+  static getObjectOrNothing<T extends object>(data: T): NestedDefinite<T> | undefined {
     for (const val of Object.values(data)) {
       if (val === undefined) {
         return undefined;
       }
     }
-    return data as T;
+    return data as NestedDefinite<T>;
   }
 
   protected static returnUndefinedOrThrow<X, T extends() => X>(func: T): X | undefined {

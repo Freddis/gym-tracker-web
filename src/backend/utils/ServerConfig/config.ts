@@ -1,6 +1,5 @@
 import {realpathSync} from 'fs';
 import {join} from 'path';
-import {ArgusServiceConfig} from '../../services/ArgusService/types/ArgusServiceConfig';
 import {EnvHelper} from '../EnvHelper/EnvHelper';
 import {ServerConfig} from './ServerConfig';
 
@@ -20,7 +19,7 @@ export const serverConfig: ServerConfig = {
       hashSalt: EnvHelper.getNumber('SERVICES_AUTH_HASH_SALT'),
       jwtSecret: EnvHelper.getString('SERVICES_AUTH_JWT_SECRET'),
     },
-    argus: EnvHelper.getObjectOrNothing<ArgusServiceConfig>({
+    argus: EnvHelper.getObjectOrNothing({
       tempFolderPath: join(realpathSync('.'), '/temp'),
       seededUser: {
         name: EnvHelper.getOptionalString('SEED_USER_NAME'),
