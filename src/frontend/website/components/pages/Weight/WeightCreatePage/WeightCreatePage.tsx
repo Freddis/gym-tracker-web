@@ -28,7 +28,7 @@ export const WeightCreatePage: FC = () => {
         weight: weight,
       },
     });
-    if (!showToastsAndSetErrors(result)) {
+    if (showToastsAndSetErrors(result)) {
       return;
     }
     toasts.addSuccess(t(i18n.weight.add.toasts.success));

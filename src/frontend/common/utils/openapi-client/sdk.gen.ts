@@ -98,12 +98,21 @@ import type {
   GetArgusCheckinTypesData,
   GetArgusCheckinTypesResponses,
   GetArgusCheckinTypesErrors,
-  GetEntriesData,
-  GetEntriesResponses,
-  GetEntriesErrors,
   GetEntriesOwnData,
   GetEntriesOwnResponses,
   GetEntriesOwnErrors,
+  DeleteEntriesByIdData,
+  DeleteEntriesByIdResponses,
+  DeleteEntriesByIdErrors,
+  GetEntriesByIdData,
+  GetEntriesByIdResponses,
+  GetEntriesByIdErrors,
+  GetEntriesData,
+  GetEntriesResponses,
+  GetEntriesErrors,
+  PutEntriesData,
+  PutEntriesResponses,
+  PutEntriesErrors,
   GetCrmUsersData,
   GetCrmUsersResponses,
   GetCrmUsersErrors,
@@ -162,8 +171,10 @@ import {
   getWeightByIdResponseTransformer,
   patchWeightByIdResponseTransformer,
   getArgusCheckinResponseTransformer,
-  getEntriesResponseTransformer,
   getEntriesOwnResponseTransformer,
+  getEntriesByIdResponseTransformer,
+  getEntriesResponseTransformer,
+  putEntriesResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -969,24 +980,6 @@ export const getArgusCheckinTypes = <ThrowOnError extends boolean = false>(
 /**
  * Returns the list of public entries
  */
-export const getEntries = <ThrowOnError extends boolean = false>(
-  options?: Options<GetEntriesData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetEntriesResponses,
-    GetEntriesErrors,
-    ThrowOnError
-  >({
-    responseType: "json",
-    responseTransformer: getEntriesResponseTransformer,
-    url: "/entries",
-    ...options,
-  });
-};
-
-/**
- * Returns the list of public entries
- */
 export const getEntriesOwn = <ThrowOnError extends boolean = false>(
   options?: Options<GetEntriesOwnData, ThrowOnError>,
 ) => {
@@ -1005,6 +998,99 @@ export const getEntriesOwn = <ThrowOnError extends boolean = false>(
     responseTransformer: getEntriesOwnResponseTransformer,
     url: "/entries/own",
     ...options,
+  });
+};
+
+/**
+ * Deletes entry for user
+ */
+export const deleteEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteEntriesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteEntriesByIdResponses,
+    DeleteEntriesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetEntriesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetEntriesByIdResponses,
+    GetEntriesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getEntriesByIdResponseTransformer,
+    url: "/entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<GetEntriesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetEntriesResponses,
+    GetEntriesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    responseTransformer: getEntriesResponseTransformer,
+    url: "/entries",
+    ...options,
+  });
+};
+
+/**
+ * Updates or inserts entries for user
+ */
+export const putEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<PutEntriesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    PutEntriesResponses,
+    PutEntriesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: putEntriesResponseTransformer,
+    url: "/entries",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 

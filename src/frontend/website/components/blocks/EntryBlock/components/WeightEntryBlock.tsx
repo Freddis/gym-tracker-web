@@ -9,14 +9,14 @@ import {route, RouteId} from '../../../../../common/utils/route';
 export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
   const date = new Date(weight.createdAt);
-  const weekDayString = translations.utils.time.weekDays[date.getDay()];
+  const weekDayString = translations.utils.time.weekDays[date.getDay() - 1];
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
         <div className="text-lg font-normal mb-5">
           {!own && `${t(i18n.type)}: ${weight.id}`}
           {own && (
-            <RouteLink to={route(RouteId.WeightUpdate)} params={{id: weight.id.toString()}}>{t(i18n.type)}: {weight.id}</RouteLink>
+            <RouteLink to={route(RouteId.WeightUpdate)} params={{id: entry.id.toString()}}>{t(i18n.type)}: {weight.id}</RouteLink>
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">

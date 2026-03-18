@@ -11,9 +11,12 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useQuery} from '@tanstack/react-query';
-import {getWeightByIdOptions} from '../../../../../common/utils/openapi-client/@tanstack/react-query.gen';
+import {getEntriesByIdOptions} from '../../../../../common/utils/openapi-client/@tanstack/react-query.gen';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {api} from '../../../../../common/utils/api';
+import {AppToast} from '../../../../../common/components/atoms/AppToast/AppToast';
+import {Color} from '../../../../../common/utils/design-system/types/Color';
 
 const routeApi = getRouteApi('/weight/update/$id');
 export const WeightUpdatePage: FC = () => {
@@ -24,7 +27,7 @@ export const WeightUpdatePage: FC = () => {
   const {errors, showToastsAndSetErrors} = useResponseErrors();
   const [weight, setWeight] = useState<number| null>(null);
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
-  const response = useQuery(getWeightByIdOptions({
+  const response = useQuery(getEntriesByIdOptions({
     path: {
       id,
     },
@@ -35,6 +38,13 @@ export const WeightUpdatePage: FC = () => {
         <PageContainer>
           <AppSpinner />
         </PageContainer>
+    );
+  }
+  if (!response.data.weight) {
+    return (
+      <PageContainer>
+        <AppToast variant={Color.Danger}>{t(i18n.weight.update.toasts.notFound)}</AppToast>
+      </PageContainer>
     );
   }
 
@@ -53,8 +63,23 @@ export const WeightUpdatePage: FC = () => {
     if (showToastsAndSetErrors(result)) {
       return;
     }
-    toasts.addSuccess(t(i18n.weight.update.toasts.success));
+    toasts.addSuccess(t(i18n.weight.update.toasts.updateSuccess));
     navigate({to: '/entries'});
+  };
+
+  const onDeleteClick = async () => {
+    const result = await api.deleteEntriesById({
+      path: {
+        id: id,
+      },
+    });
+    if (showToastsAndSetErrors(result)) {
+      return;
+    }
+    toasts.addSuccess(t(i18n.weight.update.toasts.deleteSuccess));
+    navigate({
+      to: route(RouteId.EntryList),
+    });
   };
 
   return (
@@ -68,12 +93,13 @@ export const WeightUpdatePage: FC = () => {
       </div>
       <AppBlock className="max-w-5xl">
         <AppBlockHeader>{t(i18n.weight.update.heading)}</AppBlockHeader>
-          <WeightUpdateForm item={response.data} onUpdate={setWeight} errors={errors}/>
+          <WeightUpdateForm item={response.data.weight} onUpdate={setWeight} errors={errors}/>
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
           <div className="mt-5 flex flex-row">
             <RouteLink to={route(RouteId.EntryList)}>{translations.utils.generic.buttons.back}</RouteLink>
             <div className="grow flex flex-row-reverse gap-2">
               <AppButton disabled={!weight} onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
+              <AppButton onClick={onDeleteClick} color={'error'}>{translations.utils.generic.buttons.delete}</AppButton>
             </div>
           </div>
       </AppBlock>

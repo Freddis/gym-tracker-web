@@ -9,6 +9,9 @@ export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId
   user: User
   type: EntryType
   visibility: EntryVisibility,
+  createdAt: Date,
+  deletedAt: Date | null,
+  updatedAt: Date | null,
 }
 
 export interface WorkoutEntry extends BaseEntry {

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "vite build",
     "start": "node ./.output/server/index.mjs",
-    "dev": "npm run openapi:generate && vite dev",
-    "dev:all": "concurrently --kill-others 'npm run dev -- --host' 'npm run storybook'",
+    "dev": "npm run openapi:generate && vite dev --host",
+    "dev:all": "concurrently --raw --kill-others 'npm run dev -- --host' 'npm run storybook'",
     "check": "npm run typecheck && npm run lint ",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",

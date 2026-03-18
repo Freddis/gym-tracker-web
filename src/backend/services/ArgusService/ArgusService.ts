@@ -95,7 +95,7 @@ export class ArgusService {
       const existing = await db.query.exercises.findMany({
         where: (t, op) => op.and(
           op.eq(t.name, name),
-          op.isNull(t.userId),
+          // op.isNull(t.userId),
         ),
       });
       if (existing.length === 0) {

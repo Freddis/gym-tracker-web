@@ -29,6 +29,8 @@ export const WorkoutTypeUpdateForm: FC<WorkoutTypeUpdateFormProps> = (props) => 
   useEffect(() => {
     props.onUpdate({
       ...props.item,
+      name,
+      description,
       exercises,
     });
   }, [name, description]);

@@ -1,4 +1,4 @@
-import {SQL, and, desc, eq, gte, inArray, isNull} from 'drizzle-orm';
+import {SQL, and, desc, eq, gte, inArray, isNull, or} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {UserModelService} from '../../types/ModelService/UserModelService';
 import {NewModelDto} from '../../types/NewModelDto';
@@ -151,7 +151,11 @@ export class WorkoutTypeService extends UserModelService<WorkoutTypeRow, Workout
   protected getWhere(params: WorkoutTypeFilter): SQL<unknown> | undefined {
     const where = and(
       params.ids ? inArray(this.getTable().id, params.ids) : undefined,
-      params?.updatedAfter ? gte(this.getTable().updatedAt, params.updatedAfter) : undefined,
+      params?.updatedAfter ? or(
+        gte(this.getTable().updatedAt, params.updatedAfter),
+        gte(this.getTable().createdAt, params.updatedAfter),
+        gte(this.getTable().deletedAt, params.updatedAfter),
+      ) : undefined,
       isNull(this.getTable().deletedAt),
     );
     return where;

@@ -202,6 +202,9 @@ export class StorybookDataUtils {
       },
       type: 'Workout',
       workout: this.getWorkout(),
+      visibility: 'Public',
+      createdAt: new Date(),
+      deletedAt: null,
     };
     return entry;
   }

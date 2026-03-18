@@ -284,7 +284,7 @@ export class WorkoutService {
     const where = and(
         params?.id ? inArray(dbSchema.workouts.id, params.id) : undefined,
         params?.userId ? eq(dbSchema.workouts.userId, params.userId) : undefined,
-        isNull(dbSchema.workouts.deletedAt),
+        // isNull(dbSchema.workouts.deletedAt),
         params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
       );
     const query = db.select({

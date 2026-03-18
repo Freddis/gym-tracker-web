@@ -12,6 +12,7 @@ const validator = workoutValidator.omit({
   end: RouteFactory.validators.strings.datetime.nullable(),
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
+  deletedAt: RouteFactory.validators.strings.datetime.nullable(),
 });
 export const workoutUpsertDtoValidator = RouteFactory.validators.describeShape(
   validator,

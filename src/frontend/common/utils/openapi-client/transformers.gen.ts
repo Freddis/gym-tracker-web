@@ -23,8 +23,10 @@ import type {
   GetWeightByIdResponse,
   PatchWeightByIdResponse,
   GetArgusCheckinResponse,
-  GetEntriesResponse,
   GetEntriesOwnResponse,
+  GetEntriesByIdResponse,
+  GetEntriesResponse,
+  PutEntriesResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -307,12 +309,32 @@ export const getArgusCheckinResponseTransformer = async (
 };
 
 const entrySchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
   if (data.weight) {
     data.weight = weightSchemaResponseTransformer(data.weight);
   }
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
+  return data;
+};
+
+export const getEntriesOwnResponseTransformer = async (
+  data: any,
+): Promise<GetEntriesOwnResponse> => {
+  data.items = data.items.map((item: any) => {
+    return entrySchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getEntriesByIdResponseTransformer = async (
+  data: any,
+): Promise<GetEntriesByIdResponse> => {
+  data = entrySchemaResponseTransformer(data);
   return data;
 };
 
@@ -325,9 +347,9 @@ export const getEntriesResponseTransformer = async (
   return data;
 };
 
-export const getEntriesOwnResponseTransformer = async (
+export const putEntriesResponseTransformer = async (
   data: any,
-): Promise<GetEntriesOwnResponse> => {
+): Promise<PutEntriesResponse> => {
   data.items = data.items.map((item: any) => {
     return entrySchemaResponseTransformer(item);
   });

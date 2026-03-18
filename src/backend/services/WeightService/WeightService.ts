@@ -5,6 +5,8 @@ import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {and, isNull, desc, eq, inArray} from 'drizzle-orm';
+import {WeightUpsertDto} from './types/WeightUpsertDto';
+import {SemiPartial} from '../../types/SemiPartial';
 export class WeightService {
   protected drizzle: DrizzleService;
   protected table: AppDbSchema['weight'];
@@ -94,4 +96,27 @@ export class WeightService {
     };
     return result;
   }
+
+  async upsert(userId: number, data: WeightUpsertDto[]): Promise<Weight[]> {
+    const db = await this.drizzle.getDb();
+    const schema = this.drizzle.getSchema();
+    const info = data.map((x) => {
+      const info: SemiPartial<WeightRow, 'id'> = {
+        ...x,
+        id: x.id ?? undefined,
+        userId: userId,
+        externalId: null,
+        createdAt: x.createdAt,
+        updatedAt: x.updatedAt,
+        deletedAt: x.deletedAt,
+      };
+      return info;
+    });
+    const result = await db.insert(schema.weight).values(info).onConflictDoUpdate({
+      target: schema.weight.id,
+      set: this.drizzle.generateConflictUpdateSetAllColumns(schema.weight),
+    }).returning();
+    return result;
+  }
+
 }

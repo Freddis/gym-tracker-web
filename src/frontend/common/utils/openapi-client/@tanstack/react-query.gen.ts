@@ -34,8 +34,11 @@ import {
   patchWeightById,
   getArgusCheckin,
   getArgusCheckinTypes,
-  getEntries,
   getEntriesOwn,
+  deleteEntriesById,
+  getEntriesById,
+  getEntries,
+  putEntries,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -139,12 +142,19 @@ import type {
   GetArgusCheckinError,
   GetArgusCheckinResponse,
   GetArgusCheckinTypesData,
-  GetEntriesData,
-  GetEntriesError,
-  GetEntriesResponse,
   GetEntriesOwnData,
   GetEntriesOwnError,
   GetEntriesOwnResponse,
+  DeleteEntriesByIdData,
+  DeleteEntriesByIdError,
+  DeleteEntriesByIdResponse,
+  GetEntriesByIdData,
+  GetEntriesData,
+  GetEntriesError,
+  GetEntriesResponse,
+  PutEntriesData,
+  PutEntriesError,
+  PutEntriesResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -1628,6 +1638,126 @@ export const getArgusCheckinTypesOptions = (
   });
 };
 
+export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
+  createQueryKey("getEntriesOwn", options);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesOwn({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesOwnQueryKey(options),
+  });
+};
+
+export const getEntriesOwnInfiniteQueryKey = (
+  options?: Options<GetEntriesOwnData>,
+): QueryKey<Options<GetEntriesOwnData>> =>
+  createQueryKey("getEntriesOwn", options, true);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesOwnInfiniteOptions = (
+  options?: Options<GetEntriesOwnData>,
+) => {
+  return infiniteQueryOptions<
+    GetEntriesOwnResponse,
+    AxiosError<GetEntriesOwnError>,
+    InfiniteData<GetEntriesOwnResponse>,
+    QueryKey<Options<GetEntriesOwnData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetEntriesOwnData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetEntriesOwnData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getEntriesOwn({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getEntriesOwnInfiniteQueryKey(options),
+    },
+  );
+};
+
+/**
+ * Deletes entry for user
+ */
+export const deleteEntriesByIdMutation = (
+  options?: Partial<Options<DeleteEntriesByIdData>>,
+): UseMutationOptions<
+  DeleteEntriesByIdResponse,
+  AxiosError<DeleteEntriesByIdError>,
+  Options<DeleteEntriesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteEntriesByIdResponse,
+    AxiosError<DeleteEntriesByIdError>,
+    Options<DeleteEntriesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteEntriesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getEntriesByIdQueryKey = (options: Options<GetEntriesByIdData>) =>
+  createQueryKey("getEntriesById", options);
+
+/**
+ * Returns the list of public entries
+ */
+export const getEntriesByIdOptions = (options: Options<GetEntriesByIdData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesByIdQueryKey(options),
+  });
+};
+
 export const getEntriesQueryKey = (options?: Options<GetEntriesData>) =>
   createQueryKey("getEntries", options);
 
@@ -1700,76 +1830,31 @@ export const getEntriesInfiniteOptions = (
   );
 };
 
-export const getEntriesOwnQueryKey = (options?: Options<GetEntriesOwnData>) =>
-  createQueryKey("getEntriesOwn", options);
-
 /**
- * Returns the list of public entries
+ * Updates or inserts entries for user
  */
-export const getEntriesOwnOptions = (options?: Options<GetEntriesOwnData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getEntriesOwn({
+export const putEntriesMutation = (
+  options?: Partial<Options<PutEntriesData>>,
+): UseMutationOptions<
+  PutEntriesResponse,
+  AxiosError<PutEntriesError>,
+  Options<PutEntriesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PutEntriesResponse,
+    AxiosError<PutEntriesError>,
+    Options<PutEntriesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await putEntries({
         ...options,
-        ...queryKey[0],
-        signal,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getEntriesOwnQueryKey(options),
-  });
-};
-
-export const getEntriesOwnInfiniteQueryKey = (
-  options?: Options<GetEntriesOwnData>,
-): QueryKey<Options<GetEntriesOwnData>> =>
-  createQueryKey("getEntriesOwn", options, true);
-
-/**
- * Returns the list of public entries
- */
-export const getEntriesOwnInfiniteOptions = (
-  options?: Options<GetEntriesOwnData>,
-) => {
-  return infiniteQueryOptions<
-    GetEntriesOwnResponse,
-    AxiosError<GetEntriesOwnError>,
-    InfiniteData<GetEntriesOwnResponse>,
-    QueryKey<Options<GetEntriesOwnData>>,
-    | number
-    | Pick<
-        QueryKey<Options<GetEntriesOwnData>>[0],
-        "body" | "headers" | "path" | "query"
-      >
-  >(
-    // @ts-ignore
-    {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
-        // @ts-ignore
-        const page: Pick<
-          QueryKey<Options<GetEntriesOwnData>>[0],
-          "body" | "headers" | "path" | "query"
-        > =
-          typeof pageParam === "object"
-            ? pageParam
-            : {
-                query: {
-                  page: pageParam,
-                },
-              };
-        const params = createInfiniteParams(queryKey, page);
-        const { data } = await getEntriesOwn({
-          ...options,
-          ...params,
-          signal,
-          throwOnError: true,
-        });
-        return data;
-      },
-      queryKey: getEntriesOwnInfiniteQueryKey(options),
-    },
-  );
+  };
+  return mutationOptions;
 };
 
 export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>

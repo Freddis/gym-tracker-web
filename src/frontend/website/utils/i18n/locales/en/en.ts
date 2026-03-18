@@ -493,7 +493,9 @@ export const dictionary = {
         update: {
           heading: 'Update Weight',
           toasts: {
-            success: 'You successfully updated weight record',
+            updateSuccess: 'You successfully updated weight record',
+            deleteSuccess: 'You successfully deleted weight record',
+            notFound: 'Weight record not found',
           },
           buttons: {
             save: 'Save',

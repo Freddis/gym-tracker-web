@@ -489,7 +489,9 @@ export const dictionary: Translation = {
         update: {
           heading: 'Обновить Вес',
           toasts: {
-            success: 'Вы успешно обновили вес',
+            updateSuccess: 'Вы успешно обновили вес',
+            notFound: 'Запись не найдена',
+            deleteSuccess: 'Вы успешно удалили вес',
           },
           buttons: {
             save: 'Сохранить',

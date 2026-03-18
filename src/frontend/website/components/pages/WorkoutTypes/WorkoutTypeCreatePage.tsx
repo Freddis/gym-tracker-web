@@ -19,7 +19,7 @@ export const WorkoutTypeCreatePage: FC = () => {
   const client = useQueryClient();
   const toasts = useToasts();
   const navigate = useNavigate();
-  const [workoutType, setWorkoutPlan] = useState<WorkoutType>({
+  const [workoutType, setWorkoutType] = useState<WorkoutType>({
     id: 0,
     name: '',
     description: null,
@@ -32,7 +32,7 @@ export const WorkoutTypeCreatePage: FC = () => {
     exercises: [],
   });
   const onFormUpdate = (update: Omit<WorkoutType, 'id'>) => {
-    setWorkoutPlan({
+    setWorkoutType({
       ...workoutType,
       ...update,
     });

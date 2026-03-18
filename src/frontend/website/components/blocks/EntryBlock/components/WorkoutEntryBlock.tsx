@@ -19,7 +19,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
   const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
 
-  const weekDayString = translations.utils.time.weekDays[date.getDay()];
+  const weekDayString = translations.utils.time.weekDays[date.getDay() - 1];
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">

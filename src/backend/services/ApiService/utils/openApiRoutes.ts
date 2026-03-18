@@ -45,6 +45,9 @@ import {getManagedImages} from '../api/images/managed-images/getManagedImages';
 import {deleteManagedImage} from '../api/images/managed-images/deleteManagedImage';
 import {passwordResetStart} from '../api/auth/passwordResetStart';
 import {passwordResetComplete} from '../api/auth/passwordResetComplete';
+import {upsertEntries} from '../api/entries/upsertEntries';
+import {deleteEntry} from '../api/entries/deleteEntry';
+import {getEntry} from '../api/entries/getEntry';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -94,8 +97,11 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     getArgusCheckinTypes,
   ],
   '/entries': [
-    getEntryList,
     getOwnEntryList,
+    getEntry,
+    getEntryList,
+    upsertEntries,
+    deleteEntry,
   ],
   '/crm/users': [
     getUserList,
