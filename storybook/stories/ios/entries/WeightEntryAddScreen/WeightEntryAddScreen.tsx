@@ -2,18 +2,14 @@ import {FC, useState} from 'react';
 import {AppBlock} from '../../../../../src/frontend/common/components/atoms/AppBlock/AppBlock';
 import {IphoneDisplay} from '../../../../components/IphoneDisplay/IphoneDisplay';
 import {MobileScreenContainer} from '../../../../components/MobileScreenContainer/MobileScreenContainer';
-import {AppButton} from '../../../../../src/frontend/common/components/atoms/AppButton/AppButton';
 import {dateToEntryString} from '../../../../../src/frontend/website/utils/dateToEntryString';
 
 export const WeightEntryAddScreen: FC<{weight?: number, date?: Date}> = (props) => {
-
-
   const [weight] = useState(props.weight ? props.weight.toString() + ' kg' : '...');
   const [date] = useState(props.date ? dateToEntryString(props.date) : 'Just now');
 
-
   return (
-  <IphoneDisplay title="Add Weight Entry" tab={1}>
+  <IphoneDisplay title="Add Weight Entry" tab={1} rightButton="Save">
     <MobileScreenContainer>
       <div className="flex flex-col items-start gap-5">
         <AppBlock className="flex flex-col mb-5 cursor-pointer">
@@ -27,9 +23,6 @@ export const WeightEntryAddScreen: FC<{weight?: number, date?: Date}> = (props) 
             <span className="text-on-surface/50">{date}</span>
           </div>
         </AppBlock>
-        <div className="flex justify-center w-full">
-          <AppButton variant="lg">Add Entry</AppButton>
-        </div>
       </div>
     </MobileScreenContainer>
   </IphoneDisplay>

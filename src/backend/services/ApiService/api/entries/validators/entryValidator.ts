@@ -10,6 +10,7 @@ const baseEntryValidator = object({
   user: userValidator,
   visibility: nativeEnum(EntryVisibility).openapi({description: 'Visibility of the entry', ref: 'Entry Visibility'}),
   createdAt: date().openapi({description: 'Date of the entry'}),
+  updatedAt: date().nullable().openapi({description: 'Date of the last update'}),
   deletedAt: date().nullable().openapi({description: 'Date of the deletion'}),
 });
 

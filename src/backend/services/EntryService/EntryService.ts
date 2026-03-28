@@ -230,7 +230,7 @@ export class EntryService {
         deletedAt: item.deletedAt,
       };
       let workout: Workout | undefined;
-      const weight: Weight | undefined = undefined;
+      let weight: Weight | undefined;
       if (item.type === EntryType.Workout) {
         const workouts = await this.workoutService.upsert(userId, [item.workout]);
         const workoutId = workouts[0]?.id;
@@ -240,12 +240,13 @@ export class EntryService {
         data.workoutId = workoutId;
         workout = workouts[0];
       } else {
-        const weight = await this.weightService.upsert(userId, [item.weight]);
-        const weightId = weight[0]?.id;
+        const weights = await this.weightService.upsert(userId, [item.weight]);
+        const weightId = weights[0]?.id;
         if (!weightId) {
           throw new Error('Weight not found');
         }
         data.weightId = weightId;
+        weight = weights[0];
       }
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
         target: db._.fullSchema.entries.id,

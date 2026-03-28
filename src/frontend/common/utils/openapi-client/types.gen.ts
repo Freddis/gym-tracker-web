@@ -829,6 +829,10 @@ export type Entry = {
    */
   createdAt: Date;
   /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
    * Date of the deletion
    */
   deletedAt: Date | null;
@@ -903,6 +907,10 @@ export type WorkoutEntryUpsertDto = {
    */
   createdAt: Date;
   /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
    * Date of the deletion
    */
   deletedAt: Date | null;
@@ -918,10 +926,6 @@ export type WorkoutEntryUpsertDto = {
    * Workout
    */
   workout: WorkoutUpsertDto;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
 };
 
 export type WeightEntryUpsertDto = {
@@ -934,6 +938,10 @@ export type WeightEntryUpsertDto = {
    * Date of the entry
    */
   createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
   /**
    * Date of the deletion
    */
@@ -950,10 +958,6 @@ export type WeightEntryUpsertDto = {
    * Workout
    */
   workout?: Workout;
-  /**
-   * Date of the last update
-   */
-  updatedAt: Date | null;
 };
 
 /**
@@ -1665,6 +1669,10 @@ export type GetExercisesData = {
      */
     includeBuiltIn?: boolean;
     /**
+     * Include deleted exercises into the response
+     */
+    includeDeleted?: boolean;
+    /**
      * Only return exercises updated after this date. Used for syncing.
      */
     updatedAfter?: Date;
@@ -2153,6 +2161,10 @@ export type GetExercisesBuiltInData = {
       | "jump rope"
       | "treadmill"
       | "bosu ball";
+    /**
+     * Include deleted exercises into the response
+     */
+    includeDeleted?: boolean;
     /**
      * Only return exercises updated after this date. Used for syncing.
      */
@@ -7314,6 +7326,10 @@ export type GetCrmExercisesData = {
      * Include built-in exercises into the response
      */
     includeBuiltIn?: boolean;
+    /**
+     * Include deleted exercises into the response
+     */
+    includeDeleted?: boolean;
     /**
      * Only return exercises updated after this date. Used for syncing.
      */

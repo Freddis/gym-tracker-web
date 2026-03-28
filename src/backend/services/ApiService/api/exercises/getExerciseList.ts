@@ -18,7 +18,7 @@ export const getExerciseList = RouteFactory.createRoute({
       ...ctx.params.query,
       userId: ctx.viewer.id,
       language: ctx.language,
-      isArchived: false,
+      isArchived: ctx.params.query.includeDeleted ? undefined : false,
     });
     return result;
   },
