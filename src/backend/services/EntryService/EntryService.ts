@@ -3,9 +3,9 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {Entry, WeightEntry, WorkoutEntry} from './types/Entry';
+import {Entry, ImageEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
-import {WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
+import {ImageEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
@@ -13,24 +13,100 @@ import {Workout} from '../WorkoutService/types/Workout';
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
-
+import {ImageService} from '../ImageService/ImageService';
+import {randomUUID} from 'crypto';
+import {ImageType} from '../../types/ImageType';
+import {ImageRow} from '../DrizzleService/types/ImageRow';
 
 export class EntryService {
   protected workoutService: WorkoutService;
   protected userService: UserService;
   protected drizzle: DrizzleService;
   protected weightService: WeightService;
+  protected imageService: ImageService;
 
   constructor(
     drizzle: DrizzleService,
     userService: UserService,
     workoutService: WorkoutService,
-    weightService: WeightService
+    weightService: WeightService,
+    imageService: ImageService
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.drizzle = drizzle;
     this.weightService = weightService;
+    this.imageService = imageService;
+  }
+
+  async createImageEntry(userId: number, entry: ImageEntryCreateDto): Promise<ImageEntry> {
+    const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const db = await this.drizzle.getDb();
+    const image = await this.imageService.createFromBase64(entry.data, randomUUID(), ImageType.Entry);
+    const newRow: typeof db._.fullSchema.entries.$inferInsert = {
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      visibility: entry.visibility,
+      type: EntryType.Image,
+      userId: userId,
+      imageId: image.id,
+    };
+    const rows = await db.insert(db._.fullSchema.entries).values(newRow).returning();
+    const result = rows[0];
+    if (!result) {
+      throw new Error("Couldn't create entry");
+    }
+    const created: ImageEntry = {
+      ...result,
+      type: EntryType.Image,
+      image,
+      user,
+    };
+    return created;
+  }
+
+  async getImageEntry(userId: number, entryId: number): Promise<ImageEntry | null> {
+    const entry = await this.get(userId, entryId);
+    if (!entry || entry.type !== EntryType.Image) {
+      return null;
+    }
+    return entry;
+  }
+
+  async updateImageEntry(userId: number, entryId: number, dto: Partial<ImageEntryCreateDto>): Promise<ImageEntry> {
+    const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const entry = await this.getImageEntry(userId, entryId);
+    if (!entry) {
+      throw new Error('Entry not found');
+    }
+    const db = await this.drizzle.getDb();
+    const image = dto.data ? await this.imageService.createFromBase64(dto.data, randomUUID(), ImageType.Entry) : entry.image;
+    const update: typeof db._.fullSchema.entries.$inferInsert = {
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      visibility: entry.visibility,
+      type: EntryType.Image,
+      userId: userId,
+      imageId: image.id,
+    };
+    await db.update(db._.fullSchema.entries).set(update).where(
+      eq(db._.fullSchema.entries.id, entryId)
+    ).returning();
+
+    const updated: ImageEntry = {
+      ...entry,
+      image: image,
+      user,
+    };
+    return updated;
   }
 
   async createWeightEntry(userId: number, entry: WeightEntryCreateDto): Promise<WeightEntry> {
@@ -44,7 +120,7 @@ export class EntryService {
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
-      type: entry.type,
+      type: EntryType.Weight,
       userId: userId,
     };
 
@@ -81,7 +157,7 @@ export class EntryService {
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
-      type: entry.type,
+      type: EntryType.Workout,
       userId: userId,
     };
 
@@ -161,6 +237,9 @@ export class EntryService {
     const userIds = rows.map((x) => x.userId);
     const users = await this.userService.paginate({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
+    const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
+    const images = await this.imageService.getAll({id: imageIds, perPage: limit});
+    const imageMap = images.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, ImageRow>());
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {
         throw new Error(`'${key}' not found`);
@@ -186,7 +265,7 @@ export class EntryService {
           workout: getOrThrow(workoutMap, row.workoutId),
         };
         return entry;
-      } else {
+      } if (row.type === EntryType.Weight) {
         const entry: Entry = {
           id: row.id,
           user: user,
@@ -196,6 +275,18 @@ export class EntryService {
           updatedAt: row.updatedAt,
           deletedAt: row.deletedAt,
           weight: getOrThrow(weightMap, row.weightId),
+        };
+        return entry;
+      } else {
+        const entry: Entry = {
+          id: row.id,
+          user: user,
+          visibility: row.visibility,
+          type: row.type,
+          createdAt: row.createdAt,
+          updatedAt: row.updatedAt,
+          deletedAt: row.deletedAt,
+          image: getOrThrow(imageMap, row.imageId),
         };
         return entry;
       }

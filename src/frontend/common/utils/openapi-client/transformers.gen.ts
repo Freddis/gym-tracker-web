@@ -27,6 +27,9 @@ import type {
   GetEntriesByIdResponse,
   GetEntriesResponse,
   PutEntriesResponse,
+  PostImagesResponse,
+  GetImagesByIdResponse,
+  PatchImagesByIdResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -308,6 +311,17 @@ export const getArgusCheckinResponseTransformer = async (
   return data;
 };
 
+const imageSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
 const entrySchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
@@ -321,6 +335,9 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  if (data.image) {
+    data.image = imageSchemaResponseTransformer(data.image);
   }
   return data;
 };
@@ -356,6 +373,66 @@ export const putEntriesResponseTransformer = async (
   data.items = data.items.map((item: any) => {
     return entrySchemaResponseTransformer(item);
   });
+  return data;
+};
+
+export const postImagesResponseTransformer = async (
+  data: any,
+): Promise<PostImagesResponse> => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  if (data.weight) {
+    data.weight = weightSchemaResponseTransformer(data.weight);
+  }
+  if (data.workout) {
+    data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  data.image = imageSchemaResponseTransformer(data.image);
+  return data;
+};
+
+export const getImagesByIdResponseTransformer = async (
+  data: any,
+): Promise<GetImagesByIdResponse> => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  if (data.weight) {
+    data.weight = weightSchemaResponseTransformer(data.weight);
+  }
+  if (data.workout) {
+    data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  data.image = imageSchemaResponseTransformer(data.image);
+  return data;
+};
+
+export const patchImagesByIdResponseTransformer = async (
+  data: any,
+): Promise<PatchImagesByIdResponse> => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  if (data.weight) {
+    data.weight = weightSchemaResponseTransformer(data.weight);
+  }
+  if (data.workout) {
+    data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  data.image = imageSchemaResponseTransformer(data.image);
   return data;
 };
 
@@ -429,22 +506,11 @@ export const getCrmExercisesResponseTransformer = async (
   return data;
 };
 
-const managedImageSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  return data;
-};
-
 export const getCrmImagesResponseTransformer = async (
   data: any,
 ): Promise<GetCrmImagesResponse> => {
   data.items = data.items.map((item: any) => {
-    return managedImageSchemaResponseTransformer(item);
+    return imageSchemaResponseTransformer(item);
   });
   return data;
 };

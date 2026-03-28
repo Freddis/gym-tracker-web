@@ -1,13 +1,13 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
-import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {
   WorkoutUpdatePagePresenter,
-} from '../../../../src/frontend/website/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
+} from '../../../../../src/frontend/website/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
+import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
+import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
 
 const meta = {
-  title: 'Pages/Workouts/Edit',
+  title: 'Pages/Entries/Workout/Workout Edit Page',
   component: WorkoutUpdatePagePresenter,
   tags: ['autodocs'],
   globals: {
@@ -27,7 +27,7 @@ const meta = {
     },
   },
   decorators: [
-    (Story) => <StoryBookDisplay story={<Story/>} column type={StoryBookDisplayType.Page}/>,
+    (Story) => <StoryBookDisplay story={<Story/>} column type={StoryBookDisplayType.Page} user={true}/>,
   ],
 } satisfies Meta<typeof WorkoutUpdatePagePresenter>;
 

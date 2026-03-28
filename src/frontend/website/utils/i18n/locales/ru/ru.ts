@@ -17,6 +17,7 @@ export const dictionary: Translation = {
       entryType: {
         Workout: 'Тренировка',
         Weight: 'Вес',
+        Image: 'Изображение',
       },
       muscles: {
         'Lower Back': 'Поясница',
@@ -416,6 +417,20 @@ export const dictionary: Translation = {
       },
     },
     activities: {
+      images: {
+        add: {
+          heading: 'Добавить Изображение',
+          toasts: {
+            success: 'Вы успешно добавили изображение',
+          },
+        },
+        update: {
+          heading: 'Изменить Изображение',
+          toasts: {
+            success: 'Вы успешно изменили изображение',
+          },
+        },
+      },
       list: {
         buttons: {
           addWorkout: 'Добавить',
@@ -431,6 +446,9 @@ export const dictionary: Translation = {
           },
           weight: {
             type: 'Вес',
+          },
+          image: {
+            type: 'Изображение',
           },
         },
         heading: 'Мои Записи',
@@ -470,6 +488,7 @@ export const dictionary: Translation = {
         buttons: {
           addWorkout: 'Добавить Тренировку',
           addWeight: 'Добавить Вес',
+          addImage: 'Добавить Изображение',
         },
         toasts: {
           success: 'Тренировака успешно добавлена',

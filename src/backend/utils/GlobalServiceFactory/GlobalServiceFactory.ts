@@ -20,7 +20,6 @@ import {TranslationService} from '../../services/TranslationService/TranslationS
 import {EmailService} from '../../services/EmailService/EmailService';
 
 export class GlobalServiceFactory {
-
   protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
@@ -95,12 +94,14 @@ export class GlobalServiceFactory {
   async workout(): Promise<WorkoutService> {
     return new WorkoutService(await this.drizzle(), await this.exercise());
   }
+
   async entry() {
     return new EntryService(
         await this.drizzle(),
         await this.user(),
         await this.workout(),
         await this.weight(),
+        await this.image(),
     );
   }
 

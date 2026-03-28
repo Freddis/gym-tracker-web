@@ -3,7 +3,6 @@ import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {workoutValidator} from './validators/workoutValidator';
 import {EntryVisibility} from '../../../EntryService/types/EntryVisibility';
-import {EntryType} from '../../../EntryService/types/EntryType';
 import {workoutUpdateDtoValidator} from './validators/workoutUpdateDtoValidator';
 
 export const createWorkout = RouteFactory.createRoute({
@@ -17,7 +16,6 @@ export const createWorkout = RouteFactory.createRoute({
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.entry.createWorkoutEntry(ctx.viewer.id, {
-      type: EntryType.Workout,
       visibility: EntryVisibility.Public,
       workout: ctx.params.body,
     });

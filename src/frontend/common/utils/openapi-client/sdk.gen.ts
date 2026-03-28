@@ -113,6 +113,15 @@ import type {
   PutEntriesData,
   PutEntriesResponses,
   PutEntriesErrors,
+  PostImagesData,
+  PostImagesResponses,
+  PostImagesErrors,
+  GetImagesByIdData,
+  GetImagesByIdResponses,
+  GetImagesByIdErrors,
+  PatchImagesByIdData,
+  PatchImagesByIdResponses,
+  PatchImagesByIdErrors,
   GetCrmUsersData,
   GetCrmUsersResponses,
   GetCrmUsersErrors,
@@ -175,6 +184,9 @@ import {
   getEntriesByIdResponseTransformer,
   getEntriesResponseTransformer,
   putEntriesResponseTransformer,
+  postImagesResponseTransformer,
+  getImagesByIdResponseTransformer,
+  patchImagesByIdResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -1090,6 +1102,86 @@ export const putEntries = <ThrowOnError extends boolean = false>(
     headers: {
       "Content-Type": "application/json",
       ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Adds new image entry for the user
+ */
+export const postImages = <ThrowOnError extends boolean = false>(
+  options?: Options<PostImagesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostImagesResponses,
+    PostImagesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: postImagesResponseTransformer,
+    url: "/images",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Adds new image entry for the user
+ */
+export const getImagesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetImagesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetImagesByIdResponses,
+    GetImagesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getImagesByIdResponseTransformer,
+    url: "/images/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Updates image entry for the user
+ */
+export const patchImagesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchImagesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchImagesByIdResponses,
+    PatchImagesByIdErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: patchImagesByIdResponseTransformer,
+    url: "/images/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
     },
   });
 };

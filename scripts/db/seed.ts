@@ -3,7 +3,6 @@ import {TestUtils} from 'src/backend/utils/TestUtils/TestUtils';
 import {Equipment} from 'src/backend/types/Equipment';
 import {Muscle} from 'src/backend/types/Muscle';
 import {EntryVisibility} from '../../src/backend/services/EntryService/types/EntryVisibility';
-import {EntryType} from '../../src/backend/services/EntryService/types/EntryType';
 import {WorkoutCreateDto} from '../../src/backend/services/WorkoutService/types/WorkoutCreateDto';
 
 const entryService = await globalServiceFactory.entry();
@@ -99,7 +98,6 @@ const workout: WorkoutCreateDto = {
 };
 
 await entryService.createWorkoutEntry(tommy.id, {
-  type: EntryType.Workout,
   workout: workout,
   visibility: EntryVisibility.Public,
 });

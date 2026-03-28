@@ -3,7 +3,6 @@ import {weightValidator} from './validators/weightValidator';
 import {number, object} from 'zod';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
-import {EntryType} from '../../../EntryService/types/EntryType';
 import {EntryVisibility} from '../../../EntryService/types/EntryVisibility';
 
 export const createWeight = RouteFactory.createRoute({
@@ -21,7 +20,6 @@ export const createWeight = RouteFactory.createRoute({
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.entry.createWeightEntry(ctx.viewer.id, {
-      type: EntryType.Weight,
       weight: ctx.params.body.weight,
       visibility: EntryVisibility.Public,
     });

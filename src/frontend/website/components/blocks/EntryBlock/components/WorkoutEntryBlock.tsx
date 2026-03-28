@@ -3,13 +3,12 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 import {Entry, Workout} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
-import {AppAvatar} from '../../../../../common/components/atoms/AppAvatar/AppAvatar';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {EntryBlockBottom} from './EntryBlockBottom';
 
 export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
-
   const date = new Date(workout.createdAt);
   const duration = workout.end ? (new Date(workout.end).getTime() - new Date(workout.start).getTime()) / 1000 : 0;
   const hours = Math.floor(duration / (60 * 60));
@@ -52,14 +51,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
         </div>
         ))}
       </div>
-      {!own && (
-      <div className="grow flex flex-row-reverse">
-        <div className="flex flex-row  items-center">
-          <span className="text-accent">{entry.user.name}</span>
-          <AppAvatar user={entry.user} className="ml-2"/>
-        </div>
-      </div>
-      )}
+      <EntryBlockBottom entry={entry} own={own} />
     </AppBlock>
   );
 };

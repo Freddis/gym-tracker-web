@@ -3,7 +3,7 @@ import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {keepPreviousData, useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
-import {deleteCrmImagesById, getCrmImages, ManagedImage} from '../../../../../common/utils/openapi-client';
+import {deleteCrmImagesById, getCrmImages, Image} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {routeId, RouteId} from '../../../../../common/utils/route';
@@ -52,7 +52,7 @@ export const ImageListPage:FC = () => {
       },
     });
   };
-  const onDeleteClick = async (img: ManagedImage) => {
+  const onDeleteClick = async (img: Image) => {
     const result = await deleteCrmImagesById({
       path: {
         id: img.id,

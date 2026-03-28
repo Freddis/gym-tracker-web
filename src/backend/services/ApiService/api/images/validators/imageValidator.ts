@@ -4,7 +4,7 @@ import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 import {RouteFactory} from '../../../utils/RouteFactory';
 
 export const imageValidatorDescriptions: OpenApiDescriptions<Image> = {
-  id: 'Id of the exercise',
+  id: 'Id of the image',
   // name: 'Image Name',
   url: 'URL of the image',
   userId: 'Id of the user who uploaded it',
@@ -15,7 +15,6 @@ export const imageValidatorDescriptions: OpenApiDescriptions<Image> = {
 };
 
 export const imageValidator = RouteFactory.validators.describeShape(imageRowValidator, imageValidatorDescriptions).openapi({
-  description: 'Image View for CRM managers',
-  ref: 'ManagedImage',
-
+  description: 'Image record',
+  ref: 'Image',
 });

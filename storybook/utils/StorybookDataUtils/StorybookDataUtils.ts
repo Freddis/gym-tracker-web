@@ -5,6 +5,7 @@ import {
   Weight,
   Workout,
   WorkoutType,
+  Image,
 } from '../../../src/frontend/common/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
@@ -16,6 +17,20 @@ import {legExtension} from './data/legExtension';
 import {pullUp} from './data/pullUp';
 
 export class StorybookDataUtils {
+
+  static getImageEntry(): Image {
+    const image: Image = {
+      id: 1,
+      url: this.getImage(),
+      imageType: 'Entry',
+      userId: 1,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    };
+    return image;
+  }
+
   static getWorkoutType(
     type: 'pull day' | 'leg day' = 'pull day'
   ): WorkoutType {

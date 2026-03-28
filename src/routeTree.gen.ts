@@ -19,6 +19,7 @@ import { Route as CrmIndexRouteImport } from './routes/crm/index'
 import { Route as ArgusIndexRouteImport } from './routes/argus/index'
 import { Route as WorkoutsCreateRouteImport } from './routes/workouts/create'
 import { Route as WeightCreateRouteImport } from './routes/weight/create'
+import { Route as ImagesCreateRouteImport } from './routes/images/create'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
 import { Route as EntriesAddRouteImport } from './routes/entries/add'
@@ -38,6 +39,7 @@ import { Route as WorkoutsUpdateIdRouteImport } from './routes/workouts/update/$
 import { Route as WorkoutsTypesCreateRouteImport } from './routes/workouts/types/create'
 import { Route as WorkoutsPlansCreateRouteImport } from './routes/workouts/plans/create'
 import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
+import { Route as ImagesUpdateIdRouteImport } from './routes/images/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { Route as AuthPasswordResetCompleteTokenRouteImport } from './routes/auth/password-reset-complete.$token'
 import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/types/update/$id'
@@ -89,6 +91,11 @@ const WorkoutsCreateRoute = WorkoutsCreateRouteImport.update({
 const WeightCreateRoute = WeightCreateRouteImport.update({
   id: '/weight/create',
   path: '/weight/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImagesCreateRoute = ImagesCreateRouteImport.update({
+  id: '/images/create',
+  path: '/images/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
@@ -186,6 +193,11 @@ const WeightUpdateIdRoute = WeightUpdateIdRouteImport.update({
   path: '/weight/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImagesUpdateIdRoute = ImagesUpdateIdRouteImport.update({
+  id: '/images/update/$id',
+  path: '/images/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExercisesUpdateExerciseIdRoute =
   ExercisesUpdateExerciseIdRouteImport.update({
     id: '/exercises/update/$exerciseId',
@@ -249,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/images/create': typeof ImagesCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
   '/argus': typeof ArgusIndexRoute
@@ -258,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/feed': typeof FeedIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/images/update/$id': typeof ImagesUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
@@ -284,6 +298,7 @@ export interface FileRoutesByTo {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/images/create': typeof ImagesCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
   '/argus': typeof ArgusIndexRoute
@@ -293,6 +308,7 @@ export interface FileRoutesByTo {
   '/feed': typeof FeedIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/images/update/$id': typeof ImagesUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
@@ -320,6 +336,7 @@ export interface FileRoutesById {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/images/create': typeof ImagesCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
   '/argus/': typeof ArgusIndexRoute
@@ -329,6 +346,7 @@ export interface FileRoutesById {
   '/feed/': typeof FeedIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/images/update/$id': typeof ImagesUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
@@ -357,6 +375,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/images/create'
     | '/weight/create'
     | '/workouts/create'
     | '/argus'
@@ -366,6 +385,7 @@ export interface FileRouteTypes {
     | '/feed'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/images/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
     | '/workouts/types/create'
@@ -392,6 +412,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/images/create'
     | '/weight/create'
     | '/workouts/create'
     | '/argus'
@@ -401,6 +422,7 @@ export interface FileRouteTypes {
     | '/feed'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/images/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
     | '/workouts/types/create'
@@ -427,6 +449,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/images/create'
     | '/weight/create'
     | '/workouts/create'
     | '/argus/'
@@ -436,6 +459,7 @@ export interface FileRouteTypes {
     | '/feed/'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/images/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
     | '/workouts/types/create'
@@ -463,6 +487,7 @@ export interface RootRouteChildren {
   EntriesAddRoute: typeof EntriesAddRoute
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
+  ImagesCreateRoute: typeof ImagesCreateRoute
   WeightCreateRoute: typeof WeightCreateRoute
   WorkoutsCreateRoute: typeof WorkoutsCreateRoute
   ArgusIndexRoute: typeof ArgusIndexRoute
@@ -472,6 +497,7 @@ export interface RootRouteChildren {
   FeedIndexRoute: typeof FeedIndexRoute
   AuthPasswordResetCompleteTokenRoute: typeof AuthPasswordResetCompleteTokenRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
+  ImagesUpdateIdRoute: typeof ImagesUpdateIdRoute
   WeightUpdateIdRoute: typeof WeightUpdateIdRoute
   WorkoutsPlansCreateRoute: typeof WorkoutsPlansCreateRoute
   WorkoutsTypesCreateRoute: typeof WorkoutsTypesCreateRoute
@@ -578,6 +604,13 @@ declare module '@tanstack/react-router' {
       path: '/weight/create'
       fullPath: '/weight/create'
       preLoaderRoute: typeof WeightCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/images/create': {
+      id: '/images/create'
+      path: '/images/create'
+      fullPath: '/images/create'
+      preLoaderRoute: typeof ImagesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/create': {
@@ -713,6 +746,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/images/update/$id': {
+      id: '/images/update/$id'
+      path: '/images/update/$id'
+      fullPath: '/images/update/$id'
+      preLoaderRoute: typeof ImagesUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercises/update/$exerciseId': {
       id: '/exercises/update/$exerciseId'
       path: '/exercises/update/$exerciseId'
@@ -800,6 +840,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntriesAddRoute: EntriesAddRoute,
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
+  ImagesCreateRoute: ImagesCreateRoute,
   WeightCreateRoute: WeightCreateRoute,
   WorkoutsCreateRoute: WorkoutsCreateRoute,
   ArgusIndexRoute: ArgusIndexRoute,
@@ -809,6 +850,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeedIndexRoute: FeedIndexRoute,
   AuthPasswordResetCompleteTokenRoute: AuthPasswordResetCompleteTokenRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
+  ImagesUpdateIdRoute: ImagesUpdateIdRoute,
   WeightUpdateIdRoute: WeightUpdateIdRoute,
   WorkoutsPlansCreateRoute: WorkoutsPlansCreateRoute,
   WorkoutsTypesCreateRoute: WorkoutsTypesCreateRoute,

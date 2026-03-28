@@ -6,6 +6,7 @@ import {PgColumn} from 'drizzle-orm/pg-core';
 import {UserFilter} from './types/UserFilter';
 
 export class UserService extends ModelService<UserRow, User, UserFilter> {
+
   async update(id: number, data: {password?: string;}) {
     const db = await this.drizzle.getDb();
     await db.update(this.getTable()).set(data).where(

@@ -39,6 +39,9 @@ import {
   getEntriesById,
   getEntries,
   putEntries,
+  postImages,
+  getImagesById,
+  patchImagesById,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -155,6 +158,13 @@ import type {
   PutEntriesData,
   PutEntriesError,
   PutEntriesResponse,
+  PostImagesData,
+  PostImagesError,
+  PostImagesResponse,
+  GetImagesByIdData,
+  PatchImagesByIdData,
+  PatchImagesByIdError,
+  PatchImagesByIdResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -1847,6 +1857,102 @@ export const putEntriesMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await putEntries({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postImagesQueryKey = (options?: Options<PostImagesData>) =>
+  createQueryKey("postImages", options);
+
+/**
+ * Adds new image entry for the user
+ */
+export const postImagesOptions = (options?: Options<PostImagesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postImages({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postImagesQueryKey(options),
+  });
+};
+
+/**
+ * Adds new image entry for the user
+ */
+export const postImagesMutation = (
+  options?: Partial<Options<PostImagesData>>,
+): UseMutationOptions<
+  PostImagesResponse,
+  AxiosError<PostImagesError>,
+  Options<PostImagesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostImagesResponse,
+    AxiosError<PostImagesError>,
+    Options<PostImagesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postImages({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getImagesByIdQueryKey = (options: Options<GetImagesByIdData>) =>
+  createQueryKey("getImagesById", options);
+
+/**
+ * Adds new image entry for the user
+ */
+export const getImagesByIdOptions = (options: Options<GetImagesByIdData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getImagesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getImagesByIdQueryKey(options),
+  });
+};
+
+/**
+ * Updates image entry for the user
+ */
+export const patchImagesByIdMutation = (
+  options?: Partial<Options<PatchImagesByIdData>>,
+): UseMutationOptions<
+  PatchImagesByIdResponse,
+  AxiosError<PatchImagesByIdError>,
+  Options<PatchImagesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchImagesByIdResponse,
+    AxiosError<PatchImagesByIdError>,
+    Options<PatchImagesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchImagesById({
         ...options,
         ...localOptions,
         throwOnError: true,

@@ -845,6 +845,10 @@ export type Entry = {
    * Workout. Only for workout entries.
    */
   workout?: Workout;
+  /**
+   * Image. Only for image entries.
+   */
+  image?: Image;
 };
 
 /**
@@ -881,7 +885,7 @@ export const EntryVisibility = {
 /**
  * Entry type
  */
-export type EntryType = "Workout" | "Weight";
+export type EntryType = "Workout" | "Weight" | "Image";
 
 /**
  * Entry type
@@ -889,7 +893,42 @@ export type EntryType = "Workout" | "Weight";
 export const EntryType = {
   WORKOUT: "Workout",
   WEIGHT: "Weight",
+  IMAGE: "Image",
 } as const;
+
+/**
+ * Image record
+ */
+export type Image = {
+  /**
+   * Id of the image
+   */
+  id: number;
+  /**
+   * URL of the image
+   */
+  url: string;
+  /**
+   * Type of object this image attaches to
+   */
+  imageType: "Exercise" | "UserProfile" | "Entry";
+  /**
+   * Id of the user who uploaded it
+   */
+  userId: number | null;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of deletion. Deleted exercises are not accessible to users.
+   */
+  deletedAt: Date | null;
+};
 
 /**
  * Fields needed to update a workout
@@ -926,6 +965,7 @@ export type WorkoutEntryUpsertDto = {
    * Workout
    */
   workout: WorkoutUpsertDto;
+  image?: Image;
 };
 
 export type WeightEntryUpsertDto = {
@@ -958,6 +998,7 @@ export type WeightEntryUpsertDto = {
    * Workout
    */
   workout?: Workout;
+  image?: Image;
 };
 
 /**
@@ -1070,40 +1111,6 @@ export type Translation = {
   updatedAt: Date | null;
   /**
    * The date record was deleted from CRM. Deleted records don't appear on most pages
-   */
-  deletedAt: Date | null;
-};
-
-/**
- * Image View for CRM managers
- */
-export type ManagedImage = {
-  /**
-   * Id of the exercise
-   */
-  id: number;
-  /**
-   * URL of the image
-   */
-  url: string;
-  /**
-   * Type of object this image attaches to
-   */
-  imageType: "Exercise" | "UserProfile";
-  /**
-   * Id of the user who uploaded it
-   */
-  userId: number | null;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion. Deleted exercises are not accessible to users.
    */
   deletedAt: Date | null;
 };
@@ -5527,7 +5534,11 @@ export type GetEntriesOwnData = {
     /**
      * Filters excercises by type.
      */
-    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
+    type?:
+      | "Workout"
+      | "Weight"
+      | "Image"
+      | Array<"Workout" | "Weight" | "Image">;
     /**
      * Only return entries updated after this date.
      */
@@ -5919,7 +5930,11 @@ export type GetEntriesData = {
     /**
      * Filters excercises by type.
      */
-    type?: "Workout" | "Weight" | Array<"Workout" | "Weight">;
+    type?:
+      | "Workout"
+      | "Weight"
+      | "Image"
+      | Array<"Workout" | "Weight" | "Image">;
     /**
      * Only return entries updated after this date.
      */
@@ -6166,6 +6181,461 @@ export type PutEntriesResponses = {
 };
 
 export type PutEntriesResponse = PutEntriesResponses[keyof PutEntriesResponses];
+
+export type PostImagesData = {
+  body?: {
+    /**
+     * Data of the image. Base64 encoded string
+     */
+    data: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/images";
+};
+
+export type PostImagesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostImagesError = PostImagesErrors[keyof PostImagesErrors];
+
+export type PostImagesResponses = {
+  /**
+   * Entry. Can be a wirkout entry, a weight entry and so on.
+   */
+  200: {
+    /**
+     * Id of an entry
+     */
+    id: number;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Type
+     */
+    type: "Image";
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    image: Image;
+  };
+};
+
+export type PostImagesResponse = PostImagesResponses[keyof PostImagesResponses];
+
+export type GetImagesByIdData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the image entry
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/images/{id}";
+};
+
+export type GetImagesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetImagesByIdError = GetImagesByIdErrors[keyof GetImagesByIdErrors];
+
+export type GetImagesByIdResponses = {
+  /**
+   * Entry. Can be a wirkout entry, a weight entry and so on.
+   */
+  200: {
+    /**
+     * Id of an entry
+     */
+    id: number;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Type
+     */
+    type: "Image";
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    image: Image;
+  };
+};
+
+export type GetImagesByIdResponse =
+  GetImagesByIdResponses[keyof GetImagesByIdResponses];
+
+export type PatchImagesByIdData = {
+  body?: {
+    /**
+     * Data of the image. Base64 encoded string
+     */
+    data?: string;
+  };
+  path: {
+    /**
+     * Id of the image entry
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/images/{id}";
+};
+
+export type PatchImagesByIdErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PatchImagesByIdError =
+  PatchImagesByIdErrors[keyof PatchImagesByIdErrors];
+
+export type PatchImagesByIdResponses = {
+  /**
+   * Entry. Can be a wirkout entry, a weight entry and so on.
+   */
+  200: {
+    /**
+     * Id of an entry
+     */
+    id: number;
+    user: User;
+    visibility: EntryVisibility;
+    /**
+     * Date of the entry
+     */
+    createdAt: Date;
+    /**
+     * Date of the last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of the deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Type
+     */
+    type: "Image";
+    /**
+     * Weight. Only for weight entries
+     */
+    weight?: Weight;
+    /**
+     * Workout. Only for workout entries.
+     */
+    workout?: Workout;
+    image: Image;
+  };
+};
+
+export type PatchImagesByIdResponse =
+  PatchImagesByIdResponses[keyof PatchImagesByIdResponses];
 
 export type GetCrmUsersData = {
   body?: never;
@@ -7595,7 +8065,7 @@ export type GetCrmImagesResponses = {
     /**
      * Page or items
      */
-    items: Array<ManagedImage>;
+    items: Array<Image>;
     /**
      * Pagination details
      */

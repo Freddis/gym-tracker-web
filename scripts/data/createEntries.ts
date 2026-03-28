@@ -34,6 +34,7 @@ for (const row of workoutsToAdd) {
     deletedAt: workout.deletedAt,
     workoutId: workout.id,
     weightId: null,
+    imageId: null,
     visibility: EntryVisibility.Public,
   };
   await db.insert(schema.entries).values(entry);
@@ -58,6 +59,7 @@ for (const row of weightToAdd) {
     userId: weight.userId,
     deletedAt: weight.deletedAt,
     workoutId: null,
+    imageId: null,
     weightId: weight.id,
     visibility: EntryVisibility.Public,
   };

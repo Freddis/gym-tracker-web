@@ -2,9 +2,9 @@ import {FC} from 'react';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {Entry, Weight} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
-import {AppAvatar} from '../../../../../common/components/atoms/AppAvatar/AppAvatar';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {EntryBlockBottom} from './EntryBlockBottom';
 
 export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
@@ -32,14 +32,7 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}>
           <div className="text-lg font-semibold">{weight.units}</div>
 
       </div>
-      {!own && (
-        <div className="grow flex flex-row-reverse">
-          <div className="flex flex-row  items-center">
-            <span className="text-accent">{entry.user.name}</span>
-            <AppAvatar user={entry.user} className="ml-2"/>
-          </div>
-        </div>
-      )}
+      <EntryBlockBottom entry={entry} own={own} />
     </AppBlock>
   );
 };

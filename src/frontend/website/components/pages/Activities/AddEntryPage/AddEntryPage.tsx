@@ -26,6 +26,9 @@ export function AddEntryPage() {
             <RouteLink to={route(RouteId.WeightCreate)}>
               <AppButton>{t(i18n.create.buttons.addWeight)}</AppButton>
             </RouteLink>
+            <RouteLink to={route(RouteId.ImageCreate)}>
+              <AppButton>{t(i18n.create.buttons.addImage)}</AppButton>
+            </RouteLink>
           </div>
         </AppBlock>
       </div>

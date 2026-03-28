@@ -16,6 +16,7 @@ import {PgColumn} from 'drizzle-orm/pg-core';
 import {ImageFilter} from './types/ImageFilter';
 import {Logger} from '../../utils/Logger/Logger';
 import {ImageType} from '../../types/ImageType';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 
 export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
   protected bucket = 'gymtracker-images-23';
@@ -134,6 +135,25 @@ export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
       }
       throw caught;
     }
+  }
+
+  async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<ImageRow>> {
+    const db = await this.drizzle.getDb();
+    const page = params?.page ?? 1;
+    const limit = params?.perPage ?? 30;
+    const offset = (page - 1) * limit;
+    const where = and(
+      params?.id ? inArray(this.getTable().id, params.id) : undefined,
+    );
+    const rows = await db.select().from(this.getTable()).where(where).limit(limit).offset(offset);
+    return {
+      items: rows,
+      info: {
+        page,
+        count: rows.length,
+        pageSize: limit,
+      },
+    };
   }
 
   protected async createBucket(name: string) {

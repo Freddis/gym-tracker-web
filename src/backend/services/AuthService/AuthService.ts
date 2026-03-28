@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import {AuthServiceConfig} from './types/AuthServiceConfig';
 import {Logger} from 'src/backend/utils/Logger/Logger';
 import {z} from 'zod';
-import {UserRow} from 'src/backend/services/DrizzleService/types/UserRow';
 import {AuthUser} from './types/AuthUser';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ActionError} from '../ApiService/errors/ActionError';
@@ -12,6 +11,7 @@ import {ManagerService} from '../ManagerService/ManagerService';
 import {Manager} from '../ManagerService/types/Manager';
 import {EmailService} from '../EmailService/EmailService';
 import {UserService} from '../UserService/UserService';
+import {User} from '../UserService/types/User';
 
 export class AuthService {
   protected dbService: DrizzleService;
@@ -36,18 +36,12 @@ export class AuthService {
     this.emailService = emailService;
   }
 
-  async getUserFromRequest(request: Request): Promise<UserRow | null> {
+  async getUserFromRequest(request: Request): Promise<User | null> {
     const id = this.getRoleIdFromRequest(request);
     if (!id) {
       return null;
     }
-    const db = await this.dbService.getDb();
-    const user = await db.query.users.findFirst({
-      where: (table, {eq}) => eq(table.id, id),
-    });
-    if (!user) {
-      return null;
-    }
+    const user = await this.userService.getById(id);
     return user;
   }
 

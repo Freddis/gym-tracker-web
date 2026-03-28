@@ -1,11 +1,12 @@
 import {EntryRow} from '../../DrizzleService/types/EntryRow';
+import {ImageRow} from '../../DrizzleService/types/ImageRow';
 import {User} from '../../UserService/types/User';
 import {Weight} from '../../WeightService/types/Weight';
 import {Workout} from '../../WorkoutService/types/Workout';
 import {EntryType} from './EntryType';
 import {EntryVisibility} from './EntryVisibility';
 
-export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId'> {
+export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId'|'imageId'> {
   user: User
   type: EntryType
   visibility: EntryVisibility,
@@ -25,4 +26,8 @@ export interface WeightEntry extends BaseEntry {
   weight: Weight
 }
 
-export type Entry = WorkoutEntry | WeightEntry
+export interface ImageEntry extends BaseEntry {
+  type: EntryType.Image
+  image: ImageRow
+}
+export type Entry = WorkoutEntry | WeightEntry | ImageEntry

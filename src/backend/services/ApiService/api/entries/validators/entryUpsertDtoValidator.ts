@@ -14,6 +14,7 @@ const descriptions = {
   weight: 'Weight',
   visibility: 'Visibility of the entry',
   workout: 'Workout',
+  image: 'Image',
 };
 const workoutEntryUpsertDtoValidator = entryValidator.omit({
   user: true,
