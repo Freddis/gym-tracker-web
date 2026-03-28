@@ -205,6 +205,7 @@ export class StorybookDataUtils {
       visibility: 'Public',
       createdAt: new Date(),
       deletedAt: null,
+      updatedAt: null,
     };
     return entry;
   }
