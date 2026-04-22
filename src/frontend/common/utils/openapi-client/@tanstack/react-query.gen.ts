@@ -39,6 +39,7 @@ import {
   getEntriesById,
   getEntries,
   putEntries,
+  getEntriesOwnDates,
   postImages,
   getImagesById,
   patchImagesById,
@@ -158,6 +159,7 @@ import type {
   PutEntriesData,
   PutEntriesError,
   PutEntriesResponse,
+  GetEntriesOwnDatesData,
   PostImagesData,
   PostImagesError,
   PostImagesResponse,
@@ -1865,6 +1867,30 @@ export const putEntriesMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getEntriesOwnDatesQueryKey = (
+  options: Options<GetEntriesOwnDatesData>,
+) => createQueryKey("getEntriesOwnDates", options);
+
+/**
+ * Returns the list of days when entries were logged
+ */
+export const getEntriesOwnDatesOptions = (
+  options: Options<GetEntriesOwnDatesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getEntriesOwnDates({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getEntriesOwnDatesQueryKey(options),
+  });
 };
 
 export const postImagesQueryKey = (options?: Options<PostImagesData>) =>

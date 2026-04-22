@@ -455,7 +455,9 @@ export const dictionary: Translation = {
         filter: {
           labels: {
             type: 'Тип Записи',
+            date: 'Дата:',
           },
+          clearFilters: 'Очистить',
         },
         toasts: {
           nothingFound: 'Записи не найдены',

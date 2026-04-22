@@ -8,6 +8,7 @@ import {weightUpsertDtoValidator} from '../../weight/validators/weightUpsertDtoV
 const descriptions = {
   type: 'Type of the entry',
   id: 'Id of the entry',
+  time: 'Time of the entry. Can be changed by user.',
   createdAt: 'Date of the entry',
   updatedAt: 'Date of the last update',
   deletedAt: 'Date of the deletion',
@@ -20,6 +21,7 @@ const workoutEntryUpsertDtoValidator = entryValidator.omit({
   user: true,
 }).extend({
   id: entryValidator.shape.id.optional(),
+  time: RouteFactory.validators.strings.datetime,
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   deletedAt: RouteFactory.validators.strings.datetime.nullable(),
@@ -31,6 +33,7 @@ const weightEntryUpsertDtoValidator = entryValidator.omit({
   user: true,
 }).extend({
   id: entryValidator.shape.id.optional(),
+  time: RouteFactory.validators.strings.datetime,
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   deletedAt: RouteFactory.validators.strings.datetime.nullable(),

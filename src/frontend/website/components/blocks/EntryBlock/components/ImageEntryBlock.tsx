@@ -6,11 +6,10 @@ import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteL
 import {route, RouteId} from '../../../../../common/utils/route';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {EntryBlockBottom} from './EntryBlockBottom';
+import {EntryBlockDate} from './EntryBlockDate';
 
 export const ImageEntryBlock: FC<{image: Image, entry: Entry, own?: boolean}> = ({image, entry, own}) => {
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.image);
-  const date = new Date(image.createdAt);
-  const weekDayString = translations.utils.time.weekDays[date.getDay() - 1];
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.image);
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
@@ -21,7 +20,7 @@ export const ImageEntryBlock: FC<{image: Image, entry: Entry, own?: boolean}> = 
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">
-          {weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}
+          <EntryBlockDate date={entry.time} />
         </div>
       </div>
       <div className="flex flex-col">

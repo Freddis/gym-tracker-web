@@ -240,6 +240,7 @@ export const entries = gymTracker.table('entries', {
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
   visibility: entryVisibilityEnum().notNull(),
+  time: timestamp({withTimezone: true, mode: 'date'}).defaultNow().notNull(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),

@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."entries" ADD COLUMN "time" timestamp with time zone DEFAULT now() NOT NULL;

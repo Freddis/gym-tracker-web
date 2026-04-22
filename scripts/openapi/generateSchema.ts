@@ -1,5 +1,4 @@
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
-
 const openApi = await globalServiceFactory.openApi();
 openApi.clientGenerator.generate({
   output: {

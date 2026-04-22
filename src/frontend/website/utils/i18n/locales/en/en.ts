@@ -538,8 +538,10 @@ export const dictionary = {
           types: 'My Workout Types',
         },
         filter: {
+          clearFilters: 'Clear Filters',
           labels: {
             type: 'Entry type:',
+            date: 'Date:',
           },
         },
         objects: {

@@ -10,6 +10,7 @@ export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId
   user: User
   type: EntryType
   visibility: EntryVisibility,
+  time: Date,
   createdAt: Date,
   deletedAt: Date | null,
   updatedAt: Date | null,

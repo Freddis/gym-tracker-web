@@ -825,7 +825,11 @@ export type Entry = {
   user: User;
   visibility: EntryVisibility;
   /**
-   * Date of the entry
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry, when the entry was created by user. Immutable.
    */
   createdAt: Date;
   /**
@@ -942,6 +946,10 @@ export type WorkoutEntryUpsertDto = {
   id?: number;
   visibility: EntryVisibility;
   /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
    * Date of the entry
    */
   createdAt: Date;
@@ -965,6 +973,9 @@ export type WorkoutEntryUpsertDto = {
    * Workout
    */
   workout: WorkoutUpsertDto;
+  /**
+   * Image
+   */
   image?: Image;
 };
 
@@ -974,6 +985,10 @@ export type WeightEntryUpsertDto = {
    */
   id?: number;
   visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
   /**
    * Date of the entry
    */
@@ -998,6 +1013,9 @@ export type WeightEntryUpsertDto = {
    * Workout
    */
   workout?: Workout;
+  /**
+   * Image
+   */
   image?: Image;
 };
 
@@ -1029,6 +1047,57 @@ export type WeightUpsertDto = {
    * Id of the weight record
    */
   id?: number;
+};
+
+/**
+ * List of dates. Workout about bug in array transformation in @hey-api/openapi-ts
+ */
+export type DateList = Array<{
+  /**
+   * Date
+   */
+  value: Date;
+}>;
+
+/**
+ * Image entry
+ */
+export type ImageEntry = {
+  /**
+   * Id of an entry
+   */
+  id: number;
+  user: User;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry, when the entry was created by user. Immutable.
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Type
+   */
+  type: "Image";
+  /**
+   * Weight. Only for weight entries
+   */
+  weight?: Weight;
+  /**
+   * Workout. Only for workout entries.
+   */
+  workout?: Workout;
+  image: Image;
 };
 
 /**
@@ -5540,6 +5609,10 @@ export type GetEntriesOwnData = {
       | "Image"
       | Array<"Workout" | "Weight" | "Image">;
     /**
+     * Only return entries from this date.
+     */
+    date?: Date;
+    /**
      * Only return entries updated after this date.
      */
     updatedAfter?: Date;
@@ -5936,6 +6009,10 @@ export type GetEntriesData = {
       | "Image"
       | Array<"Workout" | "Weight" | "Image">;
     /**
+     * Only return entries from this date.
+     */
+    date?: Date;
+    /**
      * Only return entries updated after this date.
      */
     updatedAfter?: Date;
@@ -6182,6 +6259,133 @@ export type PutEntriesResponses = {
 
 export type PutEntriesResponse = PutEntriesResponses[keyof PutEntriesResponses];
 
+export type GetEntriesOwnDatesData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Date
+     */
+    date: Date;
+    /**
+     * Filters excercises by type.
+     */
+    type?:
+      | "Workout"
+      | "Weight"
+      | "Image"
+      | Array<"Workout" | "Weight" | "Image">;
+  };
+  url: "/entries/own/dates";
+};
+
+export type GetEntriesOwnDatesErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetEntriesOwnDatesError =
+  GetEntriesOwnDatesErrors[keyof GetEntriesOwnDatesErrors];
+
+export type GetEntriesOwnDatesResponses = {
+  /**
+   * Good Response
+   */
+  200: DateList;
+};
+
+export type GetEntriesOwnDatesResponse =
+  GetEntriesOwnDatesResponses[keyof GetEntriesOwnDatesResponses];
+
 export type PostImagesData = {
   body?: {
     /**
@@ -6292,41 +6496,9 @@ export type PostImagesError = PostImagesErrors[keyof PostImagesErrors];
 
 export type PostImagesResponses = {
   /**
-   * Entry. Can be a wirkout entry, a weight entry and so on.
+   * Good Response
    */
-  200: {
-    /**
-     * Id of an entry
-     */
-    id: number;
-    user: User;
-    visibility: EntryVisibility;
-    /**
-     * Date of the entry
-     */
-    createdAt: Date;
-    /**
-     * Date of the last update
-     */
-    updatedAt: Date | null;
-    /**
-     * Date of the deletion
-     */
-    deletedAt: Date | null;
-    /**
-     * Type
-     */
-    type: "Image";
-    /**
-     * Weight. Only for weight entries
-     */
-    weight?: Weight;
-    /**
-     * Workout. Only for workout entries.
-     */
-    workout?: Workout;
-    image: Image;
-  };
+  200: ImageEntry;
 };
 
 export type PostImagesResponse = PostImagesResponses[keyof PostImagesResponses];
@@ -6441,41 +6613,9 @@ export type GetImagesByIdError = GetImagesByIdErrors[keyof GetImagesByIdErrors];
 
 export type GetImagesByIdResponses = {
   /**
-   * Entry. Can be a wirkout entry, a weight entry and so on.
+   * Good Response
    */
-  200: {
-    /**
-     * Id of an entry
-     */
-    id: number;
-    user: User;
-    visibility: EntryVisibility;
-    /**
-     * Date of the entry
-     */
-    createdAt: Date;
-    /**
-     * Date of the last update
-     */
-    updatedAt: Date | null;
-    /**
-     * Date of the deletion
-     */
-    deletedAt: Date | null;
-    /**
-     * Type
-     */
-    type: "Image";
-    /**
-     * Weight. Only for weight entries
-     */
-    weight?: Weight;
-    /**
-     * Workout. Only for workout entries.
-     */
-    workout?: Workout;
-    image: Image;
-  };
+  200: ImageEntry;
 };
 
 export type GetImagesByIdResponse =
@@ -6597,41 +6737,9 @@ export type PatchImagesByIdError =
 
 export type PatchImagesByIdResponses = {
   /**
-   * Entry. Can be a wirkout entry, a weight entry and so on.
+   * Good Response
    */
-  200: {
-    /**
-     * Id of an entry
-     */
-    id: number;
-    user: User;
-    visibility: EntryVisibility;
-    /**
-     * Date of the entry
-     */
-    createdAt: Date;
-    /**
-     * Date of the last update
-     */
-    updatedAt: Date | null;
-    /**
-     * Date of the deletion
-     */
-    deletedAt: Date | null;
-    /**
-     * Type
-     */
-    type: "Image";
-    /**
-     * Weight. Only for weight entries
-     */
-    weight?: Weight;
-    /**
-     * Workout. Only for workout entries.
-     */
-    workout?: Workout;
-    image: Image;
-  };
+  200: ImageEntry;
 };
 
 export type PatchImagesByIdResponse =

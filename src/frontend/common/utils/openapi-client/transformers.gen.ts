@@ -27,6 +27,7 @@ import type {
   GetEntriesByIdResponse,
   GetEntriesResponse,
   PutEntriesResponse,
+  GetEntriesOwnDatesResponse,
   PostImagesResponse,
   GetImagesByIdResponse,
   PatchImagesByIdResponse,
@@ -323,6 +324,7 @@ const imageSchemaResponseTransformer = (data: any) => {
 };
 
 const entrySchemaResponseTransformer = (data: any) => {
+  data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
@@ -376,9 +378,23 @@ export const putEntriesResponseTransformer = async (
   return data;
 };
 
-export const postImagesResponseTransformer = async (
+const dateListSchemaResponseTransformer = (data: any) => {
+  data = data.map((item: any) => {
+    item.value = new Date(item.value);
+    return item;
+  });
+  return data;
+};
+
+export const getEntriesOwnDatesResponseTransformer = async (
   data: any,
-): Promise<PostImagesResponse> => {
+): Promise<GetEntriesOwnDatesResponse> => {
+  data = dateListSchemaResponseTransformer(data);
+  return data;
+};
+
+const imageEntrySchemaResponseTransformer = (data: any) => {
+  data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
@@ -393,46 +409,27 @@ export const postImagesResponseTransformer = async (
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
   data.image = imageSchemaResponseTransformer(data.image);
+  return data;
+};
+
+export const postImagesResponseTransformer = async (
+  data: any,
+): Promise<PostImagesResponse> => {
+  data = imageEntrySchemaResponseTransformer(data);
   return data;
 };
 
 export const getImagesByIdResponseTransformer = async (
   data: any,
 ): Promise<GetImagesByIdResponse> => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  if (data.weight) {
-    data.weight = weightSchemaResponseTransformer(data.weight);
-  }
-  if (data.workout) {
-    data.workout = workoutSchemaResponseTransformer(data.workout);
-  }
-  data.image = imageSchemaResponseTransformer(data.image);
+  data = imageEntrySchemaResponseTransformer(data);
   return data;
 };
 
 export const patchImagesByIdResponseTransformer = async (
   data: any,
 ): Promise<PatchImagesByIdResponse> => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  if (data.weight) {
-    data.weight = weightSchemaResponseTransformer(data.weight);
-  }
-  if (data.workout) {
-    data.workout = workoutSchemaResponseTransformer(data.workout);
-  }
-  data.image = imageSchemaResponseTransformer(data.image);
+  data = imageEntrySchemaResponseTransformer(data);
   return data;
 };
 

@@ -10,7 +10,8 @@ const baseEntryValidator = object({
   id: number().openapi({description: 'Id of an entry'}),
   user: userValidator,
   visibility: nativeEnum(EntryVisibility).openapi({description: 'Visibility of the entry', ref: 'Entry Visibility'}),
-  createdAt: date().openapi({description: 'Date of the entry'}),
+  time: date().openapi({description: 'Time of the entry. Can be changed by user.'}),
+  createdAt: date().openapi({description: 'Date of the entry, when the entry was created by user. Immutable.'}),
   updatedAt: date().nullable().openapi({description: 'Date of the last update'}),
   deletedAt: date().nullable().openapi({description: 'Date of the deletion'}),
 });

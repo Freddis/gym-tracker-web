@@ -6,7 +6,7 @@ import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {Entry, ImageEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {ImageEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
-import {and, inArray, isNull, desc, gte, or, eq} from 'drizzle-orm';
+import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
 import {Workout} from '../WorkoutService/types/Workout';
@@ -48,6 +48,7 @@ export class EntryService {
     const image = await this.imageService.createFromBase64(entry.data, randomUUID(), ImageType.Entry);
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
+      time: new Date(),
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
@@ -117,6 +118,7 @@ export class EntryService {
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
+      time: new Date(),
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
@@ -154,6 +156,7 @@ export class EntryService {
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
+      time: new Date(),
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
@@ -196,6 +199,7 @@ export class EntryService {
       includeDeleted?: boolean,
       updatedAfter?: Date,
       language?:Language
+      date?: Date,
     }
   ): Promise<PaginatedResult<Entry & {type: T}>> {
 
@@ -215,6 +219,11 @@ export class EntryService {
         gte(db._.fullSchema.entries.createdAt, params.updatedAfter),
         gte(db._.fullSchema.entries.deletedAt, params.updatedAfter),
       ) : undefined,
+      params?.date ? between(
+        db._.fullSchema.entries.time,
+         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate()),
+         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate() + 1)
+        ) : undefined,
     );
 
     const count = await db.$count(db._.fullSchema.entries, where);
@@ -225,7 +234,7 @@ export class EntryService {
       .limit(limit)
       .offset(offset)
       .orderBy(desc(
-        db._.fullSchema.entries.createdAt
+        db._.fullSchema.entries.time
       ));
 
     const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
@@ -262,6 +271,7 @@ export class EntryService {
           createdAt: row.createdAt,
           updatedAt: row.updatedAt,
           deletedAt: row.deletedAt,
+          time: row.time,
           workout: getOrThrow(workoutMap, row.workoutId),
         };
         return entry;
@@ -274,6 +284,7 @@ export class EntryService {
           createdAt: row.createdAt,
           updatedAt: row.updatedAt,
           deletedAt: row.deletedAt,
+          time: row.time,
           weight: getOrThrow(weightMap, row.weightId),
         };
         return entry;
@@ -286,6 +297,7 @@ export class EntryService {
           createdAt: row.createdAt,
           updatedAt: row.updatedAt,
           deletedAt: row.deletedAt,
+          time: row.time,
           image: getOrThrow(imageMap, row.imageId),
         };
         return entry;
@@ -316,6 +328,7 @@ export class EntryService {
         userId: userId,
         type: item.type,
         visibility: EntryVisibility.Public,
+        time: item.time,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
         deletedAt: item.deletedAt,
@@ -352,10 +365,6 @@ export class EntryService {
         ...row,
         user: user,
         type: row.type,
-        visibility: row.visibility,
-        createdAt: row.createdAt,
-        updatedAt: row.updatedAt,
-        deletedAt: row.deletedAt,
       };
       if (workout) {
         result.push({
@@ -387,6 +396,22 @@ export class EntryService {
         eq(db._.fullSchema.entries.userId, userId)
       )
     );
+  }
+
+  async getDates(id: number, params: {date: Date, type?: EntryType[]}): Promise<Date[]> {
+    const db = await this.drizzle.getDb();
+    const year = params.date.getFullYear();
+    const rows = await db.select({time: db._.fullSchema.entries.time})
+      .from(db._.fullSchema.entries)
+      .where(
+        and(
+          between(db._.fullSchema.entries.time, new Date(year - 1, 0, 1), new Date(year + 1, 0, 1)),
+          eq(db._.fullSchema.entries.userId, id),
+          params.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
+        )
+      )
+      .groupBy(sql`date(time), time`);
+    return rows.map((x) => new Date(x.time.getFullYear(), x.time.getMonth(), x.time.getDate()));
   }
 
 }

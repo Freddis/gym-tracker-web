@@ -51,6 +51,7 @@ import {getEntry} from '../api/entries/getEntry';
 import {createImage} from '../api/images/createImage';
 import {getImage} from '../api/images/getImage';
 import {updateImage} from '../api/images/updateImage';
+import {getOwnEntryDates} from '../api/entries/getOwnEntryDates';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -105,6 +106,7 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     getEntryList,
     upsertEntries,
     deleteEntry,
+    getOwnEntryDates,
   ],
   '/images': [
     createImage,

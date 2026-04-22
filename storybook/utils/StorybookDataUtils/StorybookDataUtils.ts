@@ -211,6 +211,7 @@ export class StorybookDataUtils {
   static getEntry(): Entry {
     const entry: Entry = {
       id: 0,
+      time: new Date(),
       user: {
         ...this.getUser(),
         profilePicture: '',

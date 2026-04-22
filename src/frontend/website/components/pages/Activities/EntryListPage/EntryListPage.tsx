@@ -1,35 +1,32 @@
-import {PageContainer} from '../../../../../common/components/layout/PageContainer/PageContainer';
-import {getRouteApi, Link} from '@tanstack/react-router';
+import {getRouteApi} from '@tanstack/react-router';
 import {keepPreviousData, useQuery} from '@tanstack/react-query';
-import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
-import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
-import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
-import {AppToast} from '../../../../../common/components/atoms/AppToast/AppToast';
-import {Color} from '../../../../../common/utils/design-system/types/Color';
-import {EntryType, getEntriesOwn} from '../../../../../common/utils/openapi-client';
-import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
-import {AppPageHeading} from '../../../../../common/components/atoms/AppPageHeading/AppPageHeading';
-import {AppSidebarBlock} from '../../../../../common/components/atoms/AppSidebarBlock/AppSidebarBlock';
-import {AppSwitch} from '../../../../../common/components/atoms/AppSwitch/AppSwitch';
-import {EntryBlock} from '../../../blocks/EntryBlock/EntryBlock';
-import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
-import {route, RouteId} from '../../../../../common/utils/route';
-import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
+import {EntryType} from '../../../../../common/utils/openapi-client';
+import {EntryListPagePresenter} from './EntryListPagePresenter/EntryListPagePresenter';
+import {FC} from 'react';
+import {api} from '../../../../../common/utils/api';
 
 const routeApi = getRouteApi('/entries/');
-export function EntryListPage() {
-  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list);
-  const {i18n: i18nEntryTypes} = useAppPartialTranslation((x) => x.utils.objects.entryType);
+export const EntryListPage: FC = () => {
   const searchParams = routeApi.useSearch();
   const response = useQuery({
-    queryFn: () => getEntriesOwn({
+    queryFn: () => api.getEntriesOwn({
       query: {
         page: searchParams.page,
         type: searchParams.type,
+        date: searchParams.date,
       },
     }),
     queryKey: ['workouts', searchParams],
+    placeholderData: keepPreviousData,
+  });
+  const datesResponse = useQuery({
+    queryFn: () => api.getEntriesOwnDates({
+      query: {
+        date: searchParams.date ?? new Date(),
+        type: searchParams.type,
+      },
+    }),
+    queryKey: ['entries-dates', searchParams],
     placeholderData: keepPreviousData,
   });
   const navigate = routeApi.useNavigate();
@@ -55,65 +52,31 @@ export function EntryListPage() {
       },
     });
   };
-
-  if (response.isLoading) {
-    return (
-      <PageContainer className="bg-main">
-        <AppSpinner/>
-      </PageContainer>
-    );
-  }
-  if (response.isError || response.data?.error) {
-    const error = response.data?.error?.error;
-    return (
-        <PageContainer>
-          <AppApiErrorDisplay error={error} />
-        </PageContainer>
-    );
-  }
-
+  const onDateChanged = (date: Date | null) => {
+    navigate({
+      search: {
+        ...searchParams,
+        date: date ?? undefined,
+      },
+    });
+  };
+  const onClearFilters = () => {
+    navigate({
+      search: {
+        ...searchParams,
+        date: undefined,
+        type: undefined,
+      },
+    });
+  };
   return (
- <PageContainer className="bg-main">
-         <div className="flex flex-col max-w-5xl w-full">
-           <div className="w-full text-left mb-5 flex">
-             <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
-             <div className="grow flex flex-row-reverse gap-5 items-center">
-              <Link to={route(RouteId.EntryAdd)} className="z-0">
-                <AppButton>{t(i18n.buttons.addEntry)}</AppButton>
-              </Link>
-              <RouteLink to={route(RouteId.WorkoutTypeList)} className="z-0">
-                {t(i18n.buttons.types)}
-              </RouteLink>
-              </div>
-           </div>
-           <div className="flex flex-col md:flex-row gap-5 items-start">
-             <AppSidebarBlock>
-               <AppLabel className="mb-2 block">{t(i18n.filter.labels.type)}</AppLabel>
-               <div className="mb-5 flex flex-col gap-2">
-                 {Object.values(EntryType).map((x) => (
-                   <AppSwitch
-                   className="capitalize"
-                   key={x}
-                   label={t(i18nEntryTypes[x])}
-                   checked={searchParams.type?.includes(x) ?? false}
-                   onCheckedChange={(e) => filterByType(x, e)}
-                   ></AppSwitch>
-                 ))}
-               </div>
-             </AppSidebarBlock>
-             <div className="flex flex-col gap-5 grow w-full" data-testid="main-content">
-                {response.data && response.data.data.items.length > 0 && (
-                  <>
-                    {response.data?.data.items.map((item) => <EntryBlock key={item.id} entry={item} own />)}
-                    <div className="flex justify-center">
-                      <Pagination onPageChanged={onPageChanged} info={response.data?.data.info} />
-                    </div>
-                  </>
-                )}
-                {response.data?.data.items.length === 0 && <AppToast variant={Color.Warning}>{t(i18n.toasts.nothingFound)}</AppToast>}
-             </div>
-           </div>
-         </div>
-       </PageContainer>
+    <EntryListPagePresenter
+      response={response}
+      onClearFilters={onClearFilters}
+      onPageChanged={onPageChanged}
+      onDateChanged={onDateChanged}
+      onFilter={filterByType}
+      searchParams={searchParams}
+      datesResponse={datesResponse} />
   );
-}
+};

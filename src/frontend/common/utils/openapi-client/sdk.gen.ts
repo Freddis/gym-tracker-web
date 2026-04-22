@@ -113,6 +113,9 @@ import type {
   PutEntriesData,
   PutEntriesResponses,
   PutEntriesErrors,
+  GetEntriesOwnDatesData,
+  GetEntriesOwnDatesResponses,
+  GetEntriesOwnDatesErrors,
   PostImagesData,
   PostImagesResponses,
   PostImagesErrors,
@@ -184,6 +187,7 @@ import {
   getEntriesByIdResponseTransformer,
   getEntriesResponseTransformer,
   putEntriesResponseTransformer,
+  getEntriesOwnDatesResponseTransformer,
   postImagesResponseTransformer,
   getImagesByIdResponseTransformer,
   patchImagesByIdResponseTransformer,
@@ -1103,6 +1107,30 @@ export const putEntries = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Returns the list of days when entries were logged
+ */
+export const getEntriesOwnDates = <ThrowOnError extends boolean = false>(
+  options: Options<GetEntriesOwnDatesData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetEntriesOwnDatesResponses,
+    GetEntriesOwnDatesErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getEntriesOwnDatesResponseTransformer,
+    url: "/entries/own/dates",
+    ...options,
   });
 };
 

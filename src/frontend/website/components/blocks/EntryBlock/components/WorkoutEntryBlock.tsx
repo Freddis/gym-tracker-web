@@ -6,10 +6,10 @@ import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
+import {EntryBlockDate} from './EntryBlockDate';
 
 export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
-  const date = new Date(workout.createdAt);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
   const duration = workout.end ? (new Date(workout.end).getTime() - new Date(workout.start).getTime()) / 1000 : 0;
   const hours = Math.floor(duration / (60 * 60));
   const hoursStr = hours.toLocaleString(undefined, {minimumIntegerDigits: 2});
@@ -17,8 +17,6 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
   const minutesStr = minutes.toLocaleString(undefined, {minimumIntegerDigits: 2});
   const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
   const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
-
-  const weekDayString = translations.utils.time.weekDays[date.getDay() - 1];
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
@@ -29,7 +27,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">
-          {weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}
+        <EntryBlockDate date={entry.time} />
         </div>
       </div>
       <div className="flex flex-col">

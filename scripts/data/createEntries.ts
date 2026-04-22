@@ -27,6 +27,7 @@ const workoutsToAdd = await db.select()
 for (const row of workoutsToAdd) {
   const workout = row.workouts;
   const entry: NewModel<EntryRow> = {
+    time: workout.start,
     type: EntryType.Workout,
     createdAt: workout.createdAt,
     updatedAt: workout.updatedAt,
@@ -53,6 +54,7 @@ const weightToAdd = await db.select()
 for (const row of weightToAdd) {
   const weight = row.weight;
   const entry: NewModel<EntryRow> = {
+    time: weight.createdAt,
     type: EntryType.Weight,
     createdAt: weight.createdAt,
     updatedAt: weight.updatedAt,

@@ -4,7 +4,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@radix-ui/react-popover';
-import {ChangeEventHandler, FC, useContext, useState} from 'react';
+import {ChangeEventHandler, FC, useContext, useEffect, useState} from 'react';
 import {cn} from '../../../utils/cn';
 import {LanguageContext} from '../../layout/LanguageProvider/context/LanguageContext';
 import {CalendarIcon} from 'lucide-react';
@@ -12,12 +12,15 @@ import {Button} from '../../shadcn/button';
 import {Calendar} from '../../shadcn/calendar';
 import {Input} from '../../shadcn/input';
 import {dateToTimeString} from '../../../../website/utils/dateToTimeString';
+import {CalendarDay} from 'react-day-picker';
 
 interface AppDatepickerProps {
   value?: Date;
   className?: string;
   onChange?: (date: Date) => void;
   'data-testid'?: string;
+  dateOnly?: boolean;
+  markedDays?: Date[];
 }
 
 export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
@@ -27,9 +30,15 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
   const timeStr = date ? dateToTimeString(date, true) : undefined;
   const [time, setTime] = useState(timeStr);
   const locale = useContext(LanguageContext).getLocale();
+  useEffect(() => {
+    setDate(props.value);
+    if (props.value) {
+      setTime(dateToTimeString(props.value, true));
+    }
+  }, [props.value]);
 
   const onDateSelected = (newDate: Date) => {
-    const newTime = time ?? '13:00:00';
+    const newTime = props.dateOnly ? '00:00:00' : time ?? '13:00:00';
     const timeDate = new Date(`1970-01-01T${newTime}`);
     newDate.setHours(timeDate.getHours());
     newDate.setMinutes(timeDate.getMinutes());
@@ -57,7 +66,6 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
       props.onChange(newDate);
     }
   };
-
 
   const cl = props.className;
   return (
@@ -91,15 +99,39 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
             <Calendar
               mode="single"
               selected={date}
+              defaultMonth={date ?? new Date()}
               captionLayout="dropdown"
               onSelect={onDateSelected}
               required
+              components={{
+                Day: ({day}) => {
+                  return (
+                    <Button
+                    onClick={() => onDateSelected(day.date)}
+                    disabled={props.markedDays?.includes(day.date)}
+                    variant={date && day.isEqualTo(new CalendarDay(date, date)) ? 'default' : 'secondary'}
+                    size="icon"
+                    className="relative mx-0.5"
+                    >
+                      {(props.markedDays ?? []).find((d) => d.toDateString() === day.date.toDateString()) && (
+                        <div
+                        className={cn(
+                          'size-1 absolute left-1/2 -translate-x-1/2 bottom-0.5 rounded-full',
+                          date && day.isEqualTo(new CalendarDay(date, date)) ? 'bg-white' : 'bg-accent'
+                        )} />
+                      )}
+                      <span>{day.date.getDate()}</span>
+                    </Button>
+                  );
+                },
+              }}
               className=" rounded-sm border border-on-cavity/10 z-10"
             />
           </PopoverContent>
         </Popover>
       </div>
-      <div className="flex flex-col gap-3">
+      {!props.dateOnly && (
+        <div className="flex flex-col gap-3">
         <Input
           key={time === undefined ? 1 : 2} // controlled / uncontrolled input problem fix
           type="time"
@@ -112,6 +144,7 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
           [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </div>
+      )}
     </div>
   );
 };

@@ -21,7 +21,6 @@ describe('passwordResetStart', async () => {
     expect(lastSent).not.to.eq(null);
     expect(lastSent?.to).to.eq(user.email);
     expect(lastSent?.subject).to.eq('Password reset');
-    console.log(lastSent?.body);
     expect(lastSent?.body).to.include('http://localhost:3000/auth/password-reset-complete');
   });
 
