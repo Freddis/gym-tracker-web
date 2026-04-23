@@ -67,9 +67,8 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
     }
   };
 
-  const cl = props.className;
   return (
-    <div className="flex gap-4 w-full">
+    <div className={cn('flex gap-4 w-full', props.className)}>
       <div className="flex flex-col gap-3 grow">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -77,11 +76,9 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
               variant={'secondary'}
               data-empty={!date}
               data-testid={testid}
-              className={cn(
+              className={
                 `data-[empty=true]:text-muted-foreground justify-start p-3 h-10
-            text-left border-1 border-in-cavity cursor-pointer relative`,
-                cl
-              )}
+            text-left border-1 border-in-cavity cursor-pointer relative`}
             >
               <div className="flex w-full gap-5">
                 {date ? (
@@ -103,6 +100,7 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
               captionLayout="dropdown"
               onSelect={onDateSelected}
               required
+              locale={locale}
               components={{
                 Day: ({day}) => {
                   return (

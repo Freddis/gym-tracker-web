@@ -48,9 +48,9 @@ import {passwordResetComplete} from '../api/auth/passwordResetComplete';
 import {upsertEntries} from '../api/entries/upsertEntries';
 import {deleteEntry} from '../api/entries/deleteEntry';
 import {getEntry} from '../api/entries/getEntry';
-import {createImage} from '../api/images/createImage';
-import {getImage} from '../api/images/getImage';
-import {updateImage} from '../api/images/updateImage';
+import {createPost} from '../api/posts/createPost';
+import {getPost} from '../api/posts/getPost';
+import {updatePost} from '../api/posts/updatePost';
 import {getOwnEntryDates} from '../api/entries/getOwnEntryDates';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
@@ -108,10 +108,10 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     deleteEntry,
     getOwnEntryDates,
   ],
-  '/images': [
-    createImage,
-    getImage,
-    updateImage,
+  '/posts': [
+    createPost,
+    getPost,
+    updatePost,
   ],
   '/crm/users': [
     getUserList,

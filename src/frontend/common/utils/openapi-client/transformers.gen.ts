@@ -28,9 +28,9 @@ import type {
   GetEntriesResponse,
   PutEntriesResponse,
   GetEntriesOwnDatesResponse,
-  PostImagesResponse,
-  GetImagesByIdResponse,
-  PatchImagesByIdResponse,
+  PostPostsResponse,
+  GetPostsByIdResponse,
+  PatchPostsByIdResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -393,7 +393,7 @@ export const getEntriesOwnDatesResponseTransformer = async (
   return data;
 };
 
-const imageEntrySchemaResponseTransformer = (data: any) => {
+const postEntrySchemaResponseTransformer = (data: any) => {
   data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
@@ -408,28 +408,30 @@ const imageEntrySchemaResponseTransformer = (data: any) => {
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
-  data.image = imageSchemaResponseTransformer(data.image);
+  if (data.image) {
+    data.image = imageSchemaResponseTransformer(data.image);
+  }
   return data;
 };
 
-export const postImagesResponseTransformer = async (
+export const postPostsResponseTransformer = async (
   data: any,
-): Promise<PostImagesResponse> => {
-  data = imageEntrySchemaResponseTransformer(data);
+): Promise<PostPostsResponse> => {
+  data = postEntrySchemaResponseTransformer(data);
   return data;
 };
 
-export const getImagesByIdResponseTransformer = async (
+export const getPostsByIdResponseTransformer = async (
   data: any,
-): Promise<GetImagesByIdResponse> => {
-  data = imageEntrySchemaResponseTransformer(data);
+): Promise<GetPostsByIdResponse> => {
+  data = postEntrySchemaResponseTransformer(data);
   return data;
 };
 
-export const patchImagesByIdResponseTransformer = async (
+export const patchPostsByIdResponseTransformer = async (
   data: any,
-): Promise<PatchImagesByIdResponse> => {
-  data = imageEntrySchemaResponseTransformer(data);
+): Promise<PatchPostsByIdResponse> => {
+  data = postEntrySchemaResponseTransformer(data);
   return data;
 };
 

@@ -22,6 +22,7 @@ export const createWeight = RouteFactory.createRoute({
     const result = await ctx.services.models.entry.createWeightEntry(ctx.viewer.id, {
       weight: ctx.params.body.weight,
       visibility: EntryVisibility.Public,
+      time: new Date(),
     });
     return result.weight;
   },

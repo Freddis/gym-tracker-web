@@ -4,40 +4,43 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {api} from '../../../../../common/utils/api';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {Image} from '../../../../../common/utils/openapi-client/types.gen';
-import {ImageUpdatePagePresenter} from './components/ImageUpdatePagePresenter';
+import {PostEntry} from '../../../../../common/utils/openapi-client/types.gen';
+import {PostUpdatePagePresenter} from './components/PostUpdatePagePresenter';
 import {useQuery} from '@tanstack/react-query';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {PageContainer} from '../../../../../common/components/layout/PageContainer/PageContainer';
+import {PostUpdateFormProps} from '../PostUpdateForm/types/PostUpdateFormProps';
 
-export const ImageUpdatePage: FC = () => {
+export const PostUpdatePage: FC = () => {
   const navigate = useNavigate();
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const toasts = useToasts();
-  const {showToastsAndSetErrors, sliceErrors, errors} = useResponseErrors<Image>();
-  const routeApi = getRouteApi(route(RouteId.ImageUpdate));
+  const {showToastsAndSetErrors, sliceErrors, errors} = useResponseErrors<PostEntry>();
+  const routeApi = getRouteApi(route(RouteId.PostUpdate));
   const params = routeApi.useParams();
   const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
-  const save = async (data: {data:string | null}) => {
-    const result = await api.patchImagesById({
+  const save: PostUpdateFormProps['onSave'] = async (data) => {
+    const result = await api.patchPostsById({
       path: {
         id: id,
       },
       body: {
         data: data.data ?? undefined,
+        note: data.note,
+        time: data.time,
       },
     });
     if (showToastsAndSetErrors(result)) {
       return;
     }
-    toasts.addSuccess(t(i18n.images.update.toasts.success));
+    toasts.addSuccess(t(i18n.posts.update.toasts.success));
     navigate({to: '/entries'});
   };
 
   const response = useQuery({
-    queryFn: () => api.getImagesById({
+    queryFn: () => api.getPostsById({
       path: {
         id: id,
       },
@@ -60,8 +63,8 @@ export const ImageUpdatePage: FC = () => {
       </PageContainer>
     );
   }
-  const image = response.data.data.image;
+
   return (
-    <ImageUpdatePagePresenter image={image} onSave={save} errors={sliceErrors(errors, (x) => x)} />
+    <PostUpdatePagePresenter entry={response.data.data} onSave={save} errors={sliceErrors(errors, (x) => x)} />
   );
 };

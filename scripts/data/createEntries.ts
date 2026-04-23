@@ -29,6 +29,10 @@ for (const row of workoutsToAdd) {
   const entry: NewModel<EntryRow> = {
     time: workout.start,
     type: EntryType.Workout,
+    title: null,
+    note: null,
+    externalId: null,
+    externalSource: null,
     createdAt: workout.createdAt,
     updatedAt: workout.updatedAt,
     userId: workout.userId,
@@ -64,6 +68,10 @@ for (const row of weightToAdd) {
     imageId: null,
     weightId: weight.id,
     visibility: EntryVisibility.Public,
+    title: null,
+    note: null,
+    externalId: null,
+    externalSource: null,
   };
   await db.insert(schema.entries).values(entry);
 }

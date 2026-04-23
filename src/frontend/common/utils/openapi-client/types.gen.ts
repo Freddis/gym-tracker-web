@@ -840,6 +840,22 @@ export type Entry = {
    * Date of the deletion
    */
   deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: "Argus" | null;
   type: EntryType;
   /**
    * Weight. Only for weight entries
@@ -852,7 +868,7 @@ export type Entry = {
   /**
    * Image. Only for image entries.
    */
-  image?: Image;
+  image?: Image | null;
 };
 
 /**
@@ -889,7 +905,7 @@ export const EntryVisibility = {
 /**
  * Entry type
  */
-export type EntryType = "Workout" | "Weight" | "Image";
+export type EntryType = "Workout" | "Weight" | "Post";
 
 /**
  * Entry type
@@ -897,7 +913,7 @@ export type EntryType = "Workout" | "Weight" | "Image";
 export const EntryType = {
   WORKOUT: "Workout",
   WEIGHT: "Weight",
-  IMAGE: "Image",
+  POST: "Post",
 } as const;
 
 /**
@@ -912,10 +928,7 @@ export type Image = {
    * URL of the image
    */
   url: string;
-  /**
-   * Type of object this image attaches to
-   */
-  imageType: "Exercise" | "UserProfile" | "Entry";
+  imageType: ImageType;
   /**
    * Id of the user who uploaded it
    */
@@ -935,9 +948,26 @@ export type Image = {
 };
 
 /**
+ * Type of object this image attaches to
+ */
+export type ImageType = "Exercise" | "UserProfile" | "Entry";
+
+/**
+ * Type of object this image attaches to
+ */
+export const ImageType = {
+  EXERCISE: "Exercise",
+  USER_PROFILE: "UserProfile",
+  ENTRY: "Entry",
+} as const;
+
+/**
  * Fields needed to update a workout
  */
-export type EntryUpsertDto = WorkoutEntryUpsertDto | WeightEntryUpsertDto;
+export type EntryUpsertDto =
+  | WorkoutEntryUpsertDto
+  | WeightEntryUpsertDto
+  | PostEntryUpsertDto;
 
 export type WorkoutEntryUpsertDto = {
   /**
@@ -962,6 +992,22 @@ export type WorkoutEntryUpsertDto = {
    */
   deletedAt: Date | null;
   /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: "Argus" | null;
+  /**
    * Type of the entry
    */
   type: "Workout";
@@ -976,7 +1022,15 @@ export type WorkoutEntryUpsertDto = {
   /**
    * Image
    */
-  image?: Image;
+  image: {
+    /**
+     * Id of the image
+     */
+    id: number;
+    url: string | null;
+    imageType: ImageType;
+    data: string | null;
+  } | null;
 };
 
 export type WeightEntryUpsertDto = {
@@ -1002,6 +1056,22 @@ export type WeightEntryUpsertDto = {
    */
   deletedAt: Date | null;
   /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: "Argus" | null;
+  /**
    * Type of the entry
    */
   type: "Weight";
@@ -1016,7 +1086,15 @@ export type WeightEntryUpsertDto = {
   /**
    * Image
    */
-  image?: Image;
+  image: {
+    /**
+     * Id of the image
+     */
+    id: number;
+    url: string | null;
+    imageType: ImageType;
+    data: string | null;
+  } | null;
 };
 
 /**
@@ -1049,6 +1127,70 @@ export type WeightUpsertDto = {
   id?: number;
 };
 
+export type PostEntryUpsertDto = {
+  /**
+   * Id of the entry
+   */
+  id?: number;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: "Argus" | null;
+  /**
+   * Type of the entry
+   */
+  type: "Post";
+  /**
+   * Weight
+   */
+  weight?: Weight;
+  /**
+   * Workout
+   */
+  workout?: Workout;
+  /**
+   * Image
+   */
+  image: {
+    /**
+     * Id of the image
+     */
+    id: number;
+    url: string | null;
+    imageType: ImageType;
+    data: string | null;
+  } | null;
+};
+
 /**
  * List of dates. Workout about bug in array transformation in @hey-api/openapi-ts
  */
@@ -1060,9 +1202,9 @@ export type DateList = Array<{
 }>;
 
 /**
- * Image entry
+ * Post entry
  */
-export type ImageEntry = {
+export type PostEntry = {
   /**
    * Id of an entry
    */
@@ -1086,9 +1228,25 @@ export type ImageEntry = {
    */
   deletedAt: Date | null;
   /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: "Argus" | null;
+  /**
    * Type
    */
-  type: "Image";
+  type: "Post";
   /**
    * Weight. Only for weight entries
    */
@@ -1097,7 +1255,10 @@ export type ImageEntry = {
    * Workout. Only for workout entries.
    */
   workout?: Workout;
-  image: Image;
+  /**
+   * Image
+   */
+  image: Image | null;
 };
 
 /**
@@ -5603,11 +5764,7 @@ export type GetEntriesOwnData = {
     /**
      * Filters excercises by type.
      */
-    type?:
-      | "Workout"
-      | "Weight"
-      | "Image"
-      | Array<"Workout" | "Weight" | "Image">;
+    type?: "Workout" | "Weight" | "Post" | Array<"Workout" | "Weight" | "Post">;
     /**
      * Only return entries from this date.
      */
@@ -6003,11 +6160,7 @@ export type GetEntriesData = {
     /**
      * Filters excercises by type.
      */
-    type?:
-      | "Workout"
-      | "Weight"
-      | "Image"
-      | Array<"Workout" | "Weight" | "Image">;
+    type?: "Workout" | "Weight" | "Post" | Array<"Workout" | "Weight" | "Post">;
     /**
      * Only return entries from this date.
      */
@@ -6270,11 +6423,7 @@ export type GetEntriesOwnDatesData = {
     /**
      * Filters excercises by type.
      */
-    type?:
-      | "Workout"
-      | "Weight"
-      | "Image"
-      | Array<"Workout" | "Weight" | "Image">;
+    type?: "Workout" | "Weight" | "Post" | Array<"Workout" | "Weight" | "Post">;
   };
   url: "/entries/own/dates";
 };
@@ -6386,19 +6535,27 @@ export type GetEntriesOwnDatesResponses = {
 export type GetEntriesOwnDatesResponse =
   GetEntriesOwnDatesResponses[keyof GetEntriesOwnDatesResponses];
 
-export type PostImagesData = {
+export type PostPostsData = {
   body?: {
+    /**
+     * Text of the post
+     */
+    note: string | null;
     /**
      * Data of the image. Base64 encoded string
      */
-    data: string;
+    data: string | null;
+    /**
+     * Time of the post
+     */
+    time: Date;
   };
   path?: never;
   query?: never;
-  url: "/images";
+  url: "/posts";
 };
 
-export type PostImagesErrors = {
+export type PostPostsErrors = {
   /**
    * Validation Failed or Action Error
    */
@@ -6492,30 +6649,30 @@ export type PostImagesErrors = {
   500: UnknownErrorResponse;
 };
 
-export type PostImagesError = PostImagesErrors[keyof PostImagesErrors];
+export type PostPostsError = PostPostsErrors[keyof PostPostsErrors];
 
-export type PostImagesResponses = {
+export type PostPostsResponses = {
   /**
    * Good Response
    */
-  200: ImageEntry;
+  200: PostEntry;
 };
 
-export type PostImagesResponse = PostImagesResponses[keyof PostImagesResponses];
+export type PostPostsResponse = PostPostsResponses[keyof PostPostsResponses];
 
-export type GetImagesByIdData = {
+export type GetPostsByIdData = {
   body?: never;
   path: {
     /**
-     * Id of the image entry
+     * Id of the post entry
      */
     id: number;
   };
   query?: never;
-  url: "/images/{id}";
+  url: "/posts/{id}";
 };
 
-export type GetImagesByIdErrors = {
+export type GetPostsByIdErrors = {
   /**
    * Validation Failed or Action Error
    */
@@ -6609,36 +6766,44 @@ export type GetImagesByIdErrors = {
   500: UnknownErrorResponse;
 };
 
-export type GetImagesByIdError = GetImagesByIdErrors[keyof GetImagesByIdErrors];
+export type GetPostsByIdError = GetPostsByIdErrors[keyof GetPostsByIdErrors];
 
-export type GetImagesByIdResponses = {
+export type GetPostsByIdResponses = {
   /**
    * Good Response
    */
-  200: ImageEntry;
+  200: PostEntry;
 };
 
-export type GetImagesByIdResponse =
-  GetImagesByIdResponses[keyof GetImagesByIdResponses];
+export type GetPostsByIdResponse =
+  GetPostsByIdResponses[keyof GetPostsByIdResponses];
 
-export type PatchImagesByIdData = {
+export type PatchPostsByIdData = {
   body?: {
     /**
      * Data of the image. Base64 encoded string
      */
     data?: string;
+    /**
+     * Text of the post
+     */
+    note: string | null;
+    /**
+     * Time of the post
+     */
+    time: Date;
   };
   path: {
     /**
-     * Id of the image entry
+     * Id of the post entry
      */
     id: number;
   };
   query?: never;
-  url: "/images/{id}";
+  url: "/posts/{id}";
 };
 
-export type PatchImagesByIdErrors = {
+export type PatchPostsByIdErrors = {
   /**
    * Validation Failed or Action Error
    */
@@ -6732,18 +6897,18 @@ export type PatchImagesByIdErrors = {
   500: UnknownErrorResponse;
 };
 
-export type PatchImagesByIdError =
-  PatchImagesByIdErrors[keyof PatchImagesByIdErrors];
+export type PatchPostsByIdError =
+  PatchPostsByIdErrors[keyof PatchPostsByIdErrors];
 
-export type PatchImagesByIdResponses = {
+export type PatchPostsByIdResponses = {
   /**
    * Good Response
    */
-  200: ImageEntry;
+  200: PostEntry;
 };
 
-export type PatchImagesByIdResponse =
-  PatchImagesByIdResponses[keyof PatchImagesByIdResponses];
+export type PatchPostsByIdResponse =
+  PatchPostsByIdResponses[keyof PatchPostsByIdResponses];
 
 export type GetCrmUsersData = {
   body?: never;

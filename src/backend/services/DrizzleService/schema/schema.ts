@@ -7,6 +7,7 @@ import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 import {TranslationType} from '../../TranslationService/types/TranslationType';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {ImageType} from '../../../types/ImageType';
+import {ExternalSource} from '../../EntryService/types/ExternalSource';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -30,6 +31,9 @@ export const languageEnum = gymTracker.enum('language', languageEnumValues);
 
 const imageTypeEnumValues = array(nativeEnum(ImageType)).nonempty().parse(Object.values(ImageType));
 export const imageTypeEnum = gymTracker.enum('ImageType', imageTypeEnumValues);
+
+const externalSourceValues = array(nativeEnum(ExternalSource)).nonempty().parse(Object.values(ExternalSource));
+export const externalSourceEnum = gymTracker.enum('ExternalSource', externalSourceValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -234,6 +238,10 @@ export const managers = gymTracker.table('managers', {
 
 export const entries = gymTracker.table('entries', {
   id: integer().primaryKey().generatedByDefaultAsIdentity({name: 'entry_id_seq_alt'}),
+  externalId: varchar(),
+  externalSource: externalSourceEnum(),
+  title: varchar(),
+  note: text(),
   type: entryTypeEnum().notNull(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),

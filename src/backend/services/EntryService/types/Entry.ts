@@ -14,6 +14,7 @@ export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId
   createdAt: Date,
   deletedAt: Date | null,
   updatedAt: Date | null,
+  image: ImageRow | null
 }
 
 export interface WorkoutEntry extends BaseEntry {
@@ -27,8 +28,7 @@ export interface WeightEntry extends BaseEntry {
   weight: Weight
 }
 
-export interface ImageEntry extends BaseEntry {
-  type: EntryType.Image
-  image: ImageRow
+export interface PostEntry extends BaseEntry {
+  type: EntryType.Post
 }
-export type Entry = WorkoutEntry | WeightEntry | ImageEntry
+export type Entry = WorkoutEntry | WeightEntry | PostEntry

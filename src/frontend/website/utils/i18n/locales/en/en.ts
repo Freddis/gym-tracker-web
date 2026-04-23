@@ -75,7 +75,7 @@ export const dictionary = {
       entryType: {
         Workout: 'Workout',
         Weight: 'Weight',
-        Image: 'Image',
+        Post: 'Post',
       } satisfies Record<EntryType, string>,
       muscles: {
         'Lower Back': 'Lower Back',
@@ -458,17 +458,17 @@ export const dictionary = {
       },
     },
     activities: {
-      images: {
+      posts: {
         add: {
-          heading: 'Add Image',
+          heading: 'Add Post',
           toasts: {
-            success: 'You successfully added image',
+            success: 'You successfully added post',
           },
         },
         update: {
-          heading: 'Update Image',
+          heading: 'Update Post',
           toasts: {
-            success: 'You successfully updated image',
+            success: 'You successfully updated post',
           },
         },
       },
@@ -523,7 +523,7 @@ export const dictionary = {
         buttons: {
           addWorkout: 'Add Workout',
           addWeight: 'Add Weight',
-          addImage: 'Add Image',
+          addPost: 'Add Post',
         },
         toasts: {
           success: 'You successfully added workout record',
@@ -555,6 +555,12 @@ export const dictionary = {
           },
           image: {
             type: 'Image',
+          },
+          post: {
+            type: 'Post',
+            note: 'Note',
+            time: 'Time',
+            image: 'Image',
           },
         },
         toasts: {

@@ -3,9 +3,9 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {Entry, ImageEntry, WeightEntry, WorkoutEntry} from './types/Entry';
+import {Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
-import {ImageEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
+import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
 import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
@@ -17,6 +17,7 @@ import {ImageService} from '../ImageService/ImageService';
 import {randomUUID} from 'crypto';
 import {ImageType} from '../../types/ImageType';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
+import {SemiPartial} from '../../types/SemiPartial';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -39,51 +40,52 @@ export class EntryService {
     this.imageService = imageService;
   }
 
-  async createImageEntry(userId: number, entry: ImageEntryCreateDto): Promise<ImageEntry> {
+  async createPostEntry(userId: number, entry: PostEntryCreateDto): Promise<PostEntry> {
     const user = await this.userService.getById(userId);
     if (!user) {
       throw new Error('User not found');
     }
     const db = await this.drizzle.getDb();
-    const image = await this.imageService.createFromBase64(entry.data, randomUUID(), ImageType.Entry);
+    const image = entry.data ? await this.imageService.createFromBase64(entry.data, randomUUID(), ImageType.Entry) : null;
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
       time: new Date(),
       updatedAt: null,
       deletedAt: null,
+      note: entry.note,
       visibility: entry.visibility,
-      type: EntryType.Image,
+      type: EntryType.Post,
       userId: userId,
-      imageId: image.id,
+      imageId: image?.id,
     };
     const rows = await db.insert(db._.fullSchema.entries).values(newRow).returning();
     const result = rows[0];
     if (!result) {
       throw new Error("Couldn't create entry");
     }
-    const created: ImageEntry = {
+    const created: PostEntry = {
       ...result,
-      type: EntryType.Image,
+      type: EntryType.Post,
       image,
       user,
     };
     return created;
   }
 
-  async getImageEntry(userId: number, entryId: number): Promise<ImageEntry | null> {
+  async getPostEntry(userId: number, entryId: number): Promise<PostEntry | null> {
     const entry = await this.get(userId, entryId);
-    if (!entry || entry.type !== EntryType.Image) {
+    if (!entry || entry.type !== EntryType.Post) {
       return null;
     }
     return entry;
   }
 
-  async updateImageEntry(userId: number, entryId: number, dto: Partial<ImageEntryCreateDto>): Promise<ImageEntry> {
+  async updatePostEntry(userId: number, entryId: number, dto: SemiPartial<PostEntryCreateDto, 'data'>): Promise<PostEntry> {
     const user = await this.userService.getById(userId);
     if (!user) {
       throw new Error('User not found');
     }
-    const entry = await this.getImageEntry(userId, entryId);
+    const entry = await this.getPostEntry(userId, entryId);
     if (!entry) {
       throw new Error('Entry not found');
     }
@@ -94,15 +96,17 @@ export class EntryService {
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
-      type: EntryType.Image,
+      type: EntryType.Post,
       userId: userId,
-      imageId: image.id,
+      imageId: image?.id,
+      note: dto.note,
+      time: dto.time,
     };
     await db.update(db._.fullSchema.entries).set(update).where(
       eq(db._.fullSchema.entries.id, entryId)
     ).returning();
 
-    const updated: ImageEntry = {
+    const updated: PostEntry = {
       ...entry,
       image: image,
       user,
@@ -118,7 +122,7 @@ export class EntryService {
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
-      time: new Date(),
+      time: entry.time,
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
@@ -144,6 +148,7 @@ export class EntryService {
       type: EntryType.Weight,
       weight,
       user,
+      image: null,
     };
     return created;
   }
@@ -156,7 +161,7 @@ export class EntryService {
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
       createdAt: new Date(),
-      time: new Date(),
+      time: entry.time,
       updatedAt: null,
       deletedAt: null,
       visibility: entry.visibility,
@@ -178,6 +183,7 @@ export class EntryService {
       type: EntryType.Workout,
       workout,
       user,
+      image: null,
     };
     return created;
   }
@@ -273,6 +279,11 @@ export class EntryService {
           deletedAt: row.deletedAt,
           time: row.time,
           workout: getOrThrow(workoutMap, row.workoutId),
+          title: row.title,
+          note: row.note,
+          externalId: row.externalId,
+          externalSource: row.externalSource,
+          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
         };
         return entry;
       } if (row.type === EntryType.Weight) {
@@ -286,6 +297,11 @@ export class EntryService {
           deletedAt: row.deletedAt,
           time: row.time,
           weight: getOrThrow(weightMap, row.weightId),
+          title: row.title,
+          note: row.note,
+          externalId: row.externalId,
+          externalSource: row.externalSource,
+          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
         };
         return entry;
       } else {
@@ -298,7 +314,11 @@ export class EntryService {
           updatedAt: row.updatedAt,
           deletedAt: row.deletedAt,
           time: row.time,
-          image: getOrThrow(imageMap, row.imageId),
+          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
+          title: row.title,
+          note: row.note,
+          externalId: row.externalId,
+          externalSource: row.externalSource,
         };
         return entry;
       }
@@ -332,6 +352,9 @@ export class EntryService {
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
         deletedAt: item.deletedAt,
+        note: item.note,
+        title: item.title,
+        imageId: item.image?.id,
       };
       let workout: Workout | undefined;
       let weight: Weight | undefined;
@@ -343,7 +366,7 @@ export class EntryService {
         }
         data.workoutId = workoutId;
         workout = workouts[0];
-      } else {
+      } else if (item.type === EntryType.Weight) {
         const weights = await this.weightService.upsert(userId, [item.weight]);
         const weightId = weights[0]?.id;
         if (!weightId) {
@@ -365,6 +388,7 @@ export class EntryService {
         ...row,
         user: user,
         type: row.type,
+        image: null,
       };
       if (workout) {
         result.push({
@@ -408,6 +432,7 @@ export class EntryService {
           between(db._.fullSchema.entries.time, new Date(year - 1, 0, 1), new Date(year + 1, 0, 1)),
           eq(db._.fullSchema.entries.userId, id),
           params.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
+          isNull(db._.fullSchema.entries.deletedAt),
         )
       )
       .groupBy(sql`date(time), time`);

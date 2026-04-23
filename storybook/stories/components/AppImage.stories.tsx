@@ -9,7 +9,7 @@ const meta = {
   component: AppImage,
   tags: ['autodocs'],
   args: {
-    src: StorybookDataUtils.getImage(),
+    src: StorybookDataUtils.getExerciseImageUrl(),
   },
   parameters: {
     layout: 'centered',

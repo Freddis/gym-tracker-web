@@ -17,6 +17,7 @@ export const createWorkout = RouteFactory.createRoute({
   handler: async (ctx) => {
     const result = await ctx.services.models.entry.createWorkoutEntry(ctx.viewer.id, {
       visibility: EntryVisibility.Public,
+      time: new Date(),
       workout: ctx.params.body,
     });
     return result.workout;

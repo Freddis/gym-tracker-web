@@ -100,5 +100,6 @@ const workout: WorkoutCreateDto = {
 await entryService.createWorkoutEntry(tommy.id, {
   workout: workout,
   visibility: EntryVisibility.Public,
+  time: workout.start,
 });
 await globalServiceFactory.cleanup();

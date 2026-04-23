@@ -40,9 +40,9 @@ import {
   getEntries,
   putEntries,
   getEntriesOwnDates,
-  postImages,
-  getImagesById,
-  patchImagesById,
+  postPosts,
+  getPostsById,
+  patchPostsById,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -160,13 +160,13 @@ import type {
   PutEntriesError,
   PutEntriesResponse,
   GetEntriesOwnDatesData,
-  PostImagesData,
-  PostImagesError,
-  PostImagesResponse,
-  GetImagesByIdData,
-  PatchImagesByIdData,
-  PatchImagesByIdError,
-  PatchImagesByIdResponse,
+  PostPostsData,
+  PostPostsError,
+  PostPostsResponse,
+  GetPostsByIdData,
+  PatchPostsByIdData,
+  PatchPostsByIdError,
+  PatchPostsByIdResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -1893,16 +1893,16 @@ export const getEntriesOwnDatesOptions = (
   });
 };
 
-export const postImagesQueryKey = (options?: Options<PostImagesData>) =>
-  createQueryKey("postImages", options);
+export const postPostsQueryKey = (options?: Options<PostPostsData>) =>
+  createQueryKey("postPosts", options);
 
 /**
- * Adds new image entry for the user
+ * Adds new post entry for the user
  */
-export const postImagesOptions = (options?: Options<PostImagesData>) => {
+export const postPostsOptions = (options?: Options<PostPostsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postImages({
+      const { data } = await postPosts({
         ...options,
         ...queryKey[0],
         signal,
@@ -1910,27 +1910,27 @@ export const postImagesOptions = (options?: Options<PostImagesData>) => {
       });
       return data;
     },
-    queryKey: postImagesQueryKey(options),
+    queryKey: postPostsQueryKey(options),
   });
 };
 
 /**
- * Adds new image entry for the user
+ * Adds new post entry for the user
  */
-export const postImagesMutation = (
-  options?: Partial<Options<PostImagesData>>,
+export const postPostsMutation = (
+  options?: Partial<Options<PostPostsData>>,
 ): UseMutationOptions<
-  PostImagesResponse,
-  AxiosError<PostImagesError>,
-  Options<PostImagesData>
+  PostPostsResponse,
+  AxiosError<PostPostsError>,
+  Options<PostPostsData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostImagesResponse,
-    AxiosError<PostImagesError>,
-    Options<PostImagesData>
+    PostPostsResponse,
+    AxiosError<PostPostsError>,
+    Options<PostPostsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postImages({
+      const { data } = await postPosts({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1941,16 +1941,16 @@ export const postImagesMutation = (
   return mutationOptions;
 };
 
-export const getImagesByIdQueryKey = (options: Options<GetImagesByIdData>) =>
-  createQueryKey("getImagesById", options);
+export const getPostsByIdQueryKey = (options: Options<GetPostsByIdData>) =>
+  createQueryKey("getPostsById", options);
 
 /**
- * Adds new image entry for the user
+ * Adds new post entry for the user
  */
-export const getImagesByIdOptions = (options: Options<GetImagesByIdData>) => {
+export const getPostsByIdOptions = (options: Options<GetPostsByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getImagesById({
+      const { data } = await getPostsById({
         ...options,
         ...queryKey[0],
         signal,
@@ -1958,27 +1958,27 @@ export const getImagesByIdOptions = (options: Options<GetImagesByIdData>) => {
       });
       return data;
     },
-    queryKey: getImagesByIdQueryKey(options),
+    queryKey: getPostsByIdQueryKey(options),
   });
 };
 
 /**
- * Updates image entry for the user
+ * Updates post entry for the user
  */
-export const patchImagesByIdMutation = (
-  options?: Partial<Options<PatchImagesByIdData>>,
+export const patchPostsByIdMutation = (
+  options?: Partial<Options<PatchPostsByIdData>>,
 ): UseMutationOptions<
-  PatchImagesByIdResponse,
-  AxiosError<PatchImagesByIdError>,
-  Options<PatchImagesByIdData>
+  PatchPostsByIdResponse,
+  AxiosError<PatchPostsByIdError>,
+  Options<PatchPostsByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PatchImagesByIdResponse,
-    AxiosError<PatchImagesByIdError>,
-    Options<PatchImagesByIdData>
+    PatchPostsByIdResponse,
+    AxiosError<PatchPostsByIdError>,
+    Options<PatchPostsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchImagesById({
+      const { data } = await patchPostsById({
         ...options,
         ...localOptions,
         throwOnError: true,

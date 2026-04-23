@@ -4,27 +4,30 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {api} from '../../../../../common/utils/api';
-import {Image} from '../../../../../common/utils/openapi-client/types.gen';
-import {ImageCreatePagePresenter} from './components/ImageCreatePagePresenter';
+import {PostEntry} from '../../../../../common/utils/openapi-client';
+import {PostCreatePagePresenter} from './components/PostCreatePagePresenter';
+import {PostUpdateFormProps} from '../PostUpdateForm/types/PostUpdateFormProps';
 
-export const ImageCreatePage: FC = () => {
+export const PostCreatePage: FC = () => {
   const navigate = useNavigate();
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities);
   const toasts = useToasts();
-  const {errors, showToastsAndSetErrors, sliceErrors} = useResponseErrors<Image>();
-  const save = async (data: {data:string}) => {
-    const result = await api.postImages({
+  const {errors, showToastsAndSetErrors, sliceErrors} = useResponseErrors<PostEntry>();
+  const save: PostUpdateFormProps['onSave'] = async (data) => {
+    const result = await api.postPosts({
       body: {
         data: data.data,
+        note: data.note,
+        time: data.time,
       },
     });
     if (showToastsAndSetErrors(result)) {
       return;
     }
-    toasts.addSuccess(t(i18n.images.add.toasts.success));
+    toasts.addSuccess(t(i18n.posts.add.toasts.success));
     navigate({to: '/entries'});
   };
   return (
-    <ImageCreatePagePresenter onSave={save} errors={sliceErrors(errors, (x) => x)} />
+    <PostCreatePagePresenter onSave={save} errors={sliceErrors(errors, (x) => x)} />
   );
 };

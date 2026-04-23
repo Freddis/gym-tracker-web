@@ -3,10 +3,12 @@ import {EntryVisibility} from './EntryVisibility';
 
 interface BaseEntryCreateDto {
   visibility: EntryVisibility
+  time: Date
 }
 
-export interface ImageEntryCreateDto extends BaseEntryCreateDto {
-  data: string
+export interface PostEntryCreateDto extends BaseEntryCreateDto {
+  note: string | null
+  data: string | null
 }
 export interface WeightEntryCreateDto extends BaseEntryCreateDto {
   weight: number

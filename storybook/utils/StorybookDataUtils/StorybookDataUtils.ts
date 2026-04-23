@@ -6,6 +6,7 @@ import {
   Workout,
   WorkoutType,
   Image,
+  PostEntry,
 } from '../../../src/frontend/common/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
@@ -18,10 +19,10 @@ import {pullUp} from './data/pullUp';
 
 export class StorybookDataUtils {
 
-  static getImageEntry(): Image {
+  static getImage(): Image {
     const image: Image = {
       id: 1,
-      url: this.getImage(),
+      url: this.getExerciseImageUrl(),
       imageType: 'Entry',
       userId: 1,
       createdAt: new Date(),
@@ -222,8 +223,34 @@ export class StorybookDataUtils {
       createdAt: new Date(),
       deletedAt: null,
       updatedAt: null,
+      title: null,
+      note: null,
+      externalId: null,
+      externalSource: null,
     };
     return entry;
+  }
+
+  static getPostEntry(): PostEntry {
+    const postEntry: PostEntry = {
+      id: 0,
+      user: {
+        ...this.getUser(),
+        profilePicture: '',
+      },
+      visibility: 'Public',
+      time: new Date(),
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      title: null,
+      note: null,
+      externalId: null,
+      externalSource: null,
+      type: 'Post',
+      image: this.getImage(),
+    };
+    return postEntry;
   }
 
   static getUser(): AuthUser {
@@ -237,7 +264,7 @@ export class StorybookDataUtils {
     return user;
   }
 
-  static getImage(): string {
+  static getExerciseImageUrl(): string {
     return 'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BBench%2BPress%2B(Flat_Overhand%2BGrip)-a.jpg';
   }
 

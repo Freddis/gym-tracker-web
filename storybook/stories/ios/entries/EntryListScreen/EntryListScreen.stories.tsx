@@ -39,3 +39,9 @@ export const Primary: Story = {
 
 };
 
+export const FilterOpen: Story = {
+  args: {
+    filterOpen: true,
+  },
+};
+
