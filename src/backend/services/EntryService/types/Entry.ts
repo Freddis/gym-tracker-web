@@ -1,5 +1,6 @@
 import {ImageRow} from '../../DrizzleService/types/ImageRow';
-import {OutdoorRun} from '../../RunService/types/OutdoorRun';
+import {OutdoorRun} from '../../OutdoorRunService/types/OutdoorRun';
+import {OutdoorWalk} from '../../OutdoorWalkService/types/OutdoorWalk';
 import {User} from '../../UserService/types/User';
 import {Weight} from '../../WeightService/types/Weight';
 import {Workout} from '../../WorkoutService/types/Workout';
@@ -55,4 +56,9 @@ export interface OutdoorRunEntry extends BaseEntry {
   outdoorRun: OutdoorRun
 }
 
-export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry
+export interface OutdoorWalkEntry extends BaseEntry {
+  type: EntryType.OutdoorWalk
+  outdoorWalk: OutdoorWalk
+}
+
+export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry | OutdoorWalkEntry

@@ -99,17 +99,17 @@ export class OutdoorRunService {
       target: schema.outdoorRuns.id,
       set: this.drizzle.generateConflictUpdateSetAllColumns(schema.outdoorRuns),
     }).returning();
-    const indertedRow = inserted[0];
-    if (!indertedRow) {
+    const insertedRow = inserted[0];
+    if (!insertedRow) {
       throw new Error('Unable to insert outdoor run');
     }
 
     let insertedGeoData: typeof schema.geoData.$inferSelect[] = [];
     if (data.geoData) {
-      await db.delete(schema.geoData).where(eq(schema.geoData.outdoorRunId, indertedRow.id));
+      await db.delete(schema.geoData).where(eq(schema.geoData.outdoorRunId, insertedRow.id));
       if (data.geoData.length > 0) {
         const geodata: typeof schema.geoData.$inferInsert[] = data.geoData?.map((x) => ({
-          outdoorRunId: indertedRow.id,
+          outdoorRunId: insertedRow.id,
           latitude: x.latitude,
           longitude: x.longitude,
           altitude: x.altitude,
@@ -126,7 +126,7 @@ export class OutdoorRunService {
       }
     }
     const result: OutdoorRun = {
-      ...indertedRow,
+      ...insertedRow,
       geoData: insertedGeoData,
     };
     return result;

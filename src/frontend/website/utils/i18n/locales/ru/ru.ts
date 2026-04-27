@@ -18,7 +18,8 @@ export const dictionary: Translation = {
         Workout: 'Тренировка',
         Weight: 'Вес',
         Post: 'Запись',
-        OutdoorRun: 'Внешняя Тренировка',
+        OutdoorRun: 'Бег на улице',
+        OutdoorWalk: 'Прогулка',
       },
       muscles: {
         'Lower Back': 'Поясница',
@@ -452,6 +453,19 @@ export const dictionary: Translation = {
           },
           image: {
             type: 'Изображение',
+          },
+          outdoorWalk: {
+            type: 'Прогулка',
+            distance: 'Дистанция',
+            duration: 'Длительность',
+            calories: 'Калории',
+            pace: 'Темп',
+            elevationGain: 'Подъем',
+            cadence: 'Каденс',
+            maxPace: 'Max Темп',
+            maxCadence: 'Max Каденс',
+            start: 'Начало',
+            end: 'Конец',
           },
           outdoorRun: {
             type: 'Бег',

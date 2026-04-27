@@ -56,10 +56,28 @@ export const outdoorRunValidator = object({
   geoData: array(geoDataPointValidator).nullable().openapi({description: 'Geo data of the outdoor run'}),
 }).strict().openapi({ref: 'OutdoorRun', description: 'Outdoor run'});
 
+export const heartRatePointValidator = object({
+  timestamp: number().openapi({description: 'Timestamp of the heart rate point'}),
+  heartRate: number().openapi({description: 'Heart rate of the heart rate point'}),
+}).openapi({ref: 'HeartRatePoint', description: 'Heart rate point'});
+
+export const pathPointValidator = geoDataPointValidator.omit({heartRate: true}).extend({
+  timestamp: number().openapi({description: 'Timestamp of the path point'}),
+}).strict().openapi({
+  ref: 'PathPoint',
+  description: 'Path point used to display routes on map for activities such as walking, hiking, etc.',
+});
+
+export const outdoorWalkValidator = outdoorRunValidator.extend({
+  geoData: array(pathPointValidator).nullable().openapi({description: 'Geo data of the outdoor walk'}),
+  heartRateData: array(heartRatePointValidator).nullable().openapi({description: 'Heart rate data of the outdoor walk'}),
+}).openapi({ref: 'OutdoorWalk', description: 'Outdoor walk'});
+
 export const entryValidator = baseEntryValidator.extend({
   type: nativeEnum(EntryType).openapi({description: 'Entry type', ref: 'Entry Type'}),
   weight: weightValidator.optional().openapi({description: 'Weight. Only for weight entries'}),
   workout: workoutValidator.optional().openapi({description: 'Workout. Only for workout entries.'}),
   image: imageValidator.optional().nullable().openapi({description: 'Image. Only for image entries.'}),
   outdoorRun: outdoorRunValidator.optional().openapi({description: 'Outdoor run. Only for outdoor run entries.'}),
+  outdoorWalk: outdoorWalkValidator.optional().openapi({description: 'Outdoor walk. Only for outdoor walk entries.'}),
 }).openapi({ref: 'Entry', description: 'Entry. Can be a wirkout entry, a weight entry and so on.'});

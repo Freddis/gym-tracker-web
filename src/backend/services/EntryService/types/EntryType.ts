@@ -3,4 +3,5 @@ export enum EntryType {
   Weight = 'Weight',
   Post = 'Post',
   OutdoorRun = 'OutdoorRun',
+  OutdoorWalk = 'OutdoorWalk',
 }

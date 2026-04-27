@@ -1,6 +1,7 @@
 import {StrictOmit} from '../../../types/StrictOmit';
 import {ImageRow} from '../../DrizzleService/types/ImageRow';
-import {OutdoorRunUpsertDto} from '../../RunService/types/OutdoorRunUpsertDto';
+import {OutdoorRunUpsertDto} from '../../OutdoorRunService/types/OutdoorRunUpsertDto';
+import {OutdoorWalkUpsertDto} from '../../OutdoorWalkService/types/OutdoorWalkUpsertDto';
 import {WeightUpsertDto} from '../../WeightService/types/WeightUpsertDto';
 import {WorkoutUpsertDto} from '../../WorkoutService/types/WorkoutUpsertDto';
 import {BaseEntry} from './Entry';
@@ -34,4 +35,11 @@ export interface OutdoorRunEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.OutdoorRun
   outdoorRun: OutdoorRunUpsertDto
 }
-export type EntryUpsertDto = WorkoutEntryUpsertDto | WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto
+export interface OutdoorWalkEntryUpsertDto extends BaseEntryUpsertDto {
+  id?: number
+  type: EntryType.OutdoorWalk
+  outdoorWalk: OutdoorWalkUpsertDto
+}
+
+export type EntryUpsertDto = WorkoutEntryUpsertDto
+| WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto | OutdoorWalkEntryUpsertDto

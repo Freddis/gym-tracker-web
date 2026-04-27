@@ -77,6 +77,7 @@ export const dictionary = {
         Weight: 'Weight',
         Post: 'Post',
         OutdoorRun: 'Outdoor Run',
+        OutdoorWalk: 'Outdoor Walk',
       } satisfies Record<EntryType, string>,
       muscles: {
         'Lower Back': 'Lower Back',
@@ -555,6 +556,19 @@ export const dictionary = {
           },
           weight: {
             type: 'Weight',
+          },
+          outdoorWalk: {
+            type: 'Outdoor Walk',
+            distance: 'Distance',
+            duration: 'Duration',
+            calories: 'Calories',
+            pace: 'Pace',
+            elevationGain: 'Elevation Gain',
+            cadence: 'Cadence',
+            maxPace: 'Max Pace',
+            maxCadence: 'Max Cadence',
+            start: 'Start',
+            end: 'End',
           },
           outdoorRun: {
             type: 'Outdoor Run',

@@ -3,7 +3,7 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {BaseEntry, Entry, PostEntry, OutdoorRunEntry, WeightEntry, WorkoutEntry} from './types/Entry';
+import {BaseEntry, Entry, PostEntry, OutdoorRunEntry, WeightEntry, WorkoutEntry, OutdoorWalkEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
@@ -18,9 +18,10 @@ import {randomUUID} from 'crypto';
 import {ImageType} from '../../types/ImageType';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
 import {SemiPartial} from '../../types/SemiPartial';
-import {OutdoorRunService} from '../RunService/OutdoorRunService';
-import {OutdoorRun} from '../RunService/types/OutdoorRun';
-
+import {OutdoorRunService} from '../OutdoorRunService/OutdoorRunService';
+import {OutdoorRun} from '../OutdoorRunService/types/OutdoorRun';
+import {OutdoorWalkService} from '../OutdoorWalkService/OutdoorWalkService';
+import {OutdoorWalk} from '../OutdoorWalkService/types/OutdoorWalk';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -29,6 +30,7 @@ export class EntryService {
   protected weightService: WeightService;
   protected imageService: ImageService;
   protected outdoorRunService: OutdoorRunService;
+  protected outdoorWalkService: OutdoorWalkService;
 
   constructor(
     drizzle: DrizzleService,
@@ -36,7 +38,8 @@ export class EntryService {
     workoutService: WorkoutService,
     weightService: WeightService,
     imageService: ImageService,
-    runService: OutdoorRunService
+    runService: OutdoorRunService,
+    walkService: OutdoorWalkService
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
@@ -44,6 +47,7 @@ export class EntryService {
     this.weightService = weightService;
     this.imageService = imageService;
     this.outdoorRunService = runService;
+    this.outdoorWalkService = walkService;
   }
 
   async createPostEntry(userId: number, entry: PostEntryCreateDto): Promise<PostEntry> {
@@ -265,6 +269,9 @@ export class EntryService {
     const runIds = rows.map((x) => x.outdoorRunId).filter((x) => x !== null);
     const outdoorRuns = await this.outdoorRunService.getAll({id: runIds, perPage: limit});
     const outdoorRunsMap = outdoorRuns.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
+    const walkIds = rows.map((x) => x.outdoorWalkId).filter((x) => x !== null);
+    const outdoorWalks = await this.outdoorWalkService.getAll({id: walkIds, perPage: limit});
+    const outdoorWalksMap = outdoorWalks.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorWalk>());
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {
         throw new Error(`'${key}' not found`);
@@ -321,6 +328,13 @@ export class EntryService {
           outdoorRun: getOrThrow(outdoorRunsMap, row.outdoorRunId),
         };
         return entry;
+      } else if (row.type === EntryType.OutdoorWalk) {
+        const entry: OutdoorWalkEntry = {
+          ...base,
+          type: row.type,
+          outdoorWalk: getOrThrow(outdoorWalksMap, row.outdoorWalkId),
+        };
+        return entry;
       }
       const entry: PostEntry = {
         ...base,
@@ -374,6 +388,7 @@ export class EntryService {
       let weight: Weight | undefined;
       let run: OutdoorRun | undefined;
       let image: ImageRow | undefined;
+      let walk: OutdoorWalk | undefined;
       if (item.image && item.image.data) {
         image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
         data.imageId = image.id;
@@ -397,6 +412,9 @@ export class EntryService {
       } else if (item.type === EntryType.OutdoorRun) {
         run = await this.outdoorRunService.upsertOne(userId, item.outdoorRun);
         data.outdoorRunId = run.id;
+      } else if (item.type === EntryType.OutdoorWalk) {
+        walk = await this.outdoorWalkService.upsertOne(userId, item.outdoorWalk);
+        data.outdoorWalkId = walk.id;
       }
 
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
@@ -433,6 +451,13 @@ export class EntryService {
           ...created,
           type: EntryType.OutdoorRun,
           outdoorRun: run,
+        });
+      }
+      if (walk) {
+        result.push({
+          ...created,
+          type: EntryType.OutdoorWalk,
+          outdoorWalk: walk,
         });
       }
     }

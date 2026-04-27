@@ -873,6 +873,10 @@ export type Entry = {
    * Outdoor run. Only for outdoor run entries.
    */
   outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk. Only for outdoor walk entries.
+   */
+  outdoorWalk?: OutdoorWalk;
 };
 
 /**
@@ -921,7 +925,12 @@ export const ExternalSource = {
 /**
  * Entry type
  */
-export type EntryType = "Workout" | "Weight" | "Post" | "OutdoorRun";
+export type EntryType =
+  | "Workout"
+  | "Weight"
+  | "Post"
+  | "OutdoorRun"
+  | "OutdoorWalk";
 
 /**
  * Entry type
@@ -931,6 +940,7 @@ export const EntryType = {
   WEIGHT: "Weight",
   POST: "Post",
   OUTDOOR_RUN: "OutdoorRun",
+  OUTDOOR_WALK: "OutdoorWalk",
 } as const;
 
 /**
@@ -1095,6 +1105,136 @@ export type GeoDataPoint = {
 };
 
 /**
+ * Outdoor walk
+ */
+export type OutdoorWalk = {
+  /**
+   * Id of the outdoor run
+   */
+  id: number;
+  /**
+   * User id of the outdoor run
+   */
+  userId: number;
+  /**
+   * Distance of the outdoor run
+   */
+  distance: number;
+  /**
+   * Duration of the outdoor run
+   */
+  duration: number;
+  /**
+   * Calories of the outdoor run
+   */
+  calories: number;
+  /**
+   * Pace of the outdoor run
+   */
+  pace: number;
+  /**
+   * Max pace of the outdoor run
+   */
+  maxPace: number;
+  /**
+   * Cadence of the outdoor run
+   */
+  cadence: number | null;
+  /**
+   * Max cadence of the outdoor run
+   */
+  maxCadence: number | null;
+  /**
+   * Heart rate of the outdoor run
+   */
+  heartRate: number | null;
+  /**
+   * Max heart rate of the outdoor run
+   */
+  maxHeartRate: number | null;
+  /**
+   * Start time of the outdoor run
+   */
+  start: Date;
+  /**
+   * End time of the outdoor run
+   */
+  end: Date;
+  /**
+   * Elevation gain of the outdoor run
+   */
+  elevationGain: number | null;
+  /**
+   * Geo data of the outdoor walk
+   */
+  geoData: Array<PathPoint> | null;
+  /**
+   * Heart rate data of the outdoor walk
+   */
+  heartRateData: Array<HeartRatePoint> | null;
+};
+
+/**
+ * Path point used to display routes on map for activities such as walking, hiking, etc.
+ */
+export type PathPoint = {
+  /**
+   * Altitude of the geo data point
+   */
+  altitude: number;
+  /**
+   * Course of the geo data point
+   */
+  course: number | null;
+  /**
+   * Timestamp of the path point
+   */
+  timestamp: number;
+  /**
+   * Speed of the geo data point
+   */
+  speed: number | null;
+  /**
+   * Distance of the geo data point
+   */
+  distance: number | null;
+  /**
+   * Latitude of the geo data point
+   */
+  latitude: number;
+  /**
+   * Longitude of the geo data point
+   */
+  longitude: number;
+  /**
+   * Horizontal accuracy of the geo data point
+   */
+  horizontalAccuracy: number | null;
+  /**
+   * Vertical accuracy of the geo data point
+   */
+  verticalAccuracy: number | null;
+  /**
+   * Speed accuracy of the geo data point
+   */
+  speedAccuracy: number | null;
+};
+
+/**
+ * Heart rate point
+ */
+export type HeartRatePoint = {
+  /**
+   * Timestamp of the heart rate point
+   */
+  timestamp: number;
+  /**
+   * Heart rate of the heart rate point
+   */
+  heartRate: number;
+};
+
+/**
  * Fields needed to update a workout
  */
 export type EntryUpsertDto =
@@ -1157,6 +1297,10 @@ export type WorkoutEntryUpsertDto = {
    * Outdoor run
    */
   outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
   /**
    * Image
    */
@@ -1253,6 +1397,10 @@ export type WeightEntryUpsertDto = {
    * Outdoor run
    */
   outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
   /**
    * Image
    */
@@ -1379,6 +1527,10 @@ export type PostEntryUpsertDto = {
    * Outdoor run
    */
   outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
   /**
    * Image
    */
@@ -1537,6 +1689,10 @@ export type OutdoorRunEntryUpsertDto = {
     geoData: Array<GeoDataPoint> | null;
   };
   /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
+  /**
    * Image
    */
   image: {
@@ -1650,6 +1806,10 @@ export type PostEntry = {
    * Outdoor run. Only for outdoor run entries.
    */
   outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk. Only for outdoor walk entries.
+   */
+  outdoorWalk?: OutdoorWalk;
 };
 
 /**
@@ -5904,7 +6064,81 @@ export type GetArgusCheckinResponses = {
           externalId: string;
           type: "activity";
           subtype: "walking";
-          data?: unknown;
+          data: {
+            id: string;
+            user_id: number | string;
+            client_id: string;
+            remoteid: string;
+            type: string;
+            subtype: string;
+            version?: number;
+            note?: string;
+            paused?: boolean;
+            live?: boolean;
+            created: number;
+            modified: number;
+            start: number;
+            end: number;
+            duration: number;
+            activeDuration?: number;
+            timestamp: number;
+            timezone: number;
+            privacy: number;
+            privacy_groups: Array<string>;
+            distance: number;
+            speed?: number;
+            averageSpeed?: number;
+            maxSpeed?: number;
+            currentSpeed?: number;
+            elevationGain?: number;
+            calories: number;
+            met?: number;
+            goal?: {
+              duration?: number;
+            };
+            goals?: {
+              [key: string]: unknown;
+            };
+            photos?: Array<{
+              id: string;
+              href: string;
+            }>;
+            path?: Array<[number, number, number, number, number, number]>;
+            pauses?: Array<number>;
+            cadence_profile?: Array<[number, number]>;
+            distance_profile?: Array<[number, number]>;
+            speed_profile?: Array<[number, number]>;
+            steps?: number;
+            currentCadence?: number;
+            averageCadence?: number;
+            maxCadence?: number;
+            averageHeartRate?: number;
+            maxHeartRate?: number;
+            currentHeartrate?: number;
+            heartrate_profile?: Array<[number, number]>;
+            healthKitSourceName?: string;
+            healthKitDevice?: string;
+            healthKitDeviceName?: string;
+            healthKitSource?: string;
+            healthKitAnchor?: number;
+            healthKitAnchors_3_0?: string;
+            meta?: {
+              ip: string;
+              client_version: string;
+              uuid: string;
+            };
+            place?: {
+              icon: string;
+              name: string;
+              location: {
+                latitude: number;
+                longitude: number;
+              };
+            };
+            remote_user_id?: string;
+            userId?: string;
+            timezone_id?: string;
+          };
           createdAt: Date;
           updatedAt: Date | null;
         }
@@ -6243,7 +6477,8 @@ export type GetEntriesOwnData = {
       | "Weight"
       | "Post"
       | "OutdoorRun"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun">;
+      | "OutdoorWalk"
+      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
     /**
      * Only return entries from this date.
      */
@@ -6644,7 +6879,8 @@ export type GetEntriesData = {
       | "Weight"
       | "Post"
       | "OutdoorRun"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun">;
+      | "OutdoorWalk"
+      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
     /**
      * Only return entries from this date.
      */
@@ -6912,7 +7148,8 @@ export type GetEntriesOwnDatesData = {
       | "Weight"
       | "Post"
       | "OutdoorRun"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun">;
+      | "OutdoorWalk"
+      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
   };
   url: "/entries/own/dates";
 };

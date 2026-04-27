@@ -15,6 +15,7 @@ const descriptions = {
   deletedAt: 'Date of the deletion',
   weight: 'Weight',
   outdoorRun: 'Outdoor run',
+  outdoorWalk: 'Outdoor walk',
   visibility: 'Visibility of the entry',
   workout: 'Workout',
   image: 'Image',

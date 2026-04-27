@@ -211,6 +211,13 @@
       "when": 1777198590472,
       "tag": "0029_outdoor_runs_more_data",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1777292239187,
+      "tag": "0030_outdoor_walks",
+      "breakpoints": true
     }
   ]
 }

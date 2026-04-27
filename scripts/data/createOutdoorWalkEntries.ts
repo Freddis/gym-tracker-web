@@ -6,7 +6,7 @@ import {
   argusRunCheckinValidator,
 } from '../../src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusRunCheckin';
 
-const logger = new Logger('createOutdoorRunEntries');
+const logger = new Logger('createOutdoorWalkEntries');
 logger.info('Start');
 const drizzle = await globalServiceFactory.drizzle();
 const entryService = await globalServiceFactory.entry();
@@ -16,7 +16,7 @@ const argusCheckinsService = await globalServiceFactory.argusCheckin();
 const items = await argusCheckinsService.getLatest({
   perPage: 10000,
   type: ArgusCheckinType.Activity,
-  subtype: ArgusCheckinSubtype.Run,
+  subtype: ArgusCheckinSubtype.Walking,
 });
 const user = await userService.getById(1);
 if (!user) {
@@ -28,8 +28,7 @@ for (const row of items.items.reverse()) {
   if (!activityValidationResult.success) {
     logger.info('Zod Error:', {issues: activityValidationResult.error.issues});
     logger.info('Invalid activity data', {activity: row.data});
-    process.exit(1);
-    continue;
+    throw new Error('Invalid activity data');
   }
   const activity = activityValidationResult.data;
   const existing = await db.query.entries.findFirst({
@@ -41,8 +40,7 @@ for (const row of items.items.reverse()) {
   }
   counter++;
 
-  const upsertDto = await argusCheckinsService.convertRunDataToUpsertDto(activity);
-
+  const upsertDto = await argusCheckinsService.convertWalkingDataToUpsertDto(activity);
   const entry = await entryService.upsert(user.id, [upsertDto]);
   logger.info(`Entry ${counter}:`, {activity, upsertDto, entry});
 }

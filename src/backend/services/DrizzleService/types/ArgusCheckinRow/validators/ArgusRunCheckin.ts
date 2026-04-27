@@ -15,7 +15,7 @@ const pathPoint = z.tuple([
   z.number(),
 ]);
 
-const argusRunActivityCheckinDataValidator = z.object({
+export const argusRunActivityCheckinDataValidator = z.object({
   id: z.string(),
   user_id: z.union([z.number(), z.string()]),
   client_id: z.string(),

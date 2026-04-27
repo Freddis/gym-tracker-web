@@ -51,6 +51,7 @@ for (const row of items.items.reverse()) {
     deletedAt: null,
     workoutId: null,
     outdoorRunId: null,
+    outdoorWalkId: null,
     imageId: imageId,
     weightId: null,
     healthkitId: null,

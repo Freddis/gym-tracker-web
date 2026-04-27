@@ -1,4 +1,4 @@
-import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean, unique} from 'drizzle-orm/pg-core';
+import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean, unique, jsonb} from 'drizzle-orm/pg-core';
 import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
 import {Equipment} from '../../../types/Equipment';
@@ -8,6 +8,8 @@ import {TranslationType} from '../../TranslationService/types/TranslationType';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {ImageType} from '../../../types/ImageType';
 import {ExternalSource} from '../../EntryService/types/ExternalSource';
+import {HeartRatePoint} from '../../OutdoorWalkService/types/HeartRatePoint';
+import {PathPoint} from '../../OutdoorWalkService/types/PathPoint';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -248,6 +250,7 @@ export const entries = gymTracker.table('entries', {
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
   imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
   visibility: entryVisibilityEnum().notNull(),
   time: timestamp({withTimezone: true, mode: 'date'}).defaultNow().notNull(),
   healthkitId: varchar(),
@@ -296,6 +299,25 @@ export const outdoorRuns = gymTracker.table('outdoor_runs', {
   elevationGain: real(),
   heartRate: real(),
   maxHeartRate: real(),
+  duration: integer().notNull(),
+  calories: integer().notNull(),
+  start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+});
+
+export const outdoorWalks = gymTracker.table('outdoor_walks', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  distance: real().notNull(),
+  pace: real().notNull(),
+  maxPace: real().notNull(),
+  cadence: real(),
+  maxCadence: real(),
+  elevationGain: real(),
+  heartRate: real(),
+  maxHeartRate: real(),
+  heartRateData: jsonb().$type<HeartRatePoint[]>(),
+  geoData: jsonb().$type<PathPoint[]>(),
   duration: integer().notNull(),
   calories: integer().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
