@@ -323,6 +323,22 @@ const imageSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const geoDataPointSchemaResponseTransformer = (data: any) => {
+  data.timestamp = new Date(data.timestamp);
+  return data;
+};
+
+const outdoorRunSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  data.end = new Date(data.end);
+  if (data.geoData) {
+    data.geoData = data.geoData.map((item: any) => {
+      return geoDataPointSchemaResponseTransformer(item);
+    });
+  }
+  return data;
+};
+
 const entrySchemaResponseTransformer = (data: any) => {
   data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
@@ -340,6 +356,9 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.image) {
     data.image = imageSchemaResponseTransformer(data.image);
+  }
+  if (data.outdoorRun) {
+    data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
   }
   return data;
 };
@@ -410,6 +429,9 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   }
   if (data.image) {
     data.image = imageSchemaResponseTransformer(data.image);
+  }
+  if (data.outdoorRun) {
+    data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
   }
   return data;
 };

@@ -57,6 +57,7 @@ export const EntryListPage: FC = () => {
       search: {
         ...searchParams,
         date: date ?? undefined,
+        page: undefined,
       },
     });
   };
@@ -66,6 +67,7 @@ export const EntryListPage: FC = () => {
         ...searchParams,
         date: undefined,
         type: undefined,
+        page: undefined,
       },
     });
   };

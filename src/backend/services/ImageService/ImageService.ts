@@ -101,12 +101,16 @@ export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
   }
 
   async createFromUrl(href: string, name: string, imageType: ImageType): Promise<ImageRow> {
-    const file = await fetch(href);
-    const buffer = await file.arrayBuffer();
-    const base64Data = Buffer.from(buffer).toString('base64');
+    const base64Data = await this.getImageData(href);
     return await this.createFromBase64(base64Data, name, imageType);
   }
 
+  async getImageData(href: string): Promise<string> {
+    const file = await fetch(href);
+    const buffer = await file.arrayBuffer();
+    const base64Data = Buffer.from(buffer).toString('base64');
+    return base64Data;
+  }
   async createFromBase64(data: string, name: string, imageType: ImageType) {
     const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
     const buffer = Buffer.from(base64Data, 'base64');

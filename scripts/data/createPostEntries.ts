@@ -50,8 +50,16 @@ for (const row of items.items.reverse()) {
     userId: 1,
     deletedAt: null,
     workoutId: null,
+    outdoorRunId: null,
     imageId: imageId,
     weightId: null,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   await db.insert(schema.entries).values(newEntry);
 }

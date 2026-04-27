@@ -3,7 +3,6 @@ import {Prettify} from '../../../common/types/Prettify';
 
 export enum RouteId {
   Home,
-  Argus,
   Feed,
   ExerciseLibrary,
   EntryList,
@@ -69,7 +68,6 @@ const baseRouteMap = createRouteMap({
   '/auth/register': RouteId.Register,
   '/auth/password-reset': RouteId.PasswordResetStart,
   '/auth/password-reset-complete/$token': RouteId.PasswordResetComplete,
-  '/argus': RouteId.Argus,
   '/feed': RouteId.Feed,
   '/entries': RouteId.EntryList,
   '/entries/add': RouteId.EntryAdd,

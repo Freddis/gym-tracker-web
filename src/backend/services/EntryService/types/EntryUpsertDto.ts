@@ -1,14 +1,16 @@
+import {StrictOmit} from '../../../types/StrictOmit';
 import {ImageRow} from '../../DrizzleService/types/ImageRow';
+import {OutdoorRunUpsertDto} from '../../RunService/types/OutdoorRunUpsertDto';
 import {WeightUpsertDto} from '../../WeightService/types/WeightUpsertDto';
 import {WorkoutUpsertDto} from '../../WorkoutService/types/WorkoutUpsertDto';
 import {BaseEntry} from './Entry';
 import {EntryType} from './EntryType';
 
-interface ImageUpsertDto extends Omit<ImageRow, 'userId'| 'createdAt'| 'updatedAt'| 'deletedAt' | 'url'> {
-  url: string | null
+export interface ImageUpsertDto extends StrictOmit<ImageRow, 'userId'| 'createdAt'| 'updatedAt'| 'deletedAt' | 'url' | 'id'> {
+  id?: number
   data: string | null
 }
-interface BaseEntryUpsertDto extends Omit<BaseEntry, 'id'| 'user'| 'image'> {
+interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, 'id'| 'user'| 'image'> {
   image: ImageUpsertDto | null
 }
 export interface WorkoutEntryUpsertDto extends BaseEntryUpsertDto {
@@ -27,4 +29,9 @@ export interface PostEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.Post
 }
 
-export type EntryUpsertDto = WorkoutEntryUpsertDto | WeightEntryUpsertDto | PostEntryUpsertDto
+export interface OutdoorRunEntryUpsertDto extends BaseEntryUpsertDto {
+  id?: number
+  type: EntryType.OutdoorRun
+  outdoorRun: OutdoorRunUpsertDto
+}
+export type EntryUpsertDto = WorkoutEntryUpsertDto | WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto

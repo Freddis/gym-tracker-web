@@ -3,7 +3,7 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/Entry';
+import {BaseEntry, Entry, PostEntry, OutdoorRunEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
@@ -18,6 +18,9 @@ import {randomUUID} from 'crypto';
 import {ImageType} from '../../types/ImageType';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
 import {SemiPartial} from '../../types/SemiPartial';
+import {OutdoorRunService} from '../RunService/OutdoorRunService';
+import {OutdoorRun} from '../RunService/types/OutdoorRun';
+
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -25,19 +28,22 @@ export class EntryService {
   protected drizzle: DrizzleService;
   protected weightService: WeightService;
   protected imageService: ImageService;
+  protected outdoorRunService: OutdoorRunService;
 
   constructor(
     drizzle: DrizzleService,
     userService: UserService,
     workoutService: WorkoutService,
     weightService: WeightService,
-    imageService: ImageService
+    imageService: ImageService,
+    runService: OutdoorRunService
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.drizzle = drizzle;
     this.weightService = weightService;
     this.imageService = imageService;
+    this.outdoorRunService = runService;
   }
 
   async createPostEntry(userId: number, entry: PostEntryCreateDto): Promise<PostEntry> {
@@ -243,6 +249,7 @@ export class EntryService {
         db._.fullSchema.entries.time
       ));
 
+
     const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
     const workouts = await this.workoutService.getAll({id: workoutIds, perPage: limit, language: params?.language});
     const workoutMap = workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
@@ -255,6 +262,9 @@ export class EntryService {
     const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
     const images = await this.imageService.getAll({id: imageIds, perPage: limit});
     const imageMap = images.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, ImageRow>());
+    const runIds = rows.map((x) => x.outdoorRunId).filter((x) => x !== null);
+    const outdoorRuns = await this.outdoorRunService.getAll({id: runIds, perPage: limit});
+    const outdoorRunsMap = outdoorRuns.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {
         throw new Error(`'${key}' not found`);
@@ -265,63 +275,58 @@ export class EntryService {
       }
       return x;
     };
+
     const items: Entry[] = rows.map((row) => {
       const user = getOrThrow(userMap, row.userId);
-
+      const base: BaseEntry = {
+        id: row.id,
+        user: user,
+        visibility: row.visibility,
+        type: row.type,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+        deletedAt: row.deletedAt,
+        time: row.time,
+        title: row.title,
+        note: row.note,
+        externalId: row.externalId,
+        externalSource: row.externalSource,
+        image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
+        healthkitId: row.healthkitId,
+        healthkitAnchor: row.healthkitAnchor,
+        healthkitAnchors_3_0: row.healthkitAnchors_3_0,
+        healthkitSource: row.healthkitSource,
+        healthkitSourceName: row.healthkitSourceName,
+        healthkitDevice: row.healthkitDevice,
+        healthkitDeviceName: row.healthkitDeviceName,
+      };
       if (row.type === EntryType.Workout) {
-        const entry: Entry = {
-          id: row.id,
-          user: user,
-          visibility: row.visibility,
+        const entry: WorkoutEntry = {
+          ...base,
           type: row.type,
-          createdAt: row.createdAt,
-          updatedAt: row.updatedAt,
-          deletedAt: row.deletedAt,
-          time: row.time,
           workout: getOrThrow(workoutMap, row.workoutId),
-          title: row.title,
-          note: row.note,
-          externalId: row.externalId,
-          externalSource: row.externalSource,
-          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
         };
         return entry;
       } if (row.type === EntryType.Weight) {
         const entry: Entry = {
-          id: row.id,
-          user: user,
-          visibility: row.visibility,
+          ...base,
           type: row.type,
-          createdAt: row.createdAt,
-          updatedAt: row.updatedAt,
-          deletedAt: row.deletedAt,
-          time: row.time,
           weight: getOrThrow(weightMap, row.weightId),
-          title: row.title,
-          note: row.note,
-          externalId: row.externalId,
-          externalSource: row.externalSource,
-          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
         };
         return entry;
-      } else {
-        const entry: Entry = {
-          id: row.id,
-          user: user,
-          visibility: row.visibility,
+      } else if (row.type === EntryType.OutdoorRun) {
+        const entry: OutdoorRunEntry = {
+          ...base,
           type: row.type,
-          createdAt: row.createdAt,
-          updatedAt: row.updatedAt,
-          deletedAt: row.deletedAt,
-          time: row.time,
-          image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
-          title: row.title,
-          note: row.note,
-          externalId: row.externalId,
-          externalSource: row.externalSource,
+          outdoorRun: getOrThrow(outdoorRunsMap, row.outdoorRunId),
         };
         return entry;
       }
+      const entry: PostEntry = {
+        ...base,
+        type: row.type,
+      };
+      return entry;
     });
 
     const result: PaginatedResult<Entry & {type: T}> = {
@@ -355,9 +360,24 @@ export class EntryService {
         note: item.note,
         title: item.title,
         imageId: item.image?.id,
+        externalId: item.externalId,
+        externalSource: item.externalSource,
+        healthkitId: item.healthkitId,
+        healthkitAnchor: item.healthkitAnchor,
+        healthkitAnchors_3_0: item.healthkitAnchors_3_0,
+        healthkitSource: item.healthkitSource,
+        healthkitSourceName: item.healthkitSourceName,
+        healthkitDevice: item.healthkitDevice,
+        healthkitDeviceName: item.healthkitDeviceName,
       };
       let workout: Workout | undefined;
       let weight: Weight | undefined;
+      let run: OutdoorRun | undefined;
+      let image: ImageRow | undefined;
+      if (item.image && item.image.data) {
+        image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
+        data.imageId = image.id;
+      }
       if (item.type === EntryType.Workout) {
         const workouts = await this.workoutService.upsert(userId, [item.workout]);
         const workoutId = workouts[0]?.id;
@@ -374,7 +394,11 @@ export class EntryService {
         }
         data.weightId = weightId;
         weight = weights[0];
+      } else if (item.type === EntryType.OutdoorRun) {
+        run = await this.outdoorRunService.upsertOne(userId, item.outdoorRun);
+        data.outdoorRunId = run.id;
       }
+
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
         target: db._.fullSchema.entries.id,
         set: this.drizzle.generateConflictUpdateSetAllColumns(db._.fullSchema.entries),
@@ -384,11 +408,11 @@ export class EntryService {
       if (!row) {
         throw new Error('Entry not found');
       }
-      const created: Omit<Entry, 'workout' | 'weight'> = {
+      const created: Omit<Entry, 'workout' | 'weight' | 'outdoorRun'> = {
         ...row,
         user: user,
         type: row.type,
-        image: null,
+        image: image ?? null,
       };
       if (workout) {
         result.push({
@@ -402,6 +426,13 @@ export class EntryService {
           ...created,
           type: EntryType.Weight,
           weight: weight,
+        });
+      }
+      if (run) {
+        result.push({
+          ...created,
+          type: EntryType.OutdoorRun,
+          outdoorRun: run,
         });
       }
     }
@@ -425,11 +456,12 @@ export class EntryService {
   async getDates(id: number, params: {date: Date, type?: EntryType[]}): Promise<Date[]> {
     const db = await this.drizzle.getDb();
     const year = params.date.getFullYear();
+    const surrounded = 10;
     const rows = await db.select({time: db._.fullSchema.entries.time})
       .from(db._.fullSchema.entries)
       .where(
         and(
-          between(db._.fullSchema.entries.time, new Date(year - 1, 0, 1), new Date(year + 1, 0, 1)),
+          between(db._.fullSchema.entries.time, new Date(year - surrounded, 0, 1), new Date(year + surrounded, 0, 1)),
           eq(db._.fullSchema.entries.userId, id),
           params.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
           isNull(db._.fullSchema.entries.deletedAt),

@@ -1,12 +1,23 @@
-import {EntryRow} from '../../DrizzleService/types/EntryRow';
 import {ImageRow} from '../../DrizzleService/types/ImageRow';
+import {OutdoorRun} from '../../RunService/types/OutdoorRun';
 import {User} from '../../UserService/types/User';
 import {Weight} from '../../WeightService/types/Weight';
 import {Workout} from '../../WorkoutService/types/Workout';
 import {EntryType} from './EntryType';
 import {EntryVisibility} from './EntryVisibility';
+import {ExternalSource} from './ExternalSource';
 
-export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId'|'imageId'> {
+export interface BaseEntry {
+  id: number;
+  // userId: number;
+  title: string | null;
+  note: string | null;
+  externalId: string | null;
+  externalSource: ExternalSource | null;
+  // workoutId: number | null;
+  // weightId: number | null;
+  // imageId: number | null;
+  // outdoorRunId: number | null;
   user: User
   type: EntryType
   visibility: EntryVisibility,
@@ -15,6 +26,13 @@ export interface BaseEntry extends Omit<EntryRow, 'userId'|'workoutId'|'weightId
   deletedAt: Date | null,
   updatedAt: Date | null,
   image: ImageRow | null
+  healthkitId: string | null;
+  healthkitAnchor: number | null;
+  healthkitAnchors_3_0: string | null;
+  healthkitSource: string | null;
+  healthkitSourceName: string | null;
+  healthkitDevice: string | null;
+  healthkitDeviceName: string | null;
 }
 
 export interface WorkoutEntry extends BaseEntry {
@@ -31,4 +49,10 @@ export interface WeightEntry extends BaseEntry {
 export interface PostEntry extends BaseEntry {
   type: EntryType.Post
 }
-export type Entry = WorkoutEntry | WeightEntry | PostEntry
+
+export interface OutdoorRunEntry extends BaseEntry {
+  type: EntryType.OutdoorRun
+  outdoorRun: OutdoorRun
+}
+
+export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry

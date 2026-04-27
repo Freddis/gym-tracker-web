@@ -16,7 +16,6 @@ import { Route as FeedIndexRouteImport } from './routes/feed/index'
 import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
 import { Route as EntriesIndexRouteImport } from './routes/entries/index'
 import { Route as CrmIndexRouteImport } from './routes/crm/index'
-import { Route as ArgusIndexRouteImport } from './routes/argus/index'
 import { Route as WorkoutsCreateRouteImport } from './routes/workouts/create'
 import { Route as WeightCreateRouteImport } from './routes/weight/create'
 import { Route as PostsCreateRouteImport } from './routes/posts/create'
@@ -76,11 +75,6 @@ const EntriesIndexRoute = EntriesIndexRouteImport.update({
 const CrmIndexRoute = CrmIndexRouteImport.update({
   id: '/crm/',
   path: '/crm/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArgusIndexRoute = ArgusIndexRouteImport.update({
-  id: '/argus/',
-  path: '/argus/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkoutsCreateRoute = WorkoutsCreateRouteImport.update({
@@ -264,7 +258,6 @@ export interface FileRoutesByFullPath {
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
-  '/argus': typeof ArgusIndexRoute
   '/crm': typeof CrmIndexRoute
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
@@ -301,7 +294,6 @@ export interface FileRoutesByTo {
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
-  '/argus': typeof ArgusIndexRoute
   '/crm': typeof CrmIndexRoute
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
@@ -339,7 +331,6 @@ export interface FileRoutesById {
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
-  '/argus/': typeof ArgusIndexRoute
   '/crm/': typeof CrmIndexRoute
   '/entries/': typeof EntriesIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
@@ -378,7 +369,6 @@ export interface FileRouteTypes {
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
-    | '/argus'
     | '/crm'
     | '/entries'
     | '/exercises'
@@ -415,7 +405,6 @@ export interface FileRouteTypes {
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
-    | '/argus'
     | '/crm'
     | '/entries'
     | '/exercises'
@@ -452,7 +441,6 @@ export interface FileRouteTypes {
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
-    | '/argus/'
     | '/crm/'
     | '/entries/'
     | '/exercises/'
@@ -490,7 +478,6 @@ export interface RootRouteChildren {
   PostsCreateRoute: typeof PostsCreateRoute
   WeightCreateRoute: typeof WeightCreateRoute
   WorkoutsCreateRoute: typeof WorkoutsCreateRoute
-  ArgusIndexRoute: typeof ArgusIndexRoute
   CrmIndexRoute: typeof CrmIndexRoute
   EntriesIndexRoute: typeof EntriesIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
@@ -583,13 +570,6 @@ declare module '@tanstack/react-router' {
       path: '/crm'
       fullPath: '/crm'
       preLoaderRoute: typeof CrmIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/argus/': {
-      id: '/argus/'
-      path: '/argus'
-      fullPath: '/argus'
-      preLoaderRoute: typeof ArgusIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workouts/create': {
@@ -843,7 +823,6 @@ const rootRouteChildren: RootRouteChildren = {
   PostsCreateRoute: PostsCreateRoute,
   WeightCreateRoute: WeightCreateRoute,
   WorkoutsCreateRoute: WorkoutsCreateRoute,
-  ArgusIndexRoute: ArgusIndexRoute,
   CrmIndexRoute: CrmIndexRoute,
   EntriesIndexRoute: EntriesIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,

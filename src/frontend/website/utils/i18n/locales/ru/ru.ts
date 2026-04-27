@@ -18,6 +18,7 @@ export const dictionary: Translation = {
         Workout: 'Тренировка',
         Weight: 'Вес',
         Post: 'Запись',
+        OutdoorRun: 'Внешняя Тренировка',
       },
       muscles: {
         'Lower Back': 'Поясница',
@@ -97,6 +98,8 @@ export const dictionary: Translation = {
       },
       units: {
         kg: 'кг',
+        km: 'км',
+        m: 'м',
       },
       workoutPlan: {
         fields: {
@@ -449,6 +452,19 @@ export const dictionary: Translation = {
           },
           image: {
             type: 'Изображение',
+          },
+          outdoorRun: {
+            type: 'Бег',
+            distance: 'Дистанция',
+            duration: 'Длительность',
+            calories: 'Калории',
+            pace: 'Темп',
+            cadence: 'Каденс',
+            maxPace: 'Max Темп',
+            maxCadence: 'Max Каденс',
+            start: 'Начало',
+            end: 'Конец',
+            elevationGain: 'Подъем',
           },
           post: {
             type: 'Запись',

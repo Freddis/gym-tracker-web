@@ -18,6 +18,7 @@ import {WorkoutPlanService} from '../../services/WorkoutPlanService/WorkoutPlanS
 import {WorkoutTypeService} from '../../services/WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../services/TranslationService/TranslationService';
 import {EmailService} from '../../services/EmailService/EmailService';
+import {OutdoorRunService} from '../../services/RunService/OutdoorRunService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -102,15 +103,19 @@ export class GlobalServiceFactory {
         await this.workout(),
         await this.weight(),
         await this.image(),
+        await this.outdoorRun(),
     );
   }
 
   async argusCheckin() {
-    return new ArgusCheckinService(await this.drizzle());
+    return new ArgusCheckinService(await this.drizzle(), await this.image());
   }
 
   async weight() {
     return new WeightService(await this.drizzle());
+  }
+  async outdoorRun() {
+    return new OutdoorRunService(await this.drizzle());
   }
 
   async dbSync(): Promise<DbSyncService | null> {

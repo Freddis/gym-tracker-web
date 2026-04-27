@@ -7,16 +7,12 @@ import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteL
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
 import {EntryBlockDate} from './EntryBlockDate';
+import {durationToTimeString} from '../../../../utils/durationToTimeString';
 
 export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
   const duration = workout.end ? (new Date(workout.end).getTime() - new Date(workout.start).getTime()) / 1000 : 0;
-  const hours = Math.floor(duration / (60 * 60));
-  const hoursStr = hours.toLocaleString(undefined, {minimumIntegerDigits: 2});
-  const minutes = Math.floor((duration - hours * 60 * 60) / 60);
-  const minutesStr = minutes.toLocaleString(undefined, {minimumIntegerDigits: 2});
-  const secondsStr = Math.floor(duration - hours * 60 * 60 - minutes * 60).toLocaleString(undefined, {minimumIntegerDigits: 2});
-  const time = `${hoursStr}:${minutesStr}:${secondsStr}`;
+  const time = durationToTimeString(duration);
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">

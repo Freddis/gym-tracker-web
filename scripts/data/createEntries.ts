@@ -40,7 +40,15 @@ for (const row of workoutsToAdd) {
     workoutId: workout.id,
     weightId: null,
     imageId: null,
+    outdoorRunId: null,
     visibility: EntryVisibility.Public,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   await db.insert(schema.entries).values(entry);
 }
@@ -65,6 +73,7 @@ for (const row of weightToAdd) {
     userId: weight.userId,
     deletedAt: weight.deletedAt,
     workoutId: null,
+    outdoorRunId: null,
     imageId: null,
     weightId: weight.id,
     visibility: EntryVisibility.Public,
@@ -72,6 +81,13 @@ for (const row of weightToAdd) {
     note: null,
     externalId: null,
     externalSource: null,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   await db.insert(schema.entries).values(entry);
 }

@@ -15,6 +15,7 @@ import {argusBodyMetricsCheckinValidator} from './validators/ArgusBodyMetricsChe
 import {argusStatusCheckinValidator} from './validators/ArgusStatusCheckin';
 import {argusHeartRateCheckinyValidator} from './validators/ArgusHeartRateCheckin';
 import {argusFoodCheckinValidator} from './validators/ArgusFoodCheckin';
+import {argusRunCheckinValidator} from './validators/ArgusRunCheckin';
 
 export const argusCheckinRowValidator = z.union([
   argusStepsCheckinValidator,
@@ -33,6 +34,7 @@ export const argusCheckinRowValidator = z.union([
   argusStatusCheckinValidator,
   argusHeartRateCheckinyValidator,
   argusFoodCheckinValidator,
+  argusRunCheckinValidator,
 ]);
 export type ArgusCheckinValidator = typeof argusCheckinRowValidator
 export type ArgusCheckinRow = z.TypeOf<ArgusCheckinValidator>

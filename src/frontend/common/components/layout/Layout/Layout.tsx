@@ -9,6 +9,7 @@ import {ToastProvider} from '../../atoms/AppToast/ToastProvider';
 import {PopupProvider} from '../../atoms/Popup/PopupProvider';
 import {CrmLayout} from '../../../../crm/components/layout/CrmLayout/CrmLayout';
 import {WebsiteLayout} from '../../../../website/components/layout/WebsiteLayout/WebsiteLayout';
+import {APIProvider} from '@vis.gl/react-google-maps';
 
 const queryClient = new QueryClient();
 export function Layout() {
@@ -17,6 +18,7 @@ export function Layout() {
     to: '/crm',
     fuzzy: true,
   });
+  const googleMapApiKey = 'AIzaSyAmmU4TJa4NHng7bnYZiiE5QZMeQJIk5zg';
   return (
     <html>
       <head>
@@ -29,9 +31,11 @@ export function Layout() {
               <ToastProvider>
                 <AuthProvider cookieName={isCrm ? CookieName.Manager : CookieName.User} sendLanguage={!isCrm}>
                   <PopupProvider>
-                    <div className="flex min-h-screen flex-col font-extralight palette-neutral bg-main">
-                      { isCrm ? <CrmLayout /> : <WebsiteLayout/>}
-                    </div>
+                    <APIProvider apiKey={googleMapApiKey}>
+                      <div className="flex min-h-screen flex-col font-extralight palette-neutral bg-main">
+                        { isCrm ? <CrmLayout /> : <WebsiteLayout/>}
+                      </div>
+                    </APIProvider>
                   </PopupProvider>
                 </AuthProvider>
               </ToastProvider>
