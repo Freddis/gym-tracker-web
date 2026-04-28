@@ -1,19 +1,16 @@
-import {and, inArray} from 'drizzle-orm';
+import {and, eq, inArray} from 'drizzle-orm';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {OutdoorWalk} from './types/OutdoorWalk';
 import {OutdoorWalkUpsertDto} from './types/OutdoorWalkUpsertDto';
 
 export class OutdoorWalkService {
-
   protected drizzle: DrizzleService;
   protected table: AppDbSchema['outdoorWalks'];
-  protected geoDataTable: AppDbSchema['geoData'];
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;
     this.table = drizzle.getSchema().outdoorWalks;
-    this.geoDataTable = drizzle.getSchema().geoData;
   }
 
   async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<OutdoorWalk>> {
@@ -39,6 +36,14 @@ export class OutdoorWalkService {
       },
     };
     return result;
+  }
+
+  async deleteOne(userId: number, id: number): Promise<void> {
+    const db = await this.drizzle.getDb();
+    await db.delete(this.table).where(and(
+      eq(this.table.id, id),
+      eq(this.table.userId, userId),
+    ));
   }
 
   async upsertOne(userId: number, data: OutdoorWalkUpsertDto): Promise<OutdoorWalk> {

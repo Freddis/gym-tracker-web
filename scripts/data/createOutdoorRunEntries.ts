@@ -8,10 +8,9 @@ import {
 
 const logger = new Logger('createOutdoorRunEntries');
 logger.info('Start');
-const drizzle = await globalServiceFactory.drizzle();
 const entryService = await globalServiceFactory.entry();
 const userService = await globalServiceFactory.user();
-const db = await drizzle.getDb();
+
 const argusCheckinsService = await globalServiceFactory.argusCheckin();
 const items = await argusCheckinsService.getLatest({
   perPage: 10000,
@@ -32,13 +31,11 @@ for (const row of items.items.reverse()) {
     continue;
   }
   const activity = activityValidationResult.data;
-  const existing = await db.query.entries.findFirst({
-    where: (t, op) => op.eq(t.externalId, activity.externalId),
-  });
-  if (existing) {
-    console.log(`Record with external id '${existing.externalId}' already exists, id: ${existing.id}, skipping`);
-    continue;
-  }
+  // const existing = await entryService.getByExternalId(activity.externalId);
+  // if (existing) {
+  //   console.log(`Record with external id '${existing.externalId}' already exists, id: ${existing.id}, skipping`);
+  //   continue;
+  // }
   counter++;
 
   const upsertDto = await argusCheckinsService.convertRunDataToUpsertDto(activity);

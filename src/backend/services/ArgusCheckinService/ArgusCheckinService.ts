@@ -12,17 +12,19 @@ import {ExternalSource} from '../EntryService/types/ExternalSource';
 import {ImageUpsertDto, OutdoorRunEntryUpsertDto, OutdoorWalkEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {ImageService} from '../ImageService/ImageService';
 import {ArgusPhoto} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusPhoto';
-import {GeoDataPoint} from '../OutdoorRunService/types/GeoDataPoint';
 import {ArgusRunCheckin} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusRunCheckin';
 import {ArgusWalkingCheckin} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusWalkingCheckin';
 import {PathPoint} from '../OutdoorWalkService/types/PathPoint';
+import {EntryService} from '../EntryService/EntryService';
 export class ArgusCheckinService {
   protected db: DrizzleService;
   protected imageService: ImageService;
+  protected entryService: EntryService;
 
-  constructor(db: DrizzleService, imageService: ImageService) {
+  constructor(db: DrizzleService, imageService: ImageService, entryService: EntryService) {
     this.db = db;
     this.imageService = imageService;
+    this.entryService = entryService;
   }
 
   async getLatest(
@@ -164,24 +166,9 @@ export class ArgusCheckinService {
 
   async convertRunDataToUpsertDto(checkin: ArgusRunCheckin): Promise<OutdoorRunEntryUpsertDto> {
     const data = checkin.data;
-    let heartRateCursor = 0;
-    const findHeartRate = (time: number) => {
-      if (!data.heartrate_profile) {
-        return null;
-      }
-      const heartRate = data.heartrate_profile[heartRateCursor];
-      if (!heartRate) {
-        return null;
-      }
-      while (true) {
-        const nextHeartRate = data.heartrate_profile[heartRateCursor];
-        if (!nextHeartRate || nextHeartRate[0] > time) {
-          return heartRate[1];
-        }
-        heartRateCursor++;
-      }
-    };
     let speedCursor = 0;
+    const existing = await this.entryService.getByExternalId(checkin.externalId);
+
     const findSpeed = (time: number) => {
       if (!data.speed_profile) {
         return null;
@@ -215,8 +202,8 @@ export class ArgusCheckinService {
         distanceCursor++;
       }
     };
-    const start = new Date(data.start + data.timezone * 1000 * 60 * 60);
-    const end = new Date(data.end + data.timezone * 1000 * 60 * 60);
+    const start = new Date(data.start);
+    const end = new Date(data.end);
     // data.averageSpeed = undefined;
     const duration = Math.round((end.getTime() - start.getTime()) / 1000);
     const pace = Math.round(duration / data.distance * 1000);
@@ -225,8 +212,16 @@ export class ArgusCheckinService {
     if (data.photos?.[0]) {
       image = await this.convertImageToUpsertDto(data.photos[0]);
     }
+    if (existing?.image) {
+      image = {
+        id: existing.image.id,
+        imageType: existing.image.imageType,
+        data: null,
+      };
+    }
 
     const runEntry: OutdoorRunEntryUpsertDto = {
+      id: existing?.id,
       type: EntryType.OutdoorRun,
       outdoorRun: {
         heartRate: data.averageHeartRate ?? null,
@@ -239,20 +234,19 @@ export class ArgusCheckinService {
         maxPace: data.maxSpeed ? Math.round(1000 / data.maxSpeed) : pace,
         cadence: data.averageCadence ?? null,
         maxCadence: data.maxCadence ?? null,
-        start: new Date(data.start + data.timezone * 1000 * 60 * 60),
-        end: new Date(data.end + data.timezone * 1000 * 60 * 60),
+        start: new Date(data.start),
+        end: new Date(data.end),
+        heartRateData: data.heartrate_profile?.map((x) => ({timestamp: x[0], heartRate: x[1]})) ?? null,
         geoData: data.path ? data.path.map((x) => {
           const [time, lat, lon, horizontalAccuracy, elevation, verticalAccuracy] = x;
           const speed = findSpeed(time);
           const distance = findDistance(time);
-          const heartRate = findHeartRate(time);
-          const geodata: GeoDataPoint = {
+          const geodata: PathPoint = {
             altitude: elevation,
             course: null,
-            timestamp: new Date(data.start + time + data.timezone * 1000 * 60 * 60),
+            timestamp: time,
             distance: distance,
             horizontalAccuracy: horizontalAccuracy,
-            heartRate: heartRate,
             latitude: lat,
             longitude: lon,
             speed: speed,
@@ -263,10 +257,10 @@ export class ArgusCheckinService {
         }) : null,
       },
       visibility: EntryVisibility.Public,
-      time: new Date(data.start + data.timezone * 1000 * 60 * 60),
-      createdAt: new Date(data.created + data.timezone * 1000 * 60 * 60),
+      time: new Date(data.start),
+      createdAt: new Date(data.created),
       deletedAt: null,
-      updatedAt: new Date(data.modified + data.timezone * 1000 * 60 * 60),
+      updatedAt: new Date(data.modified),
       image: image,
       title: null,
       note: (data.note && data.note.trim() !== '') ? data.note.trim() : null,

@@ -323,19 +323,9 @@ const imageSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
-const geoDataPointSchemaResponseTransformer = (data: any) => {
-  data.timestamp = new Date(data.timestamp);
-  return data;
-};
-
 const outdoorRunSchemaResponseTransformer = (data: any) => {
   data.start = new Date(data.start);
   data.end = new Date(data.end);
-  if (data.geoData) {
-    data.geoData = data.geoData.map((item: any) => {
-      return geoDataPointSchemaResponseTransformer(item);
-    });
-  }
   return data;
 };
 

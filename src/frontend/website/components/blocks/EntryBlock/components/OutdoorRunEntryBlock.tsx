@@ -5,7 +5,7 @@ import {route, RouteId} from '../../../../../common/utils/route';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {EntryBlockBottom} from './EntryBlockBottom';
 import {EntryBlockDate} from './EntryBlockDate';
-import {Entry, OutdoorRun, GeoDataPoint} from '../../../../../common/utils/openapi-client';
+import {Entry, OutdoorRun, PathPoint} from '../../../../../common/utils/openapi-client';
 import {Map, Polyline} from '@vis.gl/react-google-maps';
 import {PostContent} from './PostContent';
 import {durationToTimeString} from '../../../../utils/durationToTimeString';
@@ -19,8 +19,8 @@ export const OutdoorRunEntryBlock: FC<{entry: Entry, outdoorRun: OutdoorRun, own
   const {time, lines, center, elevationGain, maxPace} = useMemo(() => {
     const speedCounter = new PercentileCounter((speed) => speed.toFixed(1), true);
     const time = durationToTimeString(outdoorRun.duration);
-    const chunks: GeoDataPoint[][] = [];
-    let currentChunk: GeoDataPoint[] = [];
+    const chunks: PathPoint[][] = [];
+    let currentChunk: PathPoint[] = [];
     const chunkSize = 1000 * 60 * 1;
     let nextChunkLimit = new Date(outdoorRun.start.getTime() + chunkSize);
     // let minSpeed = 1000;
@@ -72,14 +72,14 @@ export const OutdoorRunEntryBlock: FC<{entry: Entry, outdoorRun: OutdoorRun, own
       minElevation = Math.min(minElevation, point.altitude);
       maxElevation = Math.max(maxElevation, point.altitude);
 
-      if (nextChunkLimit.getTime() - point.timestamp.getTime() > 0) {
+      if (nextChunkLimit.getTime() - (outdoorRun.start.getTime() + point.timestamp) > 0) {
         currentChunk.push(point);
       } else {
         currentChunk.push(point);
         chunks.push(currentChunk);
         currentChunk = [];
         currentChunk.push(point);
-        nextChunkLimit = new Date(point.timestamp.getTime() + chunkSize);
+        nextChunkLimit = new Date(outdoorRun.start.getTime() + point.timestamp + chunkSize);
       }
     }
     chunks.push(currentChunk);

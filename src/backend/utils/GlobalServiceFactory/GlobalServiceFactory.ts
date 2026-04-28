@@ -110,7 +110,11 @@ export class GlobalServiceFactory {
   }
 
   async argusCheckin() {
-    return new ArgusCheckinService(await this.drizzle(), await this.image());
+    return new ArgusCheckinService(
+      await this.drizzle(),
+      await this.image(),
+      await this.entry(),
+    );
   }
 
   async weight() {

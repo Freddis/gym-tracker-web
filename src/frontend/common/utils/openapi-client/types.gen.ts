@@ -1050,15 +1050,19 @@ export type OutdoorRun = {
    */
   elevationGain: number | null;
   /**
-   * Geo data of the outdoor run
+   * Geo data of the outdoor walk
    */
-  geoData: Array<GeoDataPoint> | null;
+  geoData: Array<PathPoint> | null;
+  /**
+   * Heart rate data of the outdoor walk
+   */
+  heartRateData: Array<HeartRatePoint> | null;
 };
 
 /**
- * Geo data point used to display routes on map for activities such as running, cycling, etc.
+ * Path point used to display routes on map for activities such as walking, hiking, etc.
  */
-export type GeoDataPoint = {
+export type PathPoint = {
   /**
    * Altitude of the geo data point
    */
@@ -1067,10 +1071,6 @@ export type GeoDataPoint = {
    * Course of the geo data point
    */
   course: number | null;
-  /**
-   * Date of the geo data point
-   */
-  timestamp: Date;
   /**
    * Speed of the geo data point
    */
@@ -1088,10 +1088,6 @@ export type GeoDataPoint = {
    */
   longitude: number;
   /**
-   * Heart rate of the geo data point
-   */
-  heartRate: number | null;
-  /**
    * Horizontal accuracy of the geo data point
    */
   horizontalAccuracy: number | null;
@@ -1103,6 +1099,24 @@ export type GeoDataPoint = {
    * Speed accuracy of the geo data point
    */
   speedAccuracy: number | null;
+  /**
+   * Timestamp of the path point
+   */
+  timestamp: number;
+};
+
+/**
+ * Heart rate point
+ */
+export type HeartRatePoint = {
+  /**
+   * Timestamp of the heart rate point
+   */
+  timestamp: number;
+  /**
+   * Heart rate of the heart rate point
+   */
+  heartRate: number;
 };
 
 /**
@@ -1173,66 +1187,6 @@ export type OutdoorWalk = {
    * Heart rate data of the outdoor walk
    */
   heartRateData: Array<HeartRatePoint> | null;
-};
-
-/**
- * Path point used to display routes on map for activities such as walking, hiking, etc.
- */
-export type PathPoint = {
-  /**
-   * Altitude of the geo data point
-   */
-  altitude: number;
-  /**
-   * Course of the geo data point
-   */
-  course: number | null;
-  /**
-   * Timestamp of the path point
-   */
-  timestamp: number;
-  /**
-   * Speed of the geo data point
-   */
-  speed: number | null;
-  /**
-   * Distance of the geo data point
-   */
-  distance: number | null;
-  /**
-   * Latitude of the geo data point
-   */
-  latitude: number;
-  /**
-   * Longitude of the geo data point
-   */
-  longitude: number;
-  /**
-   * Horizontal accuracy of the geo data point
-   */
-  horizontalAccuracy: number | null;
-  /**
-   * Vertical accuracy of the geo data point
-   */
-  verticalAccuracy: number | null;
-  /**
-   * Speed accuracy of the geo data point
-   */
-  speedAccuracy: number | null;
-};
-
-/**
- * Heart rate point
- */
-export type HeartRatePoint = {
-  /**
-   * Timestamp of the heart rate point
-   */
-  timestamp: number;
-  /**
-   * Heart rate of the heart rate point
-   */
-  heartRate: number;
 };
 
 /**
@@ -1686,9 +1640,13 @@ export type OutdoorRunEntryUpsertDto = {
      */
     elevationGain: number | null;
     /**
-     * Geo data of the outdoor run
+     * Geo data of the outdoor walk
      */
-    geoData: Array<GeoDataPoint> | null;
+    geoData: Array<PathPoint> | null;
+    /**
+     * Heart rate data of the outdoor walk
+     */
+    heartRateData: Array<HeartRatePoint> | null;
   };
   /**
    * Outdoor walk

@@ -299,6 +299,8 @@ export const outdoorRuns = gymTracker.table('outdoor_runs', {
   elevationGain: real(),
   heartRate: real(),
   maxHeartRate: real(),
+  heartRateData: jsonb().$type<HeartRatePoint[]>(),
+  geoData: jsonb().$type<PathPoint[]>(),
   duration: integer().notNull(),
   calories: integer().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -322,20 +324,4 @@ export const outdoorWalks = gymTracker.table('outdoor_walks', {
   calories: integer().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
-});
-
-export const geoData = gymTracker.table('geo_data', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
-  latitude: real().notNull(),
-  longitude: real().notNull(),
-  altitude: real().notNull(),
-  heartRate: real(),
-  course: real(),
-  speed: real(),
-  speedAccuracy: real(),
-  horizontalAccuracy: real(),
-  verticalAccuracy: real(),
-  distance: real(),
-  timestamp: timestamp({withTimezone: true, mode: 'date'}).notNull(),
 });

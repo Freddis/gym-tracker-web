@@ -218,6 +218,13 @@
       "when": 1777292239187,
       "tag": "0030_outdoor_walks",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1777372275811,
+      "tag": "0031_chaging_outdoor_run_table",
+      "breakpoints": true
     }
   ]
 }

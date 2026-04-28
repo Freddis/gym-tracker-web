@@ -1,5 +1,5 @@
-import {GeoDataPoint} from './GeoDataPoint';
-
+import {HeartRatePoint} from '../../OutdoorWalkService/types/HeartRatePoint';
+import {PathPoint} from '../../OutdoorWalkService/types/PathPoint';
 export interface OutdoorRun {
   id: number;
   userId: number;
@@ -15,5 +15,6 @@ export interface OutdoorRun {
   maxHeartRate: number | null;
   start: Date;
   end: Date;
-  geoData: GeoDataPoint[] | null;
+  geoData: PathPoint[] | null;
+  heartRateData: HeartRatePoint[] | null;
 }

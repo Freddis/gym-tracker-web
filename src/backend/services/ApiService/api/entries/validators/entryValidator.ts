@@ -21,21 +21,25 @@ const baseEntryValidator = object({
   externalSource: externalSourceValidator.nullable().openapi({description: 'External source of the entry. Another app.'}),
 });
 
-export const geoDataPointValidator = object({
+export const heartRatePointValidator = object({
+  timestamp: number().openapi({description: 'Timestamp of the heart rate point'}),
+  heartRate: number().openapi({description: 'Heart rate of the heart rate point'}),
+}).openapi({ref: 'HeartRatePoint', description: 'Heart rate point'});
+
+export const pathPointValidator = object({
   altitude: number().openapi({description: 'Altitude of the geo data point'}),
   course: number().nullable().openapi({description: 'Course of the geo data point'}),
-  timestamp: date().openapi({description: 'Date of the geo data point'}),
   speed: number().nullable().openapi({description: 'Speed of the geo data point'}),
   distance: number().nullable().openapi({description: 'Distance of the geo data point'}),
   latitude: number().openapi({description: 'Latitude of the geo data point'}),
   longitude: number().openapi({description: 'Longitude of the geo data point'}),
-  heartRate: number().nullable().openapi({description: 'Heart rate of the geo data point'}),
   horizontalAccuracy: number().nullable().openapi({description: 'Horizontal accuracy of the geo data point'}),
   verticalAccuracy: number().nullable().openapi({description: 'Vertical accuracy of the geo data point'}),
   speedAccuracy: number().nullable().openapi({description: 'Speed accuracy of the geo data point'}),
-}).openapi({
-  ref: 'GeoDataPoint',
-  description: 'Geo data point used to display routes on map for activities such as running, cycling, etc.',
+  timestamp: number().openapi({description: 'Timestamp of the path point'}),
+}).strict().openapi({
+  ref: 'PathPoint',
+  description: 'Path point used to display routes on map for activities such as walking, hiking, etc.',
 });
 
 export const outdoorRunValidator = object({
@@ -53,25 +57,11 @@ export const outdoorRunValidator = object({
   start: date().openapi({description: 'Start time of the outdoor run'}),
   end: date().openapi({description: 'End time of the outdoor run'}),
   elevationGain: number().nullable().openapi({description: 'Elevation gain of the outdoor run'}),
-  geoData: array(geoDataPointValidator).nullable().openapi({description: 'Geo data of the outdoor run'}),
-}).strict().openapi({ref: 'OutdoorRun', description: 'Outdoor run'});
-
-export const heartRatePointValidator = object({
-  timestamp: number().openapi({description: 'Timestamp of the heart rate point'}),
-  heartRate: number().openapi({description: 'Heart rate of the heart rate point'}),
-}).openapi({ref: 'HeartRatePoint', description: 'Heart rate point'});
-
-export const pathPointValidator = geoDataPointValidator.omit({heartRate: true}).extend({
-  timestamp: number().openapi({description: 'Timestamp of the path point'}),
-}).strict().openapi({
-  ref: 'PathPoint',
-  description: 'Path point used to display routes on map for activities such as walking, hiking, etc.',
-});
-
-export const outdoorWalkValidator = outdoorRunValidator.extend({
   geoData: array(pathPointValidator).nullable().openapi({description: 'Geo data of the outdoor walk'}),
   heartRateData: array(heartRatePointValidator).nullable().openapi({description: 'Heart rate data of the outdoor walk'}),
-}).openapi({ref: 'OutdoorWalk', description: 'Outdoor walk'});
+}).strict().openapi({ref: 'OutdoorRun', description: 'Outdoor run'});
+
+export const outdoorWalkValidator = outdoorRunValidator.openapi({ref: 'OutdoorWalk', description: 'Outdoor walk'});
 
 export const entryValidator = baseEntryValidator.extend({
   type: nativeEnum(EntryType).openapi({description: 'Entry type', ref: 'Entry Type'}),

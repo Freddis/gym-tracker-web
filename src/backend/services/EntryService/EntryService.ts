@@ -203,9 +203,15 @@ export class EntryService {
     return res.items[0] ?? null;
   }
 
+  async getByExternalId(externalId: string): Promise<Entry | null> {
+    const res = await this.getAll({externalId: [externalId], perPage: 1});
+    return res.items[0] ?? null;
+  }
+
   async getAll<T extends EntryType>(
     params?: {
       id?: number[],
+      externalId?: string[],
       workoutIds?: number[],
       weightIds?: number[]
       page?: number,
@@ -225,6 +231,7 @@ export class EntryService {
     const offset = (page - 1) * limit;
     const where = and(
       params?.id ? inArray(db._.fullSchema.entries.id, params.id) : undefined,
+      params?.externalId ? inArray(db._.fullSchema.entries.externalId, params.externalId) : undefined,
       params?.weightIds ? inArray(db._.fullSchema.entries.weightId, params.weightIds) : undefined,
       params?.workoutIds ? inArray(db._.fullSchema.entries.workoutId, params.workoutIds) : undefined,
       params?.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
@@ -362,6 +369,12 @@ export class EntryService {
     }
     const result: Entry[] = [];
     for (const item of items) {
+      const existing = await db.query.entries.findFirst({
+        where: (t, op) => op.and(
+          op.eq(t.id, item.id ?? 0),
+          op.eq(t.userId, userId),
+        ),
+      });
       const data: typeof db._.fullSchema.entries.$inferInsert = {
         id: item.id ?? undefined,
         userId: userId,
@@ -393,6 +406,9 @@ export class EntryService {
         image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
         data.imageId = image.id;
       }
+      if (item.image && !item.image.id) {
+        data.imageId = item.image.id;
+      }
       if (item.type === EntryType.Workout) {
         const workouts = await this.workoutService.upsert(userId, [item.workout]);
         const workoutId = workouts[0]?.id;
@@ -410,9 +426,11 @@ export class EntryService {
         data.weightId = weightId;
         weight = weights[0];
       } else if (item.type === EntryType.OutdoorRun) {
+        await this.outdoorRunService.deleteOne(userId, existing?.outdoorRunId ?? 0);
         run = await this.outdoorRunService.upsertOne(userId, item.outdoorRun);
         data.outdoorRunId = run.id;
       } else if (item.type === EntryType.OutdoorWalk) {
+        await this.outdoorWalkService.deleteOne(userId, existing?.outdoorWalkId ?? 0);
         walk = await this.outdoorWalkService.upsertOne(userId, item.outdoorWalk);
         data.outdoorWalkId = walk.id;
       }
