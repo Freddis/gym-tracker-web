@@ -913,13 +913,14 @@ export const EntryVisibility = {
 /**
  * External source of the entry. Another app.
  */
-export type ExternalSource = "Argus";
+export type ExternalSource = "Argus" | "AppleHealth";
 
 /**
  * External source of the entry. Another app.
  */
 export const ExternalSource = {
   ARGUS: "Argus",
+  APPLE_HEALTH: "AppleHealth",
 } as const;
 
 /**
@@ -1241,7 +1242,8 @@ export type EntryUpsertDto =
   | WorkoutEntryUpsertDto
   | WeightEntryUpsertDto
   | PostEntryUpsertDto
-  | OutdoorRunEntryUpsertDto;
+  | OutdoorRunEntryUpsertDto
+  | OutdoorWalkEntryUpsertDto;
 
 export type WorkoutEntryUpsertDto = {
   /**
@@ -1692,6 +1694,171 @@ export type OutdoorRunEntryUpsertDto = {
    * Outdoor walk
    */
   outdoorWalk?: OutdoorWalk;
+  /**
+   * Image
+   */
+  image: {
+    /**
+     * Id of the image
+     */
+    id: number;
+    url: string | null;
+    imageType: ImageType;
+    data: string | null;
+  } | null;
+  /**
+   * Id of the healthkit entry
+   */
+  healthkitId: string | null;
+  /**
+   * Last sync date
+   */
+  healthkitAnchor: number | null;
+  /**
+   * Last sync anchor
+   */
+  healthkitAnchors_3_0: string | null;
+  /**
+   * Id of the app that added healthkit record
+   */
+  healthkitSource: string | null;
+  /**
+   * Name of the app that added healthkit record
+   */
+  healthkitSourceName: string | null;
+  /**
+   * Id of the device that added healthkit record
+   */
+  healthkitDevice: string | null;
+  /**
+   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+   */
+  healthkitDeviceName: string | null;
+};
+
+export type OutdoorWalkEntryUpsertDto = {
+  /**
+   * Id of the entry
+   */
+  id?: number;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: ExternalSource | null;
+  /**
+   * Type of the entry
+   */
+  type: "OutdoorWalk";
+  /**
+   * Weight
+   */
+  weight?: Weight;
+  /**
+   * Workout
+   */
+  workout?: Workout;
+  /**
+   * Outdoor run
+   */
+  outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk: {
+    /**
+     * Id of the outdoor run
+     */
+    id: number;
+    /**
+     * User id of the outdoor run
+     */
+    userId: number;
+    /**
+     * Distance of the outdoor run
+     */
+    distance: number;
+    /**
+     * Duration of the outdoor run
+     */
+    duration: number;
+    /**
+     * Calories of the outdoor run
+     */
+    calories: number;
+    /**
+     * Pace of the outdoor run
+     */
+    pace: number;
+    /**
+     * Max pace of the outdoor run
+     */
+    maxPace: number;
+    /**
+     * Cadence of the outdoor run
+     */
+    cadence: number | null;
+    /**
+     * Max cadence of the outdoor run
+     */
+    maxCadence: number | null;
+    /**
+     * Heart rate of the outdoor run
+     */
+    heartRate: number | null;
+    /**
+     * Max heart rate of the outdoor run
+     */
+    maxHeartRate: number | null;
+    /**
+     * Start time of the outdoor run
+     */
+    start: Date;
+    /**
+     * End time of the outdoor run
+     */
+    end: Date;
+    /**
+     * Elevation gain of the outdoor run
+     */
+    elevationGain: number | null;
+    /**
+     * Geo data of the outdoor walk
+     */
+    geoData: Array<PathPoint> | null;
+    /**
+     * Heart rate data of the outdoor walk
+     */
+    heartRateData: Array<HeartRatePoint> | null;
+  };
   /**
    * Image
    */

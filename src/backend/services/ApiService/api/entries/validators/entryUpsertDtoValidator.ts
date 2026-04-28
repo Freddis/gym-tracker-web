@@ -1,7 +1,7 @@
 import {literal, number, string, union} from 'zod';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutUpsertDtoValidator} from '../../workouts/validators/workoutUpsertDtoValidator';
-import {entryValidator, outdoorRunValidator} from './entryValidator';
+import {entryValidator, outdoorRunValidator, outdoorWalkValidator} from './entryValidator';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {weightUpsertDtoValidator} from '../../weight/validators/weightUpsertDtoValidator';
 import {imageValidator} from '../../images/validators/imageValidator';
@@ -79,11 +79,17 @@ const outdoorRunEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
   type: literal(EntryType.OutdoorRun),
 });
 
+const outdoorWalkEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
+  outdoorWalk: outdoorWalkValidator,
+  type: literal(EntryType.OutdoorWalk),
+});
+
 const validator = union([
   RouteFactory.validators.describeShape(workoutEntryUpsertDtoValidator, descriptions).openapi({ref: 'WorkoutEntryUpsertDto'}),
   RouteFactory.validators.describeShape(weightEntryUpsertDtoValidator, descriptions).openapi({ref: 'WeightEntryUpsertDto'}),
   RouteFactory.validators.describeShape(postEntryUpsertDtoValidator, descriptions).openapi({ref: 'PostEntryUpsertDto'}),
   RouteFactory.validators.describeShape(outdoorRunEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorRunEntryUpsertDto'}),
+  RouteFactory.validators.describeShape(outdoorWalkEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorWalkEntryUpsertDto'}),
 ]);
 
 export const entryUpsertDtoValidator = validator.openapi({
