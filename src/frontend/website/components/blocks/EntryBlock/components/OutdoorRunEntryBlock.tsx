@@ -132,7 +132,7 @@ export const OutdoorRunEntryBlock: FC<{entry: Entry, outdoorRun: OutdoorRun, own
       </div>
       <div className="mt-5 flex flex-col gap-5 justify-center">
         <PostContent entry={entry} />
-        {outdoorRun.geoData && (
+        {outdoorRun.geoData && outdoorRun.geoData.length > 0 && (
           <div className="w-full h-100 rounded-lg overflow-hidden">
             <Map
               style={{width: '100%', height: '100%'}}

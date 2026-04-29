@@ -1,10 +1,12 @@
 import {literal, number, string, union} from 'zod';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutUpsertDtoValidator} from '../../workouts/validators/workoutUpsertDtoValidator';
-import {entryValidator, outdoorRunValidator, outdoorWalkValidator} from './entryValidator';
+import {entryValidator} from './entryValidator';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {weightUpsertDtoValidator} from '../../weight/validators/weightUpsertDtoValidator';
-import {imageValidator} from '../../images/validators/imageValidator';
+import {imageUpserDtoValidator} from './imageUpserDtoValidator';
+import {outdoorRunUpsertDtoValidator} from './outdoorRunUpsertDtoValidator';
+import {outdoorWalkUpsertDtoValidator} from './outdoorWalkUpsertDtoValidator';
 
 const descriptions = {
   type: 'Type of the entry',
@@ -32,16 +34,6 @@ const descriptions = {
   healthkitDeviceName: 'Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.',
 };
 
-const imageUpserDtoValidator = imageValidator.omit({
-  userId: true,
-  createdAt: true,
-  updatedAt: true,
-  deletedAt: true,
-}).extend({
-  url: string().nullable(),
-  data: string().nullable(),
-});
-
 const baseEntryUpsertDtoValidator = entryValidator.omit({
   user: true,
   image: true,
@@ -60,7 +52,8 @@ const baseEntryUpsertDtoValidator = entryValidator.omit({
   healthkitDevice: string().nullable(),
   healthkitDeviceName: string().nullable(),
 });
-const workoutEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
+
+export const workoutEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
   workout: workoutUpsertDtoValidator,
   type: literal(EntryType.Workout),
 });
@@ -75,12 +68,12 @@ const postEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
 });
 
 const outdoorRunEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
-  outdoorRun: outdoorRunValidator,
+  outdoorRun: outdoorRunUpsertDtoValidator,
   type: literal(EntryType.OutdoorRun),
 });
 
 const outdoorWalkEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
-  outdoorWalk: outdoorWalkValidator,
+  outdoorWalk: outdoorWalkUpsertDtoValidator,
   type: literal(EntryType.OutdoorWalk),
 });
 

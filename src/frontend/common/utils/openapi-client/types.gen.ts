@@ -1122,72 +1122,7 @@ export type HeartRatePoint = {
 /**
  * Outdoor walk
  */
-export type OutdoorWalk = {
-  /**
-   * Id of the outdoor run
-   */
-  id: number;
-  /**
-   * User id of the outdoor run
-   */
-  userId: number;
-  /**
-   * Distance of the outdoor run
-   */
-  distance: number;
-  /**
-   * Duration of the outdoor run
-   */
-  duration: number;
-  /**
-   * Calories of the outdoor run
-   */
-  calories: number;
-  /**
-   * Pace of the outdoor run
-   */
-  pace: number;
-  /**
-   * Max pace of the outdoor run
-   */
-  maxPace: number;
-  /**
-   * Cadence of the outdoor run
-   */
-  cadence: number | null;
-  /**
-   * Max cadence of the outdoor run
-   */
-  maxCadence: number | null;
-  /**
-   * Heart rate of the outdoor run
-   */
-  heartRate: number | null;
-  /**
-   * Max heart rate of the outdoor run
-   */
-  maxHeartRate: number | null;
-  /**
-   * Start time of the outdoor run
-   */
-  start: Date;
-  /**
-   * End time of the outdoor run
-   */
-  end: Date;
-  /**
-   * Elevation gain of the outdoor run
-   */
-  elevationGain: number | null;
-  /**
-   * Geo data of the outdoor walk
-   */
-  geoData: Array<PathPoint> | null;
-  /**
-   * Heart rate data of the outdoor walk
-   */
-  heartRateData: Array<HeartRatePoint> | null;
-};
+export type OutdoorWalk = OutdoorRun;
 
 /**
  * Fields needed to update a workout
@@ -1582,72 +1517,7 @@ export type OutdoorRunEntryUpsertDto = {
   /**
    * Outdoor run
    */
-  outdoorRun: {
-    /**
-     * Id of the outdoor run
-     */
-    id: number;
-    /**
-     * User id of the outdoor run
-     */
-    userId: number;
-    /**
-     * Distance of the outdoor run
-     */
-    distance: number;
-    /**
-     * Duration of the outdoor run
-     */
-    duration: number;
-    /**
-     * Calories of the outdoor run
-     */
-    calories: number;
-    /**
-     * Pace of the outdoor run
-     */
-    pace: number;
-    /**
-     * Max pace of the outdoor run
-     */
-    maxPace: number;
-    /**
-     * Cadence of the outdoor run
-     */
-    cadence: number | null;
-    /**
-     * Max cadence of the outdoor run
-     */
-    maxCadence: number | null;
-    /**
-     * Heart rate of the outdoor run
-     */
-    heartRate: number | null;
-    /**
-     * Max heart rate of the outdoor run
-     */
-    maxHeartRate: number | null;
-    /**
-     * Start time of the outdoor run
-     */
-    start: Date;
-    /**
-     * End time of the outdoor run
-     */
-    end: Date;
-    /**
-     * Elevation gain of the outdoor run
-     */
-    elevationGain: number | null;
-    /**
-     * Geo data of the outdoor walk
-     */
-    geoData: Array<PathPoint> | null;
-    /**
-     * Heart rate data of the outdoor walk
-     */
-    heartRateData: Array<HeartRatePoint> | null;
-  };
+  outdoorRun: OutdoorRunUpsertDto;
   /**
    * Outdoor walk
    */
@@ -1692,6 +1562,72 @@ export type OutdoorRunEntryUpsertDto = {
    * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
    */
   healthkitDeviceName: string | null;
+};
+
+/**
+ * Outdoor run upsert dto
+ */
+export type OutdoorRunUpsertDto = {
+  /**
+   * Distance of the outdoor run
+   */
+  distance: number;
+  /**
+   * Duration of the outdoor run
+   */
+  duration: number;
+  /**
+   * Calories of the outdoor run
+   */
+  calories: number;
+  /**
+   * Pace of the outdoor run
+   */
+  pace: number;
+  /**
+   * Max pace of the outdoor run
+   */
+  maxPace: number;
+  /**
+   * Cadence of the outdoor run
+   */
+  cadence: number | null;
+  /**
+   * Max cadence of the outdoor run
+   */
+  maxCadence: number | null;
+  /**
+   * Heart rate of the outdoor run
+   */
+  heartRate: number | null;
+  /**
+   * Max heart rate of the outdoor run
+   */
+  maxHeartRate: number | null;
+  /**
+   * Start time of the outdoor run
+   */
+  start: Date;
+  /**
+   * End time of the outdoor run
+   */
+  end: Date;
+  /**
+   * Elevation gain of the outdoor run
+   */
+  elevationGain: number | null;
+  /**
+   * Geo data of the outdoor walk
+   */
+  geoData: Array<PathPoint> | null;
+  /**
+   * Heart rate data of the outdoor walk
+   */
+  heartRateData: Array<HeartRatePoint> | null;
+  /**
+   * Id of the outdoor run
+   */
+  id?: number;
 };
 
 export type OutdoorWalkEntryUpsertDto = {
@@ -1751,72 +1687,7 @@ export type OutdoorWalkEntryUpsertDto = {
   /**
    * Outdoor walk
    */
-  outdoorWalk: {
-    /**
-     * Id of the outdoor run
-     */
-    id: number;
-    /**
-     * User id of the outdoor run
-     */
-    userId: number;
-    /**
-     * Distance of the outdoor run
-     */
-    distance: number;
-    /**
-     * Duration of the outdoor run
-     */
-    duration: number;
-    /**
-     * Calories of the outdoor run
-     */
-    calories: number;
-    /**
-     * Pace of the outdoor run
-     */
-    pace: number;
-    /**
-     * Max pace of the outdoor run
-     */
-    maxPace: number;
-    /**
-     * Cadence of the outdoor run
-     */
-    cadence: number | null;
-    /**
-     * Max cadence of the outdoor run
-     */
-    maxCadence: number | null;
-    /**
-     * Heart rate of the outdoor run
-     */
-    heartRate: number | null;
-    /**
-     * Max heart rate of the outdoor run
-     */
-    maxHeartRate: number | null;
-    /**
-     * Start time of the outdoor run
-     */
-    start: Date;
-    /**
-     * End time of the outdoor run
-     */
-    end: Date;
-    /**
-     * Elevation gain of the outdoor run
-     */
-    elevationGain: number | null;
-    /**
-     * Geo data of the outdoor walk
-     */
-    geoData: Array<PathPoint> | null;
-    /**
-     * Heart rate data of the outdoor walk
-     */
-    heartRateData: Array<HeartRatePoint> | null;
-  };
+  outdoorWalk: OutdoorWalkUpsertDto;
   /**
    * Image
    */
@@ -1858,6 +1729,11 @@ export type OutdoorWalkEntryUpsertDto = {
    */
   healthkitDeviceName: string | null;
 };
+
+/**
+ * Outdoor walk upsert dto
+ */
+export type OutdoorWalkUpsertDto = OutdoorRunUpsertDto;
 
 /**
  * List of dates. Workout about bug in array transformation in @hey-api/openapi-ts

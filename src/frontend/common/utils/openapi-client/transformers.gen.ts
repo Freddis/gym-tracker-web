@@ -330,8 +330,7 @@ const outdoorRunSchemaResponseTransformer = (data: any) => {
 };
 
 const outdoorWalkSchemaResponseTransformer = (data: any) => {
-  data.start = new Date(data.start);
-  data.end = new Date(data.end);
+  data = outdoorRunSchemaResponseTransformer(data);
   return data;
 };
 
