@@ -477,6 +477,11 @@ export class EntryService {
           type: EntryType.OutdoorWalk,
           outdoorWalk: walk,
         });
+      } else {
+        result.push({
+          ...created,
+          type: EntryType.Post,
+        });
       }
     }
     return result;
