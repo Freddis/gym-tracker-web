@@ -1,4 +1,4 @@
-import {array, date, nativeEnum, number, object, string} from 'zod';
+import {date, nativeEnum, number, object, string} from 'zod';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {userValidator} from '../../users/validators/userValidator';
 import {workoutValidator} from '../../workouts/validators/workoutValidator';
