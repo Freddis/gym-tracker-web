@@ -32,7 +32,7 @@ while (true) {
     logger.info(`Processing exercise ${++processed}/${chunk.info.count} : '${item.id} - ${item.name}'`);
     const translation = await translationService.upsertAutoTranslation({
       type: TranslationType.ExeciseName,
-      numericKey: item.id,
+      // numericKey: item.id,
       key: item.id.toString(),
       text: item.name,
       to: Language.Russian,

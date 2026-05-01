@@ -1,7 +1,7 @@
 import {Equipment, Exercise, Muscle} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const benchPress: Exercise = {
-  id: 10,
+  id: '2dc94506-594f-48f5-a541-87101be593ea',
   name: 'Barbell Bench Press',
   description: `<1>Lie back on the decline bench. Hold the barbell with overhand Grip.
        Distance between your hands is slighter wider than shoulder width. Hold the barbell with arms fully extended. 
@@ -29,7 +29,7 @@ export const benchPress: Exercise = {
   },
   variations: [
     {
-      id: 0,
+      id: '04c5be20-c5b1-49ff-96cf-7b0ab95acf27',
       name: 'Barbell Bench Press (Flat, Overhand Grip)',
       description: `<1>Lie back on the decline bench. Hold the barbell with overhand Grip.
                   Distance between your hands is slighter wider than shoulder width. Hold the barbell with arms fully extended. 
@@ -47,7 +47,7 @@ export const benchPress: Exercise = {
       params: [],
       userId: null,
       copiedFromId: null,
-      parentExerciseId: null,
+      parentExerciseId: '2dc94506-594f-48f5-a541-87101be593ea',
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,

@@ -2,7 +2,6 @@ import {and, inArray, eq, exists, isNull, asc, or, gte, ilike, sql, not, Query} 
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
-import {SemiPartial} from 'src/backend/types/SemiPartial';
 import {Exercise} from './types/Exercise';
 import {Muscle} from '../../types/Muscle';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
@@ -18,6 +17,7 @@ import {ExerciseMuscleRow} from '../DrizzleService/types/ExerciseMuscleRow';
 import {NewModel} from '../../types/NewModel';
 import {ManagedExerciseUpdateDto} from './types/MangagedExerciseUpdateDto';
 import {ImageType} from '../../types/ImageType';
+import {randomUUID} from 'node:crypto';
 
 interface SelectPromise<T> extends Promise<T> {
   limit: (n: number) => Omit<SelectPromise<T>, 'limit'>
@@ -31,7 +31,7 @@ type Exact<Shape, Input> =
       : never
     : never;
 
-export class ExerciseService implements EntityService<Exercise, ExerciseFilter> {
+export class ExerciseService implements EntityService<Exercise, string, ExerciseFilter> {
   protected drizzle: DrizzleService;
   protected translations: TranslationService;
   protected images: ImageService;
@@ -51,7 +51,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     const dbSchema = this.drizzle.getSchema();
     const entity: typeof dbSchema.exercises.$inferInsert = {
       ...data,
-      id: undefined,
+      id: randomUUID(),
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
@@ -101,7 +101,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     });
   }
 
-  async update<T>(id: number, data: Exact<ManagedExerciseUpdateDto, T>): Promise<void> {
+  async update<T>(id: string, data: Exact<ManagedExerciseUpdateDto, T>): Promise<void> {
     const update: Partial<ExerciseRow> = {
       name: data.name,
       description: data.description,
@@ -157,12 +157,12 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     });
   }
 
-  async updateForUser(userId: number, id: number, data: {name: string; description: string | null;}): Promise<void> {
+  async updateForUser(userId: number, id: string, data: {name: string; description: string | null;}): Promise<void> {
     await this.hasWriteAccess(id, userId);
     return await this.update(id, data);
   }
 
-  async delete(userId: number, exerciseId: number): Promise<void> {
+  async delete(userId: number, exerciseId: string): Promise<void> {
     await this.hasWriteAccess(exerciseId, userId);
     await this.deleteById(exerciseId);
   }
@@ -184,9 +184,9 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
         inArray(muscleTable.exerciseId, ids)
       );
 
-      const attachedToUser: SemiPartial<ExerciseRow, 'id'>[] = data.map((x) => ({
+      const attachedToUser: ExerciseRow[] = data.map((x) => ({
         ...x,
-        id: x.id ?? undefined,
+        id: x.id,
         userId: userId,
         parentExerciseId: null,
         isArchived: false,
@@ -238,7 +238,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
   }
 
 
-  async getById(id: number, language?: Language): Promise<Exercise | null> {
+  async getById(id: string, language?: Language): Promise<Exercise | null> {
     return this.get({ids: [id], language});
   }
 
@@ -251,7 +251,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     return items;
   }
 
-  async deleteById(id: number): Promise<void> {
+  async deleteById(id: string): Promise<void> {
     const exercise = await this.getById(id);
     if (!exercise) {
       throw new ActionError(ActionErrorCode.ExerciseNotFound);
@@ -353,7 +353,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     const joinOn = and(
       eq(db._.fullSchema.translations.type, TranslationType.ExeciseName),
       params?.language ? eq(db._.fullSchema.translations.language, params.language) : sql`FALSE`,
-      eq(db._.fullSchema.translations.numericKey, db._.fullSchema.exercises.id),
+      eq(sql`${db._.fullSchema.translations.key}::uuid`, db._.fullSchema.exercises.id),
     );
 
     const query = db.select({
@@ -428,15 +428,15 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
       )
     );
 
-    const muscleMap = new Map<number, {muscle: Muscle, isPrimary: boolean}[]>();
+    const muscleMap = new Map<string, {muscle: Muscle, isPrimary: boolean}[]>();
     for (const muscle of muscles) {
       const arr = muscleMap.get(muscle.exersizeId) ?? [];
       arr.push(muscle);
       muscleMap.set(muscle.exersizeId, arr);
     }
 
-    const exerciseMap = new Map<number, ExerciseRow>();
-    const variationMap = new Map<number, ExerciseRow[]>();
+    const exerciseMap = new Map<string, ExerciseRow>();
+    const variationMap = new Map<string, ExerciseRow[]>();
     for (const exercise of variations) {
       exerciseMap.set(exercise.id, exercise);
       if (!exercise.parentExerciseId) {
@@ -468,7 +468,7 @@ export class ExerciseService implements EntityService<Exercise, ExerciseFilter> 
     return items;
   }
 
-  protected async hasWriteAccess(exerciseId: number, userId: number): Promise<boolean> {
+  protected async hasWriteAccess(exerciseId: string, userId: number): Promise<boolean> {
     const db = await this.drizzle.getDb();
     const item = await db.query.exercises.findFirst({
       where: (t, op) =>

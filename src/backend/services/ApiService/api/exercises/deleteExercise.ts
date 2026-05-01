@@ -1,7 +1,7 @@
 import {OpenApiMethod} from 'snap-on-openapi';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
-import {boolean, object} from 'zod';
+import {boolean, object, string} from 'zod';
 
 export const deleteExercise = RouteFactory.createRoute({
   method: OpenApiMethod.DELETE,
@@ -10,7 +10,7 @@ export const deleteExercise = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the exercise'}),
+      id: string().openapi({description: 'Id of the exercise'}),
     }),
     response: object({
       success: boolean().openapi({

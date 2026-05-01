@@ -32,15 +32,14 @@ export const ExerciseUpdatePage: FC = () => {
     useResponseErrors<
       Exclude<PatchCrmExercisesByIdData['body'], undefined>
     >();
-  const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery({
     queryFn: () =>
       getCrmExercisesById({
         path: {
-          id,
+          id: params.id,
         },
       }),
-    queryKey: ['exercises', id],
+    queryKey: ['exercises', params.id],
     placeholderData: keepPreviousData,
   });
   if (response.isLoading) {
@@ -53,7 +52,7 @@ export const ExerciseUpdatePage: FC = () => {
   const onSaveClick = async () => {
     const result = await patchCrmExercisesById({
       path: {
-        id: id,
+        id: params.id,
       },
       body: dto ?? undefined,
     });

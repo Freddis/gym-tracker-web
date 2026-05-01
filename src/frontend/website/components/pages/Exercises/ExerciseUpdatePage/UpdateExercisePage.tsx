@@ -46,15 +46,14 @@ export const UpdateExercisePage: FC = () => {
     variations: [],
     isArchived: false,
   });
-  const id = !Number.isNaN(Number(params.exerciseId)) ? Number(params.exerciseId) : 0;
   const response = useQuery({
     queryFn: () => getExercisesById({
       path: {
-        id,
+        id: params.exerciseId,
       },
     }),
     retry: 0,
-    queryKey: ['exercises', id],
+    queryKey: ['exercises', params.exerciseId],
   });
 
   if (response.isLoading) {
@@ -82,7 +81,7 @@ export const UpdateExercisePage: FC = () => {
   const onDeleteClick = async () => {
     const result = await deleteExercisesById({
       path: {
-        id: id,
+        id: params.exerciseId,
       },
     });
     if (showToastsAndSetErrors(result)) {
@@ -95,7 +94,7 @@ export const UpdateExercisePage: FC = () => {
   const onSaveClick = async () => {
     const result = await patchExercisesById({
       path: {
-        id: id,
+        id: params.exerciseId,
       },
       body: {
         name: exerciseDto.name,

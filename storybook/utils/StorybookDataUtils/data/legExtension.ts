@@ -1,7 +1,7 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const legExtension: Exercise = {
-  id: 1710,
+  id: '92f0de91-b72f-4bcc-a1fd-db3291497479',
   name: 'Selectorized Leg Extension',
   description: `<1>Sit on the seat. Position your ankles behind the ankle padding.
     <2>Fully extend your legs in front of you. Hold for one second. Return to starting position.`,

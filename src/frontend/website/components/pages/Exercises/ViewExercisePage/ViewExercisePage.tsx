@@ -13,14 +13,13 @@ const routeApi = getRouteApi('/exercises/$exerciseId');
 export const ViewExercisePage:FC = () => {
   const params = routeApi.useParams();
   const {translations} = useAppPartialTranslation((x) => x.pages.exercise);
-  const id = !Number.isNaN(Number(params.exerciseId)) ? Number(params.exerciseId) : 0;
   const response = useQuery({
     queryFn: () => getExercisesById({
       path: {
-        id,
+        id: params.exerciseId,
       },
     }),
-    queryKey: ['exercise', id, translations],
+    queryKey: ['exercise', params.exerciseId, translations],
   });
   if (response.isLoading || !response.data) {
     return (

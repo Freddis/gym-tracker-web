@@ -6,6 +6,7 @@ import {Equipment} from '../../../../types/Equipment';
 import {Muscle} from '../../../../types/Muscle';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
+import {randomUUID} from 'node:crypto';
 
 describe('upsertExercises', async () => {
   const service = await TestUtils.business.getFactory().exercise();
@@ -14,7 +15,7 @@ describe('upsertExercises', async () => {
     console.log('Prepare');
     const user = await TestUtils.seed.createUser();
     const exercise: ExerciseUpsertDto = {
-      id: null,
+      id: randomUUID(),
       name: 'Upserted exercise 1',
       description: null,
       difficulty: null,
@@ -77,7 +78,7 @@ describe('upsertExercises', async () => {
     console.log('Prepare');
     const user = await TestUtils.seed.createUser();
     const exercise: ExerciseUpsertDto = {
-      id: null,
+      id: randomUUID(),
       name: 'Created exercise 1',
       description: null,
       difficulty: null,
@@ -165,7 +166,7 @@ describe('upsertExercises', async () => {
       isArchived: false,
     });
     const exercise: ExerciseUpsertDto = {
-      id: null,
+      id: randomUUID(),
       name: 'Created exercise 1',
       description: 'My descriptions',
       difficulty: null,

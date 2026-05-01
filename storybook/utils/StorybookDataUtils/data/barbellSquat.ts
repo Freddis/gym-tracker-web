@@ -1,7 +1,7 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const barbellSquat: Exercise = {
-  id: 331,
+  id: 'c7d8521d-826a-45f9-9ba1-bba1e0ba6c2b',
   name: 'Barbell Squat',
   description: `<1>Stand straight with feet shoulder width apart. Place barbell on the back of your shoulders. 
     Hold barbell with overhand Grip. Distance between your hands should be wider than shoulder width apart. 
@@ -17,7 +17,7 @@ export const barbellSquat: Exercise = {
   params: [0],
   userId: null,
   copiedFromId: null,
-  parentExerciseId: 189,
+  parentExerciseId: null,
   createdAt: new Date('2025-04-14T21:47:05.531Z'),
   updatedAt: new Date('2025-08-05T08:54:16.450Z'),
   deletedAt: null,

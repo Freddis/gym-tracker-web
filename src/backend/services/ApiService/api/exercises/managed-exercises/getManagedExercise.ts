@@ -1,5 +1,5 @@
 import {OpenApiMethod} from 'snap-on-openapi';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {ApiError} from '../../../errors/ApiError';
 import {ApiErrorCode} from '../../../types/ApiErrorCode';
 import {ApiRouteType} from '../../../types/ApiRouteType';
@@ -13,7 +13,7 @@ export const getManagedExercise = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the excercise'}),
+      id: string().openapi({description: 'Id of the excercise'}),
     }),
     response: exerciseValidator,
   },

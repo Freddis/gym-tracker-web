@@ -1,10 +1,10 @@
-import {object, nativeEnum} from 'zod';
+import {object} from 'zod';
 import {exerciseRowValidator} from '../../../../DrizzleService/types/ExerciseRow';
-import {Muscle} from '../../../../../types/Muscle';
 import {RouteFactory} from '../../../utils/RouteFactory';
-import {Equipment} from '../../../../../types/Equipment';
 import {Exercise} from '../../../../ExerciseService/types/Exercise';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
+import {muscleValidator} from './muscleValidator';
+import {equipmentValidator} from './equipmentValidator';
 
 export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
   params: 'Types of the parameters, such as: weight, reps, duration',
@@ -25,8 +25,6 @@ export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
   isArchived: "Archived excercises are not visible in lists and can't be added to new workouts. Yet they're visible in existing workouts ",
 };
 
-const muscleValidator = nativeEnum(Muscle).openapi({ref: 'Muscle', description: 'Body Muscle'});
-const equipmentValidator = nativeEnum(Equipment).openapi({ref: 'Equipment', description: 'Gym Equipment'});
 const rawBaseExerciseValidator = exerciseRowValidator.extend({
   equipment: equipmentValidator.nullable(),
   muscles: object({

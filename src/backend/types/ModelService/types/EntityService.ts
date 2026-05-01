@@ -1,12 +1,12 @@
 import {PaginatedResult} from '../../../services/ApiService/types/PaginatedResult';
 import {Filter} from './Filter';
 
-export interface EntityService<TModel, TFilter extends Filter = Filter> {
+export interface EntityService<TModel, TId extends string | number = number, TFilter extends Filter<TId> = Filter<TId>> {
   paginate(params: Partial<TFilter>): Promise<PaginatedResult<TModel>>
   get(filter: TFilter): Promise<TModel | null>
-  getById(id: number): Promise<TModel | null>
+  getById(id: TId): Promise<TModel | null>
   getMany(filter: TFilter): Promise<TModel[] | null>
-  deleteById(id: number): void
+  deleteById(id: TId): void
 }
 export interface UserEntityService<TModel, TFilter = Filter> {
   paginateForUser(params: Partial<TFilter>): Promise<PaginatedResult<TModel>>

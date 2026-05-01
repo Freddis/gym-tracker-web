@@ -225,6 +225,34 @@
       "when": 1777372275811,
       "tag": "0031_chaging_outdoor_run_table",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1777642732492,
+      "tag": "0032_migrating_exercises_to_uuids_1",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1777643583575,
+      "tag": "0033_migrating_exercises_to_uuids_2",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1777644267843,
+      "tag": "0034_migrating_exercises_to_uuids_3",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1777644563574,
+      "tag": "0035_migrating_exercises_to_uuids_4",
+      "breakpoints": true
     }
   ]
 }

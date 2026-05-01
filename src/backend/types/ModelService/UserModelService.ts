@@ -102,14 +102,14 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     );
   }
 
-  protected createMap<T extends {id: number}>(arr: T[]): Map<number, T> {
-    const map = new Map<number, T>();
+  protected createMap<X, T extends {id: X}>(arr: T[]): Map<X, T> {
+    const map = new Map<X, T>();
     for (const exercise of arr) {
       map.set(exercise.id, exercise);
     }
     return map;
   }
-  protected getMappedOrThrow<T>(map: Map<number, T>, key: number): T {
+  protected getMappedOrThrow<X, T>(map: Map<X, T>, key: X): T {
     const x = map.get(key);
     if (!x) {
       throw new Error(`Exercise '${key}' not found`);

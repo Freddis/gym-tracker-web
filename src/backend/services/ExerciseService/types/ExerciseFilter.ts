@@ -3,13 +3,13 @@ import {Equipment} from '../../../types/Equipment';
 import {Filter} from '../../../types/ModelService/types/Filter';
 import {Muscle} from '../../../types/Muscle';
 
-export interface ExerciseFilter extends Filter{
+export interface ExerciseFilter extends Filter<string>{
     filter?: string,
     userId?: number | null,
     muscle?: Muscle[],
     equipment?: Equipment,
     updatedAfter?: Date,
-    parentIds?: number[] | null,
+    parentIds?: string[] | null,
     language?: Language,
     isArchived?: boolean,
     includeBuiltIn?: boolean,

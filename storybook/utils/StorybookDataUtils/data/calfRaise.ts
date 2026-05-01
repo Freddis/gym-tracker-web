@@ -1,7 +1,7 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
 
 export const calfRaise: Exercise = {
-  id: 1595,
+  id: '8dd226dd-d224-4ad6-9194-972f0f3a5c46',
   name: 'Plate Loaded Calf Raise (Seated)',
   description: `<1>Sit straight with your knees under the knee padding. Hold onto the handles. 
     Position your feet so that your heels are off the platform.
@@ -15,7 +15,7 @@ export const calfRaise: Exercise = {
   params: [0],
   userId: null,
   copiedFromId: null,
-  parentExerciseId: 1591,
+  parentExerciseId: null,
   createdAt: new Date('2025-04-14T21:47:05.541Z'),
   updatedAt: new Date('2025-08-05T08:54:27.758Z'),
   deletedAt: null,

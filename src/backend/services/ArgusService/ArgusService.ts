@@ -17,6 +17,7 @@ import {request} from 'https';
 import {Muscle} from '../../types/Muscle';
 import {Equipment} from '../../types/Equipment';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
+import {randomUUID} from 'crypto';
 
 export class ArgusService {
   protected drizzle: DrizzleService;
@@ -193,8 +194,8 @@ export class ArgusService {
     logger.info('Clearing existing exercises');
     await db.delete(dbSchema.exercises);
     let i = 1;
-    const map = new Map<string, NewModel<ExerciseRow & {count: number}>>();
-    const exercises: NewModel<ExerciseRow>[] = [];
+    const map = new Map<string, ExerciseRow & {count: number}>();
+    const exercises: ExerciseRow[] = [];
     for (const exercise of exerciseData.exercises) {
       logger.info(`Processing ${i++} /${exerciseData.exercises.length} `);
       const nameParts = exercise.name.split('(');
@@ -210,7 +211,8 @@ export class ArgusService {
       const image = `http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/${imgName}-a.jpg`;
       const image2 = `http://images.skyhealth.com/fb_app_images/fitness_img_v5.0/${imgName}-b.jpg`;
 
-      const row: NewModel<ExerciseRow> = {
+      const row: ExerciseRow = {
+        id: randomUUID(),
         createdAt: new Date(),
         name: name,
         description: exercise.description.map((item, i) => `<${i + 1}>${item}`).join(''),
@@ -307,7 +309,7 @@ export class ArgusService {
       const workoutId = ids[0].id;
       for (const exercise of exercises) {
         const name = exercise.exercise_name.replaceAll('_', ', ');
-        let exerciseId = 0;
+        let exerciseId: string = '';
         const libraryExercise = await db.query.exercises.findFirst({
           where: (t, op) => op.eq(t.name, name),
         });
@@ -325,7 +327,7 @@ export class ArgusService {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {id, ...insertData} = libraryExercise;
             const ids = await db.insert(dbSchema.exercises).values({
-              ...insertData, name, userId: user.id,
+              ...insertData, name, userId: user.id, id: randomUUID(),
             }).returning({id: dbSchema.exercises.id});
             if (!ids[0]) {
               throw new Error('Unable to insert exercise');

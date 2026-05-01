@@ -1,0 +1,2 @@
+ALTER TABLE "gym_tracker"."exercises" RENAME COLUMN "copiedFromUuid" TO "copiedFromId";--> statement-breakpoint
+ALTER TABLE "gym_tracker"."exercises" RENAME COLUMN "parentExerciseUuid" TO "parentExerciseId";

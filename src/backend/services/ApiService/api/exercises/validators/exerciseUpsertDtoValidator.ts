@@ -6,7 +6,6 @@ const validator = exerciseValidator.omit({
   parentExerciseId: true,
   variations: true,
 }).extend({
-  id: exerciseValidator.shape.id.nullable(),
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   deletedAt: RouteFactory.validators.strings.datetime.nullable(),

@@ -73,6 +73,11 @@ export class ApiConfig implements OpenApiConfig<
   async onError(
     e: OpenApiOnErrorEvent<ApiRouteType, ApiRouteParamsMap, ApiRouteContextMap>
   ): Promise<OpenApiErrorResponse<ApiErrorCode, ApiErrorConfigMap>> {
+    e.logger.error(`Error: ${e.error}`, e.error, {
+      path: e.path,
+      query: e.query,
+      body: e.body,
+    });
     const error = e.error;
     if (error instanceof PermissionError) {
       const permissionError: PermissionErrorResponse = {

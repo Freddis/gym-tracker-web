@@ -232,14 +232,14 @@ export class WorkoutService {
     });
     const exerciseIds = rows.flatMap((r) => r.exercises.map((e) => e.exerciseId));
     const exercises = await this.exerciseService.paginate({ids: exerciseIds, perPage: 1000, language});
-    const eMap = new Map<number, Exercise>();
+    const eMap = new Map<string, Exercise>();
     for (const exercise of exercises.items) {
       eMap.set(exercise.id, exercise);
       for (const variation of exercise.variations) {
         eMap.set(variation.id, {...variation, variations: []});
       }
     }
-    const getOrThrow = <T>(map: Map<number, T>, key: number): T => {
+    const getOrThrow = <T>(map: Map<string, T>, key: string): T => {
       const x = map.get(key);
       if (!x) {
         throw new Error(`Exercise '${key}' not found`);
