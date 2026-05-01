@@ -2,8 +2,8 @@ import {globalServiceFactory} from 'src/backend/utils/GlobalServiceFactory/globa
 import {EntryType} from '../../src/backend/services/EntryService/types/EntryType';
 import {eq, isNull} from 'drizzle-orm';
 import {EntryRow} from '../../src/backend/services/DrizzleService/types/EntryRow';
-import {NewModel} from '../../src/backend/types/NewModel';
 import {EntryVisibility} from '../../src/backend/services/EntryService/types/EntryVisibility';
+import {randomUUID} from 'crypto';
 
 const service = await globalServiceFactory.argus();
 if (!service) {
@@ -26,7 +26,8 @@ const workoutsToAdd = await db.select()
 
 for (const row of workoutsToAdd) {
   const workout = row.workouts;
-  const entry: NewModel<EntryRow> = {
+  const entry: EntryRow = {
+    id: randomUUID(),
     time: workout.start,
     type: EntryType.Workout,
     title: null,
@@ -66,7 +67,8 @@ const weightToAdd = await db.select()
 
 for (const row of weightToAdd) {
   const weight = row.weight;
-  const entry: NewModel<EntryRow> = {
+  const entry: EntryRow = {
+    id: randomUUID(),
     time: weight.createdAt,
     type: EntryType.Weight,
     createdAt: weight.createdAt,

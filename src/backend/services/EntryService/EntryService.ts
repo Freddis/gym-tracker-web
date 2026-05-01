@@ -58,6 +58,7 @@ export class EntryService {
     const db = await this.drizzle.getDb();
     const image = entry.data ? await this.imageService.createFromBase64(entry.data, randomUUID(), ImageType.Entry) : null;
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
+      id: randomUUID(),
       createdAt: new Date(),
       time: new Date(),
       updatedAt: null,
@@ -82,7 +83,7 @@ export class EntryService {
     return created;
   }
 
-  async getPostEntry(userId: number, entryId: number): Promise<PostEntry | null> {
+  async getPostEntry(userId: number, entryId: string): Promise<PostEntry | null> {
     const entry = await this.get(userId, entryId);
     if (!entry || entry.type !== EntryType.Post) {
       return null;
@@ -90,7 +91,7 @@ export class EntryService {
     return entry;
   }
 
-  async updatePostEntry(userId: number, entryId: number, dto: SemiPartial<PostEntryCreateDto, 'data'>): Promise<PostEntry> {
+  async updatePostEntry(userId: number, entryId: string, dto: SemiPartial<PostEntryCreateDto, 'data'>): Promise<PostEntry> {
     const user = await this.userService.getById(userId);
     if (!user) {
       throw new Error('User not found');
@@ -101,7 +102,7 @@ export class EntryService {
     }
     const db = await this.drizzle.getDb();
     const image = dto.data ? await this.imageService.createFromBase64(dto.data, randomUUID(), ImageType.Entry) : entry.image;
-    const update: typeof db._.fullSchema.entries.$inferInsert = {
+    const update: Omit<typeof db._.fullSchema.entries.$inferInsert, 'id'> = {
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
@@ -131,6 +132,7 @@ export class EntryService {
     }
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
+      id: randomUUID(),
       createdAt: new Date(),
       time: entry.time,
       updatedAt: null,
@@ -170,6 +172,7 @@ export class EntryService {
     }
     const db = await this.drizzle.getDb();
     const newRow: typeof db._.fullSchema.entries.$inferInsert = {
+      id: randomUUID(),
       createdAt: new Date(),
       time: entry.time,
       updatedAt: null,
@@ -198,7 +201,7 @@ export class EntryService {
     return created;
   }
 
-  async get(userId: number, id: number): Promise<Entry | null> {
+  async get(userId: number, id: string): Promise<Entry | null> {
     const res = await this.getAll({id: [id], perPage: 1, userId: [userId]});
     return res.items[0] ?? null;
   }
@@ -210,7 +213,7 @@ export class EntryService {
 
   async getAll<T extends EntryType>(
     params?: {
-      id?: number[],
+      id?: string[],
       externalId?: string[],
       workoutIds?: number[],
       weightIds?: number[]
@@ -376,7 +379,7 @@ export class EntryService {
         ),
       });
       const data: typeof db._.fullSchema.entries.$inferInsert = {
-        id: item.id ?? undefined,
+        id: item.id,
         userId: userId,
         type: item.type,
         visibility: EntryVisibility.Public,
@@ -487,7 +490,7 @@ export class EntryService {
     return result;
   }
 
-  async delete(userId: number, entryId: number): Promise<void> {
+  async delete(userId: number, entryId: string): Promise<void> {
     const db = await this.drizzle.getDb();
     const entry = await this.get(userId, entryId);
     if (!entry || entry.user.id !== userId) {

@@ -821,7 +821,7 @@ export type Entry = {
   /**
    * Id of an entry
    */
-  id: number;
+  id: string;
   user: User;
   visibility: EntryVisibility;
   /**
@@ -1138,7 +1138,7 @@ export type WorkoutEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1238,7 +1238,7 @@ export type WeightEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1368,7 +1368,7 @@ export type PostEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1468,7 +1468,7 @@ export type OutdoorRunEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1634,7 +1634,7 @@ export type OutdoorWalkEntryUpsertDto = {
   /**
    * Id of the entry
    */
-  id?: number;
+  id: string;
   visibility: EntryVisibility;
   /**
    * Time of the entry. Can be changed by user.
@@ -1752,7 +1752,7 @@ export type PostEntry = {
   /**
    * Id of an entry
    */
-  id: number;
+  id: string;
   user: User;
   visibility: EntryVisibility;
   /**
@@ -6630,7 +6630,7 @@ export type DeleteEntriesByIdData = {
     /**
      * Id of the entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/entries/{id}";
@@ -6751,7 +6751,7 @@ export type GetEntriesByIdData = {
     /**
      * Id of the entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/entries/{id}";
@@ -7393,7 +7393,7 @@ export type GetPostsByIdData = {
     /**
      * Id of the post entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/posts/{id}";
@@ -7524,7 +7524,7 @@ export type PatchPostsByIdData = {
     /**
      * Id of the post entry
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/posts/{id}";

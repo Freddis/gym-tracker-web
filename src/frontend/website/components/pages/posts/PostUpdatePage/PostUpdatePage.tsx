@@ -20,11 +20,10 @@ export const PostUpdatePage: FC = () => {
   const {showToastsAndSetErrors, sliceErrors, errors} = useResponseErrors<PostEntry>();
   const routeApi = getRouteApi(route(RouteId.PostUpdate));
   const params = routeApi.useParams();
-  const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const save: PostUpdateFormProps['onSave'] = async (data) => {
     const result = await api.patchPostsById({
       path: {
-        id: id,
+        id: params.id,
       },
       body: {
         data: data.data ?? undefined,
@@ -42,10 +41,10 @@ export const PostUpdatePage: FC = () => {
   const response = useQuery({
     queryFn: () => api.getPostsById({
       path: {
-        id: id,
+        id: params.id,
       },
     }),
-    queryKey: ['images', id],
+    queryKey: ['images', params.id],
   });
 
   if (response.isLoading) {

@@ -9,7 +9,7 @@ import {EntryVisibility} from './EntryVisibility';
 import {ExternalSource} from './ExternalSource';
 
 export interface BaseEntry {
-  id: number;
+  id: string;
   // userId: number;
   title: string | null;
   note: string | null;

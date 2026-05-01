@@ -11,32 +11,27 @@ export interface ImageUpsertDto extends StrictOmit<ImageRow, 'userId'| 'createdA
   id?: number
   data: string | null
 }
-interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, 'id'| 'user'| 'image'> {
+interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, | 'user'| 'image'> {
   image: ImageUpsertDto | null
 }
 export interface WorkoutEntryUpsertDto extends BaseEntryUpsertDto {
-  id?: number
   type: EntryType.Workout
   workout: WorkoutUpsertDto
 }
 export interface WeightEntryUpsertDto extends BaseEntryUpsertDto {
-  id?: number
   type: EntryType.Weight
   weight: WeightUpsertDto
 }
 
 export interface PostEntryUpsertDto extends BaseEntryUpsertDto {
-  id?: number
   type: EntryType.Post
 }
 
 export interface OutdoorRunEntryUpsertDto extends BaseEntryUpsertDto {
-  id?: number
   type: EntryType.OutdoorRun
   outdoorRun: OutdoorRunUpsertDto
 }
 export interface OutdoorWalkEntryUpsertDto extends BaseEntryUpsertDto {
-  id?: number
   type: EntryType.OutdoorWalk
   outdoorWalk: OutdoorWalkUpsertDto
 }

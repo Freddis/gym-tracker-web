@@ -17,9 +17,9 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
         <div className="text-lg font-normal mb-5">
-          {!own && `${t(i18n.type)}: ${workout.id}`}
+          {!own && `${t(i18n.type)}`}
           {own && (
-            <RouteLink to={route(RouteId.WorkoutUpdate)} params={{id: workout.id.toString()}}>{t(i18n.type)}: {workout.id}</RouteLink>
+            <RouteLink to={route(RouteId.WorkoutUpdate)} params={{id: workout.id.toString()}}>{t(i18n.type)}</RouteLink>
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">

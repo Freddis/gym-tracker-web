@@ -1,7 +1,7 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {postEntryValidator} from './validators/postEntryValidator';
@@ -13,7 +13,7 @@ export const getPost = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the post entry'}),
+      id: string().openapi({description: 'Id of the post entry'}),
     }),
     response: postEntryValidator,
   },

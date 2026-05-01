@@ -1,4 +1,4 @@
-import {date, nativeEnum, number, object, string} from 'zod';
+import {date, nativeEnum, object, string} from 'zod';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {userValidator} from '../../users/validators/userValidator';
 import {workoutValidator} from '../../workouts/validators/workoutValidator';
@@ -10,7 +10,7 @@ import {outdoorRunValidator} from './outdoorRunValidator';
 import {outdoorWalkValidator} from './outdoorWalkValidator';
 
 const baseEntryValidator = object({
-  id: number().openapi({description: 'Id of an entry'}),
+  id: string().openapi({description: 'Id of an entry'}),
   user: userValidator,
   visibility: nativeEnum(EntryVisibility).openapi({description: 'Visibility of the entry', ref: 'Entry Visibility'}),
   time: date().openapi({description: 'Time of the entry. Can be changed by user.'}),

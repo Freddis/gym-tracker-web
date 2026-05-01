@@ -242,7 +242,7 @@ export const managers = gymTracker.table('managers', {
 });
 
 export const entries = gymTracker.table('entries', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity({name: 'entry_id_seq_alt'}),
+  id: uuid().primaryKey(),
   externalId: varchar(),
   externalSource: externalSourceEnum(),
   title: varchar(),

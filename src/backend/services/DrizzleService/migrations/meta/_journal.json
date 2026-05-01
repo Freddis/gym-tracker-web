@@ -253,6 +253,20 @@
       "when": 1777644563574,
       "tag": "0035_migrating_exercises_to_uuids_4",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1777656580607,
+      "tag": "0036_migrating_entries_to_uuids_1",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1777656624118,
+      "tag": "0037_migrating_entries_to_uuids_2",
+      "breakpoints": true
     }
   ]
 }

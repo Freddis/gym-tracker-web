@@ -16,6 +16,7 @@ import {ArgusRunCheckin} from '../DrizzleService/types/ArgusCheckinRow/validator
 import {ArgusWalkingCheckin} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusWalkingCheckin';
 import {PathPoint} from '../OutdoorWalkService/types/PathPoint';
 import {EntryService} from '../EntryService/EntryService';
+import {randomUUID} from 'crypto';
 export class ArgusCheckinService {
   protected db: DrizzleService;
   protected imageService: ImageService;
@@ -108,6 +109,7 @@ export class ArgusCheckinService {
     }
 
     const walkEntry: OutdoorWalkEntryUpsertDto = {
+      id: randomUUID(),
       type: EntryType.OutdoorWalk,
       outdoorWalk: {
         heartRate: data.averageHeartRate ?? null,
@@ -221,7 +223,7 @@ export class ArgusCheckinService {
     }
 
     const runEntry: OutdoorRunEntryUpsertDto = {
-      id: existing?.id,
+      id: existing?.id ?? randomUUID(),
       type: EntryType.OutdoorRun,
       outdoorRun: {
         heartRate: data.averageHeartRate ?? null,

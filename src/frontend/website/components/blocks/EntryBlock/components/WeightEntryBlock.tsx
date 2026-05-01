@@ -13,9 +13,9 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}>
     <AppBlock data-testid={`entry-${entry.id}`}>
       <div className="flex flex-col sm:flex-row">
         <div className="text-lg font-normal mb-5">
-          {!own && `${t(i18n.type)}: ${weight.id}`}
+          {!own && `${t(i18n.type)}`}
           {own && (
-            <RouteLink to={route(RouteId.WeightUpdate)} params={{id: entry.id.toString()}}>{t(i18n.type)}: {weight.id}</RouteLink>
+            <RouteLink to={route(RouteId.WeightUpdate)} params={{id: entry.id.toString()}}>{t(i18n.type)}</RouteLink>
           )}
         </div>
         <div className="grow flex flex-row sm:justify-end">

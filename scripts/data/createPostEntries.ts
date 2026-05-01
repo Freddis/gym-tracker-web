@@ -1,7 +1,6 @@
 import 'snap-on-openapi';
 import {ArgusCheckinType} from '../../src/backend/services/DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinType';
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
-import {NewModel} from '../../src/backend/types/NewModel';
 import {argusStatusCheckinValidator} from '../../src/backend/services/DrizzleService/types/ArgusCheckinRow/validators/ArgusStatusCheckin';
 import {EntryRow} from '../../src/backend/services/DrizzleService/types/EntryRow';
 import {EntryType} from '../../src/backend/services/EntryService/types/EntryType';
@@ -9,6 +8,7 @@ import {ExternalSource} from '../../src/backend/services/EntryService/types/Exte
 import {EntryVisibility} from '../../src/backend/services/EntryService/types/EntryVisibility';
 import {ImageType} from '../../src/backend/types/ImageType';
 import {Logger} from '../../src/backend/utils/Logger/Logger';
+import {randomUUID} from 'crypto';
 
 const logger = new Logger('createImageRecords');
 logger.info('Start');
@@ -37,7 +37,8 @@ for (const row of items.items.reverse()) {
     const imageRecord = await imageService.createFromUrl(image.href, image.id + '.jpg', ImageType.Entry);
     imageId = imageRecord.id;
   }
-  const newEntry: NewModel<EntryRow> = {
+  const newEntry: EntryRow = {
+    id: randomUUID(),
     type: EntryType.Post,
     externalId: status.externalId,
     externalSource: ExternalSource.Argus,

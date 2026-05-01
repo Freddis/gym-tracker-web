@@ -38,7 +38,6 @@ const baseEntryUpsertDtoValidator = entryValidator.omit({
   user: true,
   image: true,
 }).extend({
-  id: entryValidator.shape.id.optional(),
   time: RouteFactory.validators.strings.datetime,
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),

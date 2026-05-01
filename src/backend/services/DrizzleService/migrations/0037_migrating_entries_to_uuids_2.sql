@@ -1,0 +1,1 @@
+ALTER TABLE "gym_tracker"."entries" RENAME COLUMN "uuid" TO "id";

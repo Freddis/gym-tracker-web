@@ -26,10 +26,9 @@ export const WeightUpdatePage: FC = () => {
   const toasts = useToasts();
   const {errors, showToastsAndSetErrors} = useResponseErrors();
   const [weight, setWeight] = useState<number| null>(null);
-  const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
   const response = useQuery(getEntriesByIdOptions({
     path: {
-      id,
+      id: params.id,
     },
   }),
   );
@@ -49,12 +48,12 @@ export const WeightUpdatePage: FC = () => {
   }
 
   const save = async () => {
-    if (!weight) {
+    if (!weight || !response.data.weight) {
       return;
     }
     const result = await patchWeightById({
       path: {
-        id,
+        id: response.data.weight.id,
       },
       body: {
         weight: weight,
@@ -70,7 +69,7 @@ export const WeightUpdatePage: FC = () => {
   const onDeleteClick = async () => {
     const result = await api.deleteEntriesById({
       path: {
-        id: id,
+        id: params.id,
       },
     });
     if (showToastsAndSetErrors(result)) {

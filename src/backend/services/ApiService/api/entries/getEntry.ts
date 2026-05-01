@@ -2,7 +2,7 @@ import {OpenApiMethod} from 'snap-on-openapi';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {entryValidator} from './validators/entryValidator';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 
@@ -13,7 +13,7 @@ export const getEntry = RouteFactory.createRoute({
   description: 'Returns the list of public entries',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the entry'}),
+      id: string().openapi({description: 'Id of the entry'}),
     }),
     response: entryValidator,
   },

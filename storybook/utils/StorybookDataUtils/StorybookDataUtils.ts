@@ -211,7 +211,7 @@ export class StorybookDataUtils {
   }
   static getEntry(): Entry {
     const entry: Entry = {
-      id: 0,
+      id: '9317a469-3d8c-4853-bdf4-83b87197a5c9',
       time: new Date(),
       user: {
         ...this.getUser(),
@@ -233,7 +233,7 @@ export class StorybookDataUtils {
 
   static getPostEntry(): PostEntry {
     const postEntry: PostEntry = {
-      id: 0,
+      id: '4e61f548-a174-455c-b92e-405f9cb04d95',
       user: {
         ...this.getUser(),
         profilePicture: '',

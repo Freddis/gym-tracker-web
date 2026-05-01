@@ -12,7 +12,7 @@ export const updatePost = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the post entry'}),
+      id: string().openapi({description: 'Id of the post entry'}),
     }),
     body: object({
       data: string().optional().openapi({description: 'Data of the image. Base64 encoded string'}),
