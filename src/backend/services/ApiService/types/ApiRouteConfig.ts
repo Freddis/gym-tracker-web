@@ -1,4 +1,4 @@
-import {OpenApiAnyRouteConfigMap, OpenApiRouteConfig} from 'snap-on-openapi';
+import {OpenApiRouteConfig, OpenApiRouteConfigMap} from 'snap-on-openapi';
 import {ApiRouteType} from './ApiRouteType';
 import {ApiErrorCode} from './ApiErrorCode';
 import {ApiRequestServices} from './ApiRequestServices';
@@ -9,8 +9,10 @@ import {ManagerRouteContext} from './ManagerRouteContext';
 import {GlobalServiceFactory} from '../../../utils/GlobalServiceFactory/GlobalServiceFactory';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {nativeEnum} from 'zod';
+import {ApiRouteContextMap} from './ApiRouteContextMap';
+import {ApiRouteParamsMap} from './ApiRouteParamsMap';
 
-export class ApiRouteConfig implements OpenApiAnyRouteConfigMap<ApiRouteType, ApiErrorCode> {
+export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiErrorCode, ApiRouteParamsMap, ApiRouteContextMap> {
   protected factory: GlobalServiceFactory;
   protected baseUrl: string;
 

@@ -13,6 +13,7 @@ export const loginManager = RouteFactory.createRoute({
   type: ApiRouteType.Public,
   description: 'Logins a manager into CRM',
   path: '/login',
+  tags: ['auth', 'crm'],
   validators: {
     body: loginRequestValidator,
     response: authUserValidator,
@@ -23,7 +24,12 @@ export const loginManager = RouteFactory.createRoute({
       return result;
     } catch (error) {
       if (error instanceof ActionError && error.getActionErrorCode() === ActionErrorCode.InvalidPassword) {
-        throw new QuickTranslatedValidationError(loginRequestValidator, 'password', ValidationErrorCode.IncorrectEmailOrPassword);
+        throw new QuickTranslatedValidationError(
+          loginRequestValidator,
+          'password',
+          ValidationErrorCode.IncorrectEmailOrPassword,
+          ctx.params.body,
+        );
       }
       throw error;
     }

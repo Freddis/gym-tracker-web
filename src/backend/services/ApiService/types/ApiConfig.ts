@@ -1,8 +1,10 @@
 import {
-  OpenApiAnyConfig,
-  OpenApiErrorConfigMap,
+  OpenApiConfig,
   OpenApiErrorResponse,
   OpenApiFieldError,
+  OpenApiOnErrorEvent,
+  OpenApiOnResponseEvent,
+  OpenApiOnRouteEvent,
   OpenApiValidationError,
   OpenApiValidationLocation,
 } from 'snap-on-openapi';
@@ -27,15 +29,28 @@ import {zodErrorMessages} from '../utils/zodErrorMessages';
 import {ActionError} from '../errors/ActionError';
 import {ActionErrorResponse} from '../validators/ActionErrorResponse';
 import {ActionErrorCode} from './ActionErrorCode';
+import {ApiRouteParamsMap} from './ApiRouteParamsMap';
+import {ApiRouteContextMap} from './ApiRouteContextMap';
 
-export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
+export class ApiConfig implements OpenApiConfig<
+ ApiRouteType,
+ ApiErrorCode,
+ ApiErrorConfigMap,
+ ApiRouteParamsMap,
+ ApiRouteContextMap,
+ ApiRouteConfig
+> {
   basePath = '/api' as const;
+  apiName = 'Discipline API';
+  apiVersion = '1.0.0';
   routes: ApiRouteConfig;
   errors = new ApiErrorConfigMap();
   defaultError = {
     code: ApiErrorCode.UnknownError,
     body: {
-      error: ApiErrorCode.UnknownError,
+      error: {
+        code: ApiErrorCode.UnknownError,
+      },
     },
   } as const;
 
@@ -43,21 +58,36 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
     this.routes = new ApiRouteConfig(factory, baseUrl);
   }
 
-  handleError(e: unknown, req: Request): OpenApiErrorResponse<ApiErrorCode, OpenApiErrorConfigMap<ApiErrorCode>> {
-    if (e instanceof PermissionError) {
+  async onRoute(e: OpenApiOnRouteEvent<ApiRouteType, ApiRouteParamsMap>): Promise<void> {
+    e.logger.info(`Calling route ${e.route.path}`);
+    e.logger.info(`${e.method}: ${e.request.url}`, {
+      path: e.path,
+      query: e.query,
+      body: e.body,
+    });
+  }
+  onResponse? = async (e: OpenApiOnResponseEvent<ApiRouteType, ApiRouteParamsMap, ApiRouteContextMap>) => {
+    e.logger.info(`Response: ${e.response.status}`, {body: e.response.body, headers: e.response.headers});
+  };
+
+  async onError(
+    e: OpenApiOnErrorEvent<ApiRouteType, ApiRouteParamsMap, ApiRouteContextMap>
+  ): Promise<OpenApiErrorResponse<ApiErrorCode, ApiErrorConfigMap>> {
+    const error = e.error;
+    if (error instanceof PermissionError) {
       const permissionError: PermissionErrorResponse = {
         error: {
           code: ApiErrorCode.MissingPermission,
-          requiredPermissions: e.getRequiredPermissions(),
+          requiredPermissions: error.getRequiredPermissions(),
         },
       };
       return {code: ApiErrorCode.MissingPermission, body: permissionError};
     }
 
-    if (e instanceof OpenApiValidationError) {
-      const zodError = e.getZodError();
+    if (error instanceof OpenApiValidationError) {
+      const zodError = error.getZodError();
       const map: OpenApiFieldError[] = [];
-      const lang = this.routes.getRequestLangauge(req);
+      const lang = this.routes.getRequestLangauge(e.request);
       for (const issue of zodError.issues) {
         const defaultMessage = getErrorMap()(issue, {
           defaultError: '',
@@ -75,11 +105,11 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
           message: finalMessage,
         });
       }
-      if (e.getLocation() !== OpenApiValidationLocation.Response) {
+      if (error.getLocation() !== OpenApiValidationLocation.Response) {
         const response: ValidationErrorResponse = {
           error: {
             code: ApiErrorCode.ValidationFailed,
-            location: e.getLocation(),
+            location: error.getLocation(),
             fieldErrors: map,
           },
         };
@@ -97,42 +127,42 @@ export class ApiConfig implements OpenApiAnyConfig<ApiRouteType, ApiErrorCode> {
         return {code: ApiErrorCode.ResponseValidationFailed, body: response};
       }
     }
-    if (e instanceof ActionError) {
-      const humanReadable = this.getActionErrorDescriptions()[e.getActionErrorCode()];
-      const error: ActionErrorResponse = {
+    if (error instanceof ActionError) {
+      const humanReadable = this.getActionErrorDescriptions()[error.getActionErrorCode()];
+      const response: ActionErrorResponse = {
         error: {
           code: ApiErrorCode.ActionError,
-          actionErrorCode: e.getActionErrorCode(),
+          actionErrorCode: error.getActionErrorCode(),
           humanReadable,
         },
       };
-      return {code: ApiErrorCode.ActionError, body: error};
+      return {code: ApiErrorCode.ActionError, body: response};
     }
-    if (e instanceof ApiError) {
-      if (e.getCode() === ApiErrorCode.Unauthorized) {
-        const error: UnauthorizedErrorResponse = {
+    if (error instanceof ApiError) {
+      if (error.getCode() === ApiErrorCode.Unauthorized) {
+        const response: UnauthorizedErrorResponse = {
           error: {
             code: ApiErrorCode.Unauthorized,
           },
         };
-        return {code: ApiErrorCode.Unauthorized, body: error};
+        return {code: ApiErrorCode.Unauthorized, body: response};
       }
-      if (e.getCode() === ApiErrorCode.NotFound) {
-        const error: NotFoundErrorResponse = {
+      if (error.getCode() === ApiErrorCode.NotFound) {
+        const response: NotFoundErrorResponse = {
           error: {
             code: ApiErrorCode.NotFound,
           },
         };
-        return {code: ApiErrorCode.NotFound, body: error};
+        return {code: ApiErrorCode.NotFound, body: response};
       }
     }
 
-    const unknownError: UnknownErrorResponse = {
+    const response: UnknownErrorResponse = {
       error: {
         code: ApiErrorCode.UnknownError,
       },
     };
-    return {code: ApiErrorCode.UnknownError, body: unknownError};
+    return {code: ApiErrorCode.UnknownError, body: response};
   }
 
   protected getActionErrorDescriptions(): Record<ActionErrorCode, string> {

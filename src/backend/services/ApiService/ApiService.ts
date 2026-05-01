@@ -1,5 +1,5 @@
 import {openApiRoutes} from './utils/openApiRoutes';
-import {OpenApi} from 'snap-on-openapi';
+import {OpenApi, OpenApiRouteMap} from 'snap-on-openapi';
 import {ApiConfig} from './types/ApiConfig';
 import {ApiErrorCode} from './types/ApiErrorCode';
 import {ApiRouteType} from './types/ApiRouteType';
@@ -15,7 +15,15 @@ export class ApiService {
   }
   createOpenApi() {
     const api = OpenApi.builder.create(ApiRouteType, ApiErrorCode, new ApiConfig(this.factory, this.baseUrl));
-    api.addRouteMap(openApiRoutes);
+    const newMap: OpenApiRouteMap<ApiRouteType> = {};
+    for (const key of Object.keys(openApiRoutes)) {
+      const routes = openApiRoutes[key];
+      if (!routes) {
+        continue;
+      }
+      newMap[key] = routes.map((route) => api.factory.createRoute(route));
+    }
+    api.addRouteMap(newMap);
     return api;
   }
 
