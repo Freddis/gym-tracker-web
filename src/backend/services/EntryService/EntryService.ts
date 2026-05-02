@@ -459,6 +459,7 @@ export class EntryService {
           type: EntryType.Workout,
           workout: workout,
         });
+        continue;
       }
       if (weight) {
         result.push({
@@ -466,6 +467,7 @@ export class EntryService {
           type: EntryType.Weight,
           weight: weight,
         });
+        continue;
       }
       if (run) {
         result.push({
@@ -473,6 +475,7 @@ export class EntryService {
           type: EntryType.OutdoorRun,
           outdoorRun: run,
         });
+        continue;
       }
       if (walk) {
         result.push({
@@ -480,12 +483,12 @@ export class EntryService {
           type: EntryType.OutdoorWalk,
           outdoorWalk: walk,
         });
-      } else {
-        result.push({
-          ...created,
-          type: EntryType.Post,
-        });
+        continue;
       }
+      result.push({
+        ...created,
+        type: EntryType.Post,
+      });
     }
     return result;
   }
