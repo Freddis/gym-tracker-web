@@ -23,7 +23,6 @@ import {EntryBlock} from '../../../../blocks/EntryBlock/EntryBlock';
 import {EntryListQueryParams} from '../validators/entryListQueryParams';
 import {ApiResponse} from '../../../../../../common/types/ApiResponse';
 import {AppDatepicker} from '../../../../../../common/components/atoms/AppDatepicker/AppDatepicker';
-import {Link} from '@tanstack/react-router';
 import {AppLink} from '../../../../../../common/components/atoms/AppLink/AppLink';
 
 
@@ -62,11 +61,14 @@ export const EntryListPagePresenter: FC<EntryListPagePresenterProps> = (props) =
       <div className="w-full text-left mb-5 flex">
         <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         <div className="grow flex flex-row-reverse gap-5 items-center">
-        <Link to={route(RouteId.EntryAdd)} className="z-0">
+        <RouteLink to={route(RouteId.EntryAdd)} className="z-0">
           <AppButton>{t(i18n.buttons.addEntry)}</AppButton>
-        </Link>
+        </RouteLink>
         <RouteLink to={route(RouteId.WorkoutTypeList)} className="z-0">
           {t(i18n.buttons.types)}
+        </RouteLink>
+        <RouteLink to={route(RouteId.FoodList)} className="z-0">
+          {t(i18n.buttons.food)}
         </RouteLink>
         </div>
       </div>

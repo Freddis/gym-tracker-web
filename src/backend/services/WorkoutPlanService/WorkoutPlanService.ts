@@ -7,7 +7,7 @@ import {NewModelDto} from '../../types/NewModelDto';
 import {UserModelService} from '../../types/ModelService/UserModelService';
 import {WorkoutPlanFilter} from './types/WorkoutPlanFilter';
 import {WorkoutPlanRow} from '../DrizzleService/types/WorkoutPlanRow';
-export class WorkoutPlanService extends UserModelService<WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
+export class WorkoutPlanService extends UserModelService<number, WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
 
   protected table: AppDbSchema['workoutPlans'];
 

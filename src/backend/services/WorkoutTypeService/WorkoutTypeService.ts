@@ -12,7 +12,7 @@ import {AppDb, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {WorkoutTypeExerciseSetRow} from '../DrizzleService/types/WorkoutTypeExerciseSetRow';
 
-export class WorkoutTypeService extends UserModelService<WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
+export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
   protected exerciseService: ExerciseService;
 
   constructor(drizzle: DrizzleService, exerciseService: ExerciseService) {

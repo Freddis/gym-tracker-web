@@ -23,11 +23,6 @@ export class StorybookDataUtils {
     const image: Image = {
       id: 1,
       url: this.getExerciseImageUrl(),
-      imageType: 'Entry',
-      userId: 1,
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null,
     };
     return image;
   }

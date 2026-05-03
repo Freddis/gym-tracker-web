@@ -1,201 +1,82 @@
-import {
-  BucketAlreadyOwnedByYou,
-  CreateBucketCommand,
-  DeleteObjectCommand,
-  HeadObjectCommand,
-  PutObjectCommand,
-  S3Client,
-  S3ServiceException,
-} from '@aws-sdk/client-s3';
-import {DrizzleService} from '../DrizzleService/DrizzleService';
-import {ImageRow} from '../DrizzleService/types/ImageRow';
-import {ModelService} from '../../types/ModelService/ModelService';
 import {Image} from './types/Image';
-import {SQL, and, desc, inArray} from 'drizzle-orm';
-import {PgColumn} from 'drizzle-orm/pg-core';
 import {ImageFilter} from './types/ImageFilter';
-import {Logger} from '../../utils/Logger/Logger';
-import {ImageType} from '../../types/ImageType';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
+import {ManagedImageService} from './ManagedImageService';
+import {ManagedImage} from './types/ManagedImage';
+import {IImageService} from './types/IImageService';
+import {ImageType} from '../../types/ImageType';
 
-export class ImageService extends ModelService<ImageRow, Image, ImageFilter> {
-  protected bucket = 'gymtracker-images-23';
-  protected s3: S3Client;
-  protected logger = new Logger(ImageService.name);
+export class ImageService implements IImageService<Image, number, ImageFilter> {
+  private managedImageService: ManagedImageService;
 
-  constructor(drizzle: DrizzleService) {
-    super(drizzle);
-    this.s3 = new S3Client({});
+  constructor(managedImageService: ManagedImageService) {
+    this.managedImageService = managedImageService;
   }
 
-  override async deleteById(id: number): Promise<void> {
-    this.logger.info(`Deleting image '${id}'`);
-    const image = await this.getById(id);
-    if (!image) {
-      throw new Error('Image not found');
-    }
-    const fileName = image.url!.split('/').pop()!;
-    await this.deleteFileFromS3(fileName);
-    super.deleteById(id);
-  }
-
-  protected async fileExistsInS3(name: string): Promise<boolean> {
-    try {
-      await this.s3.send(
-      new HeadObjectCommand({
-        Bucket: this.bucket,
-        Key: name,
-      })
-    );
-      return true;
-    } catch (err: unknown) {
-      if (err instanceof S3ServiceException && err.name === 'NotFound') {
-        return false;
-      }
-      throw err;
-    }
-  }
-
-  /**
-   * Delete a file from S3 bucket
-   * @param bucket - The S3 bucket name
-   * @param name - The name of the file to delete
-   */
-  protected async deleteFileFromS3(name: string) {
-    this.logger.info('Checking if image exists on S3');
-    const exists = await this.fileExistsInS3(name);
-    if (!exists) {
-      this.logger.info("Image doesn't exist, throwing");
-      throw new Error(`Image doesn't exist '${name}'`);
-    }
-
-    this.logger.info('Deleting from S3');
-    const command = new DeleteObjectCommand({
-      Bucket: this.bucket,
-      Key: name,
-    });
-    const response = await this.s3.send(command);
-    this.logger.info('S3 Response: ', {name, response});
-  }
-
-  async getImageByName(name: string): Promise<ImageRow| null> {
-    const db = await this.drizzle.getDb();
-    const url = this.generateUrl(name);
-    const image = await db.query.images.findFirst({
-      where: (t, op) => op.eq(t.url, url),
-    });
-    return image ?? null;
+  async getImageByName(name: string): Promise<Image | null> {
+    const image = await this.managedImageService.getImageByName(name);
+    return image ? this.remapOne(image) : null;
   }
 
   generateUrl(name: string): string {
-    return `https://${this.bucket}.s3.eu-central-1.amazonaws.com/${name}`;
+    return this.managedImageService.generateUrl(name);
   }
 
-  async createFromFile(file: Buffer, name: string, imageType: ImageType): Promise<ImageRow> {
-    name = encodeURIComponent(name.replaceAll(' ', '-'));
-    const image = this.saveImageToDb(name, imageType);
-    // we don't automatically create buckets anymore
-    // await this.createBucket(this.bucket);
-    await this.uploadFile(file, this.bucket, name);
-    return image;
+  async createFromFile(file: Buffer, name: string, imageType: ImageType): Promise<Image> {
+    const image = await this.managedImageService.createFromFile(file, name, imageType);
+    return this.remapOne(image);
   }
 
-  async createFromUrl(href: string, name: string, imageType: ImageType): Promise<ImageRow> {
-    const base64Data = await this.getImageData(href);
-    return await this.createFromBase64(base64Data, name, imageType);
+  async createFromUrl(href: string, name: string, imageType: ImageType): Promise<Image> {
+    const image = await this.managedImageService.createFromUrl(href, name, imageType);
+    return this.remapOne(image);
   }
 
   async getImageData(href: string): Promise<string> {
-    const file = await fetch(href);
-    const buffer = await file.arrayBuffer();
-    const base64Data = Buffer.from(buffer).toString('base64');
-    return base64Data;
-  }
-  async createFromBase64(data: string, name: string, imageType: ImageType) {
-    const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
-    const buffer = Buffer.from(base64Data, 'base64');
-    return this.createFromFile(buffer, name, imageType);
+    const data = await this.managedImageService.getImageData(href);
+    return data;
   }
 
-  protected async saveImageToDb(name: string, imageType: ImageType): Promise<ImageRow> {
-    const db = await this.drizzle.getDb();
-    const inserted = await db.insert(db._.fullSchema.images).values({
-      url: this.generateUrl(name),
-      imageType: imageType,
-      createdAt: new Date(),
-    }).returning();
-    const result = inserted[0];
-    if (!result) {
-      throw new Error("Images wasn't saved in DB");
-    }
-    return result;
+  async createFromBase64(data: string, name: string, imageType: ImageType): Promise<Image> {
+    const image = await this.managedImageService.createFromBase64(data, name, imageType);
+    return this.remapOne(image);
   }
 
-  protected async uploadFile(file: Buffer<ArrayBufferLike>, bucket: string, name: string) {
-    try {
-      const command = new PutObjectCommand({
-        Bucket: bucket,
-        Key: name,
-        Body: file,
-        ACL: 'public-read',
-      });
-      await this.s3.send(command);
-    } catch (caught) {
-      if (caught instanceof S3ServiceException) {
-        console.error(`Error from S3 while uploading object to ${this.bucket}.  ${caught.name}: ${caught.message}`);
-      }
-      throw caught;
-    }
-  }
-
-  async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<ImageRow>> {
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
-    const offset = (page - 1) * limit;
-    const where = and(
-      params?.id ? inArray(this.getTable().id, params.id) : undefined,
-    );
-    const rows = await db.select().from(this.getTable()).where(where).limit(limit).offset(offset);
+  async paginate(params: Partial<ImageFilter>): Promise<PaginatedResult<Image>> {
+    const result = await this.managedImageService.paginate(params);
     return {
-      items: rows,
-      info: {
-        page,
-        count: rows.length,
-        pageSize: limit,
-      },
+      items: this.remapMany(result.items),
+      info: result.info,
     };
   }
 
-  protected async createBucket(name: string) {
-    const bucket = new CreateBucketCommand({Bucket: name});
-    try {
-      await this.s3.send(bucket);
-    } catch (e: unknown) {
-      if (e instanceof BucketAlreadyOwnedByYou) {
-        return;
-      }
-      throw e;
-    }
+  async get(filter: ImageFilter): Promise<Image | null> {
+    const result = await this.managedImageService.get(filter);
+    return result ? this.remapOne(result) : null;
   }
 
-  protected override getTable() {
-    return this.drizzle.getSchema().images;
-  }
-  protected override getWhere(params: Partial<ImageFilter>): SQL<unknown> | undefined {
-    ;
-    const where = and(
-      params.ids ? inArray(this.getTable().id, params.ids) : undefined,
-      params.search ? this.generateLikeConditions(this.getTable().url, params.search) : undefined
-    );
-    return where;
+  async getById(id: number): Promise<Image | null> {
+    const result = await this.managedImageService.getById(id);
+    return result ? this.remapOne(result) : null;
   }
 
-
-  protected override async decorateRows(rows: ImageRow[]):Promise<Image[]> {
-    return rows;
+  async getMany(filter: ImageFilter): Promise<Image[]> {
+    const result = await this.managedImageService.getMany(filter);
+    return this.remapMany(result);
   }
-  protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
-    return desc(this.getTable().id);
+
+  async deleteById(id: number): Promise<void> {
+    await this.managedImageService.deleteById(id);
+  }
+
+  protected remapOne(row: ManagedImage): Image {
+    return {
+      id: row.id,
+      url: row.url,
+    };
+  }
+
+  protected remapMany(rows: ManagedImage[]): Image[] {
+    return rows.map(this.remapOne);
   }
 }

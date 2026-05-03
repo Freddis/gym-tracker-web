@@ -956,38 +956,7 @@ export type Image = {
    * URL of the image
    */
   url: string;
-  imageType: ImageType;
-  /**
-   * Id of the user who uploaded it
-   */
-  userId: number | null;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion. Deleted exercises are not accessible to users.
-   */
-  deletedAt: Date | null;
 };
-
-/**
- * Type of object this image attaches to
- */
-export type ImageType = "Exercise" | "UserProfile" | "Entry";
-
-/**
- * Type of object this image attaches to
- */
-export const ImageType = {
-  EXERCISE: "Exercise",
-  USER_PROFILE: "UserProfile",
-  ENTRY: "Entry",
-} as const;
 
 /**
  * Outdoor run
@@ -1196,13 +1165,7 @@ export type WorkoutEntryUpsertDto = {
    * Image
    */
   image: {
-    /**
-     * Id of the image
-     */
-    id: number;
-    url: string | null;
-    imageType: ImageType;
-    data: string | null;
+    data: string;
   } | null;
   /**
    * Id of the healthkit entry
@@ -1296,13 +1259,7 @@ export type WeightEntryUpsertDto = {
    * Image
    */
   image: {
-    /**
-     * Id of the image
-     */
-    id: number;
-    url: string | null;
-    imageType: ImageType;
-    data: string | null;
+    data: string;
   } | null;
   /**
    * Id of the healthkit entry
@@ -1426,13 +1383,7 @@ export type PostEntryUpsertDto = {
    * Image
    */
   image: {
-    /**
-     * Id of the image
-     */
-    id: number;
-    url: string | null;
-    imageType: ImageType;
-    data: string | null;
+    data: string;
   } | null;
   /**
    * Id of the healthkit entry
@@ -1526,13 +1477,7 @@ export type OutdoorRunEntryUpsertDto = {
    * Image
    */
   image: {
-    /**
-     * Id of the image
-     */
-    id: number;
-    url: string | null;
-    imageType: ImageType;
-    data: string | null;
+    data: string;
   } | null;
   /**
    * Id of the healthkit entry
@@ -1692,13 +1637,7 @@ export type OutdoorWalkEntryUpsertDto = {
    * Image
    */
   image: {
-    /**
-     * Id of the image
-     */
-    id: number;
-    url: string | null;
-    imageType: ImageType;
-    data: string | null;
+    data: string;
   } | null;
   /**
    * Id of the healthkit entry
@@ -1814,6 +1753,116 @@ export type PostEntry = {
 };
 
 /**
+ * Food record to upsert
+ */
+export type FoodUpsertDto = {
+  /**
+   * Id of the food
+   */
+  id: string;
+  /**
+   * Name of the food
+   */
+  name: string;
+  /**
+   * Description of the food
+   */
+  description: string | null;
+  /**
+   * Image of the food
+   */
+  image?: {
+    data: string;
+  } | null;
+  /**
+   * Protein of the food
+   */
+  protein: number;
+  /**
+   * Carbs of the food
+   */
+  carbs: number;
+  /**
+   * Fat of the food
+   */
+  fat: number;
+  /**
+   * Serving size of the food
+   */
+  servingSize: number | null;
+  /**
+   * Serving size unit of the food
+   */
+  servingSizeUnit: string;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of deletion
+   */
+  deletedAt: Date | null;
+};
+
+/**
+ * Food record
+ */
+export type Food = {
+  /**
+   * Id of the food
+   */
+  id: string;
+  /**
+   * Name of the food
+   */
+  name: string;
+  /**
+   * Description of the food
+   */
+  description: string | null;
+  /**
+   * Image of the food
+   */
+  image: Image | null;
+  /**
+   * Calories of the food
+   */
+  calories: number;
+  /**
+   * Protein of the food
+   */
+  protein: number;
+  /**
+   * Carbs of the food
+   */
+  carbs: number;
+  /**
+   * Fat of the food
+   */
+  fat: number;
+  /**
+   * Serving size of the food
+   */
+  servingSize: number | null;
+  /**
+   * Serving size unit of the food
+   */
+  servingSizeUnit: string;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+};
+
+/**
  * Manager. Managers that work with CRM
  */
 export type Manager = {
@@ -1896,6 +1945,52 @@ export type Translation = {
    */
   deletedAt: Date | null;
 };
+
+/**
+ * Image record
+ */
+export type ManagedImage = {
+  /**
+   * Id of the image
+   */
+  id: number;
+  /**
+   * URL of the image
+   */
+  url: string;
+  imageType: ImageType;
+  /**
+   * Id of the user who uploaded it
+   */
+  userId: number | null;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of deletion. Deleted exercises are not accessible to users.
+   */
+  deletedAt: Date | null;
+};
+
+/**
+ * Type of object this image attaches to
+ */
+export type ImageType = "Exercise" | "UserProfile" | "Entry" | "Food";
+
+/**
+ * Type of object this image attaches to
+ */
+export const ImageType = {
+  EXERCISE: "Exercise",
+  USER_PROFILE: "UserProfile",
+  ENTRY: "Entry",
+  FOOD: "Food",
+} as const;
 
 export type PostAuthRegisterData = {
   body?: {
@@ -7637,6 +7732,388 @@ export type PatchPostsByIdResponses = {
 export type PatchPostsByIdResponse =
   PatchPostsByIdResponses[keyof PatchPostsByIdResponses];
 
+export type GetFoodListData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Search for food by name
+     */
+    search?: string;
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/food";
+};
+
+export type GetFoodListErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetFoodListError = GetFoodListErrors[keyof GetFoodListErrors];
+
+export type GetFoodListResponses = {
+  /**
+   * List of food
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Food>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type GetFoodListResponse =
+  GetFoodListResponses[keyof GetFoodListResponses];
+
+export type UpsertFoodData = {
+  body?: FoodUpsertDto;
+  path?: never;
+  query?: never;
+  url: "/food";
+};
+
+export type UpsertFoodErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type UpsertFoodError = UpsertFoodErrors[keyof UpsertFoodErrors];
+
+export type UpsertFoodResponses = {
+  /**
+   * Good Response
+   */
+  200: Food;
+};
+
+export type UpsertFoodResponse = UpsertFoodResponses[keyof UpsertFoodResponses];
+
+export type GetFoodData = {
+  body?: never;
+  path: {
+    /**
+     * Id of the food
+     */
+    id: string;
+  };
+  query?: {
+    /**
+     * Search for food by name
+     */
+    search?: string;
+    /**
+     * Page
+     */
+    page?: number;
+  };
+  url: "/food/{id}";
+};
+
+export type GetFoodErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetFoodError = GetFoodErrors[keyof GetFoodErrors];
+
+export type GetFoodResponses = {
+  /**
+   * Good Response
+   */
+  200: Food;
+};
+
+export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
+
 export type GetCrmUsersData = {
   body?: never;
   path?: never;
@@ -9065,7 +9542,7 @@ export type GetCrmImagesResponses = {
     /**
      * Page or items
      */
-    items: Array<Image>;
+    items: Array<ManagedImage>;
     /**
      * Pagination details
      */

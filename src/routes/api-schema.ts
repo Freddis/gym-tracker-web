@@ -3,4 +3,4 @@ import {globalServiceFactory} from '../backend/utils/GlobalServiceFactory/global
 
 const openApi = await globalServiceFactory.openApi();
 const methods = openApi.wrappers.tanstackStart.createShemaMethods();
-export const ServerRoute = createServerFileRoute('/schema').methods(methods);
+export const ServerRoute = createServerFileRoute('/api-schema').methods(methods);

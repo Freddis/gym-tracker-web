@@ -5,7 +5,7 @@ export interface EntityService<TModel, TId extends string | number = number, TFi
   paginate(params: Partial<TFilter>): Promise<PaginatedResult<TModel>>
   get(filter: TFilter): Promise<TModel | null>
   getById(id: TId): Promise<TModel | null>
-  getMany(filter: TFilter): Promise<TModel[] | null>
+  getMany(filter: TFilter): Promise<TModel[]>
   deleteById(id: TId): void
 }
 export interface UserEntityService<TModel, TFilter = Filter> {

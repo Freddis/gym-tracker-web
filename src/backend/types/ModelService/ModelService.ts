@@ -4,15 +4,17 @@ import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
 import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
+import {EntityService} from './types/EntityService';
 
-export abstract class ModelService<TRow extends {id:number}, TModel extends {id: number}, TFilter extends Filter = Filter> {
+export abstract class ModelService<TRow extends {id:number}, TModel extends {id: number}, TFilter extends Filter = Filter>
+implements EntityService<TModel, number, TFilter> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;
   }
 
-  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn}
+  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn<number>}
   protected abstract getWhere(params: Partial<TFilter>):SQL<unknown> | undefined
   protected abstract decorateRows(rows: TRow[]): Promise<TModel[]>
   protected abstract getOrderBy(): PgColumn | SQL | SQL.Aliased

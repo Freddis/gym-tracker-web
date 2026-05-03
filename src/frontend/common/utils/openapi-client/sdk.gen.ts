@@ -125,6 +125,15 @@ import type {
   PatchPostsByIdData,
   PatchPostsByIdResponses,
   PatchPostsByIdErrors,
+  GetFoodListData,
+  GetFoodListResponses,
+  GetFoodListErrors,
+  UpsertFoodData,
+  UpsertFoodResponses,
+  UpsertFoodErrors,
+  GetFoodData,
+  GetFoodResponses,
+  GetFoodErrors,
   GetCrmUsersData,
   GetCrmUsersResponses,
   GetCrmUsersErrors,
@@ -191,6 +200,9 @@ import {
   postPostsResponseTransformer,
   getPostsByIdResponseTransformer,
   patchPostsByIdResponseTransformer,
+  getFoodListResponseTransformer,
+  upsertFoodResponseTransformer,
+  getFoodResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -1211,6 +1223,82 @@ export const patchPostsById = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const getFoodList = <ThrowOnError extends boolean = false>(
+  options?: Options<GetFoodListData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetFoodListResponses,
+    GetFoodListErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getFoodListResponseTransformer,
+    url: "/food",
+    ...options,
+  });
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const upsertFood = <ThrowOnError extends boolean = false>(
+  options?: Options<UpsertFoodData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    UpsertFoodResponses,
+    UpsertFoodErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: upsertFoodResponseTransformer,
+    url: "/food",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Returns data on food for user
+ */
+export const getFood = <ThrowOnError extends boolean = false>(
+  options: Options<GetFoodData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetFoodResponses,
+    GetFoodErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getFoodResponseTransformer,
+    url: "/food/{id}",
+    ...options,
   });
 };
 

@@ -328,3 +328,27 @@ export const outdoorWalks = gymTracker.table('outdoor_walks', {
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
 });
+
+export const food = gymTracker.table('food', {
+  id: uuid().primaryKey(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  name: varchar().notNull(),
+  description: text(),
+  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  protein: real().notNull(),
+  carbs: real().notNull(),
+  fat: real().notNull(),
+  servingSize: real(),
+  servingSizeUnit: varchar().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  updatedAt: timestamp({withTimezone: true, mode: 'date'}),
+  deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});
+
+// export const foodComponents = gymTracker.table('food_components', {
+//   id: integer().primaryKey().generatedByDefaultAsIdentity(),
+//   foodId: uuid().notNull().references(() => food.id, {onDelete: 'cascade'}),
+//   componentId: uuid().notNull().references(() => food.id, {onDelete: 'cascade'}),
+//   amount: real().notNull(),
+//   unit: varchar().notNull(),
+// });

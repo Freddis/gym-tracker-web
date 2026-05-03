@@ -4,7 +4,7 @@ import {workoutUpsertDtoValidator} from '../../workouts/validators/workoutUpsert
 import {entryValidator} from './entryValidator';
 import {EntryType} from '../../../../EntryService/types/EntryType';
 import {weightUpsertDtoValidator} from '../../weight/validators/weightUpsertDtoValidator';
-import {imageUpserDtoValidator} from './imageUpserDtoValidator';
+import {imageUpsertDtoValidator} from './imageUpsertDtoValidator';
 import {outdoorRunUpsertDtoValidator} from './outdoorRunUpsertDtoValidator';
 import {outdoorWalkUpsertDtoValidator} from './outdoorWalkUpsertDtoValidator';
 
@@ -42,7 +42,7 @@ const baseEntryUpsertDtoValidator = entryValidator.omit({
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   deletedAt: RouteFactory.validators.strings.datetime.nullable(),
-  image: imageUpserDtoValidator.nullable(),
+  image: imageUpsertDtoValidator.nullable(),
   healthkitId: string().nullable(),
   healthkitAnchor: number().nullable(),
   healthkitAnchors_3_0: string().nullable(),

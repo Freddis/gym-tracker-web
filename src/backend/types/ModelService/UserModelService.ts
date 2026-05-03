@@ -1,4 +1,4 @@
-import {TableConfig, SQL, eq, inArray} from 'drizzle-orm';
+import {TableConfig, SQL, eq, inArray, and, or, isNull} from 'drizzle-orm';
 import {PgColumn, PgTable} from 'drizzle-orm/pg-core';
 import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
 import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
@@ -6,18 +6,18 @@ import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
 import {UserIdColumn} from './types/UserIdColumn';
 
-export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter extends Filter> {
+export abstract class UserModelService<TKey extends number | string, TRow extends {id:TKey}, TModel, TFilter extends Filter<TKey>> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;
   }
 
-  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn, userId: UserIdColumn}
+  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn<TKey>, userId: UserIdColumn}
   protected abstract getWhere(params: Partial<TFilter>):SQL<unknown> | undefined
   protected abstract decorateRows(rows: TRow[]): Promise<TModel[]>
   protected abstract getOrderBy(): PgColumn | SQL | SQL.Aliased
-  protected async loadRows(ids: number[]): Promise<TRow[]> {
+  protected async loadRows(ids: TKey[]): Promise<TRow[]> {
     const db = await this.drizzle.getDb();
     const result = await db.select().from(this.getTable()).where(
       inArray(this.getTable().id, ids),
@@ -32,7 +32,7 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     }
     return result[0];
   }
-  async decorate(id: number): Promise<TModel> {
+  async decorate(id: TKey): Promise<TModel> {
     const rows = await this.loadRows([id]);
     const result = await this.decorateRows(rows);
     if (!result[0]) {
@@ -40,7 +40,7 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     }
     return result[0];
   }
-  async decorateMany(ids: number[]): Promise<TModel[]> {
+  async decorateMany(ids: TKey[]): Promise<TModel[]> {
     const rows = await this.loadRows(ids);
     const result = await this.decorateRows(rows);
     return result;
@@ -52,11 +52,17 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
     const where: SQL<unknown> | undefined = this.getWhere(params);
-    const rows = await db.select({
-      id: this.getTable().id,
-    })
+    const rows = await db.select()
     .from(this.getTable())
-    .where(where)
+    .where(
+      and(
+        where,
+        or(
+          eq(this.getTable().userId, userId),
+          isNull(this.getTable().userId),
+        )
+      )
+    )
     .orderBy(
      this.getOrderBy()
     )
@@ -64,9 +70,9 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     .offset(offset);
 
     const count = await db.$count(this.getTable(), where);
-
+    const ids: TKey[] = rows.map((x) => x.id);
     const result: PaginatedResult<TModel> = {
-      items: await this.decorateMany(rows.map((x) => x.id)),
+      items: await this.decorateMany(ids),
       info: {
         page,
         count,
@@ -77,10 +83,13 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
   }
 
 
-  async getById(userId: number, id: number): Promise<TModel | null> {
+  async getById(userId: number, id: TKey): Promise<TModel | null> {
     const params: Partial<TFilter> = {};
     params.ids = [id];
     const record = await this.paginate(userId, params);
+    if (record.items.length > 1) {
+      throw new Error(`Multiple records found for id ${id}`);
+    }
     const result = record.items[0];
     return result ?? null;
   }
@@ -91,7 +100,7 @@ export abstract class UserModelService<TRow extends {id:number}, TModel, TFilter
     return result ?? null;
   }
 
-  async deleteById(userId: number, id: number) {
+  async deleteById(userId: number, id: TKey) {
     const plan = await this.getById(userId, id);
     if (!plan) {
       throw new Error('Plan not found');

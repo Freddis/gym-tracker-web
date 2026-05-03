@@ -12,6 +12,7 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FoodIndexRouteImport } from './routes/food/index'
 import { Route as FeedIndexRouteImport } from './routes/feed/index'
 import { Route as ExercisesIndexRouteImport } from './routes/exercises/index'
 import { Route as EntriesIndexRouteImport } from './routes/entries/index'
@@ -19,6 +20,7 @@ import { Route as CrmIndexRouteImport } from './routes/crm/index'
 import { Route as WorkoutsCreateRouteImport } from './routes/workouts/create'
 import { Route as WeightCreateRouteImport } from './routes/weight/create'
 import { Route as PostsCreateRouteImport } from './routes/posts/create'
+import { Route as FoodCreateRouteImport } from './routes/food/create'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
 import { Route as EntriesAddRouteImport } from './routes/entries/add'
@@ -39,6 +41,7 @@ import { Route as WorkoutsTypesCreateRouteImport } from './routes/workouts/types
 import { Route as WorkoutsPlansCreateRouteImport } from './routes/workouts/plans/create'
 import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as PostsUpdateIdRouteImport } from './routes/posts/update/$id'
+import { Route as FoodUpdateIdRouteImport } from './routes/food/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { Route as AuthPasswordResetCompleteTokenRouteImport } from './routes/auth/password-reset-complete.$token'
 import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/types/update/$id'
@@ -47,7 +50,7 @@ import { Route as CrmTranslationsUpdateIdRouteImport } from './routes/crm/transl
 import { Route as CrmExercisesUpdateIdRouteImport } from './routes/crm/exercises/update/$id'
 import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
 import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
-import { ServerRoute as SchemaServerRouteImport } from './routes/schema'
+import { ServerRoute as ApiSchemaServerRouteImport } from './routes/api-schema'
 import { ServerRoute as ApiServerRouteImport } from './routes/api'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -55,6 +58,11 @@ const rootServerRouteImport = createServerRootRoute()
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoodIndexRoute = FoodIndexRouteImport.update({
+  id: '/food/',
+  path: '/food/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeedIndexRoute = FeedIndexRouteImport.update({
@@ -90,6 +98,11 @@ const WeightCreateRoute = WeightCreateRouteImport.update({
 const PostsCreateRoute = PostsCreateRouteImport.update({
   id: '/posts/create',
   path: '/posts/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoodCreateRoute = FoodCreateRouteImport.update({
+  id: '/food/create',
+  path: '/food/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
@@ -192,6 +205,11 @@ const PostsUpdateIdRoute = PostsUpdateIdRouteImport.update({
   path: '/posts/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FoodUpdateIdRoute = FoodUpdateIdRouteImport.update({
+  id: '/food/update/$id',
+  path: '/food/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExercisesUpdateExerciseIdRoute =
   ExercisesUpdateExerciseIdRouteImport.update({
     id: '/exercises/update/$exerciseId',
@@ -234,9 +252,9 @@ const StoplightServerRoute = StoplightServerRouteImport.update({
   path: '/stoplight',
   getParentRoute: () => rootServerRouteImport,
 } as any)
-const SchemaServerRoute = SchemaServerRouteImport.update({
-  id: '/schema',
-  path: '/schema',
+const ApiSchemaServerRoute = ApiSchemaServerRouteImport.update({
+  id: '/api-schema',
+  path: '/api-schema',
   getParentRoute: () => rootServerRouteImport,
 } as any)
 const ApiServerRoute = ApiServerRouteImport.update({
@@ -255,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/create': typeof FoodCreateRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -262,8 +281,10 @@ export interface FileRoutesByFullPath {
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
+  '/food': typeof FoodIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/food/update/$id': typeof FoodUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -291,6 +312,7 @@ export interface FileRoutesByTo {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/create': typeof FoodCreateRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -298,8 +320,10 @@ export interface FileRoutesByTo {
   '/entries': typeof EntriesIndexRoute
   '/exercises': typeof ExercisesIndexRoute
   '/feed': typeof FeedIndexRoute
+  '/food': typeof FoodIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/food/update/$id': typeof FoodUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -328,6 +352,7 @@ export interface FileRoutesById {
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/create': typeof FoodCreateRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -335,8 +360,10 @@ export interface FileRoutesById {
   '/entries/': typeof EntriesIndexRoute
   '/exercises/': typeof ExercisesIndexRoute
   '/feed/': typeof FeedIndexRoute
+  '/food/': typeof FoodIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
+  '/food/update/$id': typeof FoodUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
@@ -366,6 +393,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/food/create'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -373,8 +401,10 @@ export interface FileRouteTypes {
     | '/entries'
     | '/exercises'
     | '/feed'
+    | '/food'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/food/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -402,6 +432,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/food/create'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -409,8 +440,10 @@ export interface FileRouteTypes {
     | '/entries'
     | '/exercises'
     | '/feed'
+    | '/food'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/food/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -438,6 +471,7 @@ export interface FileRouteTypes {
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/create'
+    | '/food/create'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -445,8 +479,10 @@ export interface FileRouteTypes {
     | '/entries/'
     | '/exercises/'
     | '/feed/'
+    | '/food/'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
+    | '/food/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
     | '/workouts/plans/create'
@@ -475,6 +511,7 @@ export interface RootRouteChildren {
   EntriesAddRoute: typeof EntriesAddRoute
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
+  FoodCreateRoute: typeof FoodCreateRoute
   PostsCreateRoute: typeof PostsCreateRoute
   WeightCreateRoute: typeof WeightCreateRoute
   WorkoutsCreateRoute: typeof WorkoutsCreateRoute
@@ -482,8 +519,10 @@ export interface RootRouteChildren {
   EntriesIndexRoute: typeof EntriesIndexRoute
   ExercisesIndexRoute: typeof ExercisesIndexRoute
   FeedIndexRoute: typeof FeedIndexRoute
+  FoodIndexRoute: typeof FoodIndexRoute
   AuthPasswordResetCompleteTokenRoute: typeof AuthPasswordResetCompleteTokenRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
+  FoodUpdateIdRoute: typeof FoodUpdateIdRoute
   PostsUpdateIdRoute: typeof PostsUpdateIdRoute
   WeightUpdateIdRoute: typeof WeightUpdateIdRoute
   WorkoutsPlansCreateRoute: typeof WorkoutsPlansCreateRoute
@@ -503,34 +542,34 @@ export interface RootRouteChildren {
 }
 export interface FileServerRoutesByFullPath {
   '/api': typeof ApiServerRoute
-  '/schema': typeof SchemaServerRoute
+  '/api-schema': typeof ApiSchemaServerRoute
   '/stoplight': typeof StoplightServerRoute
   '/swagger': typeof SwaggerServerRoute
 }
 export interface FileServerRoutesByTo {
   '/api': typeof ApiServerRoute
-  '/schema': typeof SchemaServerRoute
+  '/api-schema': typeof ApiSchemaServerRoute
   '/stoplight': typeof StoplightServerRoute
   '/swagger': typeof SwaggerServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
   '/api': typeof ApiServerRoute
-  '/schema': typeof SchemaServerRoute
+  '/api-schema': typeof ApiSchemaServerRoute
   '/stoplight': typeof StoplightServerRoute
   '/swagger': typeof SwaggerServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api' | '/schema' | '/stoplight' | '/swagger'
+  fullPaths: '/api' | '/api-schema' | '/stoplight' | '/swagger'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api' | '/schema' | '/stoplight' | '/swagger'
-  id: '__root__' | '/api' | '/schema' | '/stoplight' | '/swagger'
+  to: '/api' | '/api-schema' | '/stoplight' | '/swagger'
+  id: '__root__' | '/api' | '/api-schema' | '/stoplight' | '/swagger'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
   ApiServerRoute: typeof ApiServerRoute
-  SchemaServerRoute: typeof SchemaServerRoute
+  ApiSchemaServerRoute: typeof ApiSchemaServerRoute
   StoplightServerRoute: typeof StoplightServerRoute
   SwaggerServerRoute: typeof SwaggerServerRoute
 }
@@ -542,6 +581,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/food/': {
+      id: '/food/'
+      path: '/food'
+      fullPath: '/food'
+      preLoaderRoute: typeof FoodIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/feed/': {
@@ -591,6 +637,13 @@ declare module '@tanstack/react-router' {
       path: '/posts/create'
       fullPath: '/posts/create'
       preLoaderRoute: typeof PostsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/food/create': {
+      id: '/food/create'
+      path: '/food/create'
+      fullPath: '/food/create'
+      preLoaderRoute: typeof FoodCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/create': {
@@ -733,6 +786,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/food/update/$id': {
+      id: '/food/update/$id'
+      path: '/food/update/$id'
+      fullPath: '/food/update/$id'
+      preLoaderRoute: typeof FoodUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercises/update/$exerciseId': {
       id: '/exercises/update/$exerciseId'
       path: '/exercises/update/$exerciseId'
@@ -793,11 +853,11 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof StoplightServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
-    '/schema': {
-      id: '/schema'
-      path: '/schema'
-      fullPath: '/schema'
-      preLoaderRoute: typeof SchemaServerRouteImport
+    '/api-schema': {
+      id: '/api-schema'
+      path: '/api-schema'
+      fullPath: '/api-schema'
+      preLoaderRoute: typeof ApiSchemaServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
     '/api': {
@@ -820,6 +880,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntriesAddRoute: EntriesAddRoute,
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
+  FoodCreateRoute: FoodCreateRoute,
   PostsCreateRoute: PostsCreateRoute,
   WeightCreateRoute: WeightCreateRoute,
   WorkoutsCreateRoute: WorkoutsCreateRoute,
@@ -827,8 +888,10 @@ const rootRouteChildren: RootRouteChildren = {
   EntriesIndexRoute: EntriesIndexRoute,
   ExercisesIndexRoute: ExercisesIndexRoute,
   FeedIndexRoute: FeedIndexRoute,
+  FoodIndexRoute: FoodIndexRoute,
   AuthPasswordResetCompleteTokenRoute: AuthPasswordResetCompleteTokenRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
+  FoodUpdateIdRoute: FoodUpdateIdRoute,
   PostsUpdateIdRoute: PostsUpdateIdRoute,
   WeightUpdateIdRoute: WeightUpdateIdRoute,
   WorkoutsPlansCreateRoute: WorkoutsPlansCreateRoute,
@@ -851,7 +914,7 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiServerRoute: ApiServerRoute,
-  SchemaServerRoute: SchemaServerRoute,
+  ApiSchemaServerRoute: ApiSchemaServerRoute,
   StoplightServerRoute: StoplightServerRoute,
   SwaggerServerRoute: SwaggerServerRoute,
 }

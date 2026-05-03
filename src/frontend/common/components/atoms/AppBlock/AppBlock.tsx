@@ -1,11 +1,26 @@
-import {FC, HTMLAttributes} from 'react';
+import {FC, ReactNode} from 'react';
 import {cn} from '../../../utils/cn';
-
-export const AppBlock: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
-  const classes = cn('bg-surface text-on-surface p-5 rounded-md w-full shadow-md', props.className);
+interface AppBlockProps {
+  image?: string;
+  imageHeight?: number;
+  className?: string;
+  children: ReactNode | ReactNode[] | string;
+}
+export const AppBlock: FC<AppBlockProps> = (props) => {
+  const classes = cn(
+    'bg-surface text-on-surface overflow-hidden rounded-md w-full shadow-md',
+     props.image ? 'p-0' : 'p-5', props.className
+  );
   return (
-    <div {...props} className={classes}>
+    <div className={classes}>
+      {props.image && (
+        <div className="relative">
+          <img src={props.image} className="w-full object-cover" style={{height: props.imageHeight}} />
+        </div>
+      )}
+      <div className="">
       {props.children}
+      </div>
     </div>
   );
 };

@@ -27,7 +27,7 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}>
       </div>
       <div className="mt-5 flex flex-row justify-center items-end">
 
-          <div className="text-5xl font-normal">{weight.weight}</div>
+          <div className="text-5xl font-normal">{weight.weight.toFixed(2)}</div>
           <div className="text-lg font-semibold">{weight.units}</div>
 
       </div>

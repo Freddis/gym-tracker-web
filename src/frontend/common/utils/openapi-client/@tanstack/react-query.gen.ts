@@ -43,6 +43,9 @@ import {
   postPosts,
   getPostsById,
   patchPostsById,
+  getFoodList,
+  upsertFood,
+  getFood,
   getCrmUsers,
   getCrmManagers,
   postCrmAuthLogin,
@@ -167,6 +170,15 @@ import type {
   PatchPostsByIdData,
   PatchPostsByIdError,
   PatchPostsByIdResponse,
+  GetFoodListData,
+  GetFoodListError,
+  GetFoodListResponse,
+  UpsertFoodData,
+  UpsertFoodError,
+  UpsertFoodResponse,
+  GetFoodData,
+  GetFoodError,
+  GetFoodResponse,
   GetCrmUsersData,
   GetCrmUsersError,
   GetCrmUsersResponse,
@@ -1987,6 +1999,174 @@ export const patchPostsByIdMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getFoodListQueryKey = (options?: Options<GetFoodListData>) =>
+  createQueryKey("getFoodList", options);
+
+/**
+ * Updates or inserts food for user
+ */
+export const getFoodListOptions = (options?: Options<GetFoodListData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFoodList({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFoodListQueryKey(options),
+  });
+};
+
+export const getFoodListInfiniteQueryKey = (
+  options?: Options<GetFoodListData>,
+): QueryKey<Options<GetFoodListData>> =>
+  createQueryKey("getFoodList", options, true);
+
+/**
+ * Updates or inserts food for user
+ */
+export const getFoodListInfiniteOptions = (
+  options?: Options<GetFoodListData>,
+) => {
+  return infiniteQueryOptions<
+    GetFoodListResponse,
+    AxiosError<GetFoodListError>,
+    InfiniteData<GetFoodListResponse>,
+    QueryKey<Options<GetFoodListData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetFoodListData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetFoodListData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getFoodList({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getFoodListInfiniteQueryKey(options),
+    },
+  );
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const upsertFoodMutation = (
+  options?: Partial<Options<UpsertFoodData>>,
+): UseMutationOptions<
+  UpsertFoodResponse,
+  AxiosError<UpsertFoodError>,
+  Options<UpsertFoodData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpsertFoodResponse,
+    AxiosError<UpsertFoodError>,
+    Options<UpsertFoodData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await upsertFood({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getFoodQueryKey = (options: Options<GetFoodData>) =>
+  createQueryKey("getFood", options);
+
+/**
+ * Returns data on food for user
+ */
+export const getFoodOptions = (options: Options<GetFoodData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFood({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFoodQueryKey(options),
+  });
+};
+
+export const getFoodInfiniteQueryKey = (
+  options: Options<GetFoodData>,
+): QueryKey<Options<GetFoodData>> => createQueryKey("getFood", options, true);
+
+/**
+ * Returns data on food for user
+ */
+export const getFoodInfiniteOptions = (options: Options<GetFoodData>) => {
+  return infiniteQueryOptions<
+    GetFoodResponse,
+    AxiosError<GetFoodError>,
+    InfiniteData<GetFoodResponse>,
+    QueryKey<Options<GetFoodData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetFoodData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetFoodData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getFood({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getFoodInfiniteQueryKey(options),
+    },
+  );
 };
 
 export const getCrmUsersQueryKey = (options?: Options<GetCrmUsersData>) =>

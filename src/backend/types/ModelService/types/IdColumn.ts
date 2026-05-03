@@ -1,19 +1,22 @@
 import {PgColumn} from 'drizzle-orm/pg-core';
 
-export type IdColumn = PgColumn<{
+/**
+ * Type of the primary key which can be either autoincrement integer or uuid
+ */
+export type IdColumn<TKey extends number | string> = PgColumn<{
     name: 'id';
     tableName: string;
-    dataType: 'number';
-    columnType: 'PgInteger';
-    data: number;
+    dataType: TKey extends number ? 'number' : 'string';
+    columnType: TKey extends number ? 'PgInteger' : 'PgUUID';
+    data: TKey;
     driverParam: string | number;
     notNull: true;
-    hasDefault: true;
+    hasDefault: TKey extends number ? true : false;
     isPrimaryKey: true;
-    isAutoincrement: false;
+    isAutoincrement: false,
     hasRuntimeDefault: false;
     enumValues: undefined;
     baseColumn: never;
-    identity: 'byDefault';
+    identity: TKey extends number ? 'byDefault' : undefined;
     generated: undefined;
 }>;

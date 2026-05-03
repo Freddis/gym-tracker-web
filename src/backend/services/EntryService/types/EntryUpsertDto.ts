@@ -1,5 +1,4 @@
 import {StrictOmit} from '../../../types/StrictOmit';
-import {ImageRow} from '../../DrizzleService/types/ImageRow';
 import {OutdoorRunUpsertDto} from '../../OutdoorRunService/types/OutdoorRunUpsertDto';
 import {OutdoorWalkUpsertDto} from '../../OutdoorWalkService/types/OutdoorWalkUpsertDto';
 import {WeightUpsertDto} from '../../WeightService/types/WeightUpsertDto';
@@ -7,12 +6,11 @@ import {WorkoutUpsertDto} from '../../WorkoutService/types/WorkoutUpsertDto';
 import {BaseEntry} from './Entry';
 import {EntryType} from './EntryType';
 
-export interface ImageUpsertDto extends StrictOmit<ImageRow, 'userId'| 'createdAt'| 'updatedAt'| 'deletedAt' | 'url' | 'id'> {
-  id?: number
-  data: string | null
+export interface ImageUpsertDto {
+  data: string
 }
 interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, | 'user'| 'image'> {
-  image: ImageUpsertDto | null
+  image: ImageUpsertDto | null| undefined
 }
 export interface WorkoutEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.Workout

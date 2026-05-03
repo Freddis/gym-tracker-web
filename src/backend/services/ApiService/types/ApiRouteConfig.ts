@@ -40,7 +40,10 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       const language = this.getRequestLangauge(ctx.request);
       return {
         baseUrl: this.baseUrl,
-        services: services,
+        services: {
+          ...services,
+          image: await this.factory.managedImage(),
+        },
         viewer,
         language,
       };
@@ -80,7 +83,10 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       const language = this.getRequestLangauge(ctx.request);
       return {
         baseUrl: this.baseUrl,
-        services: services,
+        services: {
+          ...services,
+          image: await this.factory.image(),
+        },
         viewer,
         language,
       };
@@ -103,7 +109,6 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
 
     const services: ApiRequestServices = {
       auth: await this.factory.auth(),
-      image: await this.factory.image(),
       models: {
         argusCheckin: await this.factory.argusCheckin(),
         workout: await this.factory.workout(),
@@ -115,6 +120,7 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
         workoutPlan: await this.factory.workoutPlan(),
         workoutType: await this.factory.workoutType(),
         translation: await this.factory.translation(),
+        food: await this.factory.food(),
       },
     };
     return services;

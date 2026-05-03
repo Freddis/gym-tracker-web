@@ -31,6 +31,9 @@ import type {
   PostPostsResponse,
   GetPostsByIdResponse,
   PatchPostsByIdResponse,
+  GetFoodListResponse,
+  UpsertFoodResponse,
+  GetFoodResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -312,17 +315,6 @@ export const getArgusCheckinResponseTransformer = async (
   return data;
 };
 
-const imageSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  return data;
-};
-
 const outdoorRunSchemaResponseTransformer = (data: any) => {
   data.start = new Date(data.start);
   data.end = new Date(data.end);
@@ -348,9 +340,6 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
-  }
-  if (data.image) {
-    data.image = imageSchemaResponseTransformer(data.image);
   }
   if (data.outdoorRun) {
     data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
@@ -425,9 +414,6 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   if (data.workout) {
     data.workout = workoutSchemaResponseTransformer(data.workout);
   }
-  if (data.image) {
-    data.image = imageSchemaResponseTransformer(data.image);
-  }
   if (data.outdoorRun) {
     data.outdoorRun = outdoorRunSchemaResponseTransformer(data.outdoorRun);
   }
@@ -455,6 +441,37 @@ export const patchPostsByIdResponseTransformer = async (
   data: any,
 ): Promise<PatchPostsByIdResponse> => {
   data = postEntrySchemaResponseTransformer(data);
+  return data;
+};
+
+const foodSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  return data;
+};
+
+export const getFoodListResponseTransformer = async (
+  data: any,
+): Promise<GetFoodListResponse> => {
+  data.items = data.items.map((item: any) => {
+    return foodSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const upsertFoodResponseTransformer = async (
+  data: any,
+): Promise<UpsertFoodResponse> => {
+  data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+export const getFoodResponseTransformer = async (
+  data: any,
+): Promise<GetFoodResponse> => {
+  data = foodSchemaResponseTransformer(data);
   return data;
 };
 
@@ -528,11 +545,22 @@ export const getCrmExercisesResponseTransformer = async (
   return data;
 };
 
+const managedImageSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  return data;
+};
+
 export const getCrmImagesResponseTransformer = async (
   data: any,
 ): Promise<GetCrmImagesResponse> => {
   data.items = data.items.map((item: any) => {
-    return imageSchemaResponseTransformer(item);
+    return managedImageSchemaResponseTransformer(item);
   });
   return data;
 };

@@ -1,0 +1,214 @@
+import {
+  BucketAlreadyOwnedByYou,
+  CreateBucketCommand,
+  DeleteObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+  S3ServiceException,
+} from '@aws-sdk/client-s3';
+import {DrizzleService} from '../DrizzleService/DrizzleService';
+import {ModelService} from '../../types/ModelService/ModelService';
+import {SQL, and, desc, inArray} from 'drizzle-orm';
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {ImageFilter} from './types/ImageFilter';
+import {Logger} from '../../utils/Logger/Logger';
+import {ImageType} from '../../types/ImageType';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
+import {ManagedImage} from './types/ManagedImage';
+import {IImageService} from './types/IImageService';
+
+export class ManagedImageService
+extends ModelService<ManagedImage, ManagedImage, ImageFilter>
+implements IImageService<ManagedImage, number, ImageFilter> {
+  protected bucket = 'gymtracker-images-23';
+  protected s3: S3Client;
+  protected logger = new Logger(ManagedImageService.name);
+
+  constructor(drizzle: DrizzleService) {
+    super(drizzle);
+    this.s3 = new S3Client({});
+  }
+
+  override async deleteById(id: number): Promise<void> {
+    this.logger.info(`Deleting image '${id}'`);
+    const image = await this.getById(id);
+    if (!image) {
+      throw new Error('Image not found');
+    }
+    const fileName = image.url!.split('/').pop()!;
+    await this.deleteFileFromS3(fileName);
+    super.deleteById(id);
+  }
+
+  protected async fileExistsInS3(name: string): Promise<boolean> {
+    try {
+      await this.s3.send(
+      new HeadObjectCommand({
+        Bucket: this.bucket,
+        Key: name,
+      })
+    );
+      return true;
+    } catch (err: unknown) {
+      if (err instanceof S3ServiceException && err.name === 'NotFound') {
+        return false;
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Delete a file from S3 bucket
+   * @param bucket - The S3 bucket name
+   * @param name - The name of the file to delete
+   */
+  protected async deleteFileFromS3(name: string) {
+    this.logger.info('Checking if image exists on S3');
+    const exists = await this.fileExistsInS3(name);
+    if (!exists) {
+      this.logger.info("Image doesn't exist, throwing");
+      throw new Error(`Image doesn't exist '${name}'`);
+    }
+
+    this.logger.info('Deleting from S3');
+    const command = new DeleteObjectCommand({
+      Bucket: this.bucket,
+      Key: name,
+    });
+    const response = await this.s3.send(command);
+    this.logger.info('S3 Response: ', {name, response});
+  }
+
+  async getImageByName(name: string): Promise<ManagedImage| null> {
+    const db = await this.drizzle.getDb();
+    const url = this.generateUrl(name);
+    const image = await db.query.images.findFirst({
+      where: (t, op) => op.eq(t.url, url),
+    });
+    return image ?? null;
+  }
+
+  generateUrl(name: string): string {
+    return `https://${this.bucket}.s3.eu-central-1.amazonaws.com/${name}`;
+  }
+
+  async createFromFile(file: Buffer, name: string, imageType: ImageType): Promise<ManagedImage> {
+    name = encodeURIComponent(name.replaceAll(' ', '-'));
+    const image = this.saveImageToDb(name, imageType);
+    // we don't automatically create buckets anymore
+    // await this.createBucket(this.bucket);
+    await this.uploadFile(file, this.bucket, name);
+    return image;
+  }
+
+  async createFromUrl(href: string, name: string, imageType: ImageType): Promise<ManagedImage> {
+    const base64Data = await this.getImageData(href);
+    return await this.createFromBase64(base64Data, name, imageType);
+  }
+
+  async getImageData(href: string): Promise<string> {
+    const file = await fetch(href);
+    const buffer = await file.arrayBuffer();
+    const base64Data = Buffer.from(buffer).toString('base64');
+    return base64Data;
+  }
+  async createFromBase64(data: string, name: string, imageType: ImageType) {
+    const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
+    const buffer = Buffer.from(base64Data, 'base64');
+    return this.createFromFile(buffer, name, imageType);
+  }
+
+  protected async saveImageToDb(name: string, imageType: ImageType): Promise<ManagedImage> {
+    const db = await this.drizzle.getDb();
+    const inserted = await db.insert(db._.fullSchema.images).values({
+      url: this.generateUrl(name),
+      imageType: imageType,
+      createdAt: new Date(),
+    }).returning();
+    const result = inserted[0];
+    if (!result) {
+      throw new Error("Images wasn't saved in DB");
+    }
+    return result;
+  }
+
+  protected async uploadFile(file: Buffer<ArrayBufferLike>, bucket: string, name: string) {
+    try {
+      const command = new PutObjectCommand({
+        Bucket: bucket,
+        Key: name,
+        Body: file,
+        ACL: 'public-read',
+      });
+      await this.s3.send(command);
+    } catch (caught) {
+      if (caught instanceof S3ServiceException) {
+        console.error(`Error from S3 while uploading object to ${this.bucket}.  ${caught.name}: ${caught.message}`);
+      }
+      throw caught;
+    }
+  }
+
+  async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<ManagedImage>> {
+    const db = await this.drizzle.getDb();
+    const page = params?.page ?? 1;
+    const limit = params?.perPage ?? 30;
+    const offset = (page - 1) * limit;
+    const where = and(
+      params?.id ? inArray(this.getTable().id, params.id) : undefined,
+    );
+    const rows = await db.select().from(this.getTable()).where(where).limit(limit).offset(offset);
+    return {
+      items: rows,
+      info: {
+        page,
+        count: rows.length,
+        pageSize: limit,
+      },
+    };
+  }
+
+  protected async createBucket(name: string) {
+    const bucket = new CreateBucketCommand({Bucket: name});
+    try {
+      await this.s3.send(bucket);
+    } catch (e: unknown) {
+      if (e instanceof BucketAlreadyOwnedByYou) {
+        return;
+      }
+      throw e;
+    }
+  }
+
+  protected override getTable() {
+    return this.drizzle.getSchema().images;
+  }
+  protected override getWhere(params: Partial<ImageFilter>): SQL<unknown> | undefined {
+    ;
+    const where = and(
+      params.ids ? inArray(this.getTable().id, params.ids) : undefined,
+      params.search ? this.generateLikeConditions(this.getTable().url, params.search) : undefined
+    );
+    return where;
+  }
+
+  protected override async decorateRows(rows: ManagedImage[]):Promise<ManagedImage[]> {
+    return rows.map((row) => {
+      const image: ManagedImage = {
+        id: row.id,
+        url: row.url,
+        imageType: row.imageType,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+        userId: row.userId,
+        deletedAt: row.deletedAt,
+      };
+      return image;
+    });
+  }
+
+  protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return desc(this.getTable().id);
+  }
+}

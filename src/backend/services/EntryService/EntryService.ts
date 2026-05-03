@@ -16,12 +16,12 @@ import {EntryUpsertDto} from './types/EntryUpsertDto';
 import {ImageService} from '../ImageService/ImageService';
 import {randomUUID} from 'crypto';
 import {ImageType} from '../../types/ImageType';
-import {ImageRow} from '../DrizzleService/types/ImageRow';
 import {SemiPartial} from '../../types/SemiPartial';
 import {OutdoorRunService} from '../OutdoorRunService/OutdoorRunService';
 import {OutdoorRun} from '../OutdoorRunService/types/OutdoorRun';
 import {OutdoorWalkService} from '../OutdoorWalkService/OutdoorWalkService';
 import {OutdoorWalk} from '../OutdoorWalkService/types/OutdoorWalk';
+import {Image} from '../ImageService/types/Image';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -274,8 +274,8 @@ export class EntryService {
     const users = await this.userService.paginate({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
     const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
-    const images = await this.imageService.getAll({id: imageIds, perPage: limit});
-    const imageMap = images.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, ImageRow>());
+    const images = await this.imageService.getMany({ids: imageIds, perPage: limit});
+    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
     const runIds = rows.map((x) => x.outdoorRunId).filter((x) => x !== null);
     const outdoorRuns = await this.outdoorRunService.getAll({id: runIds, perPage: limit});
     const outdoorRunsMap = outdoorRuns.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
@@ -308,7 +308,7 @@ export class EntryService {
         note: row.note,
         externalId: row.externalId,
         externalSource: row.externalSource,
-        image: row.imageId ? getOrThrow(imageMap, row.imageId) : null,
+        image: row.imageId ? imageMap.get(row.imageId) ?? null : null,
         healthkitId: row.healthkitId,
         healthkitAnchor: row.healthkitAnchor,
         healthkitAnchors_3_0: row.healthkitAnchors_3_0,
@@ -374,10 +374,12 @@ export class EntryService {
     for (const item of items) {
       const existing = await db.query.entries.findFirst({
         where: (t, op) => op.and(
-          op.eq(t.id, item.id ?? 0),
-          op.eq(t.userId, userId),
+          op.eq(t.id, item.id),
         ),
       });
+      if (existing && existing.userId !== userId) {
+        throw new Error('You are not allowed to update this entry');
+      }
       const data: typeof db._.fullSchema.entries.$inferInsert = {
         id: item.id,
         userId: userId,
@@ -389,7 +391,7 @@ export class EntryService {
         deletedAt: item.deletedAt,
         note: item.note,
         title: item.title,
-        imageId: item.image?.id,
+        imageId: existing?.imageId,
         externalId: item.externalId,
         externalSource: item.externalSource,
         healthkitId: item.healthkitId,
@@ -403,14 +405,14 @@ export class EntryService {
       let workout: Workout | undefined;
       let weight: Weight | undefined;
       let run: OutdoorRun | undefined;
-      let image: ImageRow | undefined;
+      let image: Image | undefined;
       let walk: OutdoorWalk | undefined;
-      if (item.image && item.image.data) {
+      if (item.image) {
         image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
         data.imageId = image.id;
       }
-      if (item.image && !item.image.id) {
-        data.imageId = item.image.id;
+      if (item.image === null) {
+        data.imageId = null;
       }
       if (item.type === EntryType.Workout) {
         const workouts = await this.workoutService.upsert(userId, [item.workout]);
@@ -439,7 +441,7 @@ export class EntryService {
       }
 
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
-        target: db._.fullSchema.entries.id,
+        target: [db._.fullSchema.entries.id, db._.fullSchema.entries.userId],
         set: this.drizzle.generateConflictUpdateSetAllColumns(db._.fullSchema.entries),
       }
       ).returning();

@@ -267,6 +267,13 @@
       "when": 1777656624118,
       "tag": "0037_migrating_entries_to_uuids_2",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1777795631183,
+      "tag": "0038_adding_food_entries",
+      "breakpoints": true
     }
   ]
 }

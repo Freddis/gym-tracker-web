@@ -9,11 +9,10 @@ import {ManagerService} from '../../ManagerService/ManagerService';
 import {WorkoutPlanService} from '../../WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../TranslationService/TranslationService';
-import {ImageService} from '../../ImageService/ImageService';
+import {FoodService} from '../../FoodService/FoodService';
 
 export interface ApiRequestServices {
   auth: AuthService
-  image: ImageService
   models: {
     argusCheckin: ArgusCheckinService
     exercise: ExerciseService
@@ -21,6 +20,7 @@ export interface ApiRequestServices {
     workoutPlan: WorkoutPlanService
     workoutType: WorkoutTypeService
     weight: WeightService
+    food: FoodService
     entry: EntryService
     user: UserService
     manager: ManagerService

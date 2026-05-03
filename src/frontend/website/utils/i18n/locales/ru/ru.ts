@@ -14,6 +14,19 @@ export const dictionary: Translation = {
       },
     },
     objects: {
+      food: {
+        fields: {
+          name: 'Имя',
+          description: 'Описание',
+          image: 'Изображение',
+          calories: 'Калории',
+          protein: 'Белки',
+          carbs: 'Углеводы',
+          fat: 'Жиры',
+          servingSize: 'Размер порции',
+          servingSizeUnit: 'Единица измерения порции',
+        },
+      },
       entryType: {
         Workout: 'Тренировка',
         Weight: 'Вес',
@@ -101,6 +114,7 @@ export const dictionary: Translation = {
         kg: 'кг',
         km: 'км',
         m: 'м',
+        g: 'г',
       },
       workoutPlan: {
         fields: {
@@ -252,6 +266,42 @@ export const dictionary: Translation = {
     },
   },
   pages: {
+    food: {
+      update: {
+        heading: 'Обновить Еду',
+        toasts: {
+          success: 'Вы успешно обновили еду',
+          deletionSuccess: 'Вы успешно удалили еду',
+        },
+      },
+      create: {
+        heading: 'Добавить Еду',
+        toasts: {
+          success: 'Вы успешно добавили еду',
+        },
+      },
+      list: {
+        heading: 'Моя Еда',
+        labels: {
+          calories: 'Калории',
+          protein: 'Белки',
+          carbs: 'Углеводы',
+          fat: 'Жиры',
+        },
+        buttons: {
+          addFood: 'Добавить Еду',
+        },
+        filter: {
+          clearFilters: 'Очистить',
+          labels: {
+            search: 'Поиск:',
+          },
+        },
+        toasts: {
+          nothingFound: 'Еда не найдена',
+        },
+      },
+    },
     workoutPlans: {
       list: {
         heading: 'Планы тренировок',
@@ -441,6 +491,7 @@ export const dictionary: Translation = {
           addEntry: 'Добавить',
           plans: 'Планы Тренировок',
           types: 'Типы Тренировок',
+          food: 'Моя Еда',
         },
         objects: {
           workout: {

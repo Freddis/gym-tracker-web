@@ -20,6 +20,8 @@ import {TranslationService} from '../../services/TranslationService/TranslationS
 import {EmailService} from '../../services/EmailService/EmailService';
 import {OutdoorRunService} from '../../services/OutdoorRunService/OutdoorRunService';
 import {OutdoorWalkService} from '../../services/OutdoorWalkService/OutdoorWalkService';
+import {FoodService} from '../../services/FoodService/FoodService';
+import {ManagedImageService} from '../../services/ImageService/ManagedImageService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -41,8 +43,11 @@ export class GlobalServiceFactory {
   }
 
   async image() {
-    const drizzle = await this.drizzle();
-    return new ImageService(drizzle);
+    return new ImageService(await this.managedImage());
+  }
+
+  async managedImage(): Promise<ManagedImageService> {
+    return new ManagedImageService(await this.drizzle());
   }
 
   async drizzle(): Promise<DrizzleService> {
@@ -115,6 +120,10 @@ export class GlobalServiceFactory {
       await this.image(),
       await this.entry(),
     );
+  }
+
+  async food() {
+    return new FoodService(await this.drizzle(), await this.image());
   }
 
   async weight() {

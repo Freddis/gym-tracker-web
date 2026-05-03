@@ -52,6 +52,9 @@ import {createPost} from '../api/posts/createPost';
 import {getPost} from '../api/posts/getPost';
 import {updatePost} from '../api/posts/updatePost';
 import {getOwnEntryDates} from '../api/entries/getOwnEntryDates';
+import {upsertFood} from '../api/food/upsertFood';
+import {getFoodList} from '../api/food/getFoodList';
+import {getFood} from '../api/food/getFood';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -112,6 +115,11 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     createPost,
     getPost,
     updatePost,
+  ],
+  '/food': [
+    upsertFood,
+    getFood,
+    getFoodList,
   ],
   '/crm/users': [
     getUserList,

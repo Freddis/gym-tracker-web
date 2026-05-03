@@ -9,6 +9,7 @@ export const deleteManagedImage = RouteFactory.createRoute({
   type: ApiRouteType.Manager,
   description: 'Deletes image',
   path: '/{id}',
+  tags: ['Crm Images'],
   validators: {
     path: object({
       id: RouteFactory.validators.strings.number.openapi({description: 'Id of the image'}),

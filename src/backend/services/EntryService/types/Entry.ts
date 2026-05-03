@@ -1,4 +1,3 @@
-import {ImageRow} from '../../DrizzleService/types/ImageRow';
 import {OutdoorRun} from '../../OutdoorRunService/types/OutdoorRun';
 import {OutdoorWalk} from '../../OutdoorWalkService/types/OutdoorWalk';
 import {User} from '../../UserService/types/User';
@@ -7,7 +6,7 @@ import {Workout} from '../../WorkoutService/types/Workout';
 import {EntryType} from './EntryType';
 import {EntryVisibility} from './EntryVisibility';
 import {ExternalSource} from './ExternalSource';
-
+import {Image} from '../../ImageService/types/Image';
 export interface BaseEntry {
   id: string;
   // userId: number;
@@ -26,7 +25,7 @@ export interface BaseEntry {
   createdAt: Date,
   deletedAt: Date | null,
   updatedAt: Date | null,
-  image: ImageRow | null
+  image: Image | null
   healthkitId: string | null;
   healthkitAnchor: number | null;
   healthkitAnchors_3_0: string | null;

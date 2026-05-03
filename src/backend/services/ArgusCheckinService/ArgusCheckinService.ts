@@ -5,7 +5,6 @@ import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
 import {eq, count} from 'drizzle-orm';
 import {ArgusCheckIn} from './types/ArgusCheckin';
 import {ArgusCheckinSubtype} from '../DrizzleService/types/ArgusCheckinRow/types/ArgusCheckinSubtype';
-import {ImageType} from '../../types/ImageType';
 import {EntryType} from '../EntryService/types/EntryType';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {ExternalSource} from '../EntryService/types/ExternalSource';
@@ -210,16 +209,9 @@ export class ArgusCheckinService {
     const duration = Math.round((end.getTime() - start.getTime()) / 1000);
     const pace = Math.round(duration / data.distance * 1000);
 
-    let image: ImageUpsertDto | null = null;
-    if (data.photos?.[0]) {
+    let image: ImageUpsertDto | null | undefined;
+    if (!existing?.image && data.photos?.[0]) {
       image = await this.convertImageToUpsertDto(data.photos[0]);
-    }
-    if (existing?.image) {
-      image = {
-        id: existing.image.id,
-        imageType: existing.image.imageType,
-        data: null,
-      };
     }
 
     const runEntry: OutdoorRunEntryUpsertDto = {
@@ -282,7 +274,6 @@ export class ArgusCheckinService {
   async convertImageToUpsertDto(data: ArgusPhoto): Promise<ImageUpsertDto> {
     return {
       data: await this.imageService.getImageData(data.href),
-      imageType: ImageType.Entry,
     };
   }
 }

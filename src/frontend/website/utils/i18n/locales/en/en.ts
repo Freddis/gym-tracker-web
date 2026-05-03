@@ -37,6 +37,19 @@ export const dictionary = {
           isArchived: 'Archived',
         } satisfies Record<keyof Exercise, string>,
       },
+      food: {
+        fields: {
+          name: 'Name',
+          description: 'Description',
+          image: 'Image',
+          calories: 'Calories',
+          protein: 'Protein',
+          carbs: 'Carbs',
+          fat: 'Fat',
+          servingSize: 'Serving Size',
+          servingSizeUnit: 'Serving Size Unit',
+        },
+      },
       weight: {
         fields: {
           value: 'Weight',
@@ -149,10 +162,11 @@ export const dictionary = {
         kg: 'kg',
         km: 'km',
         m: 'm',
+        g: 'g',
       },
     },
     toasts: {
-      unknownApiError: "Something went wrong. We can't log you in",
+      unknownApiError: 'Something went wrong',
       notImplemented: 'Not implemented yet',
       invalidForm: 'Some information is missing or invalid',
     },
@@ -361,6 +375,42 @@ export const dictionary = {
         noActivitiesFound: 'No activities found',
       },
     },
+    food: {
+      create: {
+        heading: 'Create Food',
+        toasts: {
+          success: 'You successfully added food',
+        },
+      },
+      update: {
+        heading: 'Update Food',
+        toasts: {
+          success: 'You successfully updated food',
+          deletionSuccess: 'You successfully deleted food',
+        },
+      },
+      list: {
+        heading: 'Food',
+        labels: {
+          calories: 'Calories',
+          protein: 'Protein',
+          carbs: 'Carbs',
+          fat: 'Fat',
+        },
+        buttons: {
+          addFood: 'Add Food',
+        },
+        filter: {
+          clearFilters: 'Clear Filters',
+          labels: {
+            search: 'Search:',
+          },
+        },
+        toasts: {
+          nothingFound: 'No food found',
+        },
+      },
+    },
     exercise: {
       labels: {
         variations: 'Variations',
@@ -540,6 +590,7 @@ export const dictionary = {
           addEntry: 'Add Entry',
           plans: 'My Workout Plans',
           types: 'My Workout Types',
+          food: 'My Food',
         },
         filter: {
           clearFilters: 'Clear Filters',
@@ -604,7 +655,7 @@ export const dictionary = {
         registerCta: 'New to Discipline?',
         toasts: {
           loginSuccess: "You've successfully logged in",
-          unknownApiError: "Something went wrong. We can't log you in",
+          unknownApiError: 'Something went wrong',
           notImplemented: 'Not implemented yet',
         },
         form: {
