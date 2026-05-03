@@ -1,6 +1,7 @@
 import {FC, ReactNode} from 'react';
 import {cn} from '../../../utils/cn';
 interface AppBlockProps {
+  ['data-testid']?: string;
   image?: string;
   imageHeight?: number;
   className?: string;
@@ -12,7 +13,7 @@ export const AppBlock: FC<AppBlockProps> = (props) => {
      props.image ? 'p-0' : 'p-5', props.className
   );
   return (
-    <div className={classes}>
+    <div className={classes} data-testid={props['data-testid']}>
       {props.image && (
         <div className="relative">
           <img src={props.image} className="w-full object-cover" style={{height: props.imageHeight}} />
