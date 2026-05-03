@@ -441,7 +441,7 @@ export class EntryService {
       }
 
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
-        target: [db._.fullSchema.entries.id, db._.fullSchema.entries.userId],
+        target: db._.fullSchema.entries.id,
         set: this.drizzle.generateConflictUpdateSetAllColumns(db._.fullSchema.entries),
       }
       ).returning();
