@@ -20,6 +20,7 @@ import { Route as CrmIndexRouteImport } from './routes/crm/index'
 import { Route as WorkoutsCreateRouteImport } from './routes/workouts/create'
 import { Route as WeightCreateRouteImport } from './routes/weight/create'
 import { Route as PostsCreateRouteImport } from './routes/posts/create'
+import { Route as FoodCreateMealRouteImport } from './routes/food/create-meal'
 import { Route as FoodCreateRouteImport } from './routes/food/create'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
@@ -98,6 +99,11 @@ const WeightCreateRoute = WeightCreateRouteImport.update({
 const PostsCreateRoute = PostsCreateRouteImport.update({
   id: '/posts/create',
   path: '/posts/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoodCreateMealRoute = FoodCreateMealRouteImport.update({
+  id: '/food/create-meal',
+  path: '/food/create-meal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FoodCreateRoute = FoodCreateRouteImport.update({
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/food/create': typeof FoodCreateRoute
+  '/food/create-meal': typeof FoodCreateMealRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -313,6 +320,7 @@ export interface FileRoutesByTo {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/food/create': typeof FoodCreateRoute
+  '/food/create-meal': typeof FoodCreateMealRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -353,6 +361,7 @@ export interface FileRoutesById {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/create': typeof ExercisesCreateRoute
   '/food/create': typeof FoodCreateRoute
+  '/food/create-meal': typeof FoodCreateMealRoute
   '/posts/create': typeof PostsCreateRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
@@ -394,6 +403,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/food/create'
+    | '/food/create-meal'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -433,6 +443,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/food/create'
+    | '/food/create-meal'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -472,6 +483,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/create'
     | '/food/create'
+    | '/food/create-meal'
     | '/posts/create'
     | '/weight/create'
     | '/workouts/create'
@@ -512,6 +524,7 @@ export interface RootRouteChildren {
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
   FoodCreateRoute: typeof FoodCreateRoute
+  FoodCreateMealRoute: typeof FoodCreateMealRoute
   PostsCreateRoute: typeof PostsCreateRoute
   WeightCreateRoute: typeof WeightCreateRoute
   WorkoutsCreateRoute: typeof WorkoutsCreateRoute
@@ -637,6 +650,13 @@ declare module '@tanstack/react-router' {
       path: '/posts/create'
       fullPath: '/posts/create'
       preLoaderRoute: typeof PostsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/food/create-meal': {
+      id: '/food/create-meal'
+      path: '/food/create-meal'
+      fullPath: '/food/create-meal'
+      preLoaderRoute: typeof FoodCreateMealRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/food/create': {
@@ -881,6 +901,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
   FoodCreateRoute: FoodCreateRoute,
+  FoodCreateMealRoute: FoodCreateMealRoute,
   PostsCreateRoute: PostsCreateRoute,
   WeightCreateRoute: WeightCreateRoute,
   WorkoutsCreateRoute: WorkoutsCreateRoute,

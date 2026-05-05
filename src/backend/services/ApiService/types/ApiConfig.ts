@@ -179,6 +179,7 @@ export class ApiConfig implements OpenApiConfig<
       [ActionErrorCode.NoOwnerShip]: "You don't have ownership of that object",
       [ActionErrorCode.PasswordResetTokenExpired]: 'Password reset token expired',
       [ActionErrorCode.PasswordResetTokenMalformed]: 'Password reset token malformed',
+      [ActionErrorCode.EmptyMeal]: 'Meal cannot contain no ingredients',
     };
     return result;
   }

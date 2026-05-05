@@ -1,5 +1,5 @@
-import {and, eq, inArray, isNull, like, SQL} from 'drizzle-orm';
-import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
+import {and, eq, ilike, inArray, isNull, SQL} from 'drizzle-orm';
+import {AppDb, AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Food} from './types/Food';
 import {ImageService} from '../ImageService/ImageService';
 import {randomUUID} from 'crypto';
@@ -11,7 +11,8 @@ import {PgColumn} from 'drizzle-orm/pg-core';
 import {FoodFilter} from './types/FoodFilter';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
-
+import {FoodComponent} from './types/FoodComponent';
+import {EmptyMealError} from './types/EmptyMealError';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
 
@@ -22,6 +23,15 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
 
   async upsert(userId: number, food: FoodUpsertDto): Promise<Food> {
     const db = await this.drizzle.getDb();
+    return await db.transaction(async (tx) => {
+      return await this.upsertInTransaction(userId, food, tx);
+    });
+  }
+
+  protected async upsertInTransaction(userId: number, food: FoodUpsertDto, db: AppDb): Promise<Food> {
+    if (food.isMeal && food.components.length === 0) {
+      throw new EmptyMealError();
+    }
     const schema = this.drizzle.getSchema();
     let image: Image | null = null;
     if (food.image?.data) {
@@ -36,6 +46,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     if (existing && existing.userId !== userId) {
       throw new ActionError(ActionErrorCode.NoOwnerShip);
     }
+    // todo: come up with good way to prevent addition of recursive meals
     const entity: typeof schema.food.$inferInsert = {
       id: food.id,
       userId: userId,
@@ -56,6 +67,16 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     } else {
       await db.insert(schema.food).values(entity);
     }
+    await db.delete(schema.foodComponents).where(eq(schema.foodComponents.mealId, entity.id));
+    if (food.components.length > 0) {
+      const newRows: AppDbSchema['foodComponents']['$inferInsert'][] = food.components.map((x) => ({
+        mealId: entity.id,
+        componentId: x.food.id,
+        amount: x.amount,
+        unit: x.unit,
+      }));
+      await db.insert(schema.foodComponents).values(newRows);
+    }
     const decorated = await this.decorate(entity.id);
     return decorated;
   }
@@ -67,7 +88,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   protected override getWhere(params: Partial<FoodFilter>): SQL<unknown> | undefined {
     const where = and(
       params.ids ? inArray(this.getTable().id, params.ids) : undefined,
-      params.search ? like(this.getTable().name, `%${params.search}%`) : undefined,
+      params.search ? ilike(this.getTable().name, `%${params.search}%`) : undefined,
       isNull(this.getTable().deletedAt),
     );
     return where;
@@ -77,8 +98,10 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
     const images = await this.imageService.getMany({ids: imageIds});
     const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
+    const componentsMap = await this.getFoodComponents(rows.map((x) => x.id));
     const result = rows.map((row) => {
-      return {
+      const components = componentsMap.get(row.id) ?? [];
+      const food: Food = {
         id: row.id,
         name: row.name,
         description: row.description,
@@ -87,18 +110,57 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         protein: row.protein,
         carbs: row.carbs,
         fat: row.fat,
-        servingSize: row.servingSize,
         servingSizeUnit: row.servingSizeUnit,
-        components: [],
+        servingSize: row.servingSize,
+        components: components,
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
         deletedAt: row.deletedAt ?? null,
+        isMeal: row.isMeal,
       };
+      return food;
     });
     return result;
+  }
+
+  protected async getFoodComponents(mealIds: string[]): Promise<Map<string, FoodComponent[]>> {
+    if (mealIds.length === 0) {
+      return new Map<string, FoodComponent[]>();
+    }
+    const db = await this.drizzle.getDb();
+    const foodComponents = await db.query.foodComponents.findMany({
+      where: (t, op) => op.and(
+        inArray(t.mealId, mealIds),
+      ),
+    });
+    if (foodComponents.length === 0) {
+      return new Map<string, FoodComponent[]>();
+    }
+    const foodIds = foodComponents.map((x) => x.componentId);
+    const food = await this.decorateMany(foodIds);
+    const foodMap = food.reduce((acc, cur) => acc.set(cur.id, cur), new Map<string, Food>());
+
+    const componentsMap = foodComponents.reduce((acc, cur) => {
+      const food = foodMap.get(cur.componentId);
+      if (!food) {
+        throw new Error(`Food ${cur.componentId} not found for component: ${cur.id}`);
+      }
+      const component: FoodComponent = {
+        amount: cur.amount,
+        unit: cur.unit,
+        food: food,
+      };
+
+      const existing = acc.get(cur.mealId) ?? [];
+      existing.push(component);
+      acc.set(cur.mealId, existing);
+      return acc;
+    }, new Map<string, FoodComponent[]>());
+    return componentsMap;
   }
 
   protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
     return this.getTable().name;
   }
+
 }

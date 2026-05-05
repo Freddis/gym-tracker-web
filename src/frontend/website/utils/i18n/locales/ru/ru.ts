@@ -25,6 +25,12 @@ export const dictionary: Translation = {
           fat: 'Жиры',
           servingSize: 'Размер порции',
           servingSizeUnit: 'Единица измерения порции',
+          isMeal: 'Является блюдом',
+          components: 'Компоненты',
+          createdAt: 'Дата создания',
+          updatedAt: 'Дата обновления',
+          deletedAt: 'Дата удаления',
+          id: 'ID',
         },
       },
       entryType: {
@@ -116,6 +122,9 @@ export const dictionary: Translation = {
         m: 'м',
         g: 'г',
       },
+      foodUnits: {
+        Gram: 'г',
+      },
       workoutPlan: {
         fields: {
           id: 'ID',
@@ -168,6 +177,9 @@ export const dictionary: Translation = {
       invalidForm: 'Информация отсутствует или указана неверно',
     },
     generic: {
+      images: {
+        noImageLabel: 'Нет Изображения',
+      },
       buttons: {
         back: 'Назад',
         save: 'Сохранить',
@@ -198,6 +210,17 @@ export const dictionary: Translation = {
       logoutSuccess: 'Вы успешно вышли',
     },
     popups: {
+      foodSelection: {
+        heading: 'Выберите еду',
+        labels: {
+          food: 'Еда:',
+          ownLibrary: 'Моя Библиотека',
+          searchPlaceholder: 'Поиск...',
+        },
+        toasts: {
+          noFoodFound: 'Еда не найдена',
+        },
+      },
       exerciseSelection: {
         heading: 'Выберите упражнение',
         labels: {
@@ -272,10 +295,20 @@ export const dictionary: Translation = {
         toasts: {
           success: 'Вы успешно обновили еду',
           deletionSuccess: 'Вы успешно удалили еду',
+          invalidForm: 'Некоторые данные отсутствуют или неверны',
         },
       },
       create: {
         heading: 'Добавить Еду',
+        labels: {
+          components: 'Компоненты',
+          hasServingSize: 'Есть Порция',
+          grams: 'Граммы',
+          servings: 'Порций',
+        },
+        buttons: {
+          addComponent: 'Добавить Компонент',
+        },
         toasts: {
           success: 'Вы успешно добавили еду',
         },
@@ -287,9 +320,13 @@ export const dictionary: Translation = {
           protein: 'Белки',
           carbs: 'Углеводы',
           fat: 'Жиры',
+          servingSize: 'Размер порции',
+          caloriesPerServing: 'В 1 порции',
+          components: 'Компоненты',
         },
         buttons: {
           addFood: 'Добавить Еду',
+          addDish: 'Добавить Блюдо',
         },
         filter: {
           clearFilters: 'Очистить',

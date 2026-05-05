@@ -1,5 +1,6 @@
 import {ImageUpsertDto} from '../../EntryService/types/EntryUpsertDto';
-
+import {FoodComponentUpsertDto} from './FoodComponentUpsertDto';
+import {ServingSizeUnit} from './ServingSizeUnit';
 export interface FoodUpsertDto {
   id: string;
   name: string;
@@ -9,8 +10,10 @@ export interface FoodUpsertDto {
   carbs: number;
   fat: number;
   servingSize: number | null;
-  servingSizeUnit: string;
+  servingSizeUnit: ServingSizeUnit;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
+  isMeal: boolean;
+  components: FoodComponentUpsertDto[];
 }

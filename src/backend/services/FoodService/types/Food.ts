@@ -1,4 +1,6 @@
 import {Image} from '../../ImageService/types/Image';
+import {FoodComponent} from './FoodComponent';
+import {ServingSizeUnit} from './ServingSizeUnit';
 
 export interface Food {
   id: string;
@@ -9,9 +11,10 @@ export interface Food {
   protein: number;
   carbs: number;
   fat: number;
+  isMeal: boolean;
   servingSize: number | null;
-  servingSizeUnit: string;
-  components: Food[];
+  servingSizeUnit: ServingSizeUnit;
+  components: FoodComponent[];
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;

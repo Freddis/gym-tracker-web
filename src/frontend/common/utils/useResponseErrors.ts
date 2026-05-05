@@ -57,6 +57,18 @@ export const useResponseErrors = <T extends object | undefined>(existingErrors?:
     const path = selectPath(fn);
     return getError(path);
   };
+  const hasSmartError = (fn: (x: T) => unknown): boolean => {
+    const path = selectPath(fn);
+    return errors.some((x) => x.field === path);
+  };
+  const setSmartError = (fn: (x: T) => unknown, error: string) => {
+    const path = selectPath(fn);
+    setErrors([...errors, {field: path, message: error}]);
+  };
+  const clearSmartError = (fn: (x: T) => unknown) => {
+    const path = selectPath(fn);
+    setErrors(errors.filter((x) => x.field !== path));
+  };
   const mySetErrors = (e: FieldError[]) => {
     setErrors(e);
   };
@@ -86,6 +98,9 @@ export const useResponseErrors = <T extends object | undefined>(existingErrors?:
   return {
     getError,
     getSmartError,
+    setSmartError,
+    hasSmartError,
+    clearSmartError,
     setErrors: mySetErrors,
     sliceErrors,
     errors,

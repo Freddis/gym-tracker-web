@@ -10,6 +10,8 @@ import {ImageType} from '../../../types/ImageType';
 import {ExternalSource} from '../../EntryService/types/ExternalSource';
 import {HeartRatePoint} from '../../OutdoorWalkService/types/HeartRatePoint';
 import {PathPoint} from '../../OutdoorWalkService/types/PathPoint';
+import {ServingSizeUnit} from '../../FoodService/types/ServingSizeUnit';
+import {FoodAmountUnit} from '../../FoodService/types/FoodAmountUnit';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -36,6 +38,12 @@ export const imageTypeEnum = gymTracker.enum('ImageType', imageTypeEnumValues);
 
 const externalSourceValues = array(nativeEnum(ExternalSource)).nonempty().parse(Object.values(ExternalSource));
 export const externalSourceEnum = gymTracker.enum('ExternalSource', externalSourceValues);
+
+const servingSizeUnitValues = array(nativeEnum(ServingSizeUnit)).nonempty().parse(Object.values(ServingSizeUnit));
+export const servingSizeUnitEnum = gymTracker.enum('ServingSizeUnit', servingSizeUnitValues);
+
+const foodAmountUnitValues = array(nativeEnum(FoodAmountUnit)).nonempty().parse(Object.values(FoodAmountUnit));
+export const foodAmountUnitEnum = gymTracker.enum('FoodAmountUnit', foodAmountUnitValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -339,16 +347,17 @@ export const food = gymTracker.table('food', {
   carbs: real().notNull(),
   fat: real().notNull(),
   servingSize: real(),
-  servingSizeUnit: varchar().notNull(),
+  servingSizeUnit: servingSizeUnitEnum().notNull(),
+  isMeal: boolean().notNull().default(false),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
 
-// export const foodComponents = gymTracker.table('food_components', {
-//   id: integer().primaryKey().generatedByDefaultAsIdentity(),
-//   foodId: uuid().notNull().references(() => food.id, {onDelete: 'cascade'}),
-//   componentId: uuid().notNull().references(() => food.id, {onDelete: 'cascade'}),
-//   amount: real().notNull(),
-//   unit: varchar().notNull(),
-// });
+export const foodComponents = gymTracker.table('food_components', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  mealId: uuid().notNull().references(() => food.id, {onDelete: 'restrict'}),
+  componentId: uuid().notNull().references(() => food.id, {onDelete: 'restrict'}),
+  amount: real().notNull(),
+  unit: foodAmountUnitEnum().notNull(),
+});

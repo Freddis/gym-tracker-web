@@ -1,4 +1,7 @@
-import {EntryType, Equipment, Exercise, Muscle, Workout, WorkoutPlan} from '../../../../../common/utils/openapi-client';
+import {EntryType,
+   Equipment, Exercise, Food, Muscle, ServingSizeUnit, Workout, WorkoutPlan,
+
+} from '../../../../../common/utils/openapi-client';
 import {FreeFormTranslationObject} from '../../types/FreeFormTranslationObject';
 import {header} from './layout/header';
 import {WeekDaysTranslation} from './types/WeekDaysTranslation';
@@ -48,7 +51,13 @@ export const dictionary = {
           fat: 'Fat',
           servingSize: 'Serving Size',
           servingSizeUnit: 'Serving Size Unit',
-        },
+          isMeal: 'Is Meal',
+          components: 'Components',
+          createdAt: 'Created At',
+          updatedAt: 'Updated At',
+          deletedAt: 'Deleted At',
+          id: 'Id',
+        } satisfies Record<keyof Food, string>,
       },
       weight: {
         fields: {
@@ -164,6 +173,9 @@ export const dictionary = {
         m: 'm',
         g: 'g',
       },
+      foodUnits: {
+        Gram: 'g',
+      } satisfies Record<ServingSizeUnit, string>,
     },
     toasts: {
       unknownApiError: 'Something went wrong',
@@ -171,6 +183,9 @@ export const dictionary = {
       invalidForm: 'Some information is missing or invalid',
     },
     generic: {
+      images: {
+        noImageLabel: 'No Image',
+      },
       buttons: {
         back: 'Back',
         save: 'Save',
@@ -200,6 +215,17 @@ export const dictionary = {
       copyright: 'Designed and Developed by Alex S. 2025',
     },
     popups: {
+      foodSelection: {
+        heading: 'Select Food',
+        labels: {
+          food: 'Foods:',
+          ownLibrary: 'Own Library',
+          searchPlaceholder: 'Search here...',
+        },
+        toasts: {
+          noFoodFound: 'No food found',
+        },
+      },
       exerciseSelection: {
         heading: 'Select Exercise',
         labels: {
@@ -378,6 +404,15 @@ export const dictionary = {
     food: {
       create: {
         heading: 'Create Food',
+        buttons: {
+          addComponent: 'Add',
+        },
+        labels: {
+          components: 'Components',
+          hasServingSize: 'Has Serving Size',
+          grams: 'Grams',
+          servings: 'Servings',
+        },
         toasts: {
           success: 'You successfully added food',
         },
@@ -385,6 +420,7 @@ export const dictionary = {
       update: {
         heading: 'Update Food',
         toasts: {
+          invalidForm: 'Some information is missing or invalid',
           success: 'You successfully updated food',
           deletionSuccess: 'You successfully deleted food',
         },
@@ -396,9 +432,13 @@ export const dictionary = {
           protein: 'Protein',
           carbs: 'Carbs',
           fat: 'Fat',
+          servingSize: 'Serving Size',
+          caloriesPerServing: 'In 1 serving',
+          components: 'Components',
         },
         buttons: {
           addFood: 'Add Food',
+          addDish: 'Add Meal',
         },
         filter: {
           clearFilters: 'Clear Filters',

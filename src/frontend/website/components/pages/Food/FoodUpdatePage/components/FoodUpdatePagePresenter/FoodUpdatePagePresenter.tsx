@@ -7,10 +7,11 @@ import {route, RouteId} from '../../../../../../../common/utils/route';
 import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
 import {FC, useRef} from 'react';
 import {FoodUpsertDto} from '../../../../../../../common/utils/openapi-client';
-import {FoodUpdateForm, FoodUpdateFormRef} from '../../../FoodUpdateForm/FoodUpdateForm';
+import {FoodUpdateForm} from '../../../FoodUpdateForm/FoodUpdateForm';
 import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {FoodUpdatePagePresenterProps} from './types/FoodUpdatePagePresenterProps';
+import {FoodUpdateFormRef} from '../../../FoodUpdateForm/types/FoodUpdateFormRef';
 
 export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food);
@@ -41,18 +42,16 @@ export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props)
 
   if (props.response.isLoading) {
     return (
-      <AppBlock className="max-w-5xl">
-        <AppBlockHeader>{t(i18n.update.heading)}</AppBlockHeader>
+      <PageContainer className="bg-main">
         <AppSpinner />
-      </AppBlock>
+      </PageContainer>
     );
   }
   if (!props.response.data?.data) {
     return (
-    <AppBlock className="max-w-5xl">
-      <AppBlockHeader>{t(i18n.update.heading)}</AppBlockHeader>
-      <AppApiErrorDisplay error={props.response.data?.error?.error} />
-    </AppBlock>
+      <PageContainer className="bg-main">
+        <AppApiErrorDisplay error={props.response.data?.error?.error} />
+      </PageContainer>
     );
   }
   return (
@@ -67,8 +66,13 @@ export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props)
      </div>
    </div>
    <AppBlock className="max-w-5xl">
-    <AppBlockHeader>{t(i18n.create.heading)}</AppBlockHeader>
-    <FoodUpdateForm food={props.response.data.data} errors={props.errors} onSubmit={onSubmit} ref={formRef} />
+    <AppBlockHeader>{t(i18n.update.heading)}</AppBlockHeader>
+    <FoodUpdateForm
+      food={props.response.data.data}
+      errors={props.errors}
+      onSubmit={onSubmit}
+      ref={formRef}
+    />
     <div className="mt-5 border-b-1 border-neutral-on-surface"/>
     <div className="mt-5 flex flex-row">
       <div className="grow">

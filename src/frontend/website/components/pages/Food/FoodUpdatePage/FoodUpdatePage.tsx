@@ -7,12 +7,13 @@ import {api} from '../../../../../common/utils/api';
 import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {FoodUpdatePagePresenter} from './components/FoodUpdatePagePresenter/FoodUpdatePagePresenter';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {FoodUpsertDto} from '../../../../../common/utils/openapi-client';
 
 export const FoodUpdatePage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.food.update);
   const toasts = useToasts();
+  const queryClient = useQueryClient();
   const {sliceErrors, showToastsAndSetErrors, errors} = useResponseErrors<Food>();
   const navigate = useNavigate();
   const routeApi = getRouteApi(route(RouteId.FoodUpdate));
@@ -33,6 +34,7 @@ export const FoodUpdatePage: FC = () => {
       showToastsAndSetErrors(response);
       return;
     }
+    await queryClient.invalidateQueries({queryKey: ['food']});
     toasts.addSuccess(t(i18n.toasts.success));
     navigate({to: route(RouteId.FoodList)});
   };
@@ -48,6 +50,10 @@ export const FoodUpdatePage: FC = () => {
     navigate({to: route(RouteId.FoodList)});
   };
   return (
-    <FoodUpdatePagePresenter response={response} errors={sliceErrors(errors, (x) => x)} onSave={onSave} onDelete={onDelete} />
+    <FoodUpdatePagePresenter
+      response={response}
+      errors={sliceErrors(errors, (x) => x)}
+      onSave={onSave} onDelete={onDelete}
+    />
   );
 };

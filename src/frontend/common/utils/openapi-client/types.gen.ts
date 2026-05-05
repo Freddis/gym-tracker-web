@@ -1787,13 +1787,17 @@ export type FoodUpsertDto = {
    */
   fat: number;
   /**
+   * Is the food a dish
+   */
+  isMeal: boolean;
+  /**
    * Serving size of the food
    */
   servingSize: number | null;
   /**
    * Serving size unit of the food
    */
-  servingSizeUnit: string;
+  servingSizeUnit: ServingSizeUnit;
   /**
    * Date the creation
    */
@@ -1806,7 +1810,59 @@ export type FoodUpsertDto = {
    * Date of deletion
    */
   deletedAt: Date | null;
+  /**
+   * Components of the food
+   */
+  components: Array<FoodComponentUpsertDto>;
 };
+
+/**
+ * Unit in which the food is measured
+ */
+export type ServingSizeUnit = "Gram";
+
+/**
+ * Unit in which the food is measured
+ */
+export const ServingSizeUnit = {
+  GRAM: "Gram",
+} as const;
+
+/**
+ * Food component to upsert
+ */
+export type FoodComponentUpsertDto = {
+  /**
+   * Food to add as component
+   */
+  food: {
+    /**
+     * Id of the food
+     */
+    id: string;
+  };
+  /**
+   * Amount of the food component
+   */
+  amount: number;
+  /**
+   * Unit of the food component
+   */
+  unit: FoodAmountUnit;
+};
+
+/**
+ * Unit in which the food is measured
+ */
+export type FoodAmountUnit = "Gram" | "Serving";
+
+/**
+ * Unit in which the food is measured
+ */
+export const FoodAmountUnit = {
+  GRAM: "Gram",
+  SERVING: "Serving",
+} as const;
 
 /**
  * Food record
@@ -1848,10 +1904,7 @@ export type Food = {
    * Serving size of the food
    */
   servingSize: number | null;
-  /**
-   * Serving size unit of the food
-   */
-  servingSizeUnit: string;
+  servingSizeUnit: ServingSizeUnit;
   /**
    * Date the creation
    */
@@ -1860,6 +1913,36 @@ export type Food = {
    * Date of last update
    */
   updatedAt: Date | null;
+  /**
+   * Date of deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Is the food a meal
+   */
+  isMeal: boolean;
+  /**
+   * Components of the food
+   */
+  components: Array<FoodComponent>;
+};
+
+/**
+ * Food component
+ */
+export type FoodComponent = {
+  /**
+   * Ingredient food
+   */
+  food: Food;
+  /**
+   * Amount of the food component
+   */
+  amount: number;
+  /**
+   * Unit of the food component
+   */
+  unit: FoodAmountUnit;
 };
 
 /**
@@ -2069,7 +2152,8 @@ export type PostAuthRegisterErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2178,7 +2262,8 @@ export type PostAuthLoginErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2282,7 +2367,8 @@ export type PostAuthPasswordResetErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2400,7 +2486,8 @@ export type PostAuthPasswordResetCompleteErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2621,7 +2708,8 @@ export type GetExercisesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2761,7 +2849,8 @@ export type PostExercisesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -2879,7 +2968,8 @@ export type PutExercisesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3114,7 +3204,8 @@ export type GetExercisesBuiltInErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3241,7 +3332,8 @@ export type DeleteExercisesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3365,7 +3457,8 @@ export type GetExercisesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3479,7 +3572,8 @@ export type PatchExercisesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3607,7 +3701,8 @@ export type GetWorkoutsErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3742,7 +3837,8 @@ export type PostWorkoutsErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3860,7 +3956,8 @@ export type PutWorkoutsErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -3983,7 +4080,8 @@ export type DeleteWorkoutsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4107,7 +4205,8 @@ export type GetWorkoutsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4228,7 +4327,8 @@ export type PatchWorkoutsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4351,7 +4451,8 @@ export type GetWorkoutPlansErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4499,7 +4600,8 @@ export type PostWorkoutPlansErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4618,7 +4720,8 @@ export type DeleteWorkoutPlansByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4739,7 +4842,8 @@ export type GetWorkoutPlansByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4870,7 +4974,8 @@ export type PatchWorkoutPlansByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -4993,7 +5098,8 @@ export type GetWorkoutTypesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5153,7 +5259,8 @@ export type PostWorkoutTypesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5272,7 +5379,8 @@ export type DeleteWorkoutTypesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5393,7 +5501,8 @@ export type GetWorkoutTypesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5536,7 +5645,8 @@ export type PatchWorkoutTypesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5655,7 +5765,8 @@ export type PostWeightErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5772,7 +5883,8 @@ export type GetWeightByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -5895,7 +6007,8 @@ export type PatchWeightByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6032,7 +6145,8 @@ export type GetArgusCheckinErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6512,7 +6626,8 @@ export type GetArgusCheckinTypesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6644,7 +6759,8 @@ export type GetEntriesOwnErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6784,7 +6900,8 @@ export type DeleteEntriesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -6905,7 +7022,8 @@ export type GetEntriesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7046,7 +7164,8 @@ export type GetEntriesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7171,7 +7290,8 @@ export type PutEntriesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7303,7 +7423,8 @@ export type GetEntriesOwnDatesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7430,7 +7551,8 @@ export type PostPostsErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7547,7 +7669,8 @@ export type GetPostsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7678,7 +7801,8 @@ export type PatchPostsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7801,7 +7925,8 @@ export type GetFoodListErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -7936,7 +8061,8 @@ export type UpsertFoodErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8062,7 +8188,8 @@ export type GetFoodErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8179,7 +8306,8 @@ export type GetCrmUsersErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8319,7 +8447,8 @@ export type GetCrmManagersErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8464,7 +8593,8 @@ export type PostCrmAuthLoginErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8569,7 +8699,8 @@ export type GetCrmTranslationsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8693,7 +8824,8 @@ export type PatchCrmTranslationsByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8812,7 +8944,8 @@ export type GetCrmTranslationsErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -8953,7 +9086,8 @@ export type GetCrmExercisesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -9102,7 +9236,8 @@ export type PatchCrmExercisesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -9346,7 +9481,8 @@ export type GetCrmExercisesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -9491,7 +9627,8 @@ export type GetCrmImagesErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */
@@ -9631,7 +9768,8 @@ export type DeleteCrmImagesByIdErrors = {
             | "ExerciseNotFound"
             | "NoOwnerShip"
             | "PasswordResetTokenExpired"
-            | "PasswordResetTokenMailformed";
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal";
           /**
            * Description of the error. Can be safely displayed.
            */

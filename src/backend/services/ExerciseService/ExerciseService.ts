@@ -353,7 +353,7 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     const joinOn = and(
       eq(db._.fullSchema.translations.type, TranslationType.ExeciseName),
       params?.language ? eq(db._.fullSchema.translations.language, params.language) : sql`FALSE`,
-      eq(sql`${db._.fullSchema.translations.key}::uuid`, db._.fullSchema.exercises.id),
+      eq(db._.fullSchema.translations.key, sql`${db._.fullSchema.exercises.id}::varchar`),
     );
 
     const query = db.select({

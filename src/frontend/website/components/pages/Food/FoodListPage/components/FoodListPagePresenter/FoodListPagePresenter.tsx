@@ -13,6 +13,8 @@ import {AppSearchInput} from '../../../../../../../common/components/atoms/AppSe
 import {AppButton} from '../../../../../../../common/components/atoms/AppButton/AppButton';
 import {FoodListPagePresenterProps} from './types/FoodListPagePresenterProps';
 import {FoodBlock} from '../FoodBlock/FoodBlock';
+import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinner/AppSpinner';
+import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 
 
 export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => {
@@ -27,9 +29,12 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
             <span className="ml-2">&gt;&gt;</span>
             <span className="ml-2">{t(i18n.heading)}</span>
           </div>
-          <div className="grow flex flex-row-reverse">
-          <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
-            <AppButton>{t(i18n.buttons.addFood)}</AppButton>
+          <div className="grow flex flex-row-reverse gap-5">
+            <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
+              <AppButton>{t(i18n.buttons.addFood)}</AppButton>
+            </RouteLink>
+            <RouteLink to={route(RouteId.FoodCreateMeal)} className="z-0">
+              <AppButton>{t(i18n.buttons.addDish)}</AppButton>
           </RouteLink>
           </div>
         </div>
@@ -43,6 +48,8 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
         </AppSidebarBlock>
 
           <div className="flex flex-col gap-5 grow w-full" data-testid="main-content">
+            {props.response.isLoading && <AppSpinner/>}
+            {(props.response.data?.error || props.response.isError) && <AppApiErrorDisplay error={props.response.data?.error?.error}/>}
             {props.response.data?.data && props.response.data.data.items.length > 0 && (
               <>
                 <div className="grid grid-cols-2 gap-5">

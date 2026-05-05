@@ -444,11 +444,22 @@ export const patchPostsByIdResponseTransformer = async (
   return data;
 };
 
+const foodComponentSchemaResponseTransformer = (data: any) => {
+  data.food = foodSchemaResponseTransformer(data.food);
+  return data;
+};
+
 const foodSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
     data.updatedAt = new Date(data.updatedAt);
   }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  data.components = data.components.map((item: any) => {
+    return foodComponentSchemaResponseTransformer(item);
+  });
   return data;
 };
 

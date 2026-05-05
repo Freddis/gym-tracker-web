@@ -1,7 +1,10 @@
-import {object, string, number, date} from 'zod';
+import {object, string, number, date, lazy, ZodType, boolean} from 'zod';
 import {imageValidator} from '../../images/validators/imageValidator';
+import {Food} from '../../../../FoodService/types/Food';
+import {foodAmountUnitValidator} from './foodAmountUnitValidator';
+import {servingSizeUnitValidator} from './servingSizeUnitValidator';
 
-export const foodValidator = object({
+const baseFoodValidator = object({
   id: string().openapi({description: 'Id of the food'}),
   name: string().openapi({description: 'Name of the food'}),
   description: string().nullable().openapi({description: 'Description of the food'}),
@@ -11,7 +14,26 @@ export const foodValidator = object({
   carbs: number().openapi({description: 'Carbs of the food'}),
   fat: number().openapi({description: 'Fat of the food'}),
   servingSize: number().nullable().openapi({description: 'Serving size of the food'}),
-  servingSizeUnit: string().openapi({description: 'Serving size unit of the food'}),
+  servingSizeUnit: servingSizeUnitValidator.openapi({description: 'Unit in which the food is measured'}),
   createdAt: date().openapi({description: 'Date the creation'}),
   updatedAt: date().nullable().openapi({description: 'Date of last update'}),
-}).openapi({ref: 'Food', description: 'Food record'});
+  deletedAt: date().nullable().openapi({description: 'Date of deletion'}),
+  isMeal: boolean().openapi({description: 'Is the food a meal'}),
+});
+
+const foodComponentValidator = object({
+  food: lazy(() => foodValidator).openapi({description: 'Ingredient food'}),
+  amount: number().openapi({description: 'Amount of the food component'}),
+  unit: foodAmountUnitValidator.openapi({description: 'Unit of the food component'}),
+}).openapi({ref: 'FoodComponent', description: 'Food component'});
+
+
+export const foodValidator: ZodType<Food> = lazy(() =>
+  baseFoodValidator.extend({
+    components: foodComponentValidator.array().openapi({
+      description: 'Components of the food',
+    }),
+  })
+
+).openapi({ref: 'Food', description: 'Food record'});
+

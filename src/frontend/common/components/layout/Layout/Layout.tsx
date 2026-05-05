@@ -11,7 +11,13 @@ import {CrmLayout} from '../../../../crm/components/layout/CrmLayout/CrmLayout';
 import {WebsiteLayout} from '../../../../website/components/layout/WebsiteLayout/WebsiteLayout';
 import {APIProvider} from '@vis.gl/react-google-maps';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: true,
+    },
+  },
+});
 export function Layout() {
   const match = useMatchRoute();
   const isCrm = match({

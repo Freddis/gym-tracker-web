@@ -5,5 +5,6 @@ export enum ActionErrorCode {
   ExerciseNotFound = 'ExerciseNotFound',
   NoOwnerShip = 'NoOwnerShip',
   PasswordResetTokenExpired = 'PasswordResetTokenExpired',
-  PasswordResetTokenMalformed = 'PasswordResetTokenMailformed'
+  PasswordResetTokenMalformed = 'PasswordResetTokenMailformed',
+  EmptyMeal = 'EmptyMeal',
 }
