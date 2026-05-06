@@ -15,20 +15,22 @@ import {FoodListPagePresenterProps} from './types/FoodListPagePresenterProps';
 import {FoodBlock} from '../FoodBlock/FoodBlock';
 import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
+import {BreadCrumbs} from '../../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
 
 
 export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food.list);
   const hasFilters = false;
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: t(i18n.heading), url: route(RouteId.FoodList)},
+  ];
   return (
     <PageContainer className="bg-main">
       <div className="flex flex-col max-w-5xl w-full">
-        <div className="mb-5 -mt-5 w-full flex flex-row gap-5 items-start">
-          <div className="grow">
-            <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
-            <span className="ml-2">&gt;&gt;</span>
-            <span className="ml-2">{t(i18n.heading)}</span>
-          </div>
+        <div className="mb-5 w-full flex flex-row gap-5 items-start">
+          <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
           <div className="grow flex flex-row-reverse gap-5">
             <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
               <AppButton>{t(i18n.buttons.addFood)}</AppButton>
@@ -38,7 +40,6 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
           </RouteLink>
           </div>
         </div>
-
         <div className="flex flex-col md:flex-row gap-5 items-start">
         <AppSidebarBlock>
         {hasFilters && <AppLink className="absolute top-5 right-5" onClick={props.onClearFilters}>{t(i18n.filter.clearFilters)}</AppLink>}

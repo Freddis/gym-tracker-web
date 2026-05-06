@@ -244,7 +244,7 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
       </>
     )}
     {props.food.isMeal && (
-      <div>
+      <div className="w-full">
         <div className="flex flex-row gap-5 items-start">
           <AppBlockHeader>{t(i18n.create.labels.components)}:</AppBlockHeader>
           <AppButton onClick={onAddIngredientClick}>{t(i18n.create.buttons.addComponent)}</AppButton>

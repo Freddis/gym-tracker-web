@@ -14,6 +14,9 @@ import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../../common/utils/useResponseErrors';
 import {useNonRenderingState} from '../../../../common/utils/useNonRenderingState';
 import {route, RouteId} from '../../../../common/utils/route';
+import {BreadCrumbs} from '../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
+import {BasicPage} from '../../../../common/components/layout/BasicPage/BasicPage';
 
 const routeApi = getRouteApi('/workouts/types/update/$id');
 export const WorkoutTypeUpdatePage: FC = () => {
@@ -108,16 +111,15 @@ export const WorkoutTypeUpdatePage: FC = () => {
     });
   };
   const item = response.data.data;
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: translations.pages.workoutTypes.list.heading, url: route(RouteId.WorkoutTypeList)},
+    {label: t(i18n.heading), url: route(RouteId.WorkoutTypeUpdate)},
+  ];
   return (
     <PageContainer className="bg-main">
-      <div className="flex flex-col max-w-5xl w-full">
-      <div className="mb-5 -mt-5">
-        <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
-        <span className="mx-2">&gt;&gt;</span>
-        <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.pages.workoutTypes.list.heading}</RouteLink>
-        <span className="mx-2">&gt;&gt;</span>
-        <span>{t(i18n.heading)} {item.id.toString()}</span>
-      </div>
+      <BasicPage>
+        <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
         <AppBlock className="max-w-5xl">
           <AppBlockHeader>{t(i18n.heading)} {item.id.toString()}</AppBlockHeader>
           <WorkoutTypeUpdateForm item={item} onUpdate={onFormUpdate} />
@@ -130,7 +132,7 @@ export const WorkoutTypeUpdatePage: FC = () => {
               </div>
           </div>
         </AppBlock>
-      </div>
+      </BasicPage>
     </PageContainer>
   );
 };

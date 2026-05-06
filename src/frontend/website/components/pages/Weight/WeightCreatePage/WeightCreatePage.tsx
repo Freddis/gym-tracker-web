@@ -11,6 +11,9 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {useNavigate} from '@tanstack/react-router';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {BreadCrumbs} from '../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
+import {BasicPage} from '../../../../../common/components/layout/BasicPage/BasicPage';
 
 export const WeightCreatePage: FC = () => {
   const navigate = useNavigate();
@@ -35,18 +38,16 @@ export const WeightCreatePage: FC = () => {
     navigate({to: '/entries'});
   };
 
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: t(i18n.list.heading), url: route(RouteId.EntryAdd)},
+    {label: t(i18n.weight.add.heading), url: route(RouteId.WeightCreate)},
+  ];
   return (
     <PageContainer>
-       <div className="flex flex-col max-w-5xl w-full">
-        <div className="mb-5 -mt-5">
-          <RouteLink to={route(RouteId.EntryList)}>{t(i18n.list.heading)}</RouteLink>
-          <span className="mx-2">&gt;&gt;</span>
-          <RouteLink to={route(RouteId.EntryAdd)}>{t(i18n.create.heading)}</RouteLink>
-          <span className="mx-2">&gt;&gt;</span>
-          <span>{t(i18n.weight.add.heading)}</span>
-        </div>
-      </div>
-      <AppBlock className="max-w-5xl">
+      <BasicPage>
+        <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
+        <AppBlock>
           <AppBlockHeader>{t(i18n.weight.add.heading)}</AppBlockHeader>
           <WeightUpdateForm onUpdate={setWeight} errors={errors}/>
           <div className="mt-5 border-b-1 border-neutral-on-surface"/>
@@ -56,7 +57,8 @@ export const WeightCreatePage: FC = () => {
               <AppButton disabled={!weight} onClick={save}>{translations.utils.generic.buttons.save}</AppButton>
             </div>
           </div>
-      </AppBlock>
+        </AppBlock>
+      </BasicPage>
     </PageContainer>
   );
 };

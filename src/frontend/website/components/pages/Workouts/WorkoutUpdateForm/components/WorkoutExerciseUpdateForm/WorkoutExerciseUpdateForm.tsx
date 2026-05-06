@@ -1,21 +1,22 @@
-import {FC, useContext, ChangeEvent} from 'react';
+import {FC, ChangeEvent} from 'react';
 import {WorkoutExerciseUpdateFormProps} from './types/WorkoutExerciseUpdateFormProps';
-import {AppButton} from '../../../../../../../../common/components/atoms/AppButton/AppButton';
-import {AppTextInput} from '../../../../../../../../common/components/atoms/AppTextInput/AppTextInput';
-import {PopupContext} from '../../../../../../../../common/components/atoms/Popup/PopupContext';
-import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../../../common/utils/openapi-client';
-import {AppImage} from '../../../../../../../../common/components/atoms/AppImage/AppImage';
-import {ExerciseSelectionPopup} from '../../../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
-import {useAppPartialTranslation} from '../../../../../../../utils/i18n/useAppPartialTranslation';
 import {FaX} from 'react-icons/fa6';
 import {useAtom} from 'jotai';
-import {AppInputError} from '../../../../../../../../common/components/atoms/AppInputError/AppInputError';
-import {useResponseErrors} from '../../../../../../../../common/utils/useResponseErrors';
-import {RouteLink} from '../../../../../../../../common/components/atoms/RouteLink/RouteLink';
-import {route, RouteId} from '../../../../../../../../common/utils/route';
+import {AppButton} from '../../../../../../../common/components/atoms/AppButton/AppButton';
+import {AppImage} from '../../../../../../../common/components/atoms/AppImage/AppImage';
+import {AppInputError} from '../../../../../../../common/components/atoms/AppInputError/AppInputError';
+import {AppTextInput} from '../../../../../../../common/components/atoms/AppTextInput/AppTextInput';
+import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
+import {Exercise, WorkoutExerciseSet, WorkoutExerciseSetUpdateDto} from '../../../../../../../common/utils/openapi-client';
+import {route, RouteId} from '../../../../../../../common/utils/route';
+import {useResponseErrors} from '../../../../../../../common/utils/useResponseErrors';
+import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppPartialTranslation';
+import {ExerciseSelectionPopup} from '../../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {usePopup} from '../../../../../../../common/components/atoms/Popup/utils/usePopup';
+
 
 export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (props) => {
-  const popupContext = useContext(PopupContext);
+  const popupContext = usePopup();
   const {getSmartError} = useResponseErrors(props.errors);
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.workouts.update);
   const [workoutExercise, setWorkoutExercise] = useAtom(props.item);

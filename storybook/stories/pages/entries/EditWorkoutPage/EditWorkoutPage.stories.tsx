@@ -1,7 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {
   WorkoutUpdatePagePresenter,
-} from '../../../../../src/frontend/website/components/pages/Workouts/UpdateWorkoutPage/components/WorkoutUpdatePagePresenter';
+// eslint-disable-next-line max-len
+} from '../../../../../src/frontend/website/components/pages/Workouts/WorkoutUpdatePage/components/WorkoutUpdatePagePresenter/WorkoutUpdatePagePresenter';
 import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';

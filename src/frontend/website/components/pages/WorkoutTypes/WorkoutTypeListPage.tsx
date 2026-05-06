@@ -13,6 +13,9 @@ import {RouteLink} from '../../../../common/components/atoms/RouteLink/RouteLink
 import {WorkoutTypeBlock} from './WorkoutTypeBlock';
 import {AppButton} from '../../../../common/components/atoms/AppButton/AppButton';
 import {route, RouteId} from '../../../../common/utils/route';
+import {BreadCrumbsBlock} from '../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
+import {BreadCrumbs} from '../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BasicPage} from '../../../../common/components/layout/BasicPage/BasicPage';
 
 const routeApi = getRouteApi('/workouts/types/');
 export const WorkoutTypeListPage: FC = () => {
@@ -56,14 +59,14 @@ export const WorkoutTypeListPage: FC = () => {
     );
   }
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: t(i18n.heading), url: route(RouteId.WorkoutTypeList)},
+  ];
   return (
     <PageContainer className="bg-main">
-      <div className="flex flex-col max-w-5xl w-full">
-      <div className="mb-5 -mt-5">
-        <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
-        <span className="ml-2">&gt;&gt;</span>
-        <span className="ml-2">{t(i18n.heading)}</span>
-      </div>
+      <BasicPage>
+        <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
         <div className="flex flex-col gap-5 items-start w-full">
           <div className="flex flex-col gap-5 grow w-full">
             {response.isLoading && <AppSpinner />}
@@ -78,7 +81,7 @@ export const WorkoutTypeListPage: FC = () => {
             </RouteLink>
           </div>
         </div>
-      </div>
+      </BasicPage>
     </PageContainer>
   );
 };

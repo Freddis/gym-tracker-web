@@ -1,22 +1,23 @@
 import {FC, useContext, useEffect, useMemo} from 'react';
-import {AppTextInput} from '../../../../../../common/components/atoms/AppTextInput/AppTextInput';
-import {AppButton} from '../../../../../../common/components/atoms/AppButton/AppButton';
-import {PopupContext} from '../../../../../../common/components/atoms/Popup/PopupContext';
-import {Conditional} from '../../../../layout/Header/Header';
-import {AppLabel} from '../../../../../../common/components/atoms/AppLabel/AppLabel';
-import {Workout, WorkoutUpdateDto, Exercise, getWorkoutTypes, WorkoutExercise} from '../../../../../../common/utils/openapi-client';
 import {WorkoutExerciseUpdateForm} from './components/WorkoutExerciseUpdateForm/WorkoutExerciseUpdateForm';
-import {AppCombobox} from '../../../../../../common/components/atoms/AppCombobox/AppCombobox';
 import {useQuery} from '@tanstack/react-query';
-import {ComboValue} from '../../../../../../common/components/atoms/AppCombobox/types/ComboValue';
-import {ExerciseSelectionPopup} from '../../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
-import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {atom, getDefaultStore, useSetAtom} from 'jotai';
-import {usePropAtom} from '../../../../../../common/utils/usePropAtom';
-import {ErrorSlice, useResponseErrors} from '../../../../../../common/utils/useResponseErrors';
-import {AppInputError} from '../../../../../../common/components/atoms/AppInputError/AppInputError';
-import {AppDatepicker} from '../../../../../../common/components/atoms/AppDatepicker/AppDatepicker';
-import {useSplitAtom} from '../../../../../../common/utils/useSplitAtom';
+import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
+import {AppCombobox} from '../../../../../common/components/atoms/AppCombobox/AppCombobox';
+import {ComboValue} from '../../../../../common/components/atoms/AppCombobox/types/ComboValue';
+import {AppDatepicker} from '../../../../../common/components/atoms/AppDatepicker/AppDatepicker';
+import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
+import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
+import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/AppTextInput';
+import {PopupContext} from '../../../../../common/components/atoms/Popup/PopupContext';
+import {Workout, WorkoutUpdateDto, getWorkoutTypes, Exercise, WorkoutExercise} from '../../../../../common/utils/openapi-client';
+import {usePropAtom} from '../../../../../common/utils/usePropAtom';
+import {ErrorSlice, useResponseErrors} from '../../../../../common/utils/useResponseErrors';
+import {useSplitAtom} from '../../../../../common/utils/useSplitAtom';
+import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
+import {ExerciseSelectionPopup} from '../../../blocks/ExerciseSelectionPopup/ExerciseSelectionPopup';
+import {Conditional} from '../../../layout/Header/Header';
+
 
 interface WorkoutUpdateFormProps {
   item: Omit<Workout, 'id'>

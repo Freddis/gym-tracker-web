@@ -12,6 +12,9 @@ import {useNavigate} from '@tanstack/react-router';
 import {WorkoutTypeUpdateForm} from './WorkoutTypeUpdateForm';
 import {useResponseErrors} from '../../../../common/utils/useResponseErrors';
 import {route, RouteId} from '../../../../common/utils/route';
+import {BreadCrumbs} from '../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
+import {BasicPage} from '../../../../common/components/layout/BasicPage/BasicPage';
 
 export const WorkoutTypeCreatePage: FC = () => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.workoutTypes.create);
@@ -60,14 +63,14 @@ export const WorkoutTypeCreatePage: FC = () => {
       to: '/workouts/types',
     });
   };
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.workoutTypes.list.heading, url: route(RouteId.WorkoutTypeList)},
+    {label: t(i18n.heading), url: route(RouteId.WorkoutTypeCreate)},
+  ];
   return (
     <PageContainer className="bg-main">
-      <div className="flex flex-col max-w-5xl w-full">
-      <div className="mb-5 -mt-5">
-        <RouteLink to={route(RouteId.WorkoutTypeList)}>{translations.pages.workoutTypes.list.heading}</RouteLink>
-        <span className="ml-2">&gt;&gt;</span>
-        <span className="ml-2">{t(i18n.heading)}</span>
-      </div>
+      <BasicPage>
+        <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
         <AppBlock className="max-w-5xl">
           <AppBlockHeader>{t(i18n.heading)}</AppBlockHeader>
           <WorkoutTypeUpdateForm item={workoutType} onUpdate={onFormUpdate} />
@@ -79,7 +82,7 @@ export const WorkoutTypeCreatePage: FC = () => {
               </div>
           </div>
         </AppBlock>
-      </div>
+      </BasicPage>
     </PageContainer>
   );
 };

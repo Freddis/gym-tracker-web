@@ -12,6 +12,9 @@ import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinne
 import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {FoodUpdatePagePresenterProps} from './types/FoodUpdatePagePresenterProps';
 import {FoodUpdateFormRef} from '../../../FoodUpdateForm/types/FoodUpdateFormRef';
+import {BreadCrumbs} from '../../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
+import {BasicPage} from '../../../../../../../common/components/layout/BasicPage/BasicPage';
 
 export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food);
@@ -54,36 +57,35 @@ export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props)
       </PageContainer>
     );
   }
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: t(i18n.list.heading), url: route(RouteId.FoodList)},
+    {label: t(i18n.update.heading), url: route(RouteId.FoodUpdate)},
+  ];
   return (
     <PageContainer>
-    <div className="flex flex-col max-w-5xl w-full">
-     <div className="mb-5 -mt-5">
-     <RouteLink to={route(RouteId.EntryList)}>{translations.pages.activities.list.heading}</RouteLink>
-     <span className="mx-2">&gt;&gt;</span>
-       <RouteLink to={route(RouteId.FoodList)}>{t(i18n.list.heading)}</RouteLink>
-       <span className="mx-2">&gt;&gt;</span>
-       <span>{t(i18n.update.heading)}</span>
-     </div>
-   </div>
-   <AppBlock className="max-w-5xl">
-    <AppBlockHeader>{t(i18n.update.heading)}</AppBlockHeader>
-    <FoodUpdateForm
-      food={props.response.data.data}
-      errors={props.errors}
-      onSubmit={onSubmit}
-      ref={formRef}
-    />
-    <div className="mt-5 border-b-1 border-neutral-on-surface"/>
-    <div className="mt-5 flex flex-row">
-      <div className="grow">
-        <RouteLink to={route(RouteId.FoodList)}>{translations.utils.generic.buttons.back}</RouteLink>
-      </div>
-      <div className=" flex flex-row gap-5">
-        <AppButton onClick={onDeleteClick}>{translations.utils.generic.buttons.delete}</AppButton>
-        <AppButton onClick={onSaveClick}>{translations.utils.generic.buttons.save}</AppButton>
-      </div>
-    </div>
-   </AppBlock>
- </PageContainer>
+      <BasicPage>
+        <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
+        <AppBlock className="max-w-5xl">
+          <AppBlockHeader>{t(i18n.update.heading)}</AppBlockHeader>
+          <FoodUpdateForm
+            food={props.response.data.data}
+            errors={props.errors}
+            onSubmit={onSubmit}
+            ref={formRef}
+          />
+          <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+          <div className="mt-5 flex flex-row">
+            <div className="grow">
+              <RouteLink to={route(RouteId.FoodList)}>{translations.utils.generic.buttons.back}</RouteLink>
+            </div>
+            <div className=" flex flex-row gap-5">
+              <AppButton onClick={onDeleteClick}>{translations.utils.generic.buttons.delete}</AppButton>
+              <AppButton onClick={onSaveClick}>{translations.utils.generic.buttons.save}</AppButton>
+            </div>
+          </div>
+        </AppBlock>
+      </BasicPage>
+    </PageContainer>
   );
 };

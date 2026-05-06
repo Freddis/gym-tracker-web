@@ -16,6 +16,8 @@ import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useNonRenderingState} from '../../../../../common/utils/useNonRenderingState';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {BreadCrumbs} from '../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
+import {BreadCrumbsBlock} from '../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
 
 const routeApi = getRouteApi('/exercises/update/$exerciseId');
 
@@ -110,15 +112,14 @@ export const UpdateExercisePage: FC = () => {
       to: '/exercises',
     });
   };
+  const breadCrumbs: BreadCrumbs = [
+    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
+    {label: t(i18n.list.heading), url: route(RouteId.ExerciseLibrary)},
+    {label: t(i18n.update.heading), url: route(RouteId.ExerciseUpdate)},
+  ];
   return (
     <PageContainer>
-        <div className="flex flex-col max-w-5xl w-full">
-        <div className="mb-5 -mt-5">
-          <RouteLink to={route(RouteId.ExerciseLibrary)}>{t(i18n.list.heading)}</RouteLink>
-          <span className="ml-2">&gt;&gt;</span>
-          <span className="ml-2">{t(i18n.update.heading)} {exercise.id.toString()}</span>
-        </div>
-      </div>
+      <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
       <AppBlock className="max-w-5xl">
         <ExerciseUpdateForm onUpdate={setExercieDto} errors={errors} item={exercise}/>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>

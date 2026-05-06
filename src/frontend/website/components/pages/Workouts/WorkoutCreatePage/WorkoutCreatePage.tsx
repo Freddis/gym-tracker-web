@@ -9,7 +9,7 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {useNonRenderingState} from '../../../../../common/utils/useNonRenderingState';
 import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {AuthContext} from '../../../../../common/components/layout/AuthProvider/AuthContext';
-import {WorkoutCreatePagePresenter} from './components/WorkoutCreatePagePresenter';
+import {WorkoutCreatePagePresenter} from './components/WorkoutCreatePagePresenter/WorkoutCreatePagePresenter';
 
 export const WorkoutCreatePage: FC = () => {
   const navigation = useNavigate();

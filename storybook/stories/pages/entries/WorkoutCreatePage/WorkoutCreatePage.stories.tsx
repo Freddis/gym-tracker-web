@@ -5,7 +5,8 @@ import {WorkoutCreatePage} from '../../../../../src/frontend/website/components/
 import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
 import {
   WorkoutCreatePagePresenter,
-} from '../../../../../src/frontend/website/components/pages/Workouts/WorkoutCreatePage/components/WorkoutCreatePagePresenter';
+// eslint-disable-next-line max-len
+} from '../../../../../src/frontend/website/components/pages/Workouts/WorkoutCreatePage/components/WorkoutCreatePagePresenter/WorkoutCreatePagePresenter';
 
 const meta = {
   title: 'Pages/Entries/Workout/Workout Create Page',

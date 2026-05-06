@@ -4,7 +4,7 @@ import {getRouteApi, useNavigate} from '@tanstack/react-router';
 import {FC, useMemo} from 'react';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {WorkoutUpdateDto, patchWorkoutsById, deleteWorkoutsById, getWorkoutsById} from '../../../../../common/utils/openapi-client';
-import {WorkoutUpdatePagePresenter} from './components/WorkoutUpdatePagePresenter';
+import {WorkoutUpdatePagePresenter} from './components/WorkoutUpdatePagePresenter/WorkoutUpdatePagePresenter';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {AppApiErrorDisplay} from '../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
