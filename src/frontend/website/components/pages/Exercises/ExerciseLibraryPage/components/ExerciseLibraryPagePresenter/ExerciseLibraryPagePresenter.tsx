@@ -17,6 +17,7 @@ import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppParti
 import {ExerciseBlock} from '../ExerciseBlock/ExerciseBlock';
 import {ExerciseLibraryPageState} from './types/ExerciseLibraryPageState';
 import {ExerciseLibraryPagePresenterProps} from './types/ExerciseLibraryPagePresenterProps';
+import {avoidLet} from '../../../../../../../common/utils/avoidLet';
 
 export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps> = (props) => {
   const {filter, onFilter, apiError, state, items, onNextPage} = props;
@@ -69,7 +70,13 @@ export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps>
     label: translations.utils.objects.equipment[equipment],
     onSelect: (selected) => filterByEquipment(equipment, selected),
   }));
-
+  const selectedEquipment = avoidLet(() => {
+    const equipment = filter.equipment;
+    if (!equipment) {
+      return undefined;
+    }
+    return values.find((x) => x.label === translations.utils.objects.equipment[equipment]);
+  });
   return (
     <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
@@ -95,6 +102,7 @@ export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps>
                   notFound={t(i18n.filter.labels.noEquipmentFound)}
                   defaultValue={t(i18n.filter.labels.selectEquipment)}
                   values={values}
+                  selected={selectedEquipment?.label}
                />
             </div>
             <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
