@@ -1,12 +1,17 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
-import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {Color} from '../../../../../src/frontend/common/utils/design-system/types/Color';
+import {
+  ExerciseLibraryPagePresenter,
 // eslint-disable-next-line max-len
-import {ExerciseLibraryPagePresenter} from '../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseLibraryPagePresenter/ExerciseLibraryPagePresenter';
+} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseLibraryPagePresenter/ExerciseLibraryPagePresenter';
+import {
+  ExerciseLibraryPageState,
 // eslint-disable-next-line max-len
-import {ExerciseLibraryPageState} from '../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseLibraryPagePresenter/types/ExerciseLibraryPageState';
-import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
+} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseLibraryPagePresenter/types/ExerciseLibraryPageState';
+import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
+import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
+
 
 const meta = {
   title: 'Pages/Exercises/Library',

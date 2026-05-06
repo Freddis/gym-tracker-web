@@ -9,6 +9,7 @@ import {cn} from '../../../../../../../common/utils/cn';
 import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../../../utils/getFoodValueRecursively';
 import {FoodComponentBlockProps} from './types/FoodComponentBlockProps';
 import {floorToMax3Decimals} from './utils/floorToMax3Decimals';
+import {useImagePlaceHolder} from '../../../../../../utils/getImagePlaceHolder';
 
 
 export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
@@ -18,6 +19,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
   const initialAmount = props.item.item.amount ?? defaultAmount;
   const servingSize = food.servingSize ?? 100;
   const initialServings = food.isMeal ? props.item.item.amount : (initialAmount / servingSize);
+  const placeholder = useImagePlaceHolder();
   const [amount, setAmount] = useState(initialAmount.toFixed(0));
   const [servings, setServings] = useState(floorToMax3Decimals(initialServings).toString());
   const {setSmartError, clearSmartError, hasSmartError} = useResponseErrors<{amount: string, servings: string}>();
@@ -80,7 +82,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
     className="flex h-auto flex-row items-start justify-stretch p-2 rounded-md cursor-pointer gap-5 bg-cavity/50 relative"
   >
     <div className="w-40 self-stretch">
-      <img className="w-full h-full  object-cover rounded-md" src={item.item.food.image?.url} />
+      <img className="w-full h-full  object-cover rounded-md" src={item.item.food.image?.url ?? placeholder} />
     </div>
     <div className="flex flex-row gap-5 items-start">
       <div>

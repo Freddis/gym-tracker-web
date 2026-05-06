@@ -22,6 +22,8 @@ import {mealValidator} from './validators/mealValidator';
 import {AppSwitch} from '../../../../../common/components/atoms/AppSwitch/AppSwitch';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {FoodAmountUnit} from '../../../../../../backend/services/FoodService/types/FoodAmountUnit';
+import {avoidLet} from '../../../../../common/utils/avoidLet';
+import {stringToNumber} from '../../../../utils/stringToNumber';
 
 export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>((props, ref) => {
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
@@ -41,20 +43,25 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
     ...props.food,
     name: name.trim(),
     description: description.trim() === '' ? null : description.trim(),
-    protein: Number(protein),
-    carbs: Number(carbs),
-    fat: Number(fat),
-    calories: Number(protein) * 4 + Number(carbs) * 4 + Number(fat) * 9,
+    protein: stringToNumber(protein, 0),
+    carbs: stringToNumber(carbs, 0),
+    fat: stringToNumber(fat, 0),
+    calories: stringToNumber(protein, 0) * 4 + stringToNumber(carbs, 0) * 4 + stringToNumber(fat, 0) * 9,
     isMeal: ingredients.length > 0,
     components: ingredients.map((x) => x.item),
-    servingSize: hasServingSize ? Number(servingSize) : null,
+    servingSize: hasServingSize ? stringToNumber(servingSize, 0) : null,
   };
 
   const totalProtein = getFoodMacro(updatedFood, FoodMacros.Protein);
   const totalCarbs = getFoodMacro(updatedFood, FoodMacros.Carbs);
   const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
   const totalCalories = getFoodCalories(updatedFood);
-  const calories = totalCalories / (updatedFood.servingSize ?? 100) * 100;
+  const calories = avoidLet(() => {
+    if (updatedFood.servingSize === 0) {
+      return 0;
+    }
+    return totalCalories / (updatedFood.servingSize ?? 100) * 100;
+  });
 
   useImperativeHandle(ref, () => ({
     submit: () => {

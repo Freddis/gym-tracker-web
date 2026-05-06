@@ -16,8 +16,10 @@ import {calfRaise} from './data/calfRaise';
 import {deadLift} from './data/deadLift';
 import {legExtension} from './data/legExtension';
 import {pullUp} from './data/pullUp';
+import {StorybookFoodUtils} from './StorybookFoodUtils';
 
 export class StorybookDataUtils {
+  static food = StorybookFoodUtils;
 
   static getImage(): Image {
     const image: Image = {

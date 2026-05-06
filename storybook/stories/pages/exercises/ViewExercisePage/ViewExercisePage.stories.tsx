@@ -1,11 +1,11 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Color} from '../../../../src/frontend/common/utils/design-system/types/Color';
-import {StoryBookDisplay} from '../../../components/StoryBookDisplay/StoryBookDisplay';
-import {StoryBookDisplayType} from '../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {Color} from '../../../../../src/frontend/common/utils/design-system/types/Color';
 import {
   ExerciseViewPagePresenter,
-} from '../../../../src/frontend/website/components/pages/Exercises/ViewExercisePage/components/ExerciseViewPagePresenter';
-import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
+} from '../../../../../src/frontend/website/components/pages/Exercises/ViewExercisePage/components/ExerciseViewPagePresenter';
+import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
+import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
+import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
 
 const meta = {
   title: 'Pages/Exercises/View',

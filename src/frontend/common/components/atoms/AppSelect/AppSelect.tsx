@@ -7,7 +7,7 @@ export const AppSelect = <T extends string | number>(props: AppSelectProps<T>) =
     const selected = props.options.find(
       (opt) => String(opt.value) === e.target.value
     );
-    if (selected) {
+    if (selected && props.onChange) {
       props.onChange(selected.value);
     }
   };
