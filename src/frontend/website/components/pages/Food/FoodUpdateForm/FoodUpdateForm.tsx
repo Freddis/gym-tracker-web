@@ -54,6 +54,7 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
   const totalCarbs = getFoodMacro(updatedFood, FoodMacros.Carbs);
   const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
   const totalCalories = getFoodCalories(updatedFood);
+  const calories = totalCalories / (updatedFood.servingSize ?? 100) * 100;
 
   useImperativeHandle(ref, () => ({
     submit: () => {
@@ -165,31 +166,6 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
     </div>
     {!props.food.isMeal && (
       <>
-        <div className="flex flex-row gap-5 items-start">
-          <div className="w-30">
-            <AppLabel>{t(i18n.create.labels.hasServingSize)}</AppLabel>
-          </div>
-          <div className="flex flex-col">
-            <div className="h-10 flex items-center">
-              <AppSwitch onClick={() => setHasServingSize(!hasServingSize)} checked={hasServingSize}/>
-            </div>
-              <AppInputError error={null} />
-          </div>
-        </div>
-        {hasServingSize && (
-          <div className="flex flex-row gap-5 items-start">
-          <div className="w-30">
-            <AppLabel>{translations.utils.objects.food.fields.servingSize}</AppLabel>
-          </div>
-          <div className="flex flex-col grow">
-            <div>
-              <AppTextInput className="max-w-full w-20" onChange={(e) => setServingSize(e.target.value)} value={servingSize}/>
-              <span className="ml-5">{translations.utils.objects.units.g}</span>
-            </div>
-            <AppInputError error={getSmartError((x) => x.servingSize)} />
-          </div>
-        </div>
-        )}
         <div className="flex flex-row gap-5">
           <div className="flex flex-row gap-5 items-start">
             <AppLabel>{translations.utils.objects.food.fields.protein}</AppLabel>
@@ -227,10 +203,44 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
             <AppLabel>{translations.utils.objects.food.fields.calories}</AppLabel>
           </div>
           <div className="flex flex-col">
-              <div className="h-10 flex items-center">{totalCalories.toFixed(0)}</div>
+              <div className="h-10 flex items-center">{calories.toFixed(0)}</div>
               <AppInputError error={null} />
           </div>
         </div>
+        <div className="flex flex-row gap-5 items-start">
+          <div className="w-30">
+            <AppLabel>{t(i18n.create.labels.hasServingSize)}</AppLabel>
+          </div>
+          <div className="flex flex-col">
+            <div className="h-10 flex items-center">
+              <AppSwitch onClick={() => setHasServingSize(!hasServingSize)} checked={hasServingSize}/>
+            </div>
+              <AppInputError error={null} />
+          </div>
+        </div>
+        {hasServingSize && (
+          <>
+            <div className="flex flex-row gap-5 items-start">
+              <div className="w-30">
+                <AppLabel>{translations.utils.objects.food.fields.servingSize}</AppLabel>
+              </div>
+              <div className="flex flex-col grow">
+                <div>
+                  <AppTextInput className="max-w-full w-20" onChange={(e) => setServingSize(e.target.value)} value={servingSize}/>
+                  <span className="ml-5">{translations.utils.objects.units.g}</span>
+                </div>
+                <AppInputError error={getSmartError((x) => x.servingSize)} />
+              </div>
+            </div>
+            <div className="w-full border-b-1 border-neutral-on-surface"/>
+            <div className="flex flex-row gap-5 items-start">
+              <AppLabel>{t(i18n.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
+              <AppLabel>{t(i18n.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
+              <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
+              <AppLabel>{t(i18n.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+            </div>
+          </>
+        )}
       </>
     )}
     {props.food.isMeal && (
