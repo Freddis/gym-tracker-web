@@ -43,7 +43,9 @@ export const WorkoutTypeCreateScreen: FC<{type?: WorkoutType, errors?: FieldErro
                             <div>
                             <div key={i} className="flex flex-row items-center">
                               <span>{i + 1}:</span>
-                              <AppTextInput className="w-15 text-center ml-2 mr-2" value={set.reps?.toString() ?? ''} />
+                              <div className="w-15 max-w-full flex items-center">
+                                <AppTextInput value={set.reps?.toString() ?? ''} />
+                              </div>
                               <span>reps</span>
                               {i !== exercise.sets.length - 1 && (
                                 <div className="grow flex flex-row-reverse">

@@ -5,13 +5,14 @@ import {foodValidator} from './validators/foodValidator';
 import {object, string} from 'zod';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
+import {RouteTag} from '../../types/RouteTag';
 
 export const getFood = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
   type: ApiRouteType.User,
   description: 'Returns data on food for user',
   path: '/{id}',
-  tags: ['food'],
+  tags: [RouteTag.Food],
   operationId: 'getFood',
   validators: {
     path: object({

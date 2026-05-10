@@ -3,13 +3,14 @@ import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {foodValidator} from './validators/foodValidator';
 import {object, string} from 'zod';
+import {RouteTag} from '../../types/RouteTag';
 
 export const getFoodList = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
   type: ApiRouteType.User,
   description: 'Updates or inserts food for user',
   path: '/',
-  tags: ['food'],
+  tags: [RouteTag.Food],
   operationId: 'getFoodList',
   validators: {
     query: object({

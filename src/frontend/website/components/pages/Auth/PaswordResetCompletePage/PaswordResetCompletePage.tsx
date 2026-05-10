@@ -1,23 +1,24 @@
 import {useNavigate, getRouteApi} from '@tanstack/react-router';
 import {FC, useContext} from 'react';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
-import {postAuthPasswordResetComplete, PostAuthPasswordResetCompleteData} from '../../../../../common/utils/openapi-client';
+import {api} from '../../../../../common/utils/api';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {AuthContext} from '../../../../../common/components/layout/AuthProvider/AuthContext';
 import {PaswordResetCompletePagePresenter} from './components/PaswordResetCompletePagePresenter';
+import {FinishPasswordResetData} from '../../../../../common/utils/openapi-client';
 
 const routeApi = getRouteApi('/auth/password-reset-complete/$token');
 
 export const PaswordResetCompletePage: FC = () => {
   const toasts = useToasts();
-  const {showToastsAndSetErrors, sliceErrors, errors} = useResponseErrors<PostAuthPasswordResetCompleteData['body']>();
+  const {showToastsAndSetErrors, sliceErrors, errors} = useResponseErrors<FinishPasswordResetData['body']>();
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const params = routeApi.useParams();
 
   const handlePasswordReset = async (data: {password: string, passwordConfirmation: string}) => {
-    const result = await postAuthPasswordResetComplete({
+    const result = await api.finishPasswordReset({
       body: {
         token: params.token,
         password: data.password,

@@ -5,4 +5,5 @@ export const ru: Record<ValidationErrorCode, string> = {
   [ValidationErrorCode.IncorrectEmailOrPassword]: 'Направильный адрес почты или пароль',
   [ValidationErrorCode.PasswordHasToBeLonger]: 'Пароль должен быть более 5 символов',
   [ValidationErrorCode.InvalidEmail]: 'Неверная эл. почта',
+  [ValidationErrorCode.PasswordConfirmationMismatch]: 'Пароль и подтверждение не совпадают',
 };

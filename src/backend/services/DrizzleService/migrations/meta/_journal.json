@@ -288,6 +288,20 @@
       "when": 1777986486665,
       "tag": "0040_food_component_amounts",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1778354412993,
+      "tag": "0041_user_settings_1",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1778354442371,
+      "tag": "0042_user_settings_2",
+      "breakpoints": true
     }
   ]
 }

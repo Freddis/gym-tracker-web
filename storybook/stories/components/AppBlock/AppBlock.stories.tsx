@@ -39,7 +39,7 @@ export const NewsBlock: Story = {
             </p>
             <div className="grow flex flex-col-reverse">
               <div className="flex flex-row gap-5 items-center mt-10">
-                <img className="w-8" src="/images/avatar.gif" />
+                <img className="w-8 rounded-full" src="/images/users/user1.jpg" />
                 <span className="text-accent">Alex S.</span>
               </div>
             </div>

@@ -61,4 +61,13 @@ export abstract class BasePageTestUtils {
     return locators;
   }
 
+  async selectDate(locator: Locator, date: Date) {
+    await locator.click(); // opening calendar
+    const parent = locator.locator('..');
+    const monthSelect = parent.locator('select.rdp-months_dropdown');
+    const yearSelect = parent.locator('select.rdp-years_dropdown');
+    await monthSelect.selectOption(date.getMonth().toString());
+    await yearSelect.selectOption(date.getFullYear().toString());
+    await parent.locator('button').filter({hasText: date.getDate().toString()}).click();
+  }
 }

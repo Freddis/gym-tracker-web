@@ -4,12 +4,14 @@ import {FoodListPagePresenter} from './components/FoodListPagePresenter/FoodList
 import {api} from '../../../../../common/utils/api';
 import {getRouteApi} from '@tanstack/react-router';
 import {routeId, RouteId} from '../../../../../common/utils/route';
+import {useRequiredAuth} from '../../../../../common/components/layout/AuthProvider/utils/useRequiredAuth';
 
 
 export const FoodListPage = () => {
   const routeApi = getRouteApi(routeId(RouteId.FoodList));
   const searchParams = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
+  const {user} = useRequiredAuth();
   const onPageChanged = (page: number) => {
     navigate({
       search: {
@@ -43,10 +45,10 @@ export const FoodListPage = () => {
     }),
     queryKey: ['food-list', searchParams],
   });
-
   return (
     <FoodListPagePresenter
       filters={searchParams}
+      user={user}
       response={response}
       onPageChanged={onPageChanged}
       onClearFilters={onClearFilters}

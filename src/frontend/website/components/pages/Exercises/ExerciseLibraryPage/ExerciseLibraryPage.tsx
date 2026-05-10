@@ -5,8 +5,9 @@ import {getExercisesBuiltIn, GetExercisesBuiltInData} from '../../../../../commo
 import {LanguageContext} from '../../../../../common/components/layout/LanguageProvider/context/LanguageContext';
 import {ExerciseLibraryPagePresenter} from './components/ExerciseLibraryPagePresenter/ExerciseLibraryPagePresenter';
 import {ExerciseLibraryPageState} from './components/ExerciseLibraryPagePresenter/types/ExerciseLibraryPageState';
+import {route, RouteId} from '../../../../../common/utils/route';
 
-const routeApi = getRouteApi('/exercises/');
+const routeApi = getRouteApi(route(RouteId.ExerciseLibrary));
 
 export const ExerciseLibraryPage: FC = () => {
   const searchParams = routeApi.useSearch();
@@ -55,6 +56,7 @@ export const ExerciseLibraryPage: FC = () => {
 
   return (
     <ExerciseLibraryPagePresenter
+      route={RouteId.ExerciseLibrary}
       filter={searchParams}
       onFilter={(filter) => navigate({search: filter})}
       onNextPage={fetchNextPage}

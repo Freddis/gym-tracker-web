@@ -1,28 +1,17 @@
 import {FC} from 'react';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
-import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {EntryBlockBottom} from './EntryBlockBottom';
-import {EntryBlockDate} from './EntryBlockDate';
 import {Entry, OutdoorWalk} from '../../../../../common/utils/openapi-client';
 import {RoutedWorkoutContent} from './RoutedWorkoutContent';
+import {EntryBlockHeader} from './EntryBlockHeader';
 
 export const OutdoorWalkEntryBlock: FC<{entry: Entry, outdoorWalk: OutdoorWalk, own?: boolean}> = ({entry, own, outdoorWalk}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.outdoorWalk);
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
-      <div className="flex flex-col sm:flex-row">
-        <div className="text-lg font-normal mb-5">
-          {!own && `${t(i18n.type)}`}
-          {own && (
-            <RouteLink to={route(RouteId.WorkoutUpdate)} params={{id: entry.id.toString()}}>{t(i18n.type)}</RouteLink>
-          )}
-        </div>
-        <div className="grow flex flex-row sm:justify-end">
-          <EntryBlockDate date={entry.time} />
-        </div>
-      </div>
+      <EntryBlockHeader entry={entry} own={own} to={route(RouteId.WorkoutUpdate)} params={{id: entry.id.toString()}} title={t(i18n.type)} />
       <RoutedWorkoutContent entry={entry} workout={outdoorWalk} />
       <EntryBlockBottom entry={entry} own={own} />
     </AppBlock>

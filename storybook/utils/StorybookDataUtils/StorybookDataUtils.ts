@@ -7,6 +7,15 @@ import {
   WorkoutType,
   Image,
   PostEntry,
+  User,
+  Settings,
+  EntryVisibility,
+  Gender,
+  WeightUnit,
+  DistanceUnit,
+  Country,
+  HeightUnit,
+  TemperatureUnit,
 } from '../../../src/frontend/common/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
@@ -210,10 +219,7 @@ export class StorybookDataUtils {
     const entry: Entry = {
       id: '9317a469-3d8c-4853-bdf4-83b87197a5c9',
       time: new Date(),
-      user: {
-        ...this.getUser(),
-        profilePicture: '',
-      },
+      user: this.getUser(),
       type: 'Workout',
       workout: this.getWorkout(),
       visibility: 'Public',
@@ -231,10 +237,7 @@ export class StorybookDataUtils {
   static getPostEntry(): PostEntry {
     const postEntry: PostEntry = {
       id: '4e61f548-a174-455c-b92e-405f9cb04d95',
-      user: {
-        ...this.getUser(),
-        profilePicture: '',
-      },
+      user: this.getUser(),
       visibility: 'Public',
       time: new Date(),
       createdAt: new Date(),
@@ -250,10 +253,45 @@ export class StorybookDataUtils {
     return postEntry;
   }
 
-  static getUser(): AuthUser {
-    const user: AuthUser = {
+  static getSettings(): Settings {
+    const settings: Settings = {
+      name: 'John Doe',
+      note: null,
+      height: 180,
+      weight: 75.2,
+      gender: Gender.MALE,
+      birthDate: new Date(),
+      country: Country.US,
+      units: {
+        weight: WeightUnit.KG,
+        distance: DistanceUnit.KM,
+        height: HeightUnit.CM,
+        temperature: TemperatureUnit.C,
+      },
+      security: {
+        email: 'test@example.com',
+        visibility: EntryVisibility.PUBLIC,
+      },
+      profilePicture: null,
+    };
+    return settings;
+  }
+
+  static getUser(): User {
+    const user: User = {
       id: 1,
-      name: 'Alex Sarychev',
+      name: 'John Doe',
+      profilePicture: {
+        id: 1,
+        url: '/images/users/user1.jpg',
+      },
+    };
+    return user;
+  }
+
+  static getAuthUser(): AuthUser {
+    const user: AuthUser = {
+      ...this.getUser(),
       email: 'test@example.com',
       // eslint-disable-next-line max-len
       jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiMjAyNS0wNS0yOFQxMzoyOToyMy44NDlaIiwiaWQiOjEsIm5hbWUiOiJBbGV4IFNhcnljaGV2IiwiZW1haWwiOiJmcmVkZGlzMzM2QGdtYWlsLmNvbSIsImlhdCI6MTc0ODQzODk2MywiZXhwIjoxNzU3MDc4OTYzfQ._9Ka2GlV9GQFRI7bdXZ8W_iedK2g76ix_W4YG7uCGDk',

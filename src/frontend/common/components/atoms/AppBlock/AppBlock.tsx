@@ -12,7 +12,8 @@ interface AppBlockProps {
 export const AppBlock: FC<AppBlockProps> = (props) => {
   const classes = cn(
     'bg-surface text-on-surface overflow-hidden rounded-md w-full shadow-md',
-     props.image ? 'p-0' : 'p-5', props.className
+    props.image ? 'p-0' : 'p-5',
+    props.className
   );
   return (
     <div className={classes} data-testid={props['data-testid']}>

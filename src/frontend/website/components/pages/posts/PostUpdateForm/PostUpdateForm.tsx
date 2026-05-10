@@ -38,7 +38,9 @@ export const PostUpdateForm: FC<PostUpdateFormProps> = (props) => {
       <div/>
       <AppLabel>{t(i18n.list.objects.post.note)}</AppLabel>
       <div className="relative">
-        <AppTextArea value={note} onChange={(e) => setNote(e.target.value)} className="w-100 max-w-full h-25" />
+        <div className="w-100 max-w-full">
+          <AppTextArea onChange={(e) => setNote(e.target.value)} value={note} />
+        </div>
         <AppInputError
         className="w-[327px] max-w-full "
         error={getSmartError((x) => x.note)}

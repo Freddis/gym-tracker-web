@@ -3,5 +3,5 @@ import {AppBlock} from '../../../../src/frontend/common/components/atoms/AppBloc
 import {cn} from '../../../../src/frontend/common/utils/cn';
 
 export const MobileBlock: FC<{children: ReactNode, className?: string}> = ({children, className}) => (
-<AppBlock className={cn('p-3', className)}>{children}</AppBlock>
+  <AppBlock className={cn('p-3', className)}>{children}</AppBlock>
 );

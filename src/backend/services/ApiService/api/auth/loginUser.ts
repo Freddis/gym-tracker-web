@@ -7,11 +7,14 @@ import {authUserValidator} from './validators/authUserValidator';
 import {ValidationErrorCode} from '../../types/ValidationErrorCode';
 import {QuickTranslatedValidationError} from '../../errors/QuickTranslatedValidationError';
 import {loginRequestValidator} from './validators/loginRequestValidator';
+import {RouteTag} from '../../types/RouteTag';
 
 export const loginUser = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
   type: ApiRouteType.Public,
   description: 'Logins a user',
+  tags: [RouteTag.Auth],
+  operationId: 'login',
   path: '/login',
   validators: {
     body: loginRequestValidator,

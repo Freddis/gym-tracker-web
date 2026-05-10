@@ -63,11 +63,13 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
             {workoutTypeExercise.sets.map((set, i) => (
               <div key={i} className="mb-5 flex flex-row gap-3 items-center">
                 <span>{i + 1}:</span>
-                <AppTextInput
-                  onChange={(e) => updateSetReps(set, e)}
-                  value={(set.reps ?? 0).toString()}
-                  className="w-15 text-center"
-                />
+                <div className="w-15">
+                  <AppTextInput
+                    onChange={(e) => updateSetReps(set, e)}
+                    value={(set.reps ?? 0).toString()}
+                    centerText
+                  />
+                </div>
                 <AppButton onClick={() => deleteSet(set)} color={'error'}>{t(i18n.buttons.deleteSet)}</AppButton>
               </div>
             ))}

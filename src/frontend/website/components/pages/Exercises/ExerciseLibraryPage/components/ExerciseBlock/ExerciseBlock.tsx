@@ -38,8 +38,8 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
         </div>
         <div className="grow">
           <div className="mb-2">
-            <RouteLink to={route(RouteId.Exercise)} params={{exerciseId: item.id.toString()}}>
-              <b>{item.name}</b>
+            <RouteLink accented={false} to={route(RouteId.Exercise)} params={{exerciseId: item.id.toString()}}>
+              <div className="font-semibold">{item.name}</div>
             </RouteLink>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end">
@@ -49,7 +49,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
                 {item.equipment && (
                   <RouteLink
                     className="text-on-surface capitalize"
-                    to={route(RouteId.ExerciseLibrary)}
+                    to={route(props.route)}
                     search={getEquipmentSearch(item.equipment)}
                   >
                     {translations.utils.objects.equipment[item.equipment]}
@@ -60,7 +60,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
               <div>
                 <span className="font-normal">{t(i18n.labels.primaryMuscles)} </span>
                 {props.item.muscles.primary.map((muscle, i) => (
-                  <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1">
+                  <RouteLink key={i} to={route(props.route)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1">
                     {translations.utils.objects.muscles[muscle]}
                   </RouteLink>
                 ))}
@@ -68,7 +68,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
               <div>
                 <span className="font-normal">{t(i18n.labels.secondaryMuscles)} </span>
                 {props.item.muscles.secondary.slice(0, 3).map((muscle, i) => (
-                  <RouteLink key={i} to={route(RouteId.ExerciseLibrary)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1 ">
+                  <RouteLink key={i} to={route(props.route)} search={getMuscleSearch(muscle)} className="text-on-surface mr-1 ">
                     {translations.utils.objects.muscles[muscle]}
                   </RouteLink>
                 ))}
@@ -91,7 +91,7 @@ export const ExerciseBlock: FC<ExerciseBlockProps> = (props) => {
       </div>
       {showVariations && (
         <div className={'bg-cavity flex flex-col gap-3 p-3 mt-3 rounded-sm transition-opacity duration-500'}>
-          {item.variations?.map((item) => <ExerciseBlock key={item.id} item={{...item, variations: []}} />)}
+          {item.variations?.map((item) => <ExerciseBlock key={item.id} item={{...item, variations: []}} route={props.route} />)}
         </div>
       )}
     </AppBlock>

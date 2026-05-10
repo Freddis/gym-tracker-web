@@ -1,7 +1,8 @@
 import {useAppTranslation} from './i18n/useAppTranslation';
 
-export const useImagePlaceHolder = (): string => {
+export const useImagePlaceHolder = (square?: boolean): string => {
   const {translations} = useAppTranslation();
   const noImageLabel = translations.utils.generic.images.noImageLabel.replaceAll(' ', '+');
-  return `https://dummyimage.com/600x400/000/fff&text=${noImageLabel}`;
+  const size = square ? '600x600' : '600x400';
+  return `https://dummyimage.com/${size}/000/fff&text=${noImageLabel}`;
 };

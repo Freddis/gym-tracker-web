@@ -88,7 +88,9 @@ export const ExerciseViewPagePresenter:FC<{exercise:Exercise}> = ({exercise}) =>
           </div>
           {showVariations && (
             <div className={'bg-cavity flex flex-col gap-3 p-3 mt-3 rounded-sm transition-opacity duration-500'}>
-              {exercise.variations?.map((item) => <ExerciseBlock key={item.id} item={{...item, variations: []}} />)}
+              {exercise.variations?.map((item) => (
+                <ExerciseBlock key={item.id} item={{...item, variations: []}} route={RouteId.ExerciseLibrary} />
+              ))}
             </div>
           )}
 

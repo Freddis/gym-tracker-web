@@ -11,7 +11,6 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    className: 'min-w-100 h-30',
     // eslint-disable-next-line max-len
     children: 'Lower the barbell towards your lower chest as you keep your elbows close to your body. The barbell should slightly Touch your chest at the end of the movement.',
 
@@ -19,7 +18,7 @@ const meta = {
   argTypes: {
   },
   decorators: [
-    (Story) => <StoryBookDisplay type={StoryBookDisplayType.Component} story={<Story/>} />,
+    (Story) => <StoryBookDisplay type={StoryBookDisplayType.Component} story={<div className="w-100 h-30"><Story/></div>} />,
   ],
 
 } satisfies Meta<typeof AppTextArea>;

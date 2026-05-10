@@ -9,7 +9,7 @@ import {useAppPartialTranslation} from '../../../../website/utils/i18n/useAppPar
 import {useResponseErrors} from '../../../../common/utils/useResponseErrors';
 import {useToasts} from '../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {AppLogo} from '../../../../common/components/atoms/AppLogo/AppLogo';
-import {postCrmAuthLogin} from '../../../../common/utils/openapi-client';
+import {api} from '../../../../common/utils/api';
 import {useNavigate} from '@tanstack/react-router';
 import {AuthContext} from '../../../../common/components/layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../../common/components/layout/PageContainer/PageContainer';
@@ -34,7 +34,7 @@ export const LoginPage: FC = () => {
   };
 
   const login = async () => {
-    const result = await postCrmAuthLogin({
+    const result = await api.managerLogin({
       body: {
         email,
         password,
@@ -65,7 +65,7 @@ export const LoginPage: FC = () => {
           <AppInputError error={getError('email')} />
           <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
           <AppTextInput
-            type="password"
+            password
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />

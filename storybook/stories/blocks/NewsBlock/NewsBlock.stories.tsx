@@ -15,10 +15,7 @@ const meta = {
               in a year will require a lot of hard work and discipline. 
               My strategy will be to consult ...`,
     },
-    user: {
-      ...StorybookDataUtils.getUser(),
-      profilePicture: '',
-    },
+    user: StorybookDataUtils.getUser(),
   },
   parameters: {
     layout: 'centered',

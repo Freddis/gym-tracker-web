@@ -1,18 +1,18 @@
-import {date, nativeEnum, object, string} from 'zod';
-import {EntryType} from '../../../../EntryService/types/EntryType';
+import {date, object, string} from 'zod';
 import {userValidator} from '../../users/validators/userValidator';
 import {workoutValidator} from '../../workouts/validators/workoutValidator';
 import {weightValidator} from '../../weight/validators/weightValidator';
-import {EntryVisibility} from '../../../../EntryService/types/EntryVisibility';
 import {imageValidator} from '../../images/validators/imageValidator';
 import {externalSourceValidator} from './externalSourceValidator';
 import {outdoorRunValidator} from './outdoorRunValidator';
 import {outdoorWalkValidator} from './outdoorWalkValidator';
+import {entryTypeValidator} from './entryTypeValidator';
+import {entryVisibilityValidator} from './entryVisibilityValidator';
 
 const baseEntryValidator = object({
   id: string().openapi({description: 'Id of an entry'}),
   user: userValidator,
-  visibility: nativeEnum(EntryVisibility).openapi({description: 'Visibility of the entry', ref: 'Entry Visibility'}),
+  visibility: entryVisibilityValidator,
   time: date().openapi({description: 'Time of the entry. Can be changed by user.'}),
   createdAt: date().openapi({description: 'Date of the entry, when the entry was created by user. Immutable.'}),
   updatedAt: date().nullable().openapi({description: 'Date of the last update'}),
@@ -24,7 +24,7 @@ const baseEntryValidator = object({
 });
 
 export const entryValidator = baseEntryValidator.extend({
-  type: nativeEnum(EntryType).openapi({description: 'Entry type', ref: 'Entry Type'}),
+  type: entryTypeValidator,
   weight: weightValidator.optional().openapi({description: 'Weight. Only for weight entries'}),
   workout: workoutValidator.optional().openapi({description: 'Workout. Only for workout entries.'}),
   image: imageValidator.optional().nullable().openapi({description: 'Image. Only for image entries.'}),

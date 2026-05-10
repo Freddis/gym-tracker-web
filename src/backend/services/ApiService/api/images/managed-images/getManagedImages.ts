@@ -3,13 +3,14 @@ import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {crmPaginatedQuery} from '../../../validators/crmPaginatedQuery';
 import {managedImageValidator} from './validators/managedImageValidator';
+import {RouteTag} from '../../../types/RouteTag';
 
 export const getManagedImages = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
   type: ApiRouteType.Manager,
   description: 'Returns data on images',
   path: '/',
-  tags: ['Crm Images'],
+  tags: [RouteTag.CrmImages],
   validators: {
     query: crmPaginatedQuery,
     response: RouteFactory.validators.paginatedResponse(managedImageValidator).openapi({description: 'List of images'}),

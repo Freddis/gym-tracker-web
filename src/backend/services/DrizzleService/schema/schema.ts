@@ -1,4 +1,18 @@
-import {pgSchema, integer, varchar, timestamp, json, text, real, index, boolean, unique, jsonb, uuid} from 'drizzle-orm/pg-core';
+import {
+  pgSchema,
+  integer,
+  varchar,
+  timestamp,
+  json,
+  text,
+  real,
+  index,
+  boolean,
+  unique,
+  jsonb,
+  uuid,
+  AnyPgColumn,
+} from 'drizzle-orm/pg-core';
 import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
 import {Equipment} from '../../../types/Equipment';
@@ -12,6 +26,12 @@ import {HeartRatePoint} from '../../OutdoorWalkService/types/HeartRatePoint';
 import {PathPoint} from '../../OutdoorWalkService/types/PathPoint';
 import {ServingSizeUnit} from '../../FoodService/types/ServingSizeUnit';
 import {FoodAmountUnit} from '../../FoodService/types/FoodAmountUnit';
+import {Gender} from '../../../types/Gender';
+import {WeightUnit} from '../../../types/WeightUnit';
+import {DistanceUnit} from '../../../types/DistanceUnit';
+import {HeightUnit} from '../../../types/HeightUnit';
+import {TemperatureUnit} from '../../../types/TemperatureUnit';
+import {Country} from '../../../types/Country';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -44,6 +64,24 @@ export const servingSizeUnitEnum = gymTracker.enum('ServingSizeUnit', servingSiz
 
 const foodAmountUnitValues = array(nativeEnum(FoodAmountUnit)).nonempty().parse(Object.values(FoodAmountUnit));
 export const foodAmountUnitEnum = gymTracker.enum('FoodAmountUnit', foodAmountUnitValues);
+
+const genderValues = array(nativeEnum(Gender)).nonempty().parse(Object.values(Gender));
+export const genderEnum = gymTracker.enum('Gender', genderValues);
+
+const weightUnitValues = array(nativeEnum(WeightUnit)).nonempty().parse(Object.values(WeightUnit));
+export const weightUnitEnum = gymTracker.enum('WeightUnit', weightUnitValues);
+
+const distanceUnitValues = array(nativeEnum(DistanceUnit)).nonempty().parse(Object.values(DistanceUnit));
+export const distanceUnitEnum = gymTracker.enum('DistanceUnit', distanceUnitValues);
+
+const heightUnitValues = array(nativeEnum(HeightUnit)).nonempty().parse(Object.values(HeightUnit));
+export const heightUnitEnum = gymTracker.enum('HeightUnit', heightUnitValues);
+
+const temperatureUnitValues = array(nativeEnum(TemperatureUnit)).nonempty().parse(Object.values(TemperatureUnit));
+export const temperatureUnitEnum = gymTracker.enum('TemperatureUnit', temperatureUnitValues);
+
+const countryValues = array(nativeEnum(Country)).nonempty().parse(Object.values(Country));
+export const countryEnum = gymTracker.enum('Country', countryValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -94,6 +132,17 @@ export const users = gymTracker.table('users', {
   name: varchar().notNull(),
   email: varchar().notNull(),
   password: varchar().notNull(),
+  height: real().notNull(),
+  heightUnit: heightUnitEnum().notNull(),
+  weightUnit: weightUnitEnum().notNull(),
+  temperatureUnit: temperatureUnitEnum().notNull(),
+  distanceUnit: distanceUnitEnum().notNull(),
+  gender: genderEnum().notNull(),
+  birthDate: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  visibility: entryVisibilityEnum().notNull(),
+  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  country: countryEnum().notNull(),
+  note: text(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
@@ -232,7 +281,7 @@ export const images = gymTracker.table('images', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   url: text().notNull().unique(),
   imageType: imageTypeEnum().notNull(),
-  userId: integer().references(() => users.id, {onDelete: 'set null'}),
+  userId: integer().references((): AnyPgColumn => users.id, {onDelete: 'set null'}),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),

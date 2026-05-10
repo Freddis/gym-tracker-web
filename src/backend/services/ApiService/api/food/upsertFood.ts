@@ -6,13 +6,14 @@ import {foodValidator} from './validators/foodValidator';
 import {EmptyMealError} from '../../../FoodService/types/EmptyMealError';
 import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
+import {RouteTag} from '../../types/RouteTag';
 
 export const upsertFood = RouteFactory.createRoute({
   method: OpenApiMethod.PUT,
   type: ApiRouteType.User,
   description: 'Updates or inserts food for user',
   path: '/',
-  tags: ['food'],
+  tags: [RouteTag.Food],
   operationId: 'upsertFood',
   validators: {
     body: foodUpsertDtoValidator,

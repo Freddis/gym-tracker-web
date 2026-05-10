@@ -41,7 +41,7 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
             <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
-              type="password"
+              password
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
@@ -49,7 +49,7 @@ export const RegistrationScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
             <AppLabel>{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
             <AppTextInput
             data-testid="passwordConfirmation"
-            type="password"
+            password
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             value={passwordConfirmation}
             />

@@ -63,7 +63,7 @@ export const useResponseErrors = <T extends object | undefined>(existingErrors?:
   };
   const setSmartError = (fn: (x: T) => unknown, error: string) => {
     const path = selectPath(fn);
-    setErrors([...errors, {field: path, message: error}]);
+    setErrors((x) => [...x, {field: path, message: error}]);
   };
   const clearSmartError = (fn: (x: T) => unknown) => {
     const path = selectPath(fn);

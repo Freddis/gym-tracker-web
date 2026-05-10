@@ -1,4 +1,4 @@
-import {WeightUnits} from '../../types/WeightUnits';
+import {WeightUnit} from '../../types/WeightUnit';
 import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
@@ -25,7 +25,7 @@ export class WeightService {
       updatedAt: null,
       weight: props.weight,
       userId: props.userId,
-      units: WeightUnits.Kg,
+      units: WeightUnit.Kg,
       deletedAt: null,
     };
     const result = await db.insert(schema.weight).values(obj).returning();

@@ -70,12 +70,13 @@ export const ExerciseCreateScreen: FC<ExerciseCreateScreenProps> = () => {
 
               <div>
                 <AppLabel>Description</AppLabel>
-                <AppTextArea
-                  value={formData.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Enter exercise description"
-                  className="h-30"
-                />
+                <div className="h-30">
+                  <AppTextArea
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    placeholder="Enter exercise description"
+                  />
+                </div>
               </div>
 
               <div>

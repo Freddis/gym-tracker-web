@@ -38,10 +38,14 @@ export const WorkoutEntryAddScreen: FC<{type?: Workout, errors?: FieldError[]}> 
                           {exercise.sets.map((set, i) => (
                             <div>
                             <div key={i} className="flex flex-row items-center">
-                              <span>{i + 1}:</span>
-                              <AppTextInput className="w-15 text-center ml-2 mr-2" value={set.reps?.toString() ?? ''} />
+                              <span className="w-2">{i + 1}:</span>
+                              <div className="w-15 ml-2 mr-2">
+                              <AppTextInput centerText value={set.reps?.toString() ?? ''} />
+                              </div>
                               <span>x</span>
-                               <AppTextInput className="w-15 text-center ml-2 mr-2" value={set.reps?.toString() ?? ''} />
+                              <div className="w-15 ml-2 mr-2">
+                               <AppTextInput centerText value={set.reps?.toString() ?? ''} />
+                              </div>
                               {i !== exercise.sets.length - 1 && (
                                 <div className="grow flex flex-row-reverse">
                                 <AppLink className="flex flex-row items-center gap-2"><FaXmark/></AppLink>

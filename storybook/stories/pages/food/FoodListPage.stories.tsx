@@ -16,6 +16,7 @@ const meta = {
     filters: {
       search: '',
     },
+    user: StorybookDataUtils.getUser(),
     response: {
       isLoading: false,
       isError: false,

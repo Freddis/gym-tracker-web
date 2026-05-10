@@ -4,10 +4,12 @@ import {EntryType} from '../../../../../common/utils/openapi-client';
 import {EntryListPagePresenter} from './EntryListPagePresenter/EntryListPagePresenter';
 import {FC} from 'react';
 import {api} from '../../../../../common/utils/api';
+import {useRequiredAuth} from '../../../../../common/components/layout/AuthProvider/utils/useRequiredAuth';
 
 const routeApi = getRouteApi('/entries/');
 export const EntryListPage: FC = () => {
   const searchParams = routeApi.useSearch();
+  const auth = useRequiredAuth();
   const response = useQuery({
     queryFn: () => api.getEntriesOwn({
       query: {
@@ -79,6 +81,8 @@ export const EntryListPage: FC = () => {
       onDateChanged={onDateChanged}
       onFilter={filterByType}
       searchParams={searchParams}
-      datesResponse={datesResponse} />
+      datesResponse={datesResponse}
+      user={auth.user}
+      />
   );
 };

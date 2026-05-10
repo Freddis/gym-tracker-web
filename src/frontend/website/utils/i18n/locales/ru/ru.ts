@@ -1,4 +1,5 @@
 import {Translation} from '../../types/Translation';
+import {countries} from './utils/countries';
 
 export const dictionary: Translation = {
   utils: {
@@ -122,9 +123,35 @@ export const dictionary: Translation = {
         m: 'м',
         g: 'г',
       },
+      genders: {
+        Male: 'Мужской',
+        Female: 'Женский',
+        Other: 'Другой',
+      },
       foodUnits: {
         Gram: 'г',
       },
+      weightUnits: {
+        Kg: 'кг',
+        Lbs: 'фунты',
+      },
+      temperatureUnits: {
+        C: 'C',
+        F: 'F',
+      },
+      distanceUnits: {
+        Km: 'км',
+        Mi: 'мили',
+      },
+      heightUnits: {
+        Cm: 'см',
+        Ft: 'футы',
+      },
+      entryVisibility: {
+        Public: 'Публичный',
+        Private: 'Скрытый',
+      },
+      countries: countries,
       workoutPlan: {
         fields: {
           id: 'ID',
@@ -289,6 +316,69 @@ export const dictionary: Translation = {
     },
   },
   pages: {
+    settings: {
+      toasts: {
+        success: 'Настройки успешно обновлены',
+      },
+      changePassword: {
+        heading: 'Изменить Пароль',
+        labels: {
+          oldPassword: 'Старый Пароль',
+          newPassword: 'Новый Пароль',
+          confirmPassword: 'Подтвердить Пароль',
+        },
+        toasts: {
+          success: 'Пароль успешно изменен',
+        },
+      },
+      view: {
+        heading: 'Настройки',
+        buttons: {
+          edit: 'Редактировать',
+          changePassword: 'Изменить Пароль',
+        },
+        labels: {
+          about: 'О себе',
+          general: 'Общие',
+          goals: 'Цели',
+          height: 'Рост',
+          weight: 'Вес',
+          country: 'Страна',
+          distance: 'Дистанция',
+          temperature: 'Температура',
+          age: 'Возраст',
+          units: 'Единицы Измерения',
+          security: 'Безопасность',
+          name: 'Имя',
+          email: 'Почта',
+          profilePicture: 'Изображение профиля',
+          gender: 'Пол',
+          dateOfBirth: 'Дата рождения',
+          visibility: 'Видимость',
+        },
+      },
+      update: {
+        heading: 'Обновить Настройки',
+        sections: {
+          general: 'Общие',
+          units: 'Единицы',
+        },
+        labels: {
+          name: 'Имя',
+        },
+      },
+    },
+    profile: {
+      heading: 'Профиль',
+      labels: {
+        visibility: 'Видимость',
+        about: 'О себе',
+        age: 'Возраст',
+        goals: 'Цели',
+        height: 'Рост',
+        weight: 'Вес',
+      },
+    },
     food: {
       update: {
         heading: 'Обновить Еду',
@@ -550,7 +640,7 @@ export const dictionary: Translation = {
             pace: 'Темп',
             elevationGain: 'Подъем',
             cadence: 'Каденс',
-            maxPace: 'Max Темп',
+            maxPace: 'Макс. Темп',
             maxCadence: 'Max Каденс',
             start: 'Начало',
             end: 'Конец',
@@ -562,7 +652,7 @@ export const dictionary: Translation = {
             calories: 'Калории',
             pace: 'Темп',
             cadence: 'Каденс',
-            maxPace: 'Max Темп',
+            maxPace: 'Макс. Темп',
             maxCadence: 'Max Каденс',
             start: 'Начало',
             end: 'Конец',
@@ -674,6 +764,25 @@ export const dictionary: Translation = {
             email: 'Почта',
             password: 'Пароль',
             passwordConfirmation: 'Подтверждение Пароля',
+            height: 'Рост',
+            units: 'Единицы',
+            gender: 'Пол',
+            birthDate: 'Дата рождения',
+            country: 'Страна',
+          },
+          placeholders: {
+            gender: 'Выберите ваш пол',
+            country: 'Выберите вашу страну',
+          },
+          errors: {
+            name: 'Поле является обязательным',
+            email: 'Поле является обязательным',
+            password: 'Пароль является обязательным',
+            passwordConfirmation: 'Поле является обязательным',
+            height: 'Поле является обязательным',
+            gender: 'Поле является обязательным',
+            birthDate: 'Поле является обязательным',
+            country: 'Поле является обязательным',
           },
           buttons: {
             signIn: 'Войти',
@@ -739,7 +848,7 @@ export const dictionary: Translation = {
     },
     exercises: {
       list: {
-        heading: 'Встроенная Библиотека',
+        heading: 'Мои Упражнения',
         buttons: {
           addExercise: 'Добавить',
         },

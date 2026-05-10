@@ -36,7 +36,7 @@ export const ProfileDropdownMenu: FC = () => {
   };
 
   return (
-    <AppDropdownMenu>
+  <AppDropdownMenu>
     <AppDropdownMenuTrigger className="text-lg">
     <div className="flex items-center cursor-pointer">
       <span data-testid="my-name" className="text-base">{auth.user?.name}</span>

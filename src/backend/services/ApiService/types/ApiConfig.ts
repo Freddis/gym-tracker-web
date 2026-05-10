@@ -180,6 +180,8 @@ export class ApiConfig implements OpenApiConfig<
       [ActionErrorCode.PasswordResetTokenExpired]: 'Password reset token expired',
       [ActionErrorCode.PasswordResetTokenMalformed]: 'Password reset token malformed',
       [ActionErrorCode.EmptyMeal]: 'Meal cannot contain no ingredients',
+      [ActionErrorCode.PasswordConfirmationMismatch]: 'Password and confirmation do not match',
+      [ActionErrorCode.UserNotFound]: 'User not found',
     };
     return result;
   }

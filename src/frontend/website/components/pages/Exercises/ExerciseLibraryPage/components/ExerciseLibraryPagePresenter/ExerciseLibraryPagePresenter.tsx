@@ -18,6 +18,7 @@ import {ExerciseBlock} from '../ExerciseBlock/ExerciseBlock';
 import {ExerciseLibraryPageState} from './types/ExerciseLibraryPageState';
 import {ExerciseLibraryPagePresenterProps} from './types/ExerciseLibraryPagePresenterProps';
 import {avoidLet} from '../../../../../../../common/utils/avoidLet';
+import {UserProfileBlock} from '../../../../../layout/UserProfileBlock/UserProfileBlock';
 
 export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps> = (props) => {
   const {filter, onFilter, apiError, state, items, onNextPage} = props;
@@ -84,40 +85,43 @@ export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps>
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
-          <AppSidebarBlock className="hidden md:block">
-            <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
-            <div className="mb-5">
-              <AppSearchInput
-                data-testid="exercise-search-input"
-                debounce={1000}
-                value={filter.search}
-                onSearch={filterByName}
-              />
-            </div>
-            <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
-            <div className="mb-5">
-               <AppCombobox
-                  data-testid="equipment-combobox"
-                  placeholder={t(i18n.filter.labels.searchEquipment)}
-                  notFound={t(i18n.filter.labels.noEquipmentFound)}
-                  defaultValue={t(i18n.filter.labels.selectEquipment)}
-                  values={values}
-                  selected={selectedEquipment?.label}
-               />
-            </div>
-            <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
-            <div className="mb-5 flex flex-col gap-2">
-              {Object.values(Muscle).sort().map((x) => (
-                <AppSwitch
-                key={x}
-                data-testid={`muscle-switch-${x.toLowerCase()}`}
-                label={translations.utils.objects.muscles[x]}
-                checked={filter.muscles?.includes(x) ?? false}
-                onCheckedChange={(e) => filterByMuscle(x, e)}
+          <div className="flex flex-col gap-5">
+            {props.user && <UserProfileBlock user={props.user} own={props.own} />}
+            <AppSidebarBlock>
+              <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
+              <div className="mb-5">
+                <AppSearchInput
+                  data-testid="exercise-search-input"
+                  debounce={1000}
+                  value={filter.search}
+                  onSearch={filterByName}
                 />
-              ))}
-            </div>
-          </AppSidebarBlock>
+              </div>
+              <AppLabel className="mb-2 block">{t(i18n.filter.labels.equipment)}</AppLabel>
+              <div className="mb-5">
+                <AppCombobox
+                    data-testid="equipment-combobox"
+                    placeholder={t(i18n.filter.labels.searchEquipment)}
+                    notFound={t(i18n.filter.labels.noEquipmentFound)}
+                    defaultValue={t(i18n.filter.labels.selectEquipment)}
+                    values={values}
+                    selected={selectedEquipment?.label}
+                />
+              </div>
+              <AppLabel className="mb-2 block">{t(i18n.filter.labels.muscles)}</AppLabel>
+              <div className="mb-5 flex flex-col gap-2">
+                {Object.values(Muscle).sort().map((x) => (
+                  <AppSwitch
+                  key={x}
+                  data-testid={`muscle-switch-${x.toLowerCase()}`}
+                  label={translations.utils.objects.muscles[x]}
+                  checked={filter.muscles?.includes(x) ?? false}
+                  onCheckedChange={(e) => filterByMuscle(x, e)}
+                  />
+                ))}
+              </div>
+            </AppSidebarBlock>
+          </div>
           <div className="flex flex-col gap-5 grow w-full">
             {state.status === ExerciseLibraryPageState.Success && items.length === 0 && (
               <AppToast variant={Color.Danger}>{t(i18n.toasts.noExercisesFound)}</AppToast>
@@ -129,6 +133,7 @@ export const ExerciseLibraryPagePresenter: FC<ExerciseLibraryPagePresenterProps>
                 item={item}
                 params={filter}
                 data-testid={`exercise-block-${item.id}`}
+                route={props.route}
               />
             ))}
             <div ref={ref}></div>

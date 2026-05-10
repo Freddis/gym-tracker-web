@@ -15,22 +15,18 @@ import {FoodListPagePresenterProps} from './types/FoodListPagePresenterProps';
 import {FoodBlock} from '../FoodBlock/FoodBlock';
 import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
-import {BreadCrumbs} from '../../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
-import {BreadCrumbsBlock} from '../../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
-
+import {UserProfileBlock} from '../../../../../layout/UserProfileBlock/UserProfileBlock';
+import {BasicPage} from '../../../../../../../common/components/layout/BasicPage/BasicPage';
+import {AppPageHeading} from '../../../../../../../common/components/atoms/AppPageHeading/AppPageHeading';
 
 export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => {
-  const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food.list);
+  const {t, i18n} = useAppPartialTranslation((x) => x.pages.food.list);
   const hasFilters = false;
-  const breadCrumbs: BreadCrumbs = [
-    {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
-    {label: t(i18n.heading), url: route(RouteId.FoodList)},
-  ];
   return (
-    <PageContainer className="bg-main">
-      <div className="flex flex-col max-w-5xl w-full">
-        <div className="mb-5 w-full flex flex-row gap-5 items-start">
-          <BreadCrumbsBlock breadCrumbs={breadCrumbs} />
+    <PageContainer>
+      <BasicPage>
+        <div className=" w-full mb-5 flex flex-row gap-5 items-start">
+        <AppPageHeading>{t(i18n.heading)}</AppPageHeading>
           <div className="grow flex flex-row-reverse gap-5">
             <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
               <AppButton>{t(i18n.buttons.addFood)}</AppButton>
@@ -41,13 +37,19 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
           </div>
         </div>
         <div className="flex flex-col md:flex-row gap-5 items-start">
-        <AppSidebarBlock>
-        {hasFilters && <AppLink className="absolute top-5 right-5" onClick={props.onClearFilters}>{t(i18n.filter.clearFilters)}</AppLink>}
-        <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
-        <AppSearchInput
-          debounce={500} className="max-w-100 mb-5" onSearch={props.onSearch} value={props.filters.search ?? ''} />
-        </AppSidebarBlock>
-
+          <div className="flex flex-col gap-5">
+            <UserProfileBlock user={props.user} own/>
+            <AppSidebarBlock>
+              {hasFilters && (
+                <AppLink className="absolute top-5 right-5" onClick={props.onClearFilters}>
+                  {t(i18n.filter.clearFilters)}
+                </AppLink>
+                )}
+              <AppLabel className="mb-2 block">{t(i18n.filter.labels.search)}</AppLabel>
+              <AppSearchInput
+                debounce={500} className="max-w-100 mb-5" onSearch={props.onSearch} value={props.filters.search ?? ''} />
+            </AppSidebarBlock>
+          </div>
           <div className="flex flex-col gap-5 grow w-full" data-testid="main-content">
             {props.response.isLoading && <AppSpinner/>}
             {(props.response.data?.error || props.response.isError) && <AppApiErrorDisplay error={props.response.data?.error?.error}/>}
@@ -66,7 +68,7 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
             )}
           </div>
         </div>
-      </div>
+      </BasicPage>
     </PageContainer>
   );
 };

@@ -55,6 +55,9 @@ import {getOwnEntryDates} from '../api/entries/getOwnEntryDates';
 import {upsertFood} from '../api/food/upsertFood';
 import {getFoodList} from '../api/food/getFoodList';
 import {getFood} from '../api/food/getFood';
+import {changePassword} from '../api/auth/changePassword';
+import {getSettings} from '../api/settings/getSettings';
+import {updateSettings} from '../api/settings/updateSettings';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -62,6 +65,7 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     loginUser,
     passwordResetStart,
     passwordResetComplete,
+    changePassword,
   ],
   '/exercises': [
     createExercise,
@@ -120,6 +124,10 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     upsertFood,
     getFood,
     getFoodList,
+  ],
+  '/settings': [
+    getSettings,
+    updateSettings,
   ],
   '/crm/users': [
     getUserList,

@@ -5,6 +5,7 @@ import {
   ExerciseBlock,
 } from '../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock/ExerciseBlock';
 import {StorybookDataUtils} from '../../../utils/StorybookDataUtils/StorybookDataUtils';
+import {RouteId} from '../../../../src/frontend/common/utils/route';
 
 const meta = {
   title: 'Blocks/Exercise',
@@ -12,6 +13,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     item: StorybookDataUtils.getExercise(),
+    route: RouteId.ExerciseLibrary,
   },
   parameters: {
     layout: 'centered',

@@ -3,11 +3,11 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 import {Entry, Workout} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
-import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
-import {EntryBlockDate} from './EntryBlockDate';
 import {durationToTimeString} from '../../../../utils/durationToTimeString';
+import {EntryBlockHeader} from './EntryBlockHeader';
+
 
 export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
@@ -15,17 +15,13 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolea
   const time = durationToTimeString(duration);
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
-      <div className="flex flex-col sm:flex-row">
-        <div className="text-lg font-normal mb-5">
-          {!own && `${t(i18n.type)}`}
-          {own && (
-            <RouteLink to={route(RouteId.WorkoutUpdate)} params={{id: workout.id.toString()}}>{t(i18n.type)}</RouteLink>
-          )}
-        </div>
-        <div className="grow flex flex-row sm:justify-end">
-        <EntryBlockDate date={entry.time} />
-        </div>
-      </div>
+      <EntryBlockHeader
+        entry={entry}
+        own={own}
+        to={route(RouteId.WorkoutUpdate)}
+        params={{id: workout.id.toString()}}
+        title={t(i18n.type)}
+      />
       <div className="flex flex-col">
         <div className="">{t(i18n.duration)}: {time}</div>
         <div>{t(i18n.calories)}: {workout.calories}</div>

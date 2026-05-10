@@ -1,6 +1,6 @@
-export interface AuthUser {
-  id: number;
+import {User} from '../../UserService/types/User';
+
+export interface AuthUser extends User {
   email: string;
-  name: string;
   jwt: string
 }

@@ -40,11 +40,15 @@ export const StoryBookPaletteSampleBlock: FC = () => {
           </div>
           <div className="mb-5 flex flex-row items-start">
             <AppLabel className="w-20">Ended</AppLabel>
-            <AppTextInput className="w-60 text-center  bg-cavity text-on-cavity border-in-cavity" value={item.end?.toISOString()}/>
+            <div className="w-60">
+              <AppTextInput value={item.end?.toISOString()}/>
+            </div>
           </div>
           <div className="mb-5 flex flex-row items-start">
             <AppLabel className="w-20">Calories</AppLabel>
-            <AppTextInput className="w-20 text-center  bg-cavity text-on-cavity border-in-cavity" value={item.calories} />
+            <div className="w-20">
+              <AppTextInput value={item.calories} />
+            </div>
           </div>
           <AppToast variant={Color.Danger} className="mb-2">Another error happened here</AppToast>
           <Conditional condition={exercises.length > 0}>
@@ -69,17 +73,17 @@ export const StoryBookPaletteSampleBlock: FC = () => {
                       {row.workoutExercise.sets.map((set, i) => (
                         <div key={i} className="mb-5 flex flex-row gap-3 items-center">
                           <span>{i + 1}:</span>
+                          <div className="w-15">
                           <AppTextInput
-
                             value={(set.weight ?? 0).toString()}
-                            className="w-15 text-center  bg-cavity text-on-cavity border-in-cavity"
                           />
+                          </div>
                           <span>x</span>
+                          <div className="w-15">
                           <AppTextInput
-
                             value={(set.reps ?? 0).toString()}
-                            className="w-15 text-center  bg-cavity text-on-cavity border-in-cavity"
                           />
+                          </div>
                           <AppButton >Delete</AppButton>
                         </div>
                       ))}

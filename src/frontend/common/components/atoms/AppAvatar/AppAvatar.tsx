@@ -2,7 +2,11 @@ import {FC} from 'react';
 import {User} from '../../../utils/openapi-client';
 import {cn} from '../../../utils/cn';
 
-export const AppAvatar: FC<{user: Omit<User, 'profilePicture'>, className?: string}> = ({user, className}) => {
+interface AppAvatarProps {
+  user: User,
+  className?: string,
+};
+export const AppAvatar: FC<AppAvatarProps> = ({user, className}) => {
   const colors: Record<string, string> = {
     a: 'bg-cyan-700',
     b: 'bg-teal-800',
@@ -75,11 +79,18 @@ export const AppAvatar: FC<{user: Omit<User, 'profilePicture'>, className?: stri
     ю: 'bg-stone-900',
     я: 'bg-orange-500',
   };
-  const letter = user.name.toLowerCase().substring(0, 1);
+  const letter = user.name.trim().toLowerCase().substring(0, 1);
   const bg = colors[letter] ?? 'bg-cyan-600';
+  if (user.profilePicture) {
+    return (
+      <div className={cn('border-light overflow-hidden rounded-full w-10 h-10', className)}>
+        <img src={user.profilePicture.url} alt={user.name} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
   return (
     <div className={cn(`text-white font-bold border-light rounded-full w-10 h-10 flex items-center justify-center ${bg}`, className)}>
-      {user.name.toUpperCase().substring(0, 1)}
+      {user.name.trim().toUpperCase().substring(0, 1)}
     </div>
   );
 };

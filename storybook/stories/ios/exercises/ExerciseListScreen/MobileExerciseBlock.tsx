@@ -2,14 +2,11 @@ import {FC, MouseEventHandler, useState} from 'react';
 import {FaChevronDown, FaChevronUp} from 'react-icons/fa6';
 import {AppImage} from '../../../../../src/frontend/common/components/atoms/AppImage/AppImage';
 import {useAppPartialTranslation} from '../../../../../src/frontend/website/utils/i18n/useAppPartialTranslation';
-import {
-  ExerciseBlockProps,
-// eslint-disable-next-line max-len
-} from '../../../../../src/frontend/website/components/pages/Exercises/ExerciseLibraryPage/components/ExerciseBlock/types/ExerciseBlockProps';
 import {MobileBlock} from '../../../../components/MobileScreenContainer/MobileBlock/MobileBlock';
 import {AppLink} from '../../../../../src/frontend/common/components/atoms/AppLink/AppLink';
+import {Exercise} from '../../../../../src/frontend/common/utils/openapi-client';
 
-export const MobileExerciseBlock: FC<ExerciseBlockProps> = (props) => {
+export const MobileExerciseBlock: FC<{item: Exercise}> = (props) => {
   const item = props.item;
   const [showVariations, setShowVariations] = useState(false);
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.components.exerciseBlock);
@@ -19,7 +16,7 @@ export const MobileExerciseBlock: FC<ExerciseBlockProps> = (props) => {
   };
 
   return (
-    <MobileBlock className="p-0 py-3">
+    <MobileBlock className="p-0 py-3 shrink-0">
       <div>
         <AppLink className="px-3">
           <b>{item.name}</b>

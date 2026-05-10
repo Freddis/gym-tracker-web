@@ -3,4 +3,5 @@ export enum ValidationErrorCode {
   IncorrectEmailOrPassword = 'IncorrectEmailOrPassword',
   PasswordHasToBeLonger = 'PasswordHasToBeLonger',
   InvalidEmail = 'InvalidEmail',
+  PasswordConfirmationMismatch = 'PasswordConfirmationMismatch',
 }

@@ -85,7 +85,6 @@ export const WeightUpdatePage: FC = () => {
   };
   const breadCrumbs: BreadCrumbs = [
     {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
-    {label: t(i18n.list.heading), url: route(RouteId.EntryAdd)},
     {label: t(i18n.weight.update.heading), url: route(RouteId.WeightUpdate)},
   ];
   return (

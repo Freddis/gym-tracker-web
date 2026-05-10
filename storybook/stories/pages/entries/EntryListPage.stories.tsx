@@ -30,6 +30,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
+    user: StorybookDataUtils.getUser(),
     onDateChanged: () => {},
     onClearFilters: () => {},
     datesResponse: {
@@ -67,6 +68,7 @@ export const Primary: Story = {
 };
 export const Loading: Story = {
   args: {
+    user: StorybookDataUtils.getUser(),
     onPageChanged: () => {},
     onFilter: () => {},
     onDateChanged: () => {},
@@ -100,6 +102,7 @@ export const Loading: Story = {
 };
 export const Empty: Story = {
   args: {
+    user: StorybookDataUtils.getUser(),
     onPageChanged: () => {},
     onFilter: () => {},
     onDateChanged: () => {},

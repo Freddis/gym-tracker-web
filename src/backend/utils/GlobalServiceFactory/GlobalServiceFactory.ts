@@ -22,6 +22,8 @@ import {OutdoorRunService} from '../../services/OutdoorRunService/OutdoorRunServ
 import {OutdoorWalkService} from '../../services/OutdoorWalkService/OutdoorWalkService';
 import {FoodService} from '../../services/FoodService/FoodService';
 import {ManagedImageService} from '../../services/ImageService/ManagedImageService';
+import {CoreUserService} from '../../services/CoreUserService/CoreUserService';
+import {SettingsService} from '../../services/SettingsService/SettingsService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -58,13 +60,11 @@ export class GlobalServiceFactory {
   }
 
   async auth(): Promise<AuthService> {
-    const drizzle = await this.drizzle();
     const managerService = await this.manager();
-    const userService = await this.user();
+    const userService = await this.coreUser();
     const email = await this.email();
     return new AuthService(
       serverConfig.services.auth,
-      drizzle,
       userService,
       managerService,
       email
@@ -159,9 +159,14 @@ export class GlobalServiceFactory {
     return new ManagerService(await this.drizzle());
   }
   async user(): Promise<UserService> {
-    return new UserService(await this.drizzle());
+    return new UserService(await this.coreUser());
   }
-
+  async coreUser(): Promise<CoreUserService> {
+    return new CoreUserService(await this.drizzle(), await this.image());
+  }
+  async settings(): Promise<SettingsService> {
+    return new SettingsService(await this.coreUser(), await this.entry(), await this.image());
+  }
   async translation(): Promise<TranslationService> {
     return new TranslationService(await this.drizzle());
   }

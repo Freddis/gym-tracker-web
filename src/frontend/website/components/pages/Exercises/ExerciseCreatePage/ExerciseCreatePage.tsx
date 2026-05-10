@@ -43,8 +43,8 @@ export function ExerciseCreatePage() {
           <AppBlockHeader>{t(i18n.create.heading)}</AppBlockHeader>
           <div>
             <AppLabel>{translations.utils.objects.exercise.fields.name}</AppLabel>
-            <div>
-              <AppTextInput onChange={(e) => setName(e.target.value)} type="text" className="w-100 max-w-full" />
+            <div className="w-100 max-w-full">
+              <AppTextInput onChange={(e) => setName(e.target.value)} value={name} />
             </div>
             <AppInputError data-testid="error-password" error={getError('name')} />
           </div>

@@ -11,6 +11,7 @@ import {
 import {StoryBookDisplayType} from '../../../../components/StoryBookDisplay/enums/StoryBookDisplayType';
 import {StoryBookDisplay} from '../../../../components/StoryBookDisplay/StoryBookDisplay';
 import {StorybookDataUtils} from '../../../../utils/StorybookDataUtils/StorybookDataUtils';
+import {RouteId} from '../../../../../src/frontend/common/utils/route';
 
 
 const meta = {
@@ -36,6 +37,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
+    route: RouteId.ExerciseLibrary,
     onNextPage: () => {},
     onFilter: () => {},
     filter: {
@@ -62,6 +64,7 @@ export const Primary: Story = {
 
 export const LoadingNextPage: Story = {
   args: {
+    route: RouteId.ExerciseLibrary,
     onNextPage: () => {},
     onFilter: () => {},
     filter: {
@@ -83,6 +86,7 @@ export const LoadingNextPage: Story = {
 
 export const EmptyResults: Story = {
   args: {
+    route: RouteId.ExerciseLibrary,
     onNextPage: () => {},
     onFilter: () => {},
     filter: {
@@ -102,6 +106,7 @@ export const EmptyResults: Story = {
 
 export const Error: Story = {
   args: {
+    route: RouteId.ExerciseLibrary,
     onNextPage: () => {},
     onFilter: () => {},
     filter: {
@@ -121,6 +126,7 @@ export const Error: Story = {
 
 export const Loading: Story = {
   args: {
+    route: RouteId.ExerciseLibrary,
     onNextPage: () => {},
     onFilter: () => {},
     filter: {

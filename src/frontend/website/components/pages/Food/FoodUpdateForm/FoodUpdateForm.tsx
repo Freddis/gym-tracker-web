@@ -147,8 +147,8 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
         <AppLabel>{translations.utils.objects.food.fields.name}</AppLabel>
       </div>
       <div className="flex flex-col grow">
-        <div>
-          <AppTextInput className="max-w-full w-100" onChange={(e) => setName(e.target.value)} value={name}/>
+        <div className="w-100 max-w-full">
+          <AppTextInput onChange={(e) => setName(e.target.value)} value={name}/>
         </div>
         <AppInputError error={getSmartError((x) => x.name)} />
       </div>
@@ -158,7 +158,9 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
         <AppLabel>{translations.utils.objects.food.fields.description}</AppLabel>
       </div>
       <div className="flex flex-col grow">
-        <AppTextArea className="max-w-full w-100 h-25" onChange={(e) => setDescription(e.target.value)} value={description}/>
+        <div className="w-100 max-w-full h-25">
+          <AppTextArea onChange={(e) => setDescription(e.target.value)} value={description}/>
+        </div>
         <AppInputError error={getSmartError((x) => x.description)} />
       </div>
     </div>
@@ -177,9 +179,9 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
           <div className="flex flex-row gap-5 items-start">
             <AppLabel>{translations.utils.objects.food.fields.protein}</AppLabel>
             <div className="flex flex-col grow">
-              <div>
-                <AppTextInput className="max-w-full w-20" onChange={(e) => setProtein(e.target.value)} value={protein}/>
-                <span className="ml-2">{translations.utils.objects.units.g}</span>
+              <div className="w-20 max-w-full flex items-center gap-2">
+                <AppTextInput onChange={(e) => setProtein(e.target.value)} value={protein}/>
+                <span>{translations.utils.objects.units.g}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.protein)} />
             </div>
@@ -187,9 +189,9 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
           <div className="flex flex-row gap-5 items-start">
             <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
             <div className="flex flex-col grow">
-              <div>
-                <AppTextInput className="max-w-full w-20" onChange={(e) => setCarbs(e.target.value)} value={carbs}/>
-                <span className="ml-2">{translations.utils.objects.units.g}</span>
+              <div className="w-20 max-w-full flex items-center gap-2">
+                <AppTextInput onChange={(e) => setCarbs(e.target.value)} value={carbs}/>
+                <span>{translations.utils.objects.units.g}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.carbs)} />
             </div>
@@ -197,9 +199,9 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
           <div className="flex flex-row gap-5 items-start">
             <AppLabel>{translations.utils.objects.food.fields.fat}</AppLabel>
             <div className="flex flex-col grow">
-              <div>
-                <AppTextInput className="max-w-full w-20" onChange={(e) => setFat(e.target.value)} value={fat}/>
-                <span className="ml-2">{translations.utils.objects.units.g}</span>
+              <div className="w-20 max-w-full flex items-center gap-2">
+                <AppTextInput onChange={(e) => setFat(e.target.value)} value={fat}/>
+                <span>{translations.utils.objects.units.g}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.fat)} />
             </div>
@@ -232,9 +234,9 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
                 <AppLabel>{translations.utils.objects.food.fields.servingSize}</AppLabel>
               </div>
               <div className="flex flex-col grow">
-                <div>
-                  <AppTextInput className="max-w-full w-20" onChange={(e) => setServingSize(e.target.value)} value={servingSize}/>
-                  <span className="ml-5">{translations.utils.objects.units.g}</span>
+                <div className="w-20 max-w-full flex items-center gap-2">
+                  <AppTextInput onChange={(e) => setServingSize(e.target.value)} value={servingSize}/>
+                  <span>{translations.utils.objects.units.g}</span>
                 </div>
                 <AppInputError error={getSmartError((x) => x.servingSize)} />
               </div>

@@ -29,13 +29,13 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
     <>
       <div>
          <AppLabel>{translations.utils.objects.exercise.fields.name}</AppLabel>
-          <div>
-            <AppTextInput onChange={(e) => setName(e.target.value)} value={name} className="w-100 max-w-full" />
+          <div className="w-100 max-w-full">
+            <AppTextInput onChange={(e) => setName(e.target.value)} value={name} />
           </div>
           <AppInputError data-testid="error-password" error={getError('name')} />
           <AppLabel>{translations.utils.objects.exercise.fields.description}</AppLabel>
-          <div>
-            <AppTextInput onChange={(e) => setDescription(e.target.value)} value={description} className="w-100 max-w-full" />
+          <div className="w-100 max-w-full">
+            <AppTextInput onChange={(e) => setDescription(e.target.value)} value={description} />
           </div>
           <AppInputError data-testid="error-password" error={getError('description')} />
       </div>

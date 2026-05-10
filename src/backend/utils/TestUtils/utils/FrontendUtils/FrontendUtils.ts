@@ -43,6 +43,7 @@ export class FrontendUtils {
       email: user.email,
       name: user.name,
       jwt: token,
+      profilePicture: null,
     };
     await context.addCookies([
       {

@@ -9,19 +9,19 @@ import {AppBlockHeader} from '../../../../../../common/components/atoms/AppBlock
 import {AppTextInput} from '../../../../../../common/components/atoms/AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {route, RouteId} from '../../../../../../common/utils/route';
-import {PostAuthPasswordResetCompleteData} from '../../../../../../common/utils/openapi-client';
+import {FinishPasswordResetData} from '../../../../../../common/utils/openapi-client';
 import {ErrorSlice, useResponseErrors} from '../../../../../../common/utils/useResponseErrors';
 
 interface PaswordResetCompletePagePresenterProps {
   onReset: (data: {password: string, passwordConfirmation: string}) => Promise<void>;
-  errors?: ErrorSlice<PostAuthPasswordResetCompleteData['body']>;
+  errors?: ErrorSlice<FinishPasswordResetData['body']>;
 }
 export const PaswordResetCompletePagePresenter: FC<PaswordResetCompletePagePresenterProps> = (props) => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.passwordResetComplete);
-  const {getSmartError} = useResponseErrors<PostAuthPasswordResetCompleteData['body']>(props.errors);
+  const {getSmartError} = useResponseErrors<FinishPasswordResetData['body']>(props.errors);
   const onResetClick = async () => {
     setIsLoading(true);
     await props.onReset({password, passwordConfirmation});
@@ -36,7 +36,7 @@ export const PaswordResetCompletePagePresenter: FC<PaswordResetCompletePagePrese
           <div>
             <AppLabel className="mb-2">{t(i18n.form.labels.password)}</AppLabel>
             <AppTextInput
-              type="password"
+              password
               value={password}
               onChange={(x) => setPassword(x.target.value)}
               placeholder={t(i18n.form.placeholders.password)}
@@ -46,7 +46,7 @@ export const PaswordResetCompletePagePresenter: FC<PaswordResetCompletePagePrese
           <div>
             <AppLabel className="mb-2">{t(i18n.form.labels.passwordConfirmation)}</AppLabel>
             <AppTextInput
-              type="password"
+              password
               value={passwordConfirmation}
               onChange={(x) => setPasswordConfirmation(x.target.value)}
               placeholder={t(i18n.form.placeholders.passwordConfirmation)}

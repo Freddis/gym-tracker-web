@@ -1,4 +1,3 @@
-import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {compare, hash} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {AuthServiceConfig} from './types/AuthServiceConfig';
@@ -10,33 +9,31 @@ import {ActionError} from '../ApiService/errors/ActionError';
 import {ManagerService} from '../ManagerService/ManagerService';
 import {Manager} from '../ManagerService/types/Manager';
 import {EmailService} from '../EmailService/EmailService';
-import {UserService} from '../UserService/UserService';
-import {User} from '../UserService/types/User';
-
+import {CoreUserService} from '../CoreUserService/CoreUserService';
+import {CoreUser} from '../CoreUserService/types/CoreUser';
+import {Country} from '../../types/Country';
+import {Gender} from '../../types/Gender';
 export class AuthService {
-  protected dbService: DrizzleService;
   protected config: AuthServiceConfig;
   protected logger = new Logger(AuthService.name);
   protected managerService: ManagerService;
   protected emailService: EmailService;
-  protected userService: UserService;
+  protected userService: CoreUserService;
 
   constructor(
     config: AuthServiceConfig,
-    drizzleService: DrizzleService,
-    userService: UserService,
+    userService: CoreUserService,
     managerService: ManagerService,
     emailService: EmailService,
   ) {
     this.logger = new Logger(AuthService.name);
     this.config = config;
-    this.dbService = drizzleService;
     this.managerService = managerService;
     this.userService = userService;
     this.emailService = emailService;
   }
 
-  async getUserFromRequest(request: Request): Promise<User | null> {
+  async getUserFromRequest(request: Request): Promise<CoreUser | null> {
     const id = this.getRoleIdFromRequest(request);
     if (!id) {
       return null;
@@ -53,10 +50,7 @@ export class AuthService {
     return this.managerService.getById(id);
   }
   async login(email: string, password: string): Promise<AuthUser> {
-    const db = await this.dbService.getDb();
-    const user = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(users.email, email),
-    });
+    const user = await this.userService.get({email});
     if (!user) {
       throw new ActionError(ActionErrorCode.InvalidPassword);
     }
@@ -95,6 +89,28 @@ export class AuthService {
     await this.emailService.send(email, subject, bodyLines.join('\n'));
   }
 
+  protected async sendPasswordConfirmationEmail(user: CoreUser, routeUrl: string): Promise<void> {
+    const email = user.email;
+    const token = jwt.sign(
+      {
+        time: new Date().toISOString(),
+        email: email,
+      },
+      this.config.jwtSecret,
+      {
+        expiresIn: '1d',
+      }
+    );
+    const encodedToken = token;
+    const url = routeUrl + `/${encodedToken}`;
+    const subject = 'Welcome to Discipline';
+    const bodyLines = [
+      '<p>Welcome to Discipline! Please confirm your email to continue.</p>',
+      `<a href="${url}">Confirm Email</a>`,
+    ];
+    await this.emailService.send(email, subject, bodyLines.join('\n'));
+  }
+
   async resetPassword(token: string, password: string, passwordConfirmation: string): Promise<AuthUser> {
     try {
       jwt.verify(token, this.config.jwtSecret);
@@ -120,6 +136,7 @@ export class AuthService {
     }
     const hashedPassword = await this.hashString(password);
     await this.userService.update(user.id, {
+      ...user,
       password: hashedPassword,
     });
 
@@ -144,6 +161,27 @@ export class AuthService {
       throw new ActionError(ActionErrorCode.InvalidPassword);
     }
     const token = this.createToken(user);
+    return {...user, jwt: token, profilePicture: null};
+  }
+
+  async changePassword(userId: number, oldPassword: string, newPassword: string, confirmation: string): Promise<AuthUser> {
+    const user = await this.userService.getById(userId);
+    if (!user) {
+      throw new ActionError(ActionErrorCode.UserNotFound);
+    }
+    const passwordsMatch = await compare(oldPassword, user.password);
+    if (!passwordsMatch) {
+      throw new ActionError(ActionErrorCode.InvalidPassword);
+    }
+    if (newPassword !== confirmation) {
+      throw new ActionError(ActionErrorCode.PasswordConfirmationMismatch);
+    }
+    const hashedPassword = await this.hashString(newPassword);
+    await this.userService.update(user.id, {
+      ...user,
+      password: hashedPassword,
+    });
+    const token = this.createToken(user);
     return {...user, jwt: token};
   }
 
@@ -153,37 +191,34 @@ export class AuthService {
       email: string;
       password: string;
       passwordConfirmation: string;
-    }
+      gender: Gender;
+      country: Country;
+      birthDate: Date;
+      height: number;
+    },
+    routeUrl?: string,
   ): Promise<AuthUser> {
-    const db = await this.dbService.getDb();
-    const schema = this.dbService.getSchema();
     if (params.password !== params.passwordConfirmation) {
       throw new ActionError(ActionErrorCode.InvalidPassword);
     }
-    const existing = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(users.email, params.email),
-    });
+    const existing = await this.userService.get({email: params.email});
     if (existing) {
       throw new ActionError(ActionErrorCode.EmailAlreadyExists);
     }
     const hashedPassword = await this.hashString(params.password);
-    const entity: typeof schema.users.$inferInsert = {
+    const user = await this.userService.create({
       name: params.name,
       email: params.email,
-      password: hashedPassword,
-      createdAt: new Date(),
-    };
-
-    const users = await db.insert(schema.users).values(entity).returning({
-      id: schema.users.id,
-      email: schema.users.email,
-      name: schema.users.name,
+      hashedPassword,
+      gender: params.gender,
+      country: params.country,
+      birthDate: params.birthDate,
+      height: params.height,
     });
-    const user = users[0];
-    if (!user) {
-      throw new Error("User hasn't been inserted");
-    }
     const token = this.createToken(user);
+    if (routeUrl) {
+      await this.sendPasswordConfirmationEmail(user, routeUrl);
+    }
     return {...user, jwt: token};
   }
 
@@ -205,14 +240,14 @@ export class AuthService {
       profilePicture: null,
     });
     const token = this.createToken(manager);
-    return {...manager, jwt: token};
+    return {...manager, jwt: token, profilePicture: null};
   }
 
   async hashString(str: string): Promise<string> {
     return await hash(str, this.config.hashSalt);
   }
 
-  public createToken(user: Omit<AuthUser, 'jwt'>): string {
+  public createToken(user: {id: number, name: string, email: string}): string {
     const token = jwt.sign(
       {
         time: new Date().toISOString(),

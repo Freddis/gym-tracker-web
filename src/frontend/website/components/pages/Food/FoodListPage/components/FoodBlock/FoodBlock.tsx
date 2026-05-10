@@ -23,11 +23,11 @@ export const FoodBlock: FC<{food: Food}> = (props) => {
    <AppBlock
       image={props.food.image?.url ?? placeholder}
       imageTo={to}
-      imageHeight={200}
+      imageHeight={208}
     >
       <div className="p-5 grow flex flex-col">
-        <h3 className="uppercase mb-2 font-semibold">
-          <RouteLink to={route(RouteId.FoodUpdate)} params={{id: props.food.id}}>{props.food.name}</RouteLink>
+        <h3 className="capitalize mb-2 font-semibold">
+          <RouteLink accented={false} to={route(RouteId.FoodUpdate)} params={{id: props.food.id}}>{props.food.name}</RouteLink>
         </h3>
         <p>{props.food.description}</p>
         <div className="flex flex-row gap-5">

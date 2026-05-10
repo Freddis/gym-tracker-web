@@ -24,23 +24,27 @@
 }
 
 /** fixing chrome autofill as best as hacks allow **/
-input:-webkit-autofill,
+/* input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
   font-size: inherit;
-  -webkit-text-size-adjust: 100%; /* forces proper sizing */
+  -webkit-text-size-adjust: 100%; 
   -webkit-text-fill-color: var(--color-on-cavity);
   transition: background-color 9999s ease-in-out 0s;
   box-shadow: 0 0 0px 1000px var(--color-cavity) inset;
-}
+} */
+
 @theme  inline {
 
 }
 
 /** temporarily removed outline **/
-*:focus {
+a:focus, button:focus, input:focus, textarea:focus, select:focus {
   outline: none;
-
+}
+*:focus {
+  /* outline: none; */
+  outline: 1px solid color-mix(in srgb, var(--color-on-cavity) 15%, transparent);
 }

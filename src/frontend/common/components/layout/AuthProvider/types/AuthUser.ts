@@ -5,5 +5,9 @@ export const authUserValidator = z.object({
   name: z.string(),
   email: z.string(),
   jwt: z.string(),
+  profilePicture: z.object({
+    id: z.number(),
+    url: z.string(),
+  }).nullable(),
 });
 export type AuthUser = z.TypeOf<typeof authUserValidator>

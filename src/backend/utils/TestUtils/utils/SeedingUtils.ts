@@ -1,8 +1,9 @@
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
+import {Country} from '../../../types/Country';
+import {Gender} from '../../../types/Gender';
 import {Logger} from '../../Logger/Logger';
 import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 import {Exercise} from 'src/backend/services/ExerciseService/types/Exercise';
-
 export class SeedUtils {
   protected static counter = new Date().getTime();
   protected static defaultPassword = '1q2w3e4r';
@@ -19,6 +20,10 @@ export class SeedUtils {
       email: `user${tag}@test.com`,
       password: this.getDefaultPassword(),
       passwordConfirmation: this.getDefaultPassword(),
+      gender: Gender.Male,
+      country: Country.UnitedStates,
+      birthDate: new Date('1990-02-23'),
+      height: 180,
       ...data,
       ...(data?.password ? {passwordConfirmation: data?.password} : undefined),
     });

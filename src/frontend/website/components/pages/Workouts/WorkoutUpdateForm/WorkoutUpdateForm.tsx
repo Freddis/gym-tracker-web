@@ -134,12 +134,13 @@ export const WorkoutUpdateForm: FC<WorkoutUpdateFormProps> = (props) => {
         <div/>
         <AppLabel>{translations.utils.objects.workout.fields.calories}</AppLabel>
         <div className="relative">
+          <div className="w-20">
           <AppTextInput
-            className="w-20 max-w-full"
             onChange={(e) => setCaloriesFromString(e.target.value)}
             value={calories}
             data-testid="calories-input"
           />
+          </div>
           <AppInputError className="w-[327px] max-w-full " error={getSmartError((x) => x.exercises)} />
         </div>
         <div/>

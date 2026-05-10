@@ -16,6 +16,8 @@ export const AppButton: FC<AppButtonProps> = (props) => {
     `palette-${color}`,
     'bg-main',
     'text-on-main',
+    'min-w-20',
+    'justify-center',
     ...sizes[variant],
     props.disabled ? 'opacity-50 cursor-not-allowed' : '',
   ];

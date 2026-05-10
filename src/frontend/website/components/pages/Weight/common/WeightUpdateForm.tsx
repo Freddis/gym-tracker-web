@@ -39,9 +39,9 @@ export const WeightUpdateForm: FC<WeightUpdateFormProps> = (props) => {
         <AppLabel>{translations.utils.objects.weight.fields.value}:</AppLabel>
         <div className="flex flex-row grow">
           <div>
-            <div>
-              <AppTextInput className="w-20" onChange={onWeightInputChange} value={value}/>
-              <span className="ml-5">{translations.utils.objects.units.kg}</span>
+            <div className="w-30 max-w-full flex items-center gap-2">
+              <AppTextInput onChange={onWeightInputChange} value={value}/>
+              <span>{translations.utils.objects.units.kg}</span>
             </div>
             <AppInputError error={getError('weight')} />
           </div>

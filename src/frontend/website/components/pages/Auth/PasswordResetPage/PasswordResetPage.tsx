@@ -7,7 +7,7 @@ import {PageContainer} from '../../../../../common/components/layout/PageContain
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {AppInputError} from '../../../../../common/components/atoms/AppInputError/AppInputError';
-import {postAuthPasswordReset} from '../../../../../common/utils/openapi-client';
+import {api} from '../../../../../common/utils/api';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
@@ -22,7 +22,7 @@ export const PasswordResetPage: FC = () => {
   const navigate = useNavigate();
 
   const onResetClick = async () => {
-    const result = await postAuthPasswordReset({
+    const result = await api.startPasswordReset({
       body: {
         email,
       },

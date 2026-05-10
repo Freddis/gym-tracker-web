@@ -96,11 +96,12 @@ export const TranslationUpdatePage: FC = () => {
           <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
             <AppLabel>Value</AppLabel>
             <div className="relative">
-              <AppTextInput
-                className="w-200 max-w-full"
-                onChange={(e) => setValue(e.target.value)}
-                value={value}
-              />
+              <div className="w-200 max-w-full">
+                <AppTextInput
+                  onChange={(e) => setValue(e.target.value)}
+                  value={value}
+                />
+              </div>
               <AppInputError
                 className="w-[327px] max-w-full "
                 error={getSmartError((x) => x.value)}

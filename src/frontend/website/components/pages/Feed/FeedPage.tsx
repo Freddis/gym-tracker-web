@@ -73,7 +73,7 @@ export const FeedPage: FC = () => {
   }
   const items = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   return (
-    <PageContainer className="bg-main">
+    <PageContainer>
       <div className="flex flex-col max-w-5xl w-full">
         <div className="w-full text-left mb-5">
           <AppPageHeading>{t(i18n.heading)}</AppPageHeading>

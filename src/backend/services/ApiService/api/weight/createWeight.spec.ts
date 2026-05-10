@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {describe, test} from 'vitest';
-import {WeightUnits} from '../../../../types/WeightUnits';
+import {WeightUnit} from '../../../../types/WeightUnit';
 import {TestUtils} from '../../../../utils/TestUtils/TestUtils';
 
 
@@ -14,6 +14,6 @@ describe('Add Weight', () => {
     console.log('Check');
     expect(response.status).to.eq(200);
     expect(response.body.weight).to.eq(23);
-    expect(response.body.units).to.eq(WeightUnits.Kg);
+    expect(response.body.units).to.eq(WeightUnit.Kg);
   });
 });

@@ -33,7 +33,7 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
       </div>
       <div className="mt-5 flex flex-col gap-5 justify-center">
         <PostContent entry={props.entry} />
-        {props.workout.geoData && props.workout.geoData.length > 0 && (
+        {props.workout.geoData && props.workout.geoData.length > 1 && (
           <div className="w-full h-100 rounded-lg overflow-hidden">
             <AppWorkoutMap data={path} />
           </div>

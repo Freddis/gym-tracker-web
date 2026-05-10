@@ -42,7 +42,7 @@ export const LoginScreen: FC<{errors?: FieldError[]}> = ({errors}) => {
             <AppLabel>{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
-              type="password"
+              password
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />

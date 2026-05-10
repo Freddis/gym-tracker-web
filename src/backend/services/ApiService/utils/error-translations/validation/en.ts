@@ -5,4 +5,5 @@ export const en: Record<ValidationErrorCode, string> = {
   [ValidationErrorCode.IncorrectEmailOrPassword]: 'Incorrect email or password',
   [ValidationErrorCode.PasswordHasToBeLonger]: 'Password must be at least 5 characters long',
   [ValidationErrorCode.InvalidEmail]: 'Invalid Email',
+  [ValidationErrorCode.PasswordConfirmationMismatch]: 'Password and confirmation do not match',
 };

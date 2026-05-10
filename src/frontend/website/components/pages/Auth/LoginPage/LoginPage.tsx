@@ -9,11 +9,11 @@ import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/
 import {AuthContext} from '../../../../../common/components/layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../../../common/components/layout/PageContainer/PageContainer';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
-import {postAuthLogin} from '../../../../../common/utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {api} from '../../../../../common/utils/api';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -24,7 +24,7 @@ export const LoginPage: FC = () => {
   const {getError, showToastsAndSetErrors} = useResponseErrors();
   const toasts = useToasts();
   const loginButtonPress = async () => {
-    const result = await postAuthLogin({
+    const result = await api.login({
       body: {
         email,
         password,
@@ -54,7 +54,7 @@ export const LoginPage: FC = () => {
             <AppLabel className="mb-2">{t(i18n.form.labels.password)}:</AppLabel>
             <AppTextInput
               data-testid="password"
-              type="password"
+              password
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />

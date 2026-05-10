@@ -10,7 +10,6 @@ import {WorkoutPlanService} from '../../WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../TranslationService/TranslationService';
 import {FoodService} from '../../FoodService/FoodService';
-
 export interface ApiRequestServices {
   auth: AuthService
   models: {

@@ -7,13 +7,15 @@ import {authUserValidator} from './validators/authUserValidator';
 import {QuickTranslatedValidationError} from '../../errors/QuickTranslatedValidationError';
 import {ValidationErrorCode} from '../../types/ValidationErrorCode';
 import {loginRequestValidator} from './validators/loginRequestValidator';
+import {RouteTag} from '../../types/RouteTag';
 
 export const loginManager = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
   type: ApiRouteType.Public,
   description: 'Logins a manager into CRM',
   path: '/login',
-  tags: ['auth', 'crm'],
+  tags: [RouteTag.CrmAuth],
+  operationId: 'managerLogin',
   validators: {
     body: loginRequestValidator,
     response: authUserValidator,

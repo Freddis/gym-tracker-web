@@ -10,7 +10,7 @@ export const ExerciseListScreen: FC<{exercises: Exercise[]}> = ({exercises}) => 
   <IphoneDisplay tab={2}>
    <MobileScreenContainer className="flex flex-col h-full">
       <div className="mb-3">
-        <AppTextInput placeholder="Search" className="bg-surface" />
+        <AppTextInput placeholder="Search"/>
       </div>
       <div className="flex flex-row w-full mb-3">
         <div className="text-sm grow">
@@ -28,8 +28,7 @@ export const ExerciseListScreen: FC<{exercises: Exercise[]}> = ({exercises}) => 
           <FaPlus className="text text-accent inline-block ml-2"/>
         </div>
       </div>
-
-      <div className="grow overflow-y-scrol overflow-x-hidden flex flex-col gap-3">
+      <div className="grow overflow-y-scroll flex flex-col gap-3">
         {exercises.map((exercise) => <MobileExerciseBlock item={exercise} />)}
       </div>
     </MobileScreenContainer>

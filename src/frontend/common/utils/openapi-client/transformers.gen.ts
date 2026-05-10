@@ -34,6 +34,8 @@ import type {
   GetFoodListResponse,
   UpsertFoodResponse,
   GetFoodResponse,
+  GetSettingsResponse,
+  UpdateSettingsResponse,
   GetCrmManagersResponse,
   GetCrmTranslationsByIdResponse,
   PatchCrmTranslationsByIdResponse,
@@ -483,6 +485,25 @@ export const getFoodResponseTransformer = async (
   data: any,
 ): Promise<GetFoodResponse> => {
   data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+const settingsSchemaResponseTransformer = (data: any) => {
+  data.birthDate = new Date(data.birthDate);
+  return data;
+};
+
+export const getSettingsResponseTransformer = async (
+  data: any,
+): Promise<GetSettingsResponse> => {
+  data = settingsSchemaResponseTransformer(data);
+  return data;
+};
+
+export const updateSettingsResponseTransformer = async (
+  data: any,
+): Promise<UpdateSettingsResponse> => {
+  data = settingsSchemaResponseTransformer(data);
   return data;
 };
 

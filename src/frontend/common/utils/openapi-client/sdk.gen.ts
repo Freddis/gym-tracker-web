@@ -2,18 +2,21 @@
 
 import type { Options as ClientOptions, TDataShape, Client } from "./client";
 import type {
-  PostAuthRegisterData,
-  PostAuthRegisterResponses,
-  PostAuthRegisterErrors,
-  PostAuthLoginData,
-  PostAuthLoginResponses,
-  PostAuthLoginErrors,
-  PostAuthPasswordResetData,
-  PostAuthPasswordResetResponses,
-  PostAuthPasswordResetErrors,
-  PostAuthPasswordResetCompleteData,
-  PostAuthPasswordResetCompleteResponses,
-  PostAuthPasswordResetCompleteErrors,
+  RegisterData,
+  RegisterResponses,
+  RegisterErrors,
+  LoginData,
+  LoginResponses,
+  LoginErrors,
+  StartPasswordResetData,
+  StartPasswordResetResponses,
+  StartPasswordResetErrors,
+  FinishPasswordResetData,
+  FinishPasswordResetResponses,
+  FinishPasswordResetErrors,
+  ChangePasswordData,
+  ChangePasswordResponses,
+  ChangePasswordErrors,
   GetExercisesData,
   GetExercisesResponses,
   GetExercisesErrors,
@@ -134,15 +137,21 @@ import type {
   GetFoodData,
   GetFoodResponses,
   GetFoodErrors,
+  GetSettingsData,
+  GetSettingsResponses,
+  GetSettingsErrors,
+  UpdateSettingsData,
+  UpdateSettingsResponses,
+  UpdateSettingsErrors,
   GetCrmUsersData,
   GetCrmUsersResponses,
   GetCrmUsersErrors,
   GetCrmManagersData,
   GetCrmManagersResponses,
   GetCrmManagersErrors,
-  PostCrmAuthLoginData,
-  PostCrmAuthLoginResponses,
-  PostCrmAuthLoginErrors,
+  ManagerLoginData,
+  ManagerLoginResponses,
+  ManagerLoginErrors,
   GetCrmTranslationsByIdData,
   GetCrmTranslationsByIdResponses,
   GetCrmTranslationsByIdErrors,
@@ -203,6 +212,8 @@ import {
   getFoodListResponseTransformer,
   upsertFoodResponseTransformer,
   getFoodResponseTransformer,
+  getSettingsResponseTransformer,
+  updateSettingsResponseTransformer,
   getCrmManagersResponseTransformer,
   getCrmTranslationsByIdResponseTransformer,
   patchCrmTranslationsByIdResponseTransformer,
@@ -232,12 +243,12 @@ export type Options<
 /**
  * Registers a user
  */
-export const postAuthRegister = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthRegisterData, ThrowOnError>,
+export const register = <ThrowOnError extends boolean = false>(
+  options?: Options<RegisterData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthRegisterResponses,
-    PostAuthRegisterErrors,
+    RegisterResponses,
+    RegisterErrors,
     ThrowOnError
   >({
     responseType: "json",
@@ -253,12 +264,12 @@ export const postAuthRegister = <ThrowOnError extends boolean = false>(
 /**
  * Logins a user
  */
-export const postAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthLoginData, ThrowOnError>,
+export const login = <ThrowOnError extends boolean = false>(
+  options?: Options<LoginData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthLoginResponses,
-    PostAuthLoginErrors,
+    LoginResponses,
+    LoginErrors,
     ThrowOnError
   >({
     responseType: "json",
@@ -274,12 +285,12 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(
 /**
  * Sends a password reset email for a user
  */
-export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthPasswordResetData, ThrowOnError>,
+export const startPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<StartPasswordResetData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthPasswordResetResponses,
-    PostAuthPasswordResetErrors,
+    StartPasswordResetResponses,
+    StartPasswordResetErrors,
     ThrowOnError
   >({
     responseType: "json",
@@ -295,18 +306,43 @@ export const postAuthPasswordReset = <ThrowOnError extends boolean = false>(
 /**
  * Resets the user password and logs the user in
  */
-export const postAuthPasswordResetComplete = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<PostAuthPasswordResetCompleteData, ThrowOnError>,
+export const finishPasswordReset = <ThrowOnError extends boolean = false>(
+  options?: Options<FinishPasswordResetData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthPasswordResetCompleteResponses,
-    PostAuthPasswordResetCompleteErrors,
+    FinishPasswordResetResponses,
+    FinishPasswordResetErrors,
     ThrowOnError
   >({
     responseType: "json",
     url: "/auth/password-reset-complete",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Changes the password of the user
+ */
+export const changePassword = <ThrowOnError extends boolean = false>(
+  options?: Options<ChangePasswordData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    ChangePasswordResponses,
+    ChangePasswordErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/auth/change-password",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1303,6 +1339,58 @@ export const getFood = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Returns data on user settings & profile
+ */
+export const getSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSettingsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetSettingsResponses,
+    GetSettingsErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getSettingsResponseTransformer,
+    url: "/settings",
+    ...options,
+  });
+};
+
+/**
+ * Updates user settings & profile
+ */
+export const updateSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<UpdateSettingsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    UpdateSettingsResponses,
+    UpdateSettingsErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: updateSettingsResponseTransformer,
+    url: "/settings",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
  * Returns list of users
  */
 export const getCrmUsers = <ThrowOnError extends boolean = false>(
@@ -1352,12 +1440,12 @@ export const getCrmManagers = <ThrowOnError extends boolean = false>(
 /**
  * Logins a manager into CRM
  */
-export const postCrmAuthLogin = <ThrowOnError extends boolean = false>(
-  options?: Options<PostCrmAuthLoginData, ThrowOnError>,
+export const managerLogin = <ThrowOnError extends boolean = false>(
+  options?: Options<ManagerLoginData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostCrmAuthLoginResponses,
-    PostCrmAuthLoginErrors,
+    ManagerLoginResponses,
+    ManagerLoginErrors,
     ThrowOnError
   >({
     responseType: "json",

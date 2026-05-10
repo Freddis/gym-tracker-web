@@ -1,6 +1,6 @@
-type AxiosResponse<TValue, TError> = { data: TValue | undefined; error: TError | undefined } | undefined;
+import {AppAxiosResponse} from './AppAxiosResponse';
 
 export type ApiResponse<TValue, TError> =
-  | { isLoading: true; isError: false; data: AxiosResponse<TValue, TError> }
-  | { isLoading: false; isError: true; data: AxiosResponse<TValue, TError> }
-  | { isLoading: false; isError: false; data: AxiosResponse<TValue, TError> };
+  | { isLoading: true; isError: false; data: AppAxiosResponse<TValue, TError> | undefined }
+  | { isLoading: false; isError: true; data: AppAxiosResponse<TValue, TError> | undefined }
+  | { isLoading: false; isError: false; data: AppAxiosResponse<TValue, TError> | undefined };

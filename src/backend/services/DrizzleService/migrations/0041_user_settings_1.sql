@@ -1,0 +1,18 @@
+CREATE TYPE "gym_tracker"."Country" AS ENUM('AF', 'AX', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BO', 'BQ', 'BA', 'BW', 'BV', 'BR', 'IO', 'BN', 'BG', 'BF', 'BI', 'KH', 'CM', 'CA', 'CV', 'KY', 'CF', 'TD', 'CL', 'CN', 'CX', 'CC', 'CO', 'KM', 'CG', 'CD', 'CK', 'CR', 'CI', 'HR', 'CU', 'CW', 'CY', 'CZ', 'DK', 'DJ', 'DM', 'DO', 'EC', 'EG', 'SV', 'GQ', 'ER', 'EE', 'ET', 'FK', 'FO', 'FJ', 'FI', 'FR', 'GF', 'PF', 'TF', 'GA', 'GM', 'GE', 'DE', 'GH', 'GI', 'GR', 'GL', 'GD', 'GP', 'GU', 'GT', 'GG', 'GN', 'GW', 'GY', 'HT', 'HM', 'VA', 'HN', 'HK', 'HU', 'IS', 'IN', 'ID', 'IR', 'IQ', 'IE', 'IM', 'IL', 'IT', 'JM', 'JP', 'JE', 'JO', 'KZ', 'KE', 'KI', 'KR', 'KP', 'KW', 'KG', 'LA', 'LV', 'LB', 'LS', 'LR', 'LY', 'LI', 'LT', 'LU', 'MO', 'MK', 'MG', 'MW', 'MY', 'MV', 'ML', 'MT', 'MH', 'MQ', 'MR', 'MU', 'YT', 'MX', 'FM', 'MD', 'MC', 'MN', 'ME', 'MS', 'MA', 'MZ', 'MM', 'NA', 'NR', 'NP', 'NL', 'NC', 'NZ', 'NI', 'NE', 'NG', 'NU', 'NF', 'MP', 'NO', 'OM', 'PK', 'PW', 'PS', 'PA', 'PG', 'PY', 'PE', 'PH', 'PN', 'PL', 'PT', 'PR', 'QA', 'RE', 'RO', 'RU', 'RW', 'BL', 'SH', 'KN', 'LC', 'MF', 'PM', 'VC', 'WS', 'SM', 'ST', 'SA', 'SN', 'RS', 'SC', 'SL', 'SG', 'SX', 'SK', 'SI', 'SB', 'SO', 'ZA', 'GS', 'SS', 'ES', 'LK', 'SD', 'SR', 'SJ', 'SZ', 'SE', 'CH', 'SY', 'TW', 'TJ', 'TZ', 'TH', 'TL', 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'US', 'UM', 'UY', 'UZ', 'VU', 'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW');--> statement-breakpoint
+CREATE TYPE "gym_tracker"."DistanceUnit" AS ENUM('Km', 'Mi');--> statement-breakpoint
+CREATE TYPE "gym_tracker"."Gender" AS ENUM('Male', 'Female', 'Other');--> statement-breakpoint
+CREATE TYPE "gym_tracker"."HeightUnit" AS ENUM('Cm', 'Ft');--> statement-breakpoint
+CREATE TYPE "gym_tracker"."TemperatureUnit" AS ENUM('C', 'F');--> statement-breakpoint
+CREATE TYPE "gym_tracker"."WeightUnit" AS ENUM('Kg', 'Lbs');--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "height" real DEFAULT 172 NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "heightUnit" "gym_tracker"."HeightUnit" DEFAULT 'Cm' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "weightUnit" "gym_tracker"."WeightUnit" DEFAULT 'Kg' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "temperatureUnit" "gym_tracker"."TemperatureUnit" DEFAULT 'C' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "distanceUnit" "gym_tracker"."DistanceUnit" DEFAULT 'Km' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "gender" "gym_tracker"."Gender" DEFAULT 'Male' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "birthDate" timestamp with time zone DEFAULT '1991-04-03T00:00:00.000Z' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "visibility" "gym_tracker"."EntryVisibility" DEFAULT 'Public' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "imageId" integer;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "country" "gym_tracker"."Country" DEFAULT 'RU' NOT NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD COLUMN "note" text DEFAULT null;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."users" ADD CONSTRAINT "users_imageId_images_id_fk" FOREIGN KEY ("imageId") REFERENCES "gym_tracker"."images"("id") ON DELETE set null ON UPDATE no action;

@@ -18,6 +18,13 @@ import {Muscle} from '../../types/Muscle';
 import {Equipment} from '../../types/Equipment';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {randomUUID} from 'crypto';
+import {HeightUnit} from '../../types/HeightUnit';
+import {DistanceUnit} from '../../types/DistanceUnit';
+import {WeightUnit} from '../../types/WeightUnit';
+import {Country} from '../../types/Country';
+import {EntryVisibility} from '../EntryService/types/EntryVisibility';
+import {Gender} from '../../types/Gender';
+import {TemperatureUnit} from '../../types/TemperatureUnit';
 
 export class ArgusService {
   protected drizzle: DrizzleService;
@@ -72,8 +79,19 @@ export class ArgusService {
       name: this.config.seededUser.name,
       email: this.config.seededUser.email,
       password: this.config.seededUser.password,
+      note: null,
+      height: 0,
+      gender: Gender.Male,
+      birthDate: new Date(),
+      visibility: EntryVisibility.Public,
+      country: Country.UnitedStates,
+      weightUnit: WeightUnit.Kg,
+      distanceUnit: DistanceUnit.Km,
+      heightUnit: HeightUnit.Cm,
       createdAt: new Date(),
       updatedAt: null,
+      temperatureUnit: TemperatureUnit.C,
+      imageId: null,
     };
     await db.insert(schema.users).values(user);
     logger.info('Done');

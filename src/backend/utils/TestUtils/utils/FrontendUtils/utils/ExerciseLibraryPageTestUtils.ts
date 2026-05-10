@@ -1,7 +1,7 @@
 import {BasePageTestUtils} from './BasePageTestUtils';
 
 export class ExerciseLibraryPageTestUtils extends BasePageTestUtils {
-  protected path = '/exercises/' as const;
+  protected path = '/exercises/built-in' as const;
 
   async getSearchInput() {
     return this.page.getByTestId('exercise-search-input');

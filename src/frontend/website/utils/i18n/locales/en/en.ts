@@ -1,9 +1,11 @@
-import {EntryType,
-   Equipment, Exercise, Food, Muscle, ServingSizeUnit, Workout, WorkoutPlan,
+import {DistanceUnit, EntryType,
+   EntryVisibility,
+   Equipment, Exercise, Food, Gender, HeightUnit, Muscle, ServingSizeUnit, TemperatureUnit, WeightUnit, Workout, WorkoutPlan,
 
 } from '../../../../../common/utils/openapi-client';
 import {FreeFormTranslationObject} from '../../types/FreeFormTranslationObject';
 import {header} from './layout/header';
+import {countries} from './types/countries';
 import {WeekDaysTranslation} from './types/WeekDaysTranslation';
 
 export const dictionary = {
@@ -173,9 +175,35 @@ export const dictionary = {
         m: 'm',
         g: 'g',
       },
+      countries: countries,
+      genders: {
+        Male: 'Male',
+        Female: 'Female',
+        Other: 'Other',
+      } satisfies Record<Gender, string>,
       foodUnits: {
         Gram: 'g',
       } satisfies Record<ServingSizeUnit, string>,
+      weightUnits: {
+        Kg: 'kg',
+        Lbs: 'lbs',
+      } satisfies Record<WeightUnit, string>,
+      temperatureUnits: {
+        C: 'C',
+        F: 'F',
+      } satisfies Record<TemperatureUnit, string>,
+      distanceUnits: {
+        Km: 'km',
+        Mi: 'mi',
+      } satisfies Record<DistanceUnit, string>,
+      heightUnits: {
+        Cm: 'cm',
+        Ft: 'ft',
+      } satisfies Record<HeightUnit, string>,
+      entryVisibility: {
+        Public: 'Public',
+        Private: 'Private',
+      } satisfies Record<EntryVisibility, string>,
     },
     toasts: {
       unknownApiError: 'Something went wrong',
@@ -278,6 +306,69 @@ export const dictionary = {
     },
   },
   pages: {
+    settings: {
+      toasts: {
+        success: 'Settings have been updated successfully',
+      },
+      changePassword: {
+        heading: 'Change Password',
+        labels: {
+          oldPassword: 'Old Password',
+          newPassword: 'New Password',
+          confirmPassword: 'Confirm Password',
+        },
+        toasts: {
+          success: 'Password has been changed successfully',
+        },
+      },
+      update: {
+        heading: 'Update Settings',
+        sections: {
+          general: 'General',
+          units: 'Units',
+        },
+        labels: {
+          name: 'Name',
+        },
+      },
+      view: {
+        heading: 'Settings',
+        labels: {
+          name: 'Name',
+          email: 'Email',
+          profilePicture: 'Profile Picture',
+          gender: 'Gender',
+          country: 'Country',
+          dateOfBirth: 'Date of Birth',
+          visibility: 'Visibility',
+          about: 'About',
+          general: 'General',
+          goals: 'Goals',
+          height: 'Height',
+          weight: 'Weight',
+          distance: 'Distance',
+          temperature: 'Temperature',
+          age: 'Age',
+          units: 'Units',
+          security: 'Security',
+        },
+        buttons: {
+          changePassword: 'Change Password',
+          edit: 'Edit',
+        },
+      },
+    },
+    profile: {
+      heading: 'Profile',
+      labels: {
+        visibility: 'Visibility',
+        about: 'About',
+        goals: 'Goals',
+        height: 'Height',
+        weight: 'Weight',
+        age: 'Age',
+      },
+    },
     static: {
       error: {
         title: 'Oops! Unknown Error!',
@@ -475,7 +566,7 @@ export const dictionary = {
         },
       },
       list: {
-        heading: 'Built-In Library',
+        heading: 'Exercises',
         buttons: {
           addExercise: 'Add Exercise',
         },
@@ -624,7 +715,7 @@ export const dictionary = {
         },
       },
       list: {
-        heading: 'My Records',
+        heading: 'My Entries',
         buttons: {
           addWorkout: 'Add Workout',
           addEntry: 'Add Entry',
@@ -721,6 +812,25 @@ export const dictionary = {
             email: 'Email',
             password: 'Password',
             passwordConfirmation: 'Repeat Password',
+            height: 'Height',
+            units: 'Units',
+            gender: 'Gender',
+            birthDate: 'Birth Date',
+            country: 'Country',
+          },
+          placeholders: {
+            gender: 'Select your gender',
+            country: 'Select your country',
+          },
+          errors: {
+            name: 'Name is required',
+            email: 'Email is required',
+            password: 'Password is required',
+            passwordConfirmation: 'Password confirmation is missing',
+            height: 'Height is required',
+            gender: 'Gender is required',
+            birthDate: 'Birth date is required',
+            country: 'Country is required',
           },
           buttons: {
             signIn: 'Sign In',

@@ -30,7 +30,7 @@ const queryClient = new QueryClient();
 export const StoryBookDisplay: FC<StoryBookDisplayProps> = (props) => {
   const type = props.type ?? StoryBookDisplayType.Component;
   const auth: AuthContextValue = {
-    user: StorybookDataUtils.getUser(),
+    user: StorybookDataUtils.getAuthUser(),
     login: function(): void {
       throw new Error('Function not implemented.');
     },

@@ -56,11 +56,12 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
       <div className="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-[auto_auto_1fr] items-start sm:gap-x-5  mb-5">
         <AppLabel>Name</AppLabel>
         <div className="relative">
-          <AppTextInput
-            className="w-200 max-w-full"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
+          <div className="w-200 max-w-full">
+            <AppTextInput
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
+          </div>
           <AppInputError
             className="w-[327px] max-w-full "
             error={getSmartError((x) => x.name)}
@@ -69,11 +70,12 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
         <div />
         <AppLabel>Description</AppLabel>
         <div className="relative">
-          <AppTextArea
-            className="w-200 max-w-full min-h-50"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-          />
+          <div className="w-200 max-w-full h-50 flex-col items-stretch">
+            <AppTextArea
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+          </div>
           <AppInputError
             className="w-[327px] max-w-full "
             error={getSmartError((x) => x.description)}

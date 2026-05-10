@@ -99,17 +99,21 @@ export const WorkoutExerciseUpdateForm: FC<WorkoutExerciseUpdateFormProps> = (pr
               <div key={i} className="mb-5 ">
                 <div className="flex flex-row gap-3 items-center">
                   <span>{i + 1}:</span>
+                  <div className="w-15">
                   <AppTextInput
                     onChange={(e) => updateSetWeight(set, e)}
                     value={(set.weight ?? 0).toString()}
-                    className="w-15 text-center"
+                    centerText
                   />
+                  </div>
                   <span><FaX className="text-xs" /></span>
-                  <AppTextInput
-                    onChange={(e) => updateSetReps(set, e)}
-                    value={(set.reps ?? 0).toString()}
-                    className="w-15 text-center"
-                  />
+                  <div className="w-15">
+                    <AppTextInput
+                      onChange={(e) => updateSetReps(set, e)}
+                      value={(set.reps ?? 0).toString()}
+                      centerText
+                    />
+                  </div>
                   <AppButton onClick={() => deleteSet(set)}>
                     {translations.utils.generic.buttons.delete}
                   </AppButton>

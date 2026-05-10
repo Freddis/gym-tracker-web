@@ -1,5 +1,6 @@
 import {TestUtils} from '../../../../../../backend/utils/TestUtils/TestUtils';
 import {expect, test} from '../../../../../../backend/utils/TestUtils/utils/FrontendUtils/utils/test';
+import {Country, Gender} from '../../../../../common/utils/openapi-client';
 
 test.describe('RegistrationPage', async () => {
 
@@ -13,6 +14,10 @@ test.describe('RegistrationPage', async () => {
     await pageUtils.fillEmail(`alex${new Date().getTime()}@smit.com`);
     await pageUtils.fillPassword('1q2w3e4rDD');
     await pageUtils.fillPasswordConfirmation('1q2w3e4rDD');
+    await pageUtils.fillHeight(180);
+    await pageUtils.fillBirthDate(new Date('1990-02-23'));
+    await pageUtils.fillCountry(Country.US);
+    await pageUtils.fillGender(Gender.MALE);
     await pageUtils.clickRegisterButton();
 
   // check
