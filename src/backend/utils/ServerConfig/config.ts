@@ -2,6 +2,7 @@ import {realpathSync} from 'fs';
 import {join} from 'path';
 import {EnvHelper} from '../EnvHelper/EnvHelper';
 import {ServerConfig} from './ServerConfig';
+import {Environment} from '../../types/Environment';
 
 export const serverConfig: ServerConfig = {
   baseUrl: EnvHelper.getString('APP_BASE_URL'),
@@ -40,6 +41,7 @@ export const serverConfig: ServerConfig = {
     email: {
       from: EnvHelper.getString('EMAIL_FROM'),
       fromName: EnvHelper.getString('EMAIL_FROM_NAME'),
+      environment: EnvHelper.getEnumValue('NODE_ENV', Environment, Environment.development),
     },
   },
 };

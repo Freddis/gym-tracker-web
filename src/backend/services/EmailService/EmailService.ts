@@ -1,6 +1,7 @@
 import {Logger} from '../../utils/Logger/Logger';
 import {SESClient, SendEmailCommand} from '@aws-sdk/client-ses';
 import {EmailServiceConfig} from './types/EmailServiceConfig';
+import {Environment} from '../../types/Environment';
 
 export class EmailService {
   protected logger: Logger;
@@ -15,6 +16,10 @@ export class EmailService {
 
   public async send(to: string, subject:string, body:string): Promise<void> {
     this.logger.info('Sending email', {from: this.config.from, to, subject});
+    if (this.config.environment !== Environment.production) {
+      this.logger.info('Skipping email sending in test environment', {body});
+      return;
+    }
     const source = this.config.fromName
       ? `"${this.config.fromName}" <${this.config.from}>`
       : this.config.from;
