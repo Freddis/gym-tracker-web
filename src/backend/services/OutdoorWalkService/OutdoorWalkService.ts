@@ -2,9 +2,12 @@ import {and, eq, inArray} from 'drizzle-orm';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {OutdoorWalk} from './types/OutdoorWalk';
-import {OutdoorWalkUpsertDto} from './types/OutdoorWalkUpsertDto';
+import {EntryType} from '../EntryService/types/EntryType';
+import {IEntryService} from '../EntryService/types/IEntryService';
+import {OutdoorWalkEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
+import {BaseEntry, OutdoorWalkEntry} from '../EntryService/types/Entry';
 
-export class OutdoorWalkService {
+export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> {
   protected drizzle: DrizzleService;
   protected table: AppDbSchema['outdoorWalks'];
 
@@ -46,7 +49,8 @@ export class OutdoorWalkService {
     ));
   }
 
-  async upsertOne(userId: number, data: OutdoorWalkUpsertDto): Promise<OutdoorWalk> {
+  async upsertOne(userId: number, entry: OutdoorWalkEntryUpsertDto): Promise<{id: number, value: OutdoorWalk}> {
+    const data = entry.outdoorWalk;
     const db = await this.drizzle.getDb();
     const schema = this.drizzle.getSchema();
     const info: typeof db._.fullSchema.outdoorRuns.$inferInsert = {
@@ -64,6 +68,20 @@ export class OutdoorWalkService {
       throw new Error('Unable to insert outdoor run');
     }
     const result: OutdoorWalk = insertedRow;
-    return result;
+    return {id: result.id, value: result};
+  }
+  getRelationKey(): 'outdoorWalkId' {
+    return 'outdoorWalkId';
+  }
+  construct(row: BaseEntry, value: OutdoorWalk): OutdoorWalkEntry {
+    return {
+      ...row,
+      outdoorWalk: value,
+      type: EntryType.OutdoorWalk,
+    };
+  }
+  async loadMap(ids: number[]): Promise<Map<number, OutdoorWalk>> {
+    const outdoorWalks = await this.getAll({id: ids, perPage: ids.length});
+    return outdoorWalks.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorWalk>());
   }
 }

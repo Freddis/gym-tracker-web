@@ -3,13 +3,11 @@ import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {User} from '../UserService/types/User';
 import {UserService} from '../UserService/UserService';
 import {WorkoutService} from '../WorkoutService/WorkoutService';
-import {BaseEntry, Entry, PostEntry, OutdoorRunEntry, WeightEntry, WorkoutEntry, OutdoorWalkEntry} from './types/Entry';
+import {BaseEntry, Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
-import {Weight} from '../WeightService/types/Weight';
 import {WeightService} from '../WeightService/WeightService';
-import {Workout} from '../WorkoutService/types/Workout';
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
@@ -18,10 +16,14 @@ import {randomUUID} from 'crypto';
 import {ImageType} from '../../types/ImageType';
 import {SemiPartial} from '../../types/SemiPartial';
 import {OutdoorRunService} from '../OutdoorRunService/OutdoorRunService';
-import {OutdoorRun} from '../OutdoorRunService/types/OutdoorRun';
 import {OutdoorWalkService} from '../OutdoorWalkService/OutdoorWalkService';
-import {OutdoorWalk} from '../OutdoorWalkService/types/OutdoorWalk';
 import {Image} from '../ImageService/types/Image';
+import {EntryRow} from '../DrizzleService/types/EntryRow';
+import {EntryServiceMap} from './types/EntryServiceMap';
+import {EntryObjectMapMap} from './types/EntryObjectMapMap';
+import {EntryObjectMap} from './types/EntryObjectMap';
+import {IEntryService} from './types/IEntryService';
+import {PostService} from '../PostService/PostService';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -29,9 +31,7 @@ export class EntryService {
   protected drizzle: DrizzleService;
   protected weightService: WeightService;
   protected imageService: ImageService;
-  protected outdoorRunService: OutdoorRunService;
-  protected outdoorWalkService: OutdoorWalkService;
-
+  protected entryServiceMap: EntryServiceMap;
   constructor(
     drizzle: DrizzleService,
     userService: UserService,
@@ -39,15 +39,21 @@ export class EntryService {
     weightService: WeightService,
     imageService: ImageService,
     runService: OutdoorRunService,
-    walkService: OutdoorWalkService
+    walkService: OutdoorWalkService,
+    postService: PostService
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
     this.drizzle = drizzle;
     this.weightService = weightService;
     this.imageService = imageService;
-    this.outdoorRunService = runService;
-    this.outdoorWalkService = walkService;
+    this.entryServiceMap = {
+      [EntryType.Weight]: weightService,
+      [EntryType.Workout]: workoutService,
+      [EntryType.Post]: postService,
+      [EntryType.OutdoorRun]: runService,
+      [EntryType.OutdoorWalk]: walkService,
+    };
   }
 
   async createPostEntry(userId: number, entry: PostEntryCreateDto): Promise<PostEntry> {
@@ -263,25 +269,29 @@ export class EntryService {
         db._.fullSchema.entries.time
       ));
 
-
-    const workoutIds = rows.map((x) => x.workoutId).filter((x) => x !== null);
-    const workouts = await this.workoutService.getAll({id: workoutIds, perPage: limit, language: params?.language});
-    const workoutMap = workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
-    const weightIds = rows.map((x) => x.weightId).filter((x) => x !== null);
-    const weight = await this.weightService.getAll({id: weightIds, perPage: limit});
-    const weightMap = weight.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
+    const createMap = async <T extends EntryType>(type: T, rows: EntryRow[]): Promise<Map<number, EntryObjectMap[T]>> => {
+      const entryService = this.entryServiceMap[type];
+      const key = entryService.getRelationKey();
+      if (!key) {
+        return new Map();
+      }
+      const ids = rows.map((x) => x[key]).filter((x) => x !== null);
+      return await entryService.loadMap(ids);
+    };
+    const mapMap: EntryObjectMapMap = {
+      [EntryType.Workout]: await createMap(EntryType.Workout, rows),
+      [EntryType.Weight]: await createMap(EntryType.Weight, rows),
+      [EntryType.Post]: await createMap(EntryType.Post, rows),
+      [EntryType.OutdoorRun]: await createMap(EntryType.OutdoorRun, rows),
+      [EntryType.OutdoorWalk]: await createMap(EntryType.OutdoorWalk, rows),
+    };
     const userIds = rows.map((x) => x.userId);
     const users = await this.userService.paginate({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
     const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
     const images = await this.imageService.getMany({ids: imageIds, perPage: limit});
     const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
-    const runIds = rows.map((x) => x.outdoorRunId).filter((x) => x !== null);
-    const outdoorRuns = await this.outdoorRunService.getAll({id: runIds, perPage: limit});
-    const outdoorRunsMap = outdoorRuns.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
-    const walkIds = rows.map((x) => x.outdoorWalkId).filter((x) => x !== null);
-    const outdoorWalks = await this.outdoorWalkService.getAll({id: walkIds, perPage: limit});
-    const outdoorWalksMap = outdoorWalks.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorWalk>());
+
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {
         throw new Error(`'${key}' not found`);
@@ -317,40 +327,23 @@ export class EntryService {
         healthkitDevice: row.healthkitDevice,
         healthkitDeviceName: row.healthkitDeviceName,
       };
-      if (row.type === EntryType.Workout) {
-        const entry: WorkoutEntry = {
-          ...base,
-          type: row.type,
-          workout: getOrThrow(workoutMap, row.workoutId),
-        };
-        return entry;
-      } if (row.type === EntryType.Weight) {
-        const entry: Entry = {
-          ...base,
-          type: row.type,
-          weight: getOrThrow(weightMap, row.weightId),
-        };
-        return entry;
-      } else if (row.type === EntryType.OutdoorRun) {
-        const entry: OutdoorRunEntry = {
-          ...base,
-          type: row.type,
-          outdoorRun: getOrThrow(outdoorRunsMap, row.outdoorRunId),
-        };
-        return entry;
-      } else if (row.type === EntryType.OutdoorWalk) {
-        const entry: OutdoorWalkEntry = {
-          ...base,
-          type: row.type,
-          outdoorWalk: getOrThrow(outdoorWalksMap, row.outdoorWalkId),
-        };
-        return entry;
+
+      const entryService = this.getService(row.type);
+      //todo: get rid of this post discrepancy
+      if (row.type === EntryType.Post) {
+        return entryService.construct(base, null);
       }
-      const entry: PostEntry = {
-        ...base,
-        type: row.type,
-      };
-      return entry;
+
+      const key = entryService.getRelationKey();
+      const id = row[key];
+      if (id === null) {
+        throw new Error(`'${entryService.getRelationKey()}' not found`);
+      }
+      const data = mapMap[row.type].get(id);
+      if (!data) {
+        throw new Error(`'${id}' not found`);
+      }
+      return entryService.construct(base, data);
     });
 
     const result: PaginatedResult<Entry & {type: T}> = {
@@ -402,42 +395,20 @@ export class EntryService {
         healthkitDevice: item.healthkitDevice,
         healthkitDeviceName: item.healthkitDeviceName,
       };
-      let workout: Workout | undefined;
-      let weight: Weight | undefined;
-      let run: OutdoorRun | undefined;
       let image: Image | undefined;
-      let walk: OutdoorWalk | undefined;
+      const entryService = this.getService(item.type);
+      const upsertResult = await entryService.upsertOne(userId, item);
+      const key = entryService.getRelationKey();
+      if (key) {
+        data[key] = upsertResult.id;
+      }
+
       if (item.image) {
         image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
         data.imageId = image.id;
       }
       if (item.image === null) {
         data.imageId = null;
-      }
-      if (item.type === EntryType.Workout) {
-        const workouts = await this.workoutService.upsert(userId, [item.workout]);
-        const workoutId = workouts[0]?.id;
-        if (!workoutId) {
-          throw new Error('Workout not found');
-        }
-        data.workoutId = workoutId;
-        workout = workouts[0];
-      } else if (item.type === EntryType.Weight) {
-        const weights = await this.weightService.upsert(userId, [item.weight]);
-        const weightId = weights[0]?.id;
-        if (!weightId) {
-          throw new Error('Weight not found');
-        }
-        data.weightId = weightId;
-        weight = weights[0];
-      } else if (item.type === EntryType.OutdoorRun) {
-        await this.outdoorRunService.deleteOne(userId, existing?.outdoorRunId ?? 0);
-        run = await this.outdoorRunService.upsertOne(userId, item.outdoorRun);
-        data.outdoorRunId = run.id;
-      } else if (item.type === EntryType.OutdoorWalk) {
-        await this.outdoorWalkService.deleteOne(userId, existing?.outdoorWalkId ?? 0);
-        walk = await this.outdoorWalkService.upsertOne(userId, item.outdoorWalk);
-        data.outdoorWalkId = walk.id;
       }
 
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({
@@ -449,48 +420,13 @@ export class EntryService {
       if (!row) {
         throw new Error('Entry not found');
       }
-      const created: Omit<Entry, 'workout' | 'weight' | 'outdoorRun'> = {
+      const baseEntry: BaseEntry = {
         ...row,
         user: user,
-        type: row.type,
         image: image ?? null,
       };
-      if (workout) {
-        result.push({
-          ...created,
-          type: EntryType.Workout,
-          workout: workout,
-        });
-        continue;
-      }
-      if (weight) {
-        result.push({
-          ...created,
-          type: EntryType.Weight,
-          weight: weight,
-        });
-        continue;
-      }
-      if (run) {
-        result.push({
-          ...created,
-          type: EntryType.OutdoorRun,
-          outdoorRun: run,
-        });
-        continue;
-      }
-      if (walk) {
-        result.push({
-          ...created,
-          type: EntryType.OutdoorWalk,
-          outdoorWalk: walk,
-        });
-        continue;
-      }
-      result.push({
-        ...created,
-        type: EntryType.Post,
-      });
+      const entry = entryService.construct(baseEntry, upsertResult.value);
+      result.push(entry);
     }
     return result;
   }
@@ -525,6 +461,10 @@ export class EntryService {
       )
       .groupBy(sql`date(time), time`);
     return rows.map((x) => new Date(x.time.getFullYear(), x.time.getMonth(), x.time.getDate()));
+  }
+
+  protected getService<T extends EntryType>(type: T): IEntryService<T> {
+    return this.entryServiceMap[type];
   }
 
 }

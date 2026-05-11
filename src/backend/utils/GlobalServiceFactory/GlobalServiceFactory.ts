@@ -24,6 +24,7 @@ import {FoodService} from '../../services/FoodService/FoodService';
 import {ManagedImageService} from '../../services/ImageService/ManagedImageService';
 import {CoreUserService} from '../../services/CoreUserService/CoreUserService';
 import {SettingsService} from '../../services/SettingsService/SettingsService';
+import {PostService} from '../../services/PostService/PostService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -111,6 +112,7 @@ export class GlobalServiceFactory {
         await this.image(),
         await this.outdoorRun(),
         await this.outdoorWalk(),
+        new PostService(),
     );
   }
 

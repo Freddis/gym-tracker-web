@@ -7,7 +7,11 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {and, isNull, desc, eq, inArray} from 'drizzle-orm';
 import {WeightUpsertDto} from './types/WeightUpsertDto';
 import {SemiPartial} from '../../types/SemiPartial';
-export class WeightService {
+import {EntryType} from '../EntryService/types/EntryType';
+import {BaseEntry, WeightEntry} from '../EntryService/types/Entry';
+import {WeightEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
+import {IEntryService} from '../EntryService/types/IEntryService';
+export class WeightService implements IEntryService<EntryType.Weight> {
   protected drizzle: DrizzleService;
   protected table: AppDbSchema['weight'];
 
@@ -117,6 +121,33 @@ export class WeightService {
       set: this.drizzle.generateConflictUpdateSetAllColumns(schema.weight),
     }).returning();
     return result;
+  }
+
+  getRelationKey() {
+    return 'weightId' as const;
+  }
+  async upsertOne(userId: number, item: WeightEntryUpsertDto) {
+    const result = await this.upsert(userId, [item.weight]);
+    const weight = result[0];
+    if (!weight) {
+      throw new Error('Weight not found');
+    }
+    return {
+      id: weight.id,
+      value: weight,
+    };
+  }
+  construct(row: BaseEntry, value: Weight): WeightEntry {
+    const created: WeightEntry = {
+      ...row,
+      weight: value,
+      type: EntryType.Weight,
+    };
+    return created;
+  }
+  async loadMap(ids: number[]): Promise<Map<number, Weight>> {
+    const weights = await this.getAll({id: ids, perPage: ids.length});
+    return weights.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
   }
 
 }

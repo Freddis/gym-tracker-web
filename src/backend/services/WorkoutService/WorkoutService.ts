@@ -16,7 +16,11 @@ import {WorkoutCreateDto} from './types/WorkoutCreateDto';
 import {InvalidEndDateError} from './types/InvalidEndDateError';
 import {WorkoutNotFoundError} from './types/WorkoutNotFoundError';
 import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
-export class WorkoutService {
+import {IEntryService} from '../EntryService/types/IEntryService';
+import {EntryType} from '../EntryService/types/EntryType';
+import {BaseEntry, WorkoutEntry} from '../EntryService/types/Entry';
+import {WorkoutEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
+export class WorkoutService implements IEntryService<EntryType.Workout> {
   protected db: DrizzleService;
   protected exerciseService: ExerciseService;
   protected table = dbSchema.workouts;
@@ -324,4 +328,28 @@ export class WorkoutService {
     return !!item;
   }
 
+  getRelationKey(): 'workoutId' {
+    return 'workoutId';
+  }
+  construct(row: BaseEntry, value: Workout): WorkoutEntry {
+    return {
+      ...row,
+      workout: value,
+      type: EntryType.Workout,
+    };
+  }
+
+  async loadMap(ids: number[]): Promise<Map<number, Workout>> {
+    const workouts = await this.getAll({id: ids, perPage: ids.length});
+    return workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
+  }
+
+  async upsertOne(userId: number, entry: WorkoutEntryUpsertDto): Promise<{id: number, value: Workout}> {
+    const result = await this.upsert(userId, [entry.workout]);
+    const workout = result[0];
+    if (!workout) {
+      throw new Error('Workout not found');
+    }
+    return {id: workout.id, value: workout};
+  }
 }
