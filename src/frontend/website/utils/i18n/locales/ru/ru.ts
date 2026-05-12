@@ -15,6 +15,26 @@ export const dictionary: Translation = {
       },
     },
     objects: {
+      entry: {
+        fields: {
+          time: 'Время',
+          note: 'Заметка',
+          image: 'Изображение',
+          visibility: 'Видимость',
+        },
+      },
+      meal: {
+        fields: {
+          type: 'Тип',
+        },
+        types: {
+          Breakfast: 'Завтрак',
+          Lunch: 'Обед',
+          Dinner: 'Ужин',
+          Snack: 'Перекус',
+          Other: 'Другое',
+        },
+      },
       food: {
         fields: {
           name: 'Имя',
@@ -40,6 +60,7 @@ export const dictionary: Translation = {
         Post: 'Запись',
         OutdoorRun: 'Бег на улице',
         OutdoorWalk: 'Прогулка',
+        Meal: 'Еда',
       },
       muscles: {
         'Lower Back': 'Поясница',
@@ -316,6 +337,21 @@ export const dictionary: Translation = {
     },
   },
   pages: {
+    meals: {
+      create: {
+        heading: 'Добавить Еду',
+        toasts: {
+          success: 'Вы успешно добавили еду',
+        },
+      },
+      update: {
+        heading: 'Обновить Еду',
+        toasts: {
+          deletionSuccess: 'Вы успешно удалили еду',
+          success: 'Вы успешно обновили еду',
+        },
+      },
+    },
     settings: {
       toasts: {
         success: 'Настройки успешно обновлены',
@@ -401,6 +437,7 @@ export const dictionary: Translation = {
         },
         toasts: {
           success: 'Вы успешно добавили еду',
+          noComponents: 'Вы должны добавить хотя бы одну еду',
         },
       },
       list: {
@@ -621,6 +658,9 @@ export const dictionary: Translation = {
           food: 'Моя Еда',
         },
         objects: {
+          meal: {
+            type: 'Еда',
+          },
           workout: {
             type: 'Тренировка',
             calories: 'Калориии',
@@ -705,6 +745,7 @@ export const dictionary: Translation = {
           addWorkout: 'Добавить Тренировку',
           addWeight: 'Добавить Вес',
           addPost: 'Добавить Запись',
+          addMeal: 'Добавить Еду',
         },
         toasts: {
           success: 'Тренировака успешно добавлена',

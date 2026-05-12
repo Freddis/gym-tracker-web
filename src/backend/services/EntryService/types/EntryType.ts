@@ -4,4 +4,5 @@ export enum EntryType {
   Post = 'Post',
   OutdoorRun = 'OutdoorRun',
   OutdoorWalk = 'OutdoorWalk',
+  Meal = 'Meal',
 }

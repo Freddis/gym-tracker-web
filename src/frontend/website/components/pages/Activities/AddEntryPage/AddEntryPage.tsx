@@ -30,6 +30,9 @@ export function AddEntryPage() {
             <RouteLink to={route(RouteId.PostCreate)}>
               <AppButton>{t(i18n.create.buttons.addPost)}</AppButton>
             </RouteLink>
+            <RouteLink to={route(RouteId.MealCreate)}>
+              <AppButton>{t(i18n.create.buttons.addMeal)}</AppButton>
+            </RouteLink>
           </div>
         </AppBlock>
       </div>

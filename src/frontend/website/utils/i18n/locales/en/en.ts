@@ -1,6 +1,6 @@
 import {DistanceUnit, EntryType,
    EntryVisibility,
-   Equipment, Exercise, Food, Gender, HeightUnit, Muscle, ServingSizeUnit, TemperatureUnit, WeightUnit, Workout, WorkoutPlan,
+   Equipment, Exercise, Food, Gender, HeightUnit, MealType, Muscle, ServingSizeUnit, TemperatureUnit, WeightUnit, Workout, WorkoutPlan,
 
 } from '../../../../../common/utils/openapi-client';
 import {FreeFormTranslationObject} from '../../types/FreeFormTranslationObject';
@@ -22,6 +22,14 @@ export const dictionary = {
       } as WeekDaysTranslation,
     },
     objects: {
+      entry: {
+        fields: {
+          time: 'Time',
+          note: 'Note',
+          image: 'Image',
+          visibility: 'Visibility',
+        },
+      },
       exercise: {
         fields: {
           id: 'Id',
@@ -41,6 +49,18 @@ export const dictionary = {
           variations: 'Variations',
           isArchived: 'Archived',
         } satisfies Record<keyof Exercise, string>,
+      },
+      meal: {
+        fields: {
+          type: 'Type',
+        },
+        types: {
+          Breakfast: 'Breakfast',
+          Lunch: 'Lunch',
+          Dinner: 'Dinner',
+          Snack: 'Snack',
+          Other: 'Other',
+        } satisfies Record<MealType, string>,
       },
       food: {
         fields: {
@@ -102,6 +122,7 @@ export const dictionary = {
         Post: 'Post',
         OutdoorRun: 'Outdoor Run',
         OutdoorWalk: 'Outdoor Walk',
+        Meal: 'Meal',
       } satisfies Record<EntryType, string>,
       muscles: {
         'Lower Back': 'Lower Back',
@@ -306,6 +327,21 @@ export const dictionary = {
     },
   },
   pages: {
+    meals: {
+      create: {
+        heading: 'Create Meal',
+        toasts: {
+          success: 'You successfully added meal',
+        },
+      },
+      update: {
+        heading: 'Update Meal',
+        toasts: {
+          success: 'You successfully updated meal',
+          deletionSuccess: 'You successfully deleted meal',
+        },
+      },
+    },
     settings: {
       toasts: {
         success: 'Settings have been updated successfully',
@@ -506,6 +542,7 @@ export const dictionary = {
         },
         toasts: {
           success: 'You successfully added food',
+          noComponents: 'You need to add at least food to the meal',
         },
       },
       update: {
@@ -709,6 +746,7 @@ export const dictionary = {
           addWorkout: 'Add Workout',
           addWeight: 'Add Weight',
           addPost: 'Add Post',
+          addMeal: 'Add Meal',
         },
         toasts: {
           success: 'You successfully added workout record',
@@ -731,6 +769,9 @@ export const dictionary = {
           },
         },
         objects: {
+          meal: {
+            type: 'Meal',
+          },
           workout: {
             type: 'Workout',
             calories: 'Calories',

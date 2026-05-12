@@ -63,7 +63,17 @@ export function useAppPartialTranslation<T extends FreeFormTranslationKeysObject
 
     return result;
   };
+  const p = (callback: (key:T)=> TranslationKey, variables?: Record<string, string | number>): string => {
+        // return `--${key}---`; // uncomment for checks
+    const key = callback(subKeys);
+    return t(key, variables);
+  };
+
+  const f = (callback: (key: TranslationKeys<Translation>)=> TranslationKey, variables?: Record<string, string | number>): string => {
+    const key = callback(i18nKeys);
+    return t(key, variables);
+  };
 
   const subKeys = callback(i18nKeys);
-  return {t, tc, i18n: subKeys, translations: translations[language.language]};
+  return {t, tc, p, f, i18n: subKeys, translations: translations[language.language]};
 }

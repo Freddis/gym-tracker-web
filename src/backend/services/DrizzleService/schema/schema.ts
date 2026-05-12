@@ -32,6 +32,7 @@ import {DistanceUnit} from '../../../types/DistanceUnit';
 import {HeightUnit} from '../../../types/HeightUnit';
 import {TemperatureUnit} from '../../../types/TemperatureUnit';
 import {Country} from '../../../types/Country';
+import {MealType} from '../../MealService/types/MealType';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -82,6 +83,9 @@ export const temperatureUnitEnum = gymTracker.enum('TemperatureUnit', temperatur
 
 const countryValues = array(nativeEnum(Country)).nonempty().parse(Object.values(Country));
 export const countryEnum = gymTracker.enum('Country', countryValues);
+
+const mealTypeValues = array(nativeEnum(MealType)).nonempty().parse(Object.values(MealType));
+export const mealTypeEnum = gymTracker.enum('MealType', mealTypeValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -311,6 +315,7 @@ export const entries = gymTracker.table('entries', {
   imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  mealId: integer().references(() => meals.id, {onDelete: 'cascade'}),
   visibility: entryVisibilityEnum().notNull(),
   time: timestamp({withTimezone: true, mode: 'date'}).defaultNow().notNull(),
   healthkitId: varchar(),
@@ -323,6 +328,20 @@ export const entries = gymTracker.table('entries', {
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
+});
+
+export const meals = gymTracker.table('meals', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  type: mealTypeEnum().notNull(),
+});
+
+export const mealFoodComponents = gymTracker.table('meal_food', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  mealId: integer().notNull().references(() => meals.id, {onDelete: 'cascade'}),
+  foodId: uuid().notNull().references(() => food.id, {onDelete: 'cascade'}),
+  amount: real().notNull(),
+  unit: foodAmountUnitEnum().notNull(),
 });
 
 export const translations = gymTracker.table('translations', {

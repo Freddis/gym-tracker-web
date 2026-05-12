@@ -24,6 +24,7 @@ import {EntryObjectMapMap} from './types/EntryObjectMapMap';
 import {EntryObjectMap} from './types/EntryObjectMap';
 import {IEntryService} from './types/IEntryService';
 import {PostService} from '../PostService/PostService';
+import {MealService} from '../MealService/MealService';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -40,7 +41,8 @@ export class EntryService {
     imageService: ImageService,
     runService: OutdoorRunService,
     walkService: OutdoorWalkService,
-    postService: PostService
+    postService: PostService,
+    mealService: MealService
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
@@ -53,6 +55,7 @@ export class EntryService {
       [EntryType.Post]: postService,
       [EntryType.OutdoorRun]: runService,
       [EntryType.OutdoorWalk]: walkService,
+      [EntryType.Meal]: mealService,
     };
   }
 
@@ -278,13 +281,16 @@ export class EntryService {
       const ids = rows.map((x) => x[key]).filter((x) => x !== null);
       return await entryService.loadMap(ids);
     };
+
     const mapMap: EntryObjectMapMap = {
       [EntryType.Workout]: await createMap(EntryType.Workout, rows),
       [EntryType.Weight]: await createMap(EntryType.Weight, rows),
       [EntryType.Post]: await createMap(EntryType.Post, rows),
       [EntryType.OutdoorRun]: await createMap(EntryType.OutdoorRun, rows),
       [EntryType.OutdoorWalk]: await createMap(EntryType.OutdoorWalk, rows),
+      [EntryType.Meal]: await createMap(EntryType.Meal, rows),
     };
+
     const userIds = rows.map((x) => x.userId);
     const users = await this.userService.paginate({ids: userIds, perPage: limit});
     const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());

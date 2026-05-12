@@ -302,6 +302,13 @@
       "when": 1778354442371,
       "tag": "0042_user_settings_2",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1778516763024,
+      "tag": "0043_meal_entries",
+      "breakpoints": true
     }
   ]
 }

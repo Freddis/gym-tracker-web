@@ -9,7 +9,8 @@ export interface AppLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 export const AppLink = forwardRef<HTMLAnchorElement, AppLinkProps>(
   (props, ref) => {
-    const accented = props.accented === undefined ? true : props.accented;
-    return <a ref={ref} {...props} className={cn('hover:text-accent cursor-pointer', accented ? 'text-accent' : '', props.className)}/>;
+    const {accented, ...rest} = props;
+    const accentedValue = accented === undefined ? true : accented;
+    return <a ref={ref} {...rest} className={cn('hover:text-accent cursor-pointer', accentedValue ? 'text-accent' : '', props.className)}/>;
   },
 );

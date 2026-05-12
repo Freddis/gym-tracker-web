@@ -7,6 +7,7 @@ import {EntryType} from './EntryType';
 import {EntryVisibility} from './EntryVisibility';
 import {ExternalSource} from './ExternalSource';
 import {Image} from '../../ImageService/types/Image';
+import {Meal} from '../../MealService/types/Meal';
 export interface BaseEntry {
   id: string;
   // userId: number;
@@ -40,7 +41,6 @@ export interface WorkoutEntry extends BaseEntry {
   workout: Workout
 }
 
-
 export interface WeightEntry extends BaseEntry {
   type: EntryType.Weight
   weight: Weight
@@ -60,4 +60,9 @@ export interface OutdoorWalkEntry extends BaseEntry {
   outdoorWalk: OutdoorWalk
 }
 
-export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry | OutdoorWalkEntry
+export interface MealEntry extends BaseEntry {
+  type: EntryType.Meal
+  meal: Meal
+}
+
+export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry | OutdoorWalkEntry | MealEntry

@@ -10,7 +10,7 @@ type NumericEntryKeys = {
 
 
 export interface IEntryService<TType extends EntryType> {
-  upsertOne(userId: number, item: EntryUpsertDto & {type: TType}): Promise<{
+  upsertOne(userId: number, item: EntryUpsertDto): Promise<{
     id: number;
     value: EntryObjectMap[TType];
   }>;

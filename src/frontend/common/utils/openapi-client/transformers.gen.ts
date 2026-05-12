@@ -328,6 +328,46 @@ const outdoorWalkSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const foodSchemaResponseTransformer = (data: any) => {
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  data.components = data.components.map((item: any) => {
+    return foodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const foodComponentSchemaResponseTransformer = (data: any) => {
+  data.food = foodSchemaResponseTransformer(data.food);
+  return data;
+};
+
+const mealFoodComponentSchemaResponseTransformer = (data: any) => {
+  data.food.createdAt = new Date(data.food.createdAt);
+  if (data.food.updatedAt) {
+    data.food.updatedAt = new Date(data.food.updatedAt);
+  }
+  if (data.food.deletedAt) {
+    data.food.deletedAt = new Date(data.food.deletedAt);
+  }
+  data.food.components = data.food.components.map((item: any) => {
+    return foodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+const mealSchemaResponseTransformer = (data: any) => {
+  data.food = data.food.map((item: any) => {
+    return mealFoodComponentSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
 const entrySchemaResponseTransformer = (data: any) => {
   data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
@@ -348,6 +388,9 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.outdoorWalk) {
     data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
+  }
+  if (data.meal) {
+    data.meal = mealSchemaResponseTransformer(data.meal);
   }
   return data;
 };
@@ -422,6 +465,9 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   if (data.outdoorWalk) {
     data.outdoorWalk = outdoorWalkSchemaResponseTransformer(data.outdoorWalk);
   }
+  if (data.meal) {
+    data.meal = mealSchemaResponseTransformer(data.meal);
+  }
   return data;
 };
 
@@ -443,25 +489,6 @@ export const patchPostsByIdResponseTransformer = async (
   data: any,
 ): Promise<PatchPostsByIdResponse> => {
   data = postEntrySchemaResponseTransformer(data);
-  return data;
-};
-
-const foodComponentSchemaResponseTransformer = (data: any) => {
-  data.food = foodSchemaResponseTransformer(data.food);
-  return data;
-};
-
-const foodSchemaResponseTransformer = (data: any) => {
-  data.createdAt = new Date(data.createdAt);
-  if (data.updatedAt) {
-    data.updatedAt = new Date(data.updatedAt);
-  }
-  if (data.deletedAt) {
-    data.deletedAt = new Date(data.deletedAt);
-  }
-  data.components = data.components.map((item: any) => {
-    return foodComponentSchemaResponseTransformer(item);
-  });
   return data;
 };
 

@@ -7,6 +7,7 @@ import {weightUpsertDtoValidator} from '../../weight/validators/weightUpsertDtoV
 import {imageUpsertDtoValidator} from './imageUpsertDtoValidator';
 import {outdoorRunUpsertDtoValidator} from './outdoorRunUpsertDtoValidator';
 import {outdoorWalkUpsertDtoValidator} from './outdoorWalkUpsertDtoValidator';
+import {mealUpsertDtoValidator} from './mealUpsertDtoValidator';
 
 const descriptions = {
   type: 'Type of the entry',
@@ -18,6 +19,7 @@ const descriptions = {
   weight: 'Weight',
   outdoorRun: 'Outdoor run',
   outdoorWalk: 'Outdoor walk',
+  meal: 'Meal',
   visibility: 'Visibility of the entry',
   workout: 'Workout',
   image: 'Image',
@@ -42,7 +44,7 @@ const baseEntryUpsertDtoValidator = entryValidator.omit({
   createdAt: RouteFactory.validators.strings.datetime,
   updatedAt: RouteFactory.validators.strings.datetime.nullable(),
   deletedAt: RouteFactory.validators.strings.datetime.nullable(),
-  image: imageUpsertDtoValidator.nullable(),
+  image: imageUpsertDtoValidator.optional().nullable(),
   healthkitId: string().nullable(),
   healthkitAnchor: number().nullable(),
   healthkitAnchors_3_0: string().nullable(),
@@ -76,12 +78,18 @@ const outdoorWalkEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
   type: literal(EntryType.OutdoorWalk),
 });
 
+const mealEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
+  meal: mealUpsertDtoValidator,
+  type: literal(EntryType.Meal),
+});
+
 const validator = union([
   RouteFactory.validators.describeShape(workoutEntryUpsertDtoValidator, descriptions).openapi({ref: 'WorkoutEntryUpsertDto'}),
   RouteFactory.validators.describeShape(weightEntryUpsertDtoValidator, descriptions).openapi({ref: 'WeightEntryUpsertDto'}),
   RouteFactory.validators.describeShape(postEntryUpsertDtoValidator, descriptions).openapi({ref: 'PostEntryUpsertDto'}),
   RouteFactory.validators.describeShape(outdoorRunEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorRunEntryUpsertDto'}),
   RouteFactory.validators.describeShape(outdoorWalkEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorWalkEntryUpsertDto'}),
+  RouteFactory.validators.describeShape(mealEntryUpsertDtoValidator, descriptions).openapi({ref: 'MealEntryUpsertDto'}),
 ]);
 
 export const entryUpsertDtoValidator = validator.openapi({

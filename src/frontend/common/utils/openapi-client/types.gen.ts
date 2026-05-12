@@ -1442,6 +1442,10 @@ export type Entry = {
    * Outdoor walk. Only for outdoor walk entries.
    */
   outdoorWalk?: OutdoorWalk;
+  /**
+   * Meal. Only for meal entries.
+   */
+  meal?: Meal;
 };
 
 /**
@@ -1478,7 +1482,8 @@ export type EntryType =
   | "Weight"
   | "Post"
   | "OutdoorRun"
-  | "OutdoorWalk";
+  | "OutdoorWalk"
+  | "Meal";
 
 /**
  * Entry type
@@ -1489,6 +1494,7 @@ export const EntryType = {
   POST: "Post",
   OUTDOOR_RUN: "OutdoorRun",
   OUTDOOR_WALK: "OutdoorWalk",
+  MEAL: "Meal",
 } as const;
 
 /**
@@ -1627,6 +1633,215 @@ export type HeartRatePoint = {
 export type OutdoorWalk = OutdoorRun;
 
 /**
+ * Meal record. Tracks consumed calories.
+ */
+export type Meal = {
+  type: MealType;
+  /**
+   * Food components of the meal
+   */
+  food: Array<MealFoodComponent>;
+};
+
+/**
+ * Type of the meal
+ */
+export type MealType = "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Other";
+
+/**
+ * Type of the meal
+ */
+export const MealType = {
+  BREAKFAST: "Breakfast",
+  LUNCH: "Lunch",
+  DINNER: "Dinner",
+  SNACK: "Snack",
+  OTHER: "Other",
+} as const;
+
+/**
+ * Meal food component
+ */
+export type MealFoodComponent = {
+  /**
+   * Food of the meal component
+   */
+  food: {
+    /**
+     * Id of the food
+     */
+    id: string;
+    /**
+     * Name of the food
+     */
+    name: string;
+    /**
+     * Description of the food
+     */
+    description: string | null;
+    /**
+     * Image of the food
+     */
+    image: Image | null;
+    /**
+     * Calories of the food
+     */
+    calories: number;
+    /**
+     * Protein of the food
+     */
+    protein: number;
+    /**
+     * Carbs of the food
+     */
+    carbs: number;
+    /**
+     * Fat of the food
+     */
+    fat: number;
+    /**
+     * Serving size of the food
+     */
+    servingSize: number | null;
+    servingSizeUnit: ServingSizeUnit;
+    /**
+     * Date the creation
+     */
+    createdAt: Date;
+    /**
+     * Date of last update
+     */
+    updatedAt: Date | null;
+    /**
+     * Date of deletion
+     */
+    deletedAt: Date | null;
+    /**
+     * Is the food a meal
+     */
+    isMeal: boolean;
+    /**
+     * Components of the food
+     */
+    components: Array<FoodComponent>;
+  };
+  /**
+   * Amount of the meal component
+   */
+  amount: number;
+  /**
+   * Unit of the meal component
+   */
+  unit: FoodAmountUnit;
+};
+
+/**
+ * Food record
+ */
+export type Food = {
+  /**
+   * Id of the food
+   */
+  id: string;
+  /**
+   * Name of the food
+   */
+  name: string;
+  /**
+   * Description of the food
+   */
+  description: string | null;
+  /**
+   * Image of the food
+   */
+  image: Image | null;
+  /**
+   * Calories of the food
+   */
+  calories: number;
+  /**
+   * Protein of the food
+   */
+  protein: number;
+  /**
+   * Carbs of the food
+   */
+  carbs: number;
+  /**
+   * Fat of the food
+   */
+  fat: number;
+  /**
+   * Serving size of the food
+   */
+  servingSize: number | null;
+  servingSizeUnit: ServingSizeUnit;
+  /**
+   * Date the creation
+   */
+  createdAt: Date;
+  /**
+   * Date of last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Is the food a meal
+   */
+  isMeal: boolean;
+  /**
+   * Components of the food
+   */
+  components: Array<FoodComponent>;
+};
+
+/**
+ * Unit in which the food is measured
+ */
+export type ServingSizeUnit = "Gram";
+
+/**
+ * Unit in which the food is measured
+ */
+export const ServingSizeUnit = {
+  GRAM: "Gram",
+} as const;
+
+/**
+ * Food component
+ */
+export type FoodComponent = {
+  /**
+   * Ingredient food
+   */
+  food: Food;
+  /**
+   * Amount of the food component
+   */
+  amount: number;
+  /**
+   * Unit of the food component
+   */
+  unit: FoodAmountUnit;
+};
+
+/**
+ * Unit in which the food is measured
+ */
+export type FoodAmountUnit = "Gram" | "Serving";
+
+/**
+ * Unit in which the food is measured
+ */
+export const FoodAmountUnit = {
+  GRAM: "Gram",
+  SERVING: "Serving",
+} as const;
+
+/**
  * Fields needed to update a workout
  */
 export type EntryUpsertDto =
@@ -1634,7 +1849,8 @@ export type EntryUpsertDto =
   | WeightEntryUpsertDto
   | PostEntryUpsertDto
   | OutdoorRunEntryUpsertDto
-  | OutdoorWalkEntryUpsertDto;
+  | OutdoorWalkEntryUpsertDto
+  | MealEntryUpsertDto;
 
 export type WorkoutEntryUpsertDto = {
   /**
@@ -1695,9 +1911,13 @@ export type WorkoutEntryUpsertDto = {
    */
   outdoorWalk?: OutdoorWalk;
   /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
    * Image
    */
-  image: {
+  image?: {
     data: string;
   } | null;
   /**
@@ -1789,9 +2009,13 @@ export type WeightEntryUpsertDto = {
    */
   outdoorWalk?: OutdoorWalk;
   /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
    * Image
    */
-  image: {
+  image?: {
     data: string;
   } | null;
   /**
@@ -1913,9 +2137,13 @@ export type PostEntryUpsertDto = {
    */
   outdoorWalk?: OutdoorWalk;
   /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
    * Image
    */
-  image: {
+  image?: {
     data: string;
   } | null;
   /**
@@ -2007,9 +2235,13 @@ export type OutdoorRunEntryUpsertDto = {
    */
   outdoorWalk?: OutdoorWalk;
   /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
    * Image
    */
-  image: {
+  image?: {
     data: string;
   } | null;
   /**
@@ -2167,9 +2399,13 @@ export type OutdoorWalkEntryUpsertDto = {
    */
   outdoorWalk: OutdoorWalkUpsertDto;
   /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
    * Image
    */
-  image: {
+  image?: {
     data: string;
   } | null;
   /**
@@ -2206,6 +2442,138 @@ export type OutdoorWalkEntryUpsertDto = {
  * Outdoor walk upsert dto
  */
 export type OutdoorWalkUpsertDto = OutdoorRunUpsertDto;
+
+export type MealEntryUpsertDto = {
+  /**
+   * Id of the entry
+   */
+  id: string;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: ExternalSource | null;
+  /**
+   * Type of the entry
+   */
+  type: "Meal";
+  /**
+   * Weight
+   */
+  weight?: Weight;
+  /**
+   * Workout
+   */
+  workout?: Workout;
+  /**
+   * Outdoor run
+   */
+  outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
+  /**
+   * Meal
+   */
+  meal: MealUpsertDto;
+  /**
+   * Image
+   */
+  image?: {
+    data: string;
+  } | null;
+  /**
+   * Id of the healthkit entry
+   */
+  healthkitId: string | null;
+  /**
+   * Last sync date
+   */
+  healthkitAnchor: number | null;
+  /**
+   * Last sync anchor
+   */
+  healthkitAnchors_3_0: string | null;
+  /**
+   * Id of the app that added healthkit record
+   */
+  healthkitSource: string | null;
+  /**
+   * Name of the app that added healthkit record
+   */
+  healthkitSourceName: string | null;
+  /**
+   * Id of the device that added healthkit record
+   */
+  healthkitDevice: string | null;
+  /**
+   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+   */
+  healthkitDeviceName: string | null;
+};
+
+/**
+ * Meal record to upsert
+ */
+export type MealUpsertDto = {
+  type: MealType;
+  /**
+   * Components of the meal
+   */
+  food: Array<FoodComponentUpsertDto>;
+};
+
+/**
+ * Food component to upsert
+ */
+export type FoodComponentUpsertDto = {
+  /**
+   * Food to add as component
+   */
+  food: {
+    /**
+     * Id of the food
+     */
+    id: string;
+  };
+  /**
+   * Amount of the food component
+   */
+  amount: number;
+  /**
+   * Unit of the food component
+   */
+  unit: FoodAmountUnit;
+};
 
 /**
  * List of dates. Workout about bug in array transformation in @hey-api/openapi-ts
@@ -2283,6 +2651,10 @@ export type PostEntry = {
    * Outdoor walk. Only for outdoor walk entries.
    */
   outdoorWalk?: OutdoorWalk;
+  /**
+   * Meal. Only for meal entries.
+   */
+  meal?: Meal;
 };
 
 /**
@@ -2347,135 +2719,6 @@ export type FoodUpsertDto = {
    * Components of the food
    */
   components: Array<FoodComponentUpsertDto>;
-};
-
-/**
- * Unit in which the food is measured
- */
-export type ServingSizeUnit = "Gram";
-
-/**
- * Unit in which the food is measured
- */
-export const ServingSizeUnit = {
-  GRAM: "Gram",
-} as const;
-
-/**
- * Food component to upsert
- */
-export type FoodComponentUpsertDto = {
-  /**
-   * Food to add as component
-   */
-  food: {
-    /**
-     * Id of the food
-     */
-    id: string;
-  };
-  /**
-   * Amount of the food component
-   */
-  amount: number;
-  /**
-   * Unit of the food component
-   */
-  unit: FoodAmountUnit;
-};
-
-/**
- * Unit in which the food is measured
- */
-export type FoodAmountUnit = "Gram" | "Serving";
-
-/**
- * Unit in which the food is measured
- */
-export const FoodAmountUnit = {
-  GRAM: "Gram",
-  SERVING: "Serving",
-} as const;
-
-/**
- * Food record
- */
-export type Food = {
-  /**
-   * Id of the food
-   */
-  id: string;
-  /**
-   * Name of the food
-   */
-  name: string;
-  /**
-   * Description of the food
-   */
-  description: string | null;
-  /**
-   * Image of the food
-   */
-  image: Image | null;
-  /**
-   * Calories of the food
-   */
-  calories: number;
-  /**
-   * Protein of the food
-   */
-  protein: number;
-  /**
-   * Carbs of the food
-   */
-  carbs: number;
-  /**
-   * Fat of the food
-   */
-  fat: number;
-  /**
-   * Serving size of the food
-   */
-  servingSize: number | null;
-  servingSizeUnit: ServingSizeUnit;
-  /**
-   * Date the creation
-   */
-  createdAt: Date;
-  /**
-   * Date of last update
-   */
-  updatedAt: Date | null;
-  /**
-   * Date of deletion
-   */
-  deletedAt: Date | null;
-  /**
-   * Is the food a meal
-   */
-  isMeal: boolean;
-  /**
-   * Components of the food
-   */
-  components: Array<FoodComponent>;
-};
-
-/**
- * Food component
- */
-export type FoodComponent = {
-  /**
-   * Ingredient food
-   */
-  food: Food;
-  /**
-   * Amount of the food component
-   */
-  amount: number;
-  /**
-   * Unit of the food component
-   */
-  unit: FoodAmountUnit;
 };
 
 /**
@@ -7553,7 +7796,10 @@ export type GetEntriesOwnData = {
       | "Post"
       | "OutdoorRun"
       | "OutdoorWalk"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
+      | "Meal"
+      | Array<
+          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+        >;
     /**
      * Only return entries from this date.
      */
@@ -7964,7 +8210,10 @@ export type GetEntriesData = {
       | "Post"
       | "OutdoorRun"
       | "OutdoorWalk"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
+      | "Meal"
+      | Array<
+          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+        >;
     /**
      * Only return entries from this date.
      */
@@ -8239,7 +8488,10 @@ export type GetEntriesOwnDatesData = {
       | "Post"
       | "OutdoorRun"
       | "OutdoorWalk"
-      | Array<"Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk">;
+      | "Meal"
+      | Array<
+          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+        >;
   };
   url: "/entries/own/dates";
 };

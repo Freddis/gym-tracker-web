@@ -7,6 +7,7 @@ import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTransla
 import {PostEntryBlock} from './components/PostEntryBlock';
 import {OutdoorRunEntryBlock} from './components/OutdoorRunEntryBlock';
 import {OutdoorWalkEntryBlock} from './components/OutdoorWalkEntryBlock';
+import {MealEntryBlock} from './components/MealEntryBlock';
 
 export const EntryBlock: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.components.entryBlock.labels);
@@ -21,6 +22,9 @@ export const EntryBlock: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
   }
   if (entry.outdoorWalk) {
     return <OutdoorWalkEntryBlock entry={entry} outdoorWalk={entry.outdoorWalk!} own={own}/>;
+  }
+  if (entry.meal) {
+    return <MealEntryBlock entry={entry} meal={entry.meal} own={own}/>;
   }
   if (entry.type === 'Post') {
     return <PostEntryBlock entry={entry} own={own}/>;

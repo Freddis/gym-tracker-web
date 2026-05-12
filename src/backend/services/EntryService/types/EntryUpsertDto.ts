@@ -1,4 +1,5 @@
 import {StrictOmit} from '../../../types/StrictOmit';
+import {MealUpsertDto} from '../../MealService/types/MealUpsertDto';
 import {OutdoorRunUpsertDto} from '../../OutdoorRunService/types/OutdoorRunUpsertDto';
 import {OutdoorWalkUpsertDto} from '../../OutdoorWalkService/types/OutdoorWalkUpsertDto';
 import {WeightUpsertDto} from '../../WeightService/types/WeightUpsertDto';
@@ -10,7 +11,7 @@ export interface ImageUpsertDto {
   data: string
 }
 interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, | 'user'| 'image'> {
-  image: ImageUpsertDto | null| undefined
+  image?: ImageUpsertDto | null
 }
 export interface WorkoutEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.Workout
@@ -33,6 +34,9 @@ export interface OutdoorWalkEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.OutdoorWalk
   outdoorWalk: OutdoorWalkUpsertDto
 }
-
+export interface MealEntryUpsertDto extends BaseEntryUpsertDto {
+  type: EntryType.Meal
+  meal: MealUpsertDto
+}
 export type EntryUpsertDto = WorkoutEntryUpsertDto
-| WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto | OutdoorWalkEntryUpsertDto
+| WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto | OutdoorWalkEntryUpsertDto | MealEntryUpsertDto

@@ -20,7 +20,7 @@ const baseFoodUpsertDtoValidator = object({
   deletedAt: RouteFactory.validators.strings.datetime.nullable().openapi({description: 'Date of deletion'}),
 });
 
-const foodComponentDtoValidator = object({
+export const foodComponentDtoValidator = object({
   food: baseFoodUpsertDtoValidator.pick({id: true}).openapi({description: 'Food to add as component'}),
   amount: number().openapi({description: 'Amount of the food component'}),
   unit: foodAmountUnitValidator.openapi({description: 'Unit of the food component'}),
