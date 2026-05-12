@@ -16,6 +16,9 @@ import {
   Country,
   HeightUnit,
   TemperatureUnit,
+  Profile,
+  CalorieGoal,
+  GoalType,
 } from '../../../src/frontend/common/utils/openapi-client';
 import {adduction} from './data/adduction';
 import {barbellShrug} from './data/barbellShrug';
@@ -275,6 +278,45 @@ export class StorybookDataUtils {
       profilePicture: null,
     };
     return settings;
+  }
+  static getProfile(): Profile {
+    const profile: Profile = {
+      user: this.getUser(),
+      goals: [{
+        type: GoalType.CALORIE,
+        calorie: this.getCalorieGoal(),
+      }],
+      note: 'Test note',
+      height: 180,
+      weight: 75.2,
+      age: 30,
+      gender: Gender.MALE,
+      units: {
+        weight: WeightUnit.KG,
+        distance: DistanceUnit.KM,
+        height: HeightUnit.CM,
+        temperature: TemperatureUnit.C,
+      },
+      consumedCalories: {
+        calories: 1300,
+        carbs: 30,
+        protein: 20,
+        fat: 64,
+      },
+    };
+    return profile;
+  }
+
+  static getCalorieGoal(): CalorieGoal {
+    const calorieGoal: CalorieGoal = {
+      calories: 1000,
+      carbs: 100,
+      protein: 100,
+      fat: 100,
+      start: new Date(),
+      end: null,
+    };
+    return calorieGoal;
   }
 
   static getUser(): User {

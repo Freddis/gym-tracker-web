@@ -8,13 +8,13 @@ import {AppTextArea} from '../../../../common/components/atoms/AppTextArea/AppTe
 import {InputRow} from '../../../../common/components/atoms/InputRow/InputRow';
 import {PostEntryUpsertDto, EntryVisibility, Entry, ImageUpsertDto} from '../../../../common/utils/openapi-client';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
-import {FoodUpdateFormRef} from '../../pages/Food/FoodUpdateForm/types/FoodUpdateFormRef';
+import {FormSubmitRef} from '../../../../common/types/FormSubmitRef';
 
 interface EntryUpdateFormProps {
   entry: Entry;
   onSubmit: (entry: PostEntryUpsertDto) => void;
 }
-export const EntryUpdateForm = forwardRef<FoodUpdateFormRef, EntryUpdateFormProps>((props, ref) => {
+export const EntryUpdateForm = forwardRef<FormSubmitRef, EntryUpdateFormProps>((props, ref) => {
   const t = useAppPartialTranslation((x) => x.utils.objects.entry);
   const [time, setTime] = useState(props.entry.time);
   const [note, setNote] = useState(props.entry.note ?? '');

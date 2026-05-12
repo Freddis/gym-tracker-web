@@ -137,6 +137,9 @@ import type {
   GetFoodData,
   GetFoodResponses,
   GetFoodErrors,
+  GetOwnProfileData,
+  GetOwnProfileResponses,
+  GetOwnProfileErrors,
   GetSettingsData,
   GetSettingsResponses,
   GetSettingsErrors,
@@ -212,6 +215,7 @@ import {
   getFoodListResponseTransformer,
   upsertFoodResponseTransformer,
   getFoodResponseTransformer,
+  getOwnProfileResponseTransformer,
   getSettingsResponseTransformer,
   updateSettingsResponseTransformer,
   getCrmManagersResponseTransformer,
@@ -1334,6 +1338,30 @@ export const getFood = <ThrowOnError extends boolean = false>(
     ],
     responseTransformer: getFoodResponseTransformer,
     url: "/food/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Returns data on user profile
+ */
+export const getOwnProfile = <ThrowOnError extends boolean = false>(
+  options?: Options<GetOwnProfileData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetOwnProfileResponses,
+    GetOwnProfileErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: getOwnProfileResponseTransformer,
+    url: "/profile",
     ...options,
   });
 };

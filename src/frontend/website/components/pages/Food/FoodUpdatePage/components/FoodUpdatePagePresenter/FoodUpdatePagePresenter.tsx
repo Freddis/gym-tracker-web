@@ -11,14 +11,14 @@ import {FoodUpdateForm} from '../../../FoodUpdateForm/FoodUpdateForm';
 import {AppSpinner} from '../../../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {AppApiErrorDisplay} from '../../../../../../../common/components/atoms/AppApiErrorDisplay/AppApiErrorDisplay';
 import {FoodUpdatePagePresenterProps} from './types/FoodUpdatePagePresenterProps';
-import {FoodUpdateFormRef} from '../../../FoodUpdateForm/types/FoodUpdateFormRef';
+import {FormSubmitRef} from '../../../../../../../common/types/FormSubmitRef';
 import {BreadCrumbs} from '../../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
 import {BreadCrumbsBlock} from '../../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
 import {BasicPage} from '../../../../../../../common/components/layout/BasicPage/BasicPage';
 
 export const FoodUpdatePagePresenter: FC<FoodUpdatePagePresenterProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food);
-  const formRef = useRef<FoodUpdateFormRef>(null);
+  const formRef = useRef<FormSubmitRef>(null);
 
   const onSaveClick = async () => {
     formRef.current?.submit();

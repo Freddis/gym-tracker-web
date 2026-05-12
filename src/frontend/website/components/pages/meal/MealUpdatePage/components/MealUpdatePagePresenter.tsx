@@ -19,7 +19,7 @@ import {route, RouteId} from '../../../../../../common/utils/route';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {BreadCrumbsBlock} from '../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
 import {BreadCrumbs} from '../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
-import {FoodUpdateFormRef} from '../../../Food/FoodUpdateForm/types/FoodUpdateFormRef';
+import {FormSubmitRef} from '../../../../../../common/types/FormSubmitRef';
 import {MealUpdateForm} from '../../MealUpdateForm/MealUpdateForm';
 
 interface MealUpdatePagePresenterProps {
@@ -30,7 +30,7 @@ interface MealUpdatePagePresenterProps {
 
 export const MealUpdatePagePresenter: FC<MealUpdatePagePresenterProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.meals.update);
-  const formRef = useRef<FoodUpdateFormRef>(null);
+  const formRef = useRef<FormSubmitRef>(null);
   const breadCrumbs: BreadCrumbs = [
     {label: translations.pages.activities.list.heading, url: route(RouteId.EntryList)},
     {label: t(i18n.heading), url: route(RouteId.MealUpdate)},

@@ -316,6 +316,7 @@ export const entries = gymTracker.table('entries', {
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
   mealId: integer().references(() => meals.id, {onDelete: 'cascade'}),
+  calorieGoalId: integer().references(() => calorieGoals.id, {onDelete: 'cascade'}),
   visibility: entryVisibilityEnum().notNull(),
   time: timestamp({withTimezone: true, mode: 'date'}).defaultNow().notNull(),
   healthkitId: varchar(),
@@ -428,4 +429,15 @@ export const foodComponents = gymTracker.table('food_components', {
   componentId: uuid().notNull().references(() => food.id, {onDelete: 'restrict'}),
   amount: real().notNull(),
   unit: foodAmountUnitEnum().notNull(),
+});
+
+export const calorieGoals = gymTracker.table('calorie_goals', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
+  calories: real().notNull(),
+  carbs: real().notNull(),
+  protein: real().notNull(),
+  fat: real().notNull(),
+  start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+  end: timestamp({withTimezone: true, mode: 'date'}),
 });

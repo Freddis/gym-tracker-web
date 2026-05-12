@@ -13,31 +13,32 @@ export class UserService implements EntityService<User, number, UserFilter> {
   async paginate(params: Partial<UserFilter>): Promise<PaginatedResult<User>> {
     const result = await this.coreUserService.paginate(params);
     return {
-      items: await this.decorate(result.items),
+      items: await this.decorateManyFromCore(result.items),
       info: result.info,
     };
   }
   async get(filter: UserFilter): Promise<User | null> {
     const result = await this.coreUserService.get(filter);
-    return result ? this.decorateRow(result) : null;
+    return result ? this.decorateFromCore(result) : null;
   }
 
   async getById(id: number): Promise<User | null> {
     const result = await this.coreUserService.getById(id);
-    return result ? this.decorateRow(result) : null;
+    return result ? this.decorateFromCore(result) : null;
   }
   async getMany(filter: UserFilter): Promise<User[]> {
     const result = await this.coreUserService.getMany(filter);
-    return result.map((x) => this.decorateRow(x));
+    return result.map((x) => this.decorateFromCore(x));
   }
   async deleteById(id: number): Promise<void> {
     await this.coreUserService.deleteById(id);
   }
 
-  protected async decorate(rows: CoreUser[]): Promise<User[]> {
-    return rows.map((x) => this.decorateRow(x));
+  async decorateManyFromCore(rows: CoreUser[]): Promise<User[]> {
+    return rows.map((x) => this.decorateFromCore(x));
   }
-  protected decorateRow(row: CoreUser): User {
+
+  decorateFromCore(row: CoreUser): User {
     const result: User = {
       id: row.id,
       name: row.name,

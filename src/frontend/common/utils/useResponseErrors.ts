@@ -69,6 +69,9 @@ export const useResponseErrors = <T extends object | undefined>(existingErrors?:
     const path = selectPath(fn);
     setErrors(errors.filter((x) => x.field !== path));
   };
+  const clearErrors = () => {
+    setErrors([]);
+  };
   const mySetErrors = (e: FieldError[]) => {
     setErrors(e);
   };
@@ -101,6 +104,7 @@ export const useResponseErrors = <T extends object | undefined>(existingErrors?:
     setSmartError,
     hasSmartError,
     clearSmartError,
+    clearErrors,
     setErrors: mySetErrors,
     sliceErrors,
     errors,

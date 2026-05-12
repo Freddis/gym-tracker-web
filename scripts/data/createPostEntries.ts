@@ -63,6 +63,7 @@ for (const row of items.items.reverse()) {
     healthkitDevice: null,
     healthkitDeviceName: null,
     mealId: null,
+    calorieGoalId: null,
   };
   await db.insert(schema.entries).values(newEntry);
 }

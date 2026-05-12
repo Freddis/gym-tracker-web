@@ -8,6 +8,7 @@ import {PostEntryBlock} from './components/PostEntryBlock';
 import {OutdoorRunEntryBlock} from './components/OutdoorRunEntryBlock';
 import {OutdoorWalkEntryBlock} from './components/OutdoorWalkEntryBlock';
 import {MealEntryBlock} from './components/MealEntryBlock';
+import {CalorieGoalEntryBlock} from './components/CalorieGoalEntryBlock';
 
 export const EntryBlock: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.components.entryBlock.labels);
@@ -25,6 +26,9 @@ export const EntryBlock: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
   }
   if (entry.meal) {
     return <MealEntryBlock entry={entry} meal={entry.meal} own={own}/>;
+  }
+  if (entry.calorieGoal) {
+    return <CalorieGoalEntryBlock entry={entry} goal={entry.calorieGoal} own={own}/>;
   }
   if (entry.type === 'Post') {
     return <PostEntryBlock entry={entry} own={own}/>;

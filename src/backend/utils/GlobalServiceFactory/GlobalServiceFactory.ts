@@ -26,6 +26,8 @@ import {CoreUserService} from '../../services/CoreUserService/CoreUserService';
 import {SettingsService} from '../../services/SettingsService/SettingsService';
 import {PostService} from '../../services/PostService/PostService';
 import {MealService} from '../../services/MealService/MealService';
+import {CalorieGoalService} from '../../services/CalorieGoalService/CalorieGoalService';
+import {ProfileService} from '../../services/ApiService/ProfileService/ProfileService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
@@ -115,7 +117,12 @@ export class GlobalServiceFactory {
         await this.outdoorWalk(),
         new PostService(),
         await this.meal(),
+        await this.calorieGoal(),
     );
+  }
+
+  async calorieGoal() {
+    return new CalorieGoalService(await this.drizzle());
   }
 
   async argusCheckin() {
@@ -164,6 +171,9 @@ export class GlobalServiceFactory {
   }
   async manager(): Promise<ManagerService> {
     return new ManagerService(await this.drizzle());
+  }
+  async profile(): Promise<ProfileService> {
+    return new ProfileService(await this.coreUser(), await this.user(), await this.entry());
   }
   async user(): Promise<UserService> {
     return new UserService(await this.coreUser());

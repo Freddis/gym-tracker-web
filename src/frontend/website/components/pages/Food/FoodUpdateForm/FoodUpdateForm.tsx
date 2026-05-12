@@ -16,7 +16,7 @@ import {FoodComponentBlock} from './components/FoodComponentBlock/FoodComponentB
 import {wrap, Wrapped} from '../../../../utils/wrap';
 import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../utils/getFoodValueRecursively';
 import {FoodUpdateFormProps} from './types/FoodUpdateFormProps';
-import {FoodUpdateFormRef} from './types/FoodUpdateFormRef';
+import {FormSubmitRef} from '../../../../../common/types/FormSubmitRef';
 import {foodValidator} from './validators/foodValidator';
 import {mealValidator} from './validators/mealValidator';
 import {AppSwitch} from '../../../../../common/components/atoms/AppSwitch/AppSwitch';
@@ -25,7 +25,7 @@ import {FoodAmountUnit} from '../../../../../../backend/services/FoodService/typ
 import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {stringToNumber} from '../../../../utils/stringToNumber';
 
-export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>((props, ref) => {
+export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((props, ref) => {
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
   const [hasServingSize, setHasServingSize] = useState(props.food.servingSize !== null);
   const {getSmartError, setErrors} = useResponseErrors<Food>(props.errors);

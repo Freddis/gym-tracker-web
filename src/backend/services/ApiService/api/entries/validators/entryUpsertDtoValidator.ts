@@ -8,6 +8,7 @@ import {imageUpsertDtoValidator} from './imageUpsertDtoValidator';
 import {outdoorRunUpsertDtoValidator} from './outdoorRunUpsertDtoValidator';
 import {outdoorWalkUpsertDtoValidator} from './outdoorWalkUpsertDtoValidator';
 import {mealUpsertDtoValidator} from './mealUpsertDtoValidator';
+import {calorieGoalUpsertDtoValidator} from './calorieGoalUpsertDtoValidator';
 
 const descriptions = {
   type: 'Type of the entry',
@@ -20,6 +21,7 @@ const descriptions = {
   outdoorRun: 'Outdoor run',
   outdoorWalk: 'Outdoor walk',
   meal: 'Meal',
+  calorieGoal: 'Calorie goal',
   visibility: 'Visibility of the entry',
   workout: 'Workout',
   image: 'Image',
@@ -83,6 +85,11 @@ const mealEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
   type: literal(EntryType.Meal),
 });
 
+const calorieGoalEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
+  calorieGoal: calorieGoalUpsertDtoValidator,
+  type: literal(EntryType.CalorieGoal),
+});
+
 const validator = union([
   RouteFactory.validators.describeShape(workoutEntryUpsertDtoValidator, descriptions).openapi({ref: 'WorkoutEntryUpsertDto'}),
   RouteFactory.validators.describeShape(weightEntryUpsertDtoValidator, descriptions).openapi({ref: 'WeightEntryUpsertDto'}),
@@ -90,6 +97,7 @@ const validator = union([
   RouteFactory.validators.describeShape(outdoorRunEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorRunEntryUpsertDto'}),
   RouteFactory.validators.describeShape(outdoorWalkEntryUpsertDtoValidator, descriptions).openapi({ref: 'OutdoorWalkEntryUpsertDto'}),
   RouteFactory.validators.describeShape(mealEntryUpsertDtoValidator, descriptions).openapi({ref: 'MealEntryUpsertDto'}),
+  RouteFactory.validators.describeShape(calorieGoalEntryUpsertDtoValidator, descriptions).openapi({ref: 'CalorieGoalEntryUpsertDto'}),
 ]);
 
 export const entryUpsertDtoValidator = validator.openapi({

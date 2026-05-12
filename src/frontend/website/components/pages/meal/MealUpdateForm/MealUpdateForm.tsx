@@ -23,7 +23,7 @@ import {getFoodMacro, FoodMacros, getFoodCalories} from '../../../../utils/getFo
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {wrap, Wrapped} from '../../../../utils/wrap';
 import {FoodComponentBlock} from '../../Food/FoodUpdateForm/components/FoodComponentBlock/FoodComponentBlock';
-import {FoodUpdateFormRef} from '../../Food/FoodUpdateForm/types/FoodUpdateFormRef';
+import {FormSubmitRef} from '../../../../../common/types/FormSubmitRef';
 import {IngredientSelectionPopup} from '../../Food/IngredientSelectionPopup/IngredientSelectionPopup';
 import {InputRow} from '../../../../../common/components/atoms/InputRow/InputRow';
 import {AppSelect} from '../../../../../common/components/atoms/AppSelect/AppSelect';
@@ -35,11 +35,11 @@ interface MealUpdateFormProps {
   entry: Entry;
   onSubmit: (meal: MealEntryUpsertDto) => void;
 }
-export const MealUpdateForm = forwardRef<FoodUpdateFormRef, MealUpdateFormProps>((props, ref) => {
+export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((props, ref) => {
   const t = useAppPartialTranslation((x) => x.pages.meals);
   const toasts = useToasts();
   const popup = usePopup();
-  const entryUpdateFormRef = useRef<FoodUpdateFormRef>(null);
+  const entryUpdateFormRef = useRef<FormSubmitRef>(null);
   const [mealType, setMealType] = useState<MealType>(props.meal.type);
   const mealTypes: SelectValue<MealType>[] = Object.values(MealType).map((type) => ({
     label: t.f((x) => x.utils.objects.meal.types[type]),

@@ -47,6 +47,7 @@ import {
   getFoodList,
   upsertFood,
   getFood,
+  getOwnProfile,
   getSettings,
   updateSettings,
   getCrmUsers,
@@ -185,6 +186,7 @@ import type {
   GetFoodData,
   GetFoodError,
   GetFoodResponse,
+  GetOwnProfileData,
   GetSettingsData,
   UpdateSettingsData,
   UpdateSettingsError,
@@ -2224,6 +2226,27 @@ export const getFoodInfiniteOptions = (options: Options<GetFoodData>) => {
       queryKey: getFoodInfiniteQueryKey(options),
     },
   );
+};
+
+export const getOwnProfileQueryKey = (options?: Options<GetOwnProfileData>) =>
+  createQueryKey("getOwnProfile", options);
+
+/**
+ * Returns data on user profile
+ */
+export const getOwnProfileOptions = (options?: Options<GetOwnProfileData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getOwnProfile({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getOwnProfileQueryKey(options),
+  });
 };
 
 export const getSettingsQueryKey = (options?: Options<GetSettingsData>) =>

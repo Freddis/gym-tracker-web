@@ -25,6 +25,7 @@ import {EntryObjectMap} from './types/EntryObjectMap';
 import {IEntryService} from './types/IEntryService';
 import {PostService} from '../PostService/PostService';
 import {MealService} from '../MealService/MealService';
+import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 
 export class EntryService {
   protected workoutService: WorkoutService;
@@ -42,7 +43,8 @@ export class EntryService {
     runService: OutdoorRunService,
     walkService: OutdoorWalkService,
     postService: PostService,
-    mealService: MealService
+    mealService: MealService,
+    calorieGoalService: CalorieGoalService,
   ) {
     this.workoutService = workoutService;
     this.userService = userService;
@@ -56,6 +58,7 @@ export class EntryService {
       [EntryType.OutdoorRun]: runService,
       [EntryType.OutdoorWalk]: walkService,
       [EntryType.Meal]: mealService,
+      [EntryType.CalorieGoal]: calorieGoalService,
     };
   }
 
@@ -289,6 +292,7 @@ export class EntryService {
       [EntryType.OutdoorRun]: await createMap(EntryType.OutdoorRun, rows),
       [EntryType.OutdoorWalk]: await createMap(EntryType.OutdoorWalk, rows),
       [EntryType.Meal]: await createMap(EntryType.Meal, rows),
+      [EntryType.CalorieGoal]: await createMap(EntryType.CalorieGoal, rows),
     };
 
     const userIds = rows.map((x) => x.userId);

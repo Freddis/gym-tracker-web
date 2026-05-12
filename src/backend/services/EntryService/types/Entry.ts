@@ -8,6 +8,7 @@ import {EntryVisibility} from './EntryVisibility';
 import {ExternalSource} from './ExternalSource';
 import {Image} from '../../ImageService/types/Image';
 import {Meal} from '../../MealService/types/Meal';
+import {CalorieGoal} from '../../CalorieGoalService/types/CalorieGoal';
 export interface BaseEntry {
   id: string;
   // userId: number;
@@ -65,4 +66,8 @@ export interface MealEntry extends BaseEntry {
   meal: Meal
 }
 
-export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry | OutdoorWalkEntry | MealEntry
+export interface CalorieGoalEntry extends BaseEntry {
+  type: EntryType.CalorieGoal
+  calorieGoal: CalorieGoal
+}
+export type Entry = WorkoutEntry | WeightEntry | PostEntry | OutdoorRunEntry | OutdoorWalkEntry | MealEntry | CalorieGoalEntry

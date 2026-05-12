@@ -2,19 +2,10 @@ import {object, number, string} from 'zod';
 import {genderValidator} from './genderValidator';
 import {entryVisibilityValidator} from '../../entries/validators/entryVisibilityValidator';
 import {countryValidator} from './countryValidator';
-import {weightUnitValidator} from './weightUnitValidator';
-import {distanceUnitValidator} from './distanceUnitValidator';
-import {hightUnitValidator} from './hightUnitValidator';
-import {temperatureUnitValidator} from './temperatureUnitValidator';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {imageValidator} from '../../images/validators/imageValidator';
+import {unitsValidator} from './unitsValidator';
 
-const unitsValidator = object({
-  weight: weightUnitValidator,
-  distance: distanceUnitValidator,
-  height: hightUnitValidator,
-  temperature: temperatureUnitValidator,
-}).openapi({ref: 'UnitSettings', description: 'Unit preferences of the user'});
 
 const securityValidator = object({
   email: string().email().openapi({description: 'Email of the user'}),

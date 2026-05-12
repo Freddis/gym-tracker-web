@@ -9,6 +9,7 @@ import {outdoorWalkValidator} from './outdoorWalkValidator';
 import {entryTypeValidator} from './entryTypeValidator';
 import {entryVisibilityValidator} from './entryVisibilityValidator';
 import {mealValidator} from './mealValidator';
+import {calorieGoalValidator} from './calorieGoalValidator';
 
 const baseEntryValidator = object({
   id: string().openapi({description: 'Id of an entry'}),
@@ -32,4 +33,5 @@ export const entryValidator = baseEntryValidator.extend({
   outdoorRun: outdoorRunValidator.optional().openapi({description: 'Outdoor run. Only for outdoor run entries.'}),
   outdoorWalk: outdoorWalkValidator.optional().openapi({description: 'Outdoor walk. Only for outdoor walk entries.'}),
   meal: mealValidator.optional().openapi({description: 'Meal. Only for meal entries.'}),
+  calorieGoal: calorieGoalValidator.optional().openapi({description: 'Calorie goal. Only for calorie goal entries.'}),
 }).openapi({ref: 'Entry', description: 'Entry. Can be a wirkout entry, a weight entry and so on.'});

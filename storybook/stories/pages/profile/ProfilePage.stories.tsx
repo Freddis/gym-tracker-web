@@ -16,12 +16,13 @@ const meta = {
     own: true,
     response: {
       data: {
-        data: StorybookDataUtils.getUser(),
+        data: StorybookDataUtils.getProfile(),
         error: undefined,
       },
       isLoading: false,
       isError: false,
     },
+    user: StorybookDataUtils.getUser(),
   },
   parameters: {
     layout: 'centered',

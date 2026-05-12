@@ -34,6 +34,7 @@ import type {
   GetFoodListResponse,
   UpsertFoodResponse,
   GetFoodResponse,
+  GetOwnProfileResponse,
   GetSettingsResponse,
   UpdateSettingsResponse,
   GetCrmManagersResponse,
@@ -368,6 +369,14 @@ const mealSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const calorieGoalSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  if (data.end) {
+    data.end = new Date(data.end);
+  }
+  return data;
+};
+
 const entrySchemaResponseTransformer = (data: any) => {
   data.time = new Date(data.time);
   data.createdAt = new Date(data.createdAt);
@@ -391,6 +400,9 @@ const entrySchemaResponseTransformer = (data: any) => {
   }
   if (data.meal) {
     data.meal = mealSchemaResponseTransformer(data.meal);
+  }
+  if (data.calorieGoal) {
+    data.calorieGoal = calorieGoalSchemaResponseTransformer(data.calorieGoal);
   }
   return data;
 };
@@ -468,6 +480,9 @@ const postEntrySchemaResponseTransformer = (data: any) => {
   if (data.meal) {
     data.meal = mealSchemaResponseTransformer(data.meal);
   }
+  if (data.calorieGoal) {
+    data.calorieGoal = calorieGoalSchemaResponseTransformer(data.calorieGoal);
+  }
   return data;
 };
 
@@ -512,6 +527,27 @@ export const getFoodResponseTransformer = async (
   data: any,
 ): Promise<GetFoodResponse> => {
   data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+const goalSchemaResponseTransformer = (data: any) => {
+  if (data.calorie) {
+    data.calorie = calorieGoalSchemaResponseTransformer(data.calorie);
+  }
+  return data;
+};
+
+const profileSchemaResponseTransformer = (data: any) => {
+  data.goals = data.goals.map((item: any) => {
+    return goalSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getOwnProfileResponseTransformer = async (
+  data: any,
+): Promise<GetOwnProfileResponse> => {
+  data = profileSchemaResponseTransformer(data);
   return data;
 };
 

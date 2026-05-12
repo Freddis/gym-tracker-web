@@ -1,4 +1,5 @@
 import {StrictOmit} from '../../../types/StrictOmit';
+import {CalorieGoalUpsertDto} from '../../CalorieGoalService/types/CalorieGoalUpsertDto';
 import {MealUpsertDto} from '../../MealService/types/MealUpsertDto';
 import {OutdoorRunUpsertDto} from '../../OutdoorRunService/types/OutdoorRunUpsertDto';
 import {OutdoorWalkUpsertDto} from '../../OutdoorWalkService/types/OutdoorWalkUpsertDto';
@@ -38,5 +39,14 @@ export interface MealEntryUpsertDto extends BaseEntryUpsertDto {
   type: EntryType.Meal
   meal: MealUpsertDto
 }
+export interface CalorieGoalEntryUpsertDto extends BaseEntryUpsertDto {
+  type: EntryType.CalorieGoal
+  calorieGoal: CalorieGoalUpsertDto
+}
 export type EntryUpsertDto = WorkoutEntryUpsertDto
-| WeightEntryUpsertDto | PostEntryUpsertDto | OutdoorRunEntryUpsertDto | OutdoorWalkEntryUpsertDto | MealEntryUpsertDto
+| WeightEntryUpsertDto
+| PostEntryUpsertDto
+| OutdoorRunEntryUpsertDto
+| OutdoorWalkEntryUpsertDto
+| MealEntryUpsertDto
+| CalorieGoalEntryUpsertDto

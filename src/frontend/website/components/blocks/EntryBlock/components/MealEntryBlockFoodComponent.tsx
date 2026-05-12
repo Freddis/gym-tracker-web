@@ -65,7 +65,9 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
         </div>
         <div className="w-full flex flex-row gap-2 items-center">
           <div className="w-16 overflow-hidden">
-            <AppLabel>{translations.utils.objects.food.fields.calories}</AppLabel>
+            <AppLabel>
+              {translations.utils.objects.food.fields.calories}
+            </AppLabel>
             <div className="h-10 flex items-center">{calories.toFixed(0)}</div>
           </div>
           <div className="w-16 overflow-hidden">

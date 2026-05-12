@@ -123,6 +123,7 @@ export const dictionary = {
         OutdoorRun: 'Outdoor Run',
         OutdoorWalk: 'Outdoor Walk',
         Meal: 'Meal',
+        CalorieGoal: 'Calorie Goal',
       } satisfies Record<EntryType, string>,
       muscles: {
         'Lower Back': 'Lower Back',
@@ -327,6 +328,14 @@ export const dictionary = {
     },
   },
   pages: {
+    calorieGoal: {
+      create: {
+        heading: 'Create Calorie Goal',
+        toasts: {
+          success: 'You successfully added calorie goal',
+        },
+      },
+    },
     meals: {
       create: {
         heading: 'Create Meal',
@@ -396,13 +405,20 @@ export const dictionary = {
     },
     profile: {
       heading: 'Profile',
+      buttons: {
+        addGoal: 'Add Goal',
+      },
       labels: {
+        remainingToday: 'Remaining Today',
         visibility: 'Visibility',
         about: 'About',
         goals: 'Goals',
         height: 'Height',
         weight: 'Weight',
         age: 'Age',
+      },
+      toasts: {
+        noGoals: 'You don\'t have any goals yet. Try to add one!',
       },
     },
     static: {
@@ -769,6 +785,9 @@ export const dictionary = {
           },
         },
         objects: {
+          calorieGoal: {
+            type: 'Calorie Goal',
+          },
           meal: {
             type: 'Meal',
           },

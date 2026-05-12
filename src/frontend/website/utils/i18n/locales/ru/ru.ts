@@ -61,6 +61,7 @@ export const dictionary: Translation = {
         OutdoorRun: 'Бег на улице',
         OutdoorWalk: 'Прогулка',
         Meal: 'Еда',
+        CalorieGoal: 'Цель по калориям',
       },
       muscles: {
         'Lower Back': 'Поясница',
@@ -337,6 +338,14 @@ export const dictionary: Translation = {
     },
   },
   pages: {
+    calorieGoal: {
+      create: {
+        heading: 'Добавить Цель по Калориям',
+        toasts: {
+          success: 'Вы успешно добавили цель по калориям',
+        },
+      },
+    },
     meals: {
       create: {
         heading: 'Добавить Еду',
@@ -406,7 +415,14 @@ export const dictionary: Translation = {
     },
     profile: {
       heading: 'Профиль',
+      buttons: {
+        addGoal: 'Добавить Цель',
+      },
+      toasts: {
+        noGoals: 'У вас пока нет целей. Попробуйте добавить одну!',
+      },
       labels: {
+        remainingToday: 'Осталось Сегодня',
         visibility: 'Видимость',
         about: 'О себе',
         age: 'Возраст',
@@ -658,6 +674,9 @@ export const dictionary: Translation = {
           food: 'Моя Еда',
         },
         objects: {
+          calorieGoal: {
+            type: 'Цель по Калориям',
+          },
           meal: {
             type: 'Еда',
           },

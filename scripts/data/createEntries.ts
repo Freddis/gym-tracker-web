@@ -52,6 +52,7 @@ for (const row of workoutsToAdd) {
     healthkitDevice: null,
     healthkitDeviceName: null,
     mealId: null,
+    calorieGoalId: null,
   };
   await db.insert(schema.entries).values(entry);
 }
@@ -94,6 +95,7 @@ for (const row of weightToAdd) {
     healthkitDevice: null,
     healthkitDeviceName: null,
     mealId: null,
+    calorieGoalId: null,
   };
   await db.insert(schema.entries).values(entry);
 }

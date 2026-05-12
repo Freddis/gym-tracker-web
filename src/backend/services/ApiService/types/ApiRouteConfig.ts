@@ -87,6 +87,7 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
           ...services,
           image: await this.factory.image(),
           settings: await this.factory.settings(),
+          profile: await this.factory.profile(),
         },
         viewer,
         language,

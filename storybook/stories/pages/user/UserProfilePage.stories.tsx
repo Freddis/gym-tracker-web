@@ -13,9 +13,10 @@ const meta = {
   globals: {
   },
   args: {
+    user: StorybookDataUtils.getUser(),
     response: {
       data: {
-        data: StorybookDataUtils.getUser(),
+        data: StorybookDataUtils.getProfile(),
         error: undefined,
       },
       isLoading: false,

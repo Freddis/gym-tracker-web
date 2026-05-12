@@ -1446,6 +1446,10 @@ export type Entry = {
    * Meal. Only for meal entries.
    */
   meal?: Meal;
+  /**
+   * Calorie goal. Only for calorie goal entries.
+   */
+  calorieGoal?: CalorieGoal;
 };
 
 /**
@@ -1483,7 +1487,8 @@ export type EntryType =
   | "Post"
   | "OutdoorRun"
   | "OutdoorWalk"
-  | "Meal";
+  | "Meal"
+  | "CalorieGoal";
 
 /**
  * Entry type
@@ -1495,6 +1500,7 @@ export const EntryType = {
   OUTDOOR_RUN: "OutdoorRun",
   OUTDOOR_WALK: "OutdoorWalk",
   MEAL: "Meal",
+  CALORIE_GOAL: "CalorieGoal",
 } as const;
 
 /**
@@ -1842,6 +1848,36 @@ export const FoodAmountUnit = {
 } as const;
 
 /**
+ * Calorie goal record
+ */
+export type CalorieGoal = {
+  /**
+   * Calories of the calorie goal
+   */
+  calories: number;
+  /**
+   * Carbs of the calorie goal
+   */
+  carbs: number;
+  /**
+   * Protein of the calorie goal
+   */
+  protein: number;
+  /**
+   * Fat of the calorie goal
+   */
+  fat: number;
+  /**
+   * Start date of the calorie goal
+   */
+  start: Date;
+  /**
+   * End date of the calorie goal
+   */
+  end: Date | null;
+};
+
+/**
  * Fields needed to update a workout
  */
 export type EntryUpsertDto =
@@ -1850,7 +1886,8 @@ export type EntryUpsertDto =
   | PostEntryUpsertDto
   | OutdoorRunEntryUpsertDto
   | OutdoorWalkEntryUpsertDto
-  | MealEntryUpsertDto;
+  | MealEntryUpsertDto
+  | CalorieGoalEntryUpsertDto;
 
 export type WorkoutEntryUpsertDto = {
   /**
@@ -1914,6 +1951,10 @@ export type WorkoutEntryUpsertDto = {
    * Meal
    */
   meal?: Meal;
+  /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
   /**
    * Image
    */
@@ -2017,6 +2058,10 @@ export type WeightEntryUpsertDto = {
    * Meal
    */
   meal?: Meal;
+  /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
   /**
    * Image
    */
@@ -2144,6 +2189,10 @@ export type PostEntryUpsertDto = {
    */
   meal?: Meal;
   /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
+  /**
    * Image
    */
   image?: ImageUpsertDto | null;
@@ -2239,6 +2288,10 @@ export type OutdoorRunEntryUpsertDto = {
    * Meal
    */
   meal?: Meal;
+  /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
   /**
    * Image
    */
@@ -2402,6 +2455,10 @@ export type OutdoorWalkEntryUpsertDto = {
    */
   meal?: Meal;
   /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
+  /**
    * Image
    */
   image?: ImageUpsertDto | null;
@@ -2503,6 +2560,10 @@ export type MealEntryUpsertDto = {
    */
   meal: MealUpsertDto;
   /**
+   * Calorie goal
+   */
+  calorieGoal?: CalorieGoal;
+  /**
    * Image
    */
   image?: ImageUpsertDto | null;
@@ -2568,6 +2629,136 @@ export type FoodComponentUpsertDto = {
    * Unit of the food component
    */
   unit: FoodAmountUnit;
+};
+
+export type CalorieGoalEntryUpsertDto = {
+  /**
+   * Id of the entry
+   */
+  id: string;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry
+   */
+  externalSource: ExternalSource | null;
+  /**
+   * Type of the entry
+   */
+  type: "CalorieGoal";
+  /**
+   * Weight
+   */
+  weight?: Weight;
+  /**
+   * Workout
+   */
+  workout?: Workout;
+  /**
+   * Outdoor run
+   */
+  outdoorRun?: OutdoorRun;
+  /**
+   * Outdoor walk
+   */
+  outdoorWalk?: OutdoorWalk;
+  /**
+   * Meal
+   */
+  meal?: Meal;
+  /**
+   * Calorie goal
+   */
+  calorieGoal: CalorieGoalUpsertDto;
+  /**
+   * Image
+   */
+  image?: ImageUpsertDto | null;
+  /**
+   * Id of the healthkit entry
+   */
+  healthkitId: string | null;
+  /**
+   * Last sync date
+   */
+  healthkitAnchor: number | null;
+  /**
+   * Last sync anchor
+   */
+  healthkitAnchors_3_0: string | null;
+  /**
+   * Id of the app that added healthkit record
+   */
+  healthkitSource: string | null;
+  /**
+   * Name of the app that added healthkit record
+   */
+  healthkitSourceName: string | null;
+  /**
+   * Id of the device that added healthkit record
+   */
+  healthkitDevice: string | null;
+  /**
+   * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
+   */
+  healthkitDeviceName: string | null;
+};
+
+/**
+ * Calorie goal record to upsert
+ */
+export type CalorieGoalUpsertDto = {
+  /**
+   * Calories of the calorie goal
+   */
+  calories: number;
+  /**
+   * Carbs of the calorie goal
+   */
+  carbs: number;
+  /**
+   * Protein of the calorie goal
+   */
+  protein: number;
+  /**
+   * Fat of the calorie goal
+   */
+  fat: number;
+  /**
+   * Start date of the calorie goal
+   */
+  start: Date;
+  /**
+   * End date of the calorie goal
+   */
+  end: Date | null;
 };
 
 /**
@@ -2650,6 +2841,10 @@ export type PostEntry = {
    * Meal. Only for meal entries.
    */
   meal?: Meal;
+  /**
+   * Calorie goal. Only for calorie goal entries.
+   */
+  calorieGoal?: CalorieGoal;
 };
 
 /**
@@ -2715,13 +2910,14 @@ export type FoodUpsertDto = {
 };
 
 /**
- * Settings of the user
+ * Profile of the user
  */
-export type Settings = {
+export type Profile = {
+  user: User;
   /**
-   * Name of the user
+   * List of calorie goals
    */
-  name: string;
+  goals: Array<Goal>;
   /**
    * Note of the user
    */
@@ -2734,18 +2930,51 @@ export type Settings = {
    * Weight of the user
    */
   weight: number | null;
+  /**
+   * Age of the user
+   */
+  age: number;
   gender: Gender;
-  /**
-   * Birth date of the user
-   */
-  birthDate: Date;
-  country: Country;
-  /**
-   * Profile picture of the user
-   */
-  profilePicture: Image | null;
   units: UnitSettings;
-  security: SecuritySettings;
+  consumedCalories: ConsumedCalories;
+};
+
+/**
+ * Goal of the user
+ */
+export type Goal = {
+  type: GoalType;
+  /**
+   * Calorie goal of the user
+   */
+  calorie?: CalorieGoal;
+  /**
+   * Weight goal of the user
+   */
+  weight?: WeightGoal;
+};
+
+/**
+ * Type of the goal
+ */
+export type GoalType = "Calorie" | "Weight";
+
+/**
+ * Type of the goal
+ */
+export const GoalType = {
+  CALORIE: "Calorie",
+  WEIGHT: "Weight",
+} as const;
+
+/**
+ * Weight goal record
+ */
+export type WeightGoal = {
+  /**
+   * Target weight of the goal
+   */
+  target: number;
 };
 
 /**
@@ -2809,6 +3038,62 @@ export const TemperatureUnit = {
   C: "C",
   F: "F",
 } as const;
+
+/**
+ * Consumed calories
+ */
+export type ConsumedCalories = {
+  /**
+   * Calories consumed today
+   */
+  calories: number;
+  /**
+   * Carbs consumed today
+   */
+  carbs: number;
+  /**
+   * Protein consumed today
+   */
+  protein: number;
+  /**
+   * Fat consumed today
+   */
+  fat: number;
+};
+
+/**
+ * Settings of the user
+ */
+export type Settings = {
+  /**
+   * Name of the user
+   */
+  name: string;
+  /**
+   * Note of the user
+   */
+  note: string | null;
+  /**
+   * Height of the user
+   */
+  height: number;
+  /**
+   * Weight of the user
+   */
+  weight: number | null;
+  gender: Gender;
+  /**
+   * Birth date of the user
+   */
+  birthDate: Date;
+  country: Country;
+  /**
+   * Profile picture of the user
+   */
+  profilePicture: Image | null;
+  units: UnitSettings;
+  security: SecuritySettings;
+};
 
 /**
  * Security settings of the user
@@ -7788,8 +8073,15 @@ export type GetEntriesOwnData = {
       | "OutdoorRun"
       | "OutdoorWalk"
       | "Meal"
+      | "CalorieGoal"
       | Array<
-          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+          | "Workout"
+          | "Weight"
+          | "Post"
+          | "OutdoorRun"
+          | "OutdoorWalk"
+          | "Meal"
+          | "CalorieGoal"
         >;
     /**
      * Only return entries from this date.
@@ -8202,8 +8494,15 @@ export type GetEntriesData = {
       | "OutdoorRun"
       | "OutdoorWalk"
       | "Meal"
+      | "CalorieGoal"
       | Array<
-          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+          | "Workout"
+          | "Weight"
+          | "Post"
+          | "OutdoorRun"
+          | "OutdoorWalk"
+          | "Meal"
+          | "CalorieGoal"
         >;
     /**
      * Only return entries from this date.
@@ -8480,8 +8779,15 @@ export type GetEntriesOwnDatesData = {
       | "OutdoorRun"
       | "OutdoorWalk"
       | "Meal"
+      | "CalorieGoal"
       | Array<
-          "Workout" | "Weight" | "Post" | "OutdoorRun" | "OutdoorWalk" | "Meal"
+          | "Workout"
+          | "Weight"
+          | "Post"
+          | "OutdoorRun"
+          | "OutdoorWalk"
+          | "Meal"
+          | "CalorieGoal"
         >;
   };
   url: "/entries/own/dates";
@@ -9371,6 +9677,122 @@ export type GetFoodResponses = {
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
+
+export type GetOwnProfileData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/profile";
+};
+
+export type GetOwnProfileErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetOwnProfileError = GetOwnProfileErrors[keyof GetOwnProfileErrors];
+
+export type GetOwnProfileResponses = {
+  /**
+   * Good Response
+   */
+  200: Profile;
+};
+
+export type GetOwnProfileResponse =
+  GetOwnProfileResponses[keyof GetOwnProfileResponses];
 
 export type GetSettingsData = {
   body?: never;

@@ -1,3 +1,4 @@
+import {CalorieGoal} from '../../CalorieGoalService/types/CalorieGoal';
 import {Meal} from '../../MealService/types/Meal';
 import {OutdoorRun} from '../../OutdoorRunService/types/OutdoorRun';
 import {OutdoorWalk} from '../../OutdoorWalkService/types/OutdoorWalk';
@@ -12,4 +13,5 @@ export type EntryObjectMap = Record<EntryType, unknown> & {
   [EntryType.OutdoorRun]: OutdoorRun;
   [EntryType.OutdoorWalk]: OutdoorWalk;
   [EntryType.Meal]: Meal;
+  [EntryType.CalorieGoal]: CalorieGoal;
 }

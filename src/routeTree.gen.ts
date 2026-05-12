@@ -49,6 +49,7 @@ import { Route as WorkoutsPlansCreateRouteImport } from './routes/workouts/plans
 import { Route as WeightUpdateIdRouteImport } from './routes/weight/update/$id'
 import { Route as PostsUpdateIdRouteImport } from './routes/posts/update/$id'
 import { Route as MealsUpdateIdRouteImport } from './routes/meals/update/$id'
+import { Route as GoalsCalorieCreateRouteImport } from './routes/goals/calorie/create'
 import { Route as FoodUpdateIdRouteImport } from './routes/food/update/$id'
 import { Route as ExercisesUpdateExerciseIdRouteImport } from './routes/exercises/update/$exerciseId'
 import { Route as AuthPasswordResetCompleteTokenRouteImport } from './routes/auth/password-reset-complete.$token'
@@ -253,6 +254,11 @@ const MealsUpdateIdRoute = MealsUpdateIdRouteImport.update({
   path: '/meals/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GoalsCalorieCreateRoute = GoalsCalorieCreateRouteImport.update({
+  id: '/goals/calorie/create',
+  path: '/goals/calorie/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FoodUpdateIdRoute = FoodUpdateIdRouteImport.update({
   id: '/food/update/$id',
   path: '/food/update/$id',
@@ -340,6 +346,7 @@ export interface FileRoutesByFullPath {
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/food/update/$id': typeof FoodUpdateIdRoute
+  '/goals/calorie/create': typeof GoalsCalorieCreateRoute
   '/meals/update/$id': typeof MealsUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
@@ -387,6 +394,7 @@ export interface FileRoutesByTo {
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/food/update/$id': typeof FoodUpdateIdRoute
+  '/goals/calorie/create': typeof GoalsCalorieCreateRoute
   '/meals/update/$id': typeof MealsUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
@@ -435,6 +443,7 @@ export interface FileRoutesById {
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/food/update/$id': typeof FoodUpdateIdRoute
+  '/goals/calorie/create': typeof GoalsCalorieCreateRoute
   '/meals/update/$id': typeof MealsUpdateIdRoute
   '/posts/update/$id': typeof PostsUpdateIdRoute
   '/weight/update/$id': typeof WeightUpdateIdRoute
@@ -484,6 +493,7 @@ export interface FileRouteTypes {
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/food/update/$id'
+    | '/goals/calorie/create'
     | '/meals/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
@@ -531,6 +541,7 @@ export interface FileRouteTypes {
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/food/update/$id'
+    | '/goals/calorie/create'
     | '/meals/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
@@ -578,6 +589,7 @@ export interface FileRouteTypes {
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/food/update/$id'
+    | '/goals/calorie/create'
     | '/meals/update/$id'
     | '/posts/update/$id'
     | '/weight/update/$id'
@@ -626,6 +638,7 @@ export interface RootRouteChildren {
   AuthPasswordResetCompleteTokenRoute: typeof AuthPasswordResetCompleteTokenRoute
   ExercisesUpdateExerciseIdRoute: typeof ExercisesUpdateExerciseIdRoute
   FoodUpdateIdRoute: typeof FoodUpdateIdRoute
+  GoalsCalorieCreateRoute: typeof GoalsCalorieCreateRoute
   MealsUpdateIdRoute: typeof MealsUpdateIdRoute
   PostsUpdateIdRoute: typeof PostsUpdateIdRoute
   WeightUpdateIdRoute: typeof WeightUpdateIdRoute
@@ -946,6 +959,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MealsUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/goals/calorie/create': {
+      id: '/goals/calorie/create'
+      path: '/goals/calorie/create'
+      fullPath: '/goals/calorie/create'
+      preLoaderRoute: typeof GoalsCalorieCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/food/update/$id': {
       id: '/food/update/$id'
       path: '/food/update/$id'
@@ -1059,6 +1079,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthPasswordResetCompleteTokenRoute: AuthPasswordResetCompleteTokenRoute,
   ExercisesUpdateExerciseIdRoute: ExercisesUpdateExerciseIdRoute,
   FoodUpdateIdRoute: FoodUpdateIdRoute,
+  GoalsCalorieCreateRoute: GoalsCalorieCreateRoute,
   MealsUpdateIdRoute: MealsUpdateIdRoute,
   PostsUpdateIdRoute: PostsUpdateIdRoute,
   WeightUpdateIdRoute: WeightUpdateIdRoute,

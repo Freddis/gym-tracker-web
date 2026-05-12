@@ -309,6 +309,13 @@
       "when": 1778516763024,
       "tag": "0043_meal_entries",
       "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1778588957566,
+      "tag": "0044_calorie_goals",
+      "breakpoints": true
     }
   ]
 }
