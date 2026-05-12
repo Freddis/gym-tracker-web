@@ -1917,9 +1917,7 @@ export type WorkoutEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -1948,6 +1946,13 @@ export type WorkoutEntryUpsertDto = {
    * Name of the device that added healthkit record: Apple Watch, Runkeeper, etc.
    */
   healthkitDeviceName: string | null;
+};
+
+/**
+ * Image to upsert
+ */
+export type ImageUpsertDto = {
+  data: string;
 };
 
 export type WeightEntryUpsertDto = {
@@ -2015,9 +2020,7 @@ export type WeightEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -2143,9 +2146,7 @@ export type PostEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -2241,9 +2242,7 @@ export type OutdoorRunEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -2405,9 +2404,7 @@ export type OutdoorWalkEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -2508,9 +2505,7 @@ export type MealEntryUpsertDto = {
   /**
    * Image
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Id of the healthkit entry
    */
@@ -2676,9 +2671,7 @@ export type FoodUpsertDto = {
   /**
    * Image of the food
    */
-  image?: {
-    data: string;
-  } | null;
+  image?: ImageUpsertDto | null;
   /**
    * Protein of the food
    */
@@ -2859,9 +2852,7 @@ export type SettingsUpdateDto = {
   /**
    * Profile picture of the user
    */
-  profilePicture?: {
-    data: string;
-  } | null;
+  profilePicture?: ImageUpsertDto | null;
 };
 
 /**

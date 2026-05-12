@@ -1,16 +1,19 @@
-import {FC, useState, useRef, ChangeEvent} from 'react';
+import {FC, useState, useRef, ChangeEvent, MouseEvent} from 'react';
 import {AppImage} from '../AppImage/AppImage';
-import {FaUpload} from 'react-icons/fa6';
+import {FaTrash, FaUpload} from 'react-icons/fa6';
 import {cn} from '../../../utils/cn';
 
 interface AppImageInputProps {
   url?: string,
   onUpdate: (data: string)=> void
   className?: string
+  onRemove?: () => void
 }
+const TRANSPARENT_PIXEL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
 export const AppImageInput: FC<AppImageInputProps> = (props) => {
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const onImageClick = () => {
     fileInputRef.current?.click();
@@ -27,16 +30,27 @@ export const AppImageInput: FC<AppImageInputProps> = (props) => {
     };
     reader.readAsDataURL(file);
   };
-  const opaqueIfNoImage = !image && !props.url ? 'opacity-100' : '';
+  const onDeleteClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setImage(null);
+    props.onRemove?.();
+  };
+  const imageSrc = image !== undefined ? (image ?? undefined) : props.url;
+  const opaqueIfNoImage = !imageSrc ? 'opacity-100' : '';
   return (
   <div className={'relative inline-block cursor-pointer rounded-md'} onClick={onImageClick}>
      <div
         className={cn(`hover:opacity-100 opacity-0 transition-all rounded-md
         absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center`, opaqueIfNoImage)}
       >
+        {props.onRemove && imageSrc && (
+          <div className="absolute top-1 right-1 cursor-pointer" onClick={onDeleteClick}>
+            <FaTrash className="text-sm fill-white hover:fill-accent"/>
+          </div>
+        )}
       <FaUpload className="text-xl fill-white"/>
      </div>
-    <AppImage src={image ?? props.url} className={props.className} />
+    <AppImage src={imageSrc ?? TRANSPARENT_PIXEL} className={props.className} />
     <input type="file" accept="image/*" ref={fileInputRef} onChange={onFileChanged} className="hidden"/>
   </div>
   );

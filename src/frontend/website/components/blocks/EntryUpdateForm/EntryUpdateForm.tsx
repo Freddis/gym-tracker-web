@@ -6,7 +6,7 @@ import {AppSelect} from '../../../../common/components/atoms/AppSelect/AppSelect
 import {SelectValue} from '../../../../common/components/atoms/AppSelect/types/SelectValue';
 import {AppTextArea} from '../../../../common/components/atoms/AppTextArea/AppTextArea';
 import {InputRow} from '../../../../common/components/atoms/InputRow/InputRow';
-import {PostEntryUpsertDto, EntryVisibility, Entry} from '../../../../common/utils/openapi-client';
+import {PostEntryUpsertDto, EntryVisibility, Entry, ImageUpsertDto} from '../../../../common/utils/openapi-client';
 import {useAppPartialTranslation} from '../../../utils/i18n/useAppPartialTranslation';
 import {FoodUpdateFormRef} from '../../pages/Food/FoodUpdateForm/types/FoodUpdateFormRef';
 
@@ -18,7 +18,7 @@ export const EntryUpdateForm = forwardRef<FoodUpdateFormRef, EntryUpdateFormProp
   const t = useAppPartialTranslation((x) => x.utils.objects.entry);
   const [time, setTime] = useState(props.entry.time);
   const [note, setNote] = useState(props.entry.note ?? '');
-  const [image, setImage] = useState<string | undefined>(props.entry.image?.url);
+  const [image, setImage] = useState<ImageUpsertDto | undefined | null>(undefined);
   const [visibility, setVisibility] = useState(props.entry.visibility);
   const visibilityOptions: SelectValue<EntryVisibility>[] = Object.values(EntryVisibility).map((visibility) => ({
     label: t.f((x) => x.utils.objects.entryVisibility[visibility]),
@@ -30,8 +30,7 @@ export const EntryUpdateForm = forwardRef<FoodUpdateFormRef, EntryUpdateFormProp
       const postEntry: PostEntryUpsertDto = {
         time,
         note: newNote,
-        image: image ? {data: image} : undefined,
-        // image: null,
+        image: image,
         visibility,
         id: props.entry.id,
         createdAt: props.entry.createdAt,
@@ -59,7 +58,7 @@ export const EntryUpdateForm = forwardRef<FoodUpdateFormRef, EntryUpdateFormProp
           <InputRow>
             <AppLabel>{t.p((x) => x.fields.image)}</AppLabel>
             <div className="max-w-full">
-              <AppImageInput url={image} onUpdate={setImage} />
+              <AppImageInput url={props.entry.image?.url} onUpdate={(i) => setImage({data: i})} onRemove={() => setImage(null)} />
             </div>
           </InputRow>
           <InputRow>
