@@ -36,14 +36,12 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
     return 1;
   });
 
-
   const protein = getFoodMacro(food, FoodMacros.Protein) * multiplier;
   const carbs = getFoodMacro(food, FoodMacros.Carbs) * multiplier;
   const fat = getFoodMacro(food, FoodMacros.Fat) * multiplier;
   const calories = getFoodCalories(food) * multiplier;
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
   const hasServingSize = item.item.food.isMeal || item.item.food.servingSize === null;
-
 
   return (
     <div
@@ -65,7 +63,7 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
             )}
         </label>
         </div>
-        <div className="w-full flex flex-row gap-5 items-center">
+        <div className="w-full flex flex-row gap-2 items-center">
           <div className="w-16 overflow-hidden">
             <AppLabel>{translations.utils.objects.food.fields.calories}</AppLabel>
             <div className="h-10 flex items-center">{calories.toFixed(0)}</div>
@@ -75,12 +73,12 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
             <div className="h-10 flex items-center">{protein.toFixed(1)}</div>
           </div>
           <div className="w-16 overflow-hidden">
-            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
-            <div className="h-10 flex items-center">{carbs.toFixed(1)}</div>
-          </div>
-          <div className="w-16 overflow-hidden">
             <AppLabel>{translations.utils.objects.food.fields.fat}</AppLabel>
             <div className="h-10 flex items-center">{fat.toFixed(1)}</div>
+          </div>
+          <div className="w-16 overflow-hidden">
+            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
+            <div className="h-10 flex items-center">{carbs.toFixed(1)}</div>
           </div>
             <div className={cn(item.item.food.isMeal ? 'invisible' : '', 'w-16 overflow-hidden')}>
                 <AppLabel>{t(i18n.create.labels.grams)}</AppLabel>

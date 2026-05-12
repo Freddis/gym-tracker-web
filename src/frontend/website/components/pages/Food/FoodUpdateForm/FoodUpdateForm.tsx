@@ -187,16 +187,6 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
             </div>
           </div>
           <div className="flex flex-row gap-5 items-start">
-            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
-            <div className="flex flex-col grow">
-              <div className="w-20 max-w-full flex items-center gap-2">
-                <AppTextInput onChange={(e) => setCarbs(e.target.value)} value={carbs}/>
-                <span>{translations.utils.objects.units.g}</span>
-              </div>
-              <AppInputError error={getSmartError((x) => x.carbs)} />
-            </div>
-          </div>
-          <div className="flex flex-row gap-5 items-start">
             <AppLabel>{translations.utils.objects.food.fields.fat}</AppLabel>
             <div className="flex flex-col grow">
               <div className="w-20 max-w-full flex items-center gap-2">
@@ -204,6 +194,16 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
                 <span>{translations.utils.objects.units.g}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.fat)} />
+            </div>
+          </div>
+          <div className="flex flex-row gap-5 items-start">
+            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
+            <div className="flex flex-col grow">
+              <div className="w-20 max-w-full flex items-center gap-2">
+                <AppTextInput onChange={(e) => setCarbs(e.target.value)} value={carbs}/>
+                <span>{translations.utils.objects.units.g}</span>
+              </div>
+              <AppInputError error={getSmartError((x) => x.carbs)} />
             </div>
           </div>
         </div>
@@ -245,8 +245,8 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
             <div className="flex flex-row gap-5 items-start">
               <AppLabel>{t(i18n.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
               <AppLabel>{t(i18n.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
-              <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
               <AppLabel>{t(i18n.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+              <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
             </div>
           </>
         )}
@@ -267,8 +267,8 @@ export const FoodUpdateForm = forwardRef<FoodUpdateFormRef, FoodUpdateFormProps>
         <div className="flex flex-row gap-5 items-start">
           <AppLabel>{t(i18n.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
           <AppLabel>{t(i18n.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
-          <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
           <AppLabel>{t(i18n.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+          <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
         </div>
       </div>
     )}

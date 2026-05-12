@@ -116,20 +116,19 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
             <div className="h-10 flex items-center">{protein.toFixed(1)}</div>
           </div>
           <div className="w-16 overflow-hidden">
-            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
-            <div className="h-10 flex items-center">{carbs.toFixed(1)}</div>
-          </div>
-          <div className="w-16 overflow-hidden">
             <AppLabel>{translations.utils.objects.food.fields.fat}</AppLabel>
             <div className="h-10 flex items-center">{fat.toFixed(1)}</div>
           </div>
-            <div className={cn(item.item.food.isMeal ? 'invisible' : '', 'w-16 overflow-hidden')}>
-                <AppLabel>{t(i18n.create.labels.grams)}</AppLabel>
-              <div className="w-16">
-                <AppTextInput hasError={hasSmartError((x) => x.amount)} onChange={onAmountChange} value={amount} />
-              </div>
-
+          <div className="w-16 overflow-hidden">
+            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
+            <div className="h-10 flex items-center">{carbs.toFixed(1)}</div>
+          </div>
+          <div className={cn(item.item.food.isMeal ? 'invisible' : '', 'w-16 overflow-hidden')}>
+            <AppLabel>{t(i18n.create.labels.grams)}</AppLabel>
+            <div className="w-16">
+              <AppTextInput hasError={hasSmartError((x) => x.amount)} onChange={onAmountChange} value={amount} />
             </div>
+          </div>
           <div className={cn(props.item.item.food.servingSize === null ? 'invisible' : '', 'w-16 overflow-hidden')}>
             <AppLabel>{t(i18n.create.labels.servings)}</AppLabel>
             <div className="w-16">

@@ -33,8 +33,8 @@ export const FoodBlock: FC<{food: Food}> = (props) => {
         <div className="flex flex-row gap-5">
         <AppLabel>{t(i18n.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
           <AppLabel>{t(i18n.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
-          <AppLabel>{t(i18n.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
           <AppLabel>{t(i18n.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+          <AppLabel>{t(i18n.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
         </div>
         <div className="h-10">
           {props.food.servingSize && props.food.components.length <= 0 && (
