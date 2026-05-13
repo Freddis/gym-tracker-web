@@ -276,6 +276,9 @@ export class EntryService {
       ));
 
     const createMap = async <T extends EntryType>(type: T, rows: EntryRow[]): Promise<Map<number, EntryObjectMap[T]>> => {
+      if (rows.length === 0) {
+        return new Map();
+      }
       const entryService = this.entryServiceMap[type];
       const key = entryService.getRelationKey();
       if (!key) {
