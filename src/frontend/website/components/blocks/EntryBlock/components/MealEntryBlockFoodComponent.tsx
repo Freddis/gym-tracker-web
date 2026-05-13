@@ -22,16 +22,14 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
   const [amount] = useState(initialAmount.toFixed(0));
   const [servings] = useState(floorToMax3Decimals(initialServings).toString());
   const multiplier = avoidLet(() => {
+    if (!isNaN(parseFloat(servings))) {
+      return parseFloat(servings);
+    }
     if (props.item.item.food.servingSize === null) {
-
       if (!isNaN(parseFloat(amount))) {
         return parseFloat(amount) / 100;
       }
       return defaultAmount / 100;
-    }
-    if (!isNaN(parseFloat(servings))) {
-
-      return parseFloat(servings);
     }
     return 1;
   });
@@ -41,7 +39,7 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
   const fat = getFoodMacro(food, FoodMacros.Fat) * multiplier;
   const calories = getFoodCalories(food) * multiplier;
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
-  const hasServingSize = item.item.food.isMeal || item.item.food.servingSize === null;
+  const servedInServings = item.item.food.isMeal || item.item.food.servingSize !== null;
 
   return (
     <div
@@ -86,14 +84,14 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
                 <AppLabel>{t(i18n.create.labels.grams)}</AppLabel>
                 <div className="h-10 flex items-center">{amount}</div>
             </div>
-          <div className={cn(props.item.item.food.servingSize === null ? 'invisible' : '', 'w-16 overflow-hidden')}>
+          <div className={cn(!servedInServings ? 'invisible' : '', 'w-16 overflow-hidden')}>
             <AppLabel>{t(i18n.create.labels.servings)}</AppLabel>
             <div className="w-16">
               <div className="h-10 flex items-center">{servings}</div>
             </div>
           </div>
         </div>
-        <div className={cn(hasServingSize ? 'invisible' : '', 'flex gap-3 items-center')}>
+        <div className={cn(item.item.food.servingSize === null ? 'invisible' : '', 'flex gap-3 items-center')}>
           <AppLabel>{translations.utils.objects.food.fields.servingSize}</AppLabel>
           <div>{item.item.food.servingSize?.toFixed(0)} {translations.utils.objects.foodUnits[item.item.food.servingSizeUnit]}</div>
         </div>

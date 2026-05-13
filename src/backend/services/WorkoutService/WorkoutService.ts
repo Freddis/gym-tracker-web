@@ -255,7 +255,11 @@ export class WorkoutService implements IEntryService<EntryType.Workout> {
       exercises: row.exercises.map((erow) => ({
         ...erow,
         exercise: getOrThrow(eMap, erow.exerciseId),
-      })),
+      })).sort((a, b) => {
+        const aTime = a.sets[0]?.createdAt?.getTime() ?? Infinity;
+        const bTime = b.sets[0]?.createdAt?.getTime() ?? Infinity;
+        return aTime - bTime;
+      }),
     }));
 
     const map = new Map<number, Workout>();

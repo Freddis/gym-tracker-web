@@ -74,7 +74,6 @@ export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((pr
   const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
   const totalCalories = getFoodCalories(updatedFood);
 
-
   const onEntrySubmit = (entry: PostEntryUpsertDto) => {
     const components: FoodComponentUpsertDto[] = ingredients.map((wrapper) => {
       const ingredient = wrapper.item;
