@@ -20,5 +20,4 @@ COPY --from=base /app/package.json /app
 COPY --from=base /app/.output /app/.output
 COPY --from=base /app/.env.development /app
 RUN chmod -R 777 .
-RUN npm install vinxi --omit=dev
 ENTRYPOINT ["npm","run","start"]
