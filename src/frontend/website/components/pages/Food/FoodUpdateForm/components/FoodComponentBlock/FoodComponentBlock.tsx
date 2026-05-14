@@ -11,6 +11,8 @@ import {FoodComponentBlockProps} from './types/FoodComponentBlockProps';
 import {floorToMax3Decimals} from './utils/floorToMax3Decimals';
 import {useImagePlaceHolder} from '../../../../../../utils/getImagePlaceHolder';
 import {avoidLet} from '../../../../../../../common/utils/avoidLet';
+import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../../../../common/utils/route';
 
 
 export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
@@ -102,7 +104,9 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
       <div>
         <div className="flex flex-row gap-5 items-center">
         <label className="grow">
-            <b>{item.item.food.name}</b>
+            <RouteLink target="_blank" accented={false} to={route(RouteId.FoodUpdate)} params={{id: item.item.food.id}}>
+              <b>{item.item.food.name}</b>
+            </RouteLink>
         </label>
         <AppButton onClick={() => props.onRemove(item)}>Remove</AppButton>
         </div>
