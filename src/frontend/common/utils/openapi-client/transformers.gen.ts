@@ -281,6 +281,16 @@ const weightSchemaResponseTransformer = (data: any) => {
   if (data.deletedAt) {
     data.deletedAt = new Date(data.deletedAt);
   }
+  data.history = data.history.map((item: any) => {
+    item.createdAt = new Date(item.createdAt);
+    if (item.updatedAt) {
+      item.updatedAt = new Date(item.updatedAt);
+    }
+    if (item.deletedAt) {
+      item.deletedAt = new Date(item.deletedAt);
+    }
+    return item;
+  });
   return data;
 };
 

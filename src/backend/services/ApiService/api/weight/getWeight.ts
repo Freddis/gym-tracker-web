@@ -5,6 +5,7 @@ import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
+import {EntryType} from '../../../EntryService/types/EntryType';
 
 export const getWeight = RouteFactory.createRoute({
   method: OpenApiMethod.GET,
@@ -18,10 +19,14 @@ export const getWeight = RouteFactory.createRoute({
     response: weightValidator,
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.weight.get(ctx.params.path.id, ctx.viewer.id);
+    const result = await ctx.services.models.entry.get({
+      weightIds: [ctx.params.path.id],
+      userId: [ctx.viewer.id],
+      type: [EntryType.Weight],
+    });
     if (!result) {
       throw new ApiError(ApiErrorCode.NotFound);
     }
-    return result;
+    return result.weight;
   },
 });

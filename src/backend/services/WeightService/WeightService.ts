@@ -3,20 +3,60 @@ import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';
-import {PaginatedResult} from '../ApiService/types/PaginatedResult';
-import {and, isNull, desc, eq, inArray} from 'drizzle-orm';
-import {WeightUpsertDto} from './types/WeightUpsertDto';
-import {SemiPartial} from '../../types/SemiPartial';
+import {and, isNull, desc, eq, inArray, SQL, gte} from 'drizzle-orm';
 import {EntryType} from '../EntryService/types/EntryType';
 import {BaseEntry, WeightEntry} from '../EntryService/types/Entry';
 import {WeightEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {IEntryService} from '../EntryService/types/IEntryService';
-export class WeightService implements IEntryService<EntryType.Weight> {
-  protected drizzle: DrizzleService;
+import {PgColumn} from 'drizzle-orm/pg-core';
+import {Filter} from '../../types/ModelService/types/Filter';
+import {ModelService} from '../../types/ModelService/ModelService';
+import {StrictOmit} from '../../types/StrictOmit';
+import {WeightFilter} from './types/WeightFilter';
+
+export class WeightService extends ModelService<number, WeightRow, Weight, WeightFilter>
+implements IEntryService<EntryType.Weight> {
+  protected override getTable() {
+    return this.drizzle.getSchema().weight;
+  }
+
+  protected override getWhere(params: Partial<Filter<number>>): SQL<unknown> | undefined {
+    const where = and(
+      params.ids ? inArray(this.getTable().id, params.ids) : undefined,
+      isNull(this.getTable().deletedAt),
+    );
+    return where;
+  }
+
+  protected override async decorateRows(rows: AppDbSchema['weight']['$inferSelect'][]): Promise<Weight[]> {
+    const first = rows[0];
+    if (!first) {
+      return [];
+    }
+    const historySize = 30;
+    const result = rows.reduce((acc, cur) => ({
+      min: cur.createdAt.getTime() < acc.min.getTime() ? cur.createdAt : acc.min,
+      max: cur.createdAt.getTime() > acc.max.getTime() ? cur.createdAt : acc.max,
+    }), {min: first.createdAt, max: first.createdAt});
+    const from = new Date(result.min.getTime() - 1000 * 60 * 60 * 24 * historySize);
+    const history = await this.executeQuery(await this.drizzle.getDb(), 0, 1000, and(
+      gte(this.getTable().createdAt, from),
+    ));
+
+    const final = rows.map((x) => ({
+      ...x,
+      history: history.rows.filter((h) => h.userId === x.userId && h.createdAt < x.createdAt),
+      historySize: historySize,
+    }));
+    return final;
+  }
+  protected override getOrderBy(): PgColumn | SQL | SQL.Aliased {
+    return desc(this.getTable().createdAt);
+  }
   protected table: AppDbSchema['weight'];
 
   constructor(drizzle: DrizzleService) {
-    this.drizzle = drizzle;
+    super(drizzle);
     this.table = drizzle.getSchema().weight;
   }
 
@@ -32,15 +72,22 @@ export class WeightService implements IEntryService<EntryType.Weight> {
       units: WeightUnit.Kg,
       deletedAt: null,
     };
-    const result = await db.insert(schema.weight).values(obj).returning();
-    if (!result[0]) {
+    const row = await db.insert(schema.weight).values(obj).returning({id: this.getTable().id});
+    if (!row[0]) {
       throw new Error('Unable to get inserted weight');
     }
-    return result[0];
+    const result = await this.get({ids: [row[0].id]});
+    if (!result) {
+      throw new Error('Unable to get inserted weight');
+    }
+    return result;
   }
 
   async update(id: number, userId:number, weight: {weight: number}): Promise<Weight> {
-    const existing = this.get(id, userId);
+    const existing = await this.get({
+      ids: [id],
+      userId: userId,
+    });
     if (!existing) {
       throw new Error('Record not found');
     }
@@ -54,7 +101,10 @@ export class WeightService implements IEntryService<EntryType.Weight> {
       eq(db._.fullSchema.weight.id, id)
     ).returning();
 
-    const updated = await this.get(id, userId);
+    const updated = await this.get({
+      ids: [id],
+      userId: userId,
+    });
     if (!updated) {
       throw new Error('Record not found after update');
     }
@@ -62,81 +112,41 @@ export class WeightService implements IEntryService<EntryType.Weight> {
 
   }
 
-  async get(id: number, userId: number): Promise<Weight| null> {
-    const record = await this.getAll({id: [id]});
-    const result = record.items[0];
-    if (!result || result.userId !== userId) {
-      return null;
-    }
-    return result;
-  }
-
-  async getAll(params: {id?: number[], page?: number, perPage?: number}): Promise<PaginatedResult<Weight>> {
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
-    const offset = (page - 1) * limit;
-    const where = and(
-        params.id ? inArray(this.table.id, params.id) : undefined,
-        isNull(this.table.deletedAt),
-      );
-    const rows = await db.select()
-    .from(this.table)
-    .where(where)
-    .orderBy(
-      desc(this.table.createdAt)
-    )
-    .limit(limit)
-    .offset(offset);
-
-    const count = await db.$count(this.table, where);
-    const result: PaginatedResult<Weight> = {
-      items: rows,
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
-    return result;
-  }
-
-  async upsert(userId: number, data: WeightUpsertDto[]): Promise<Weight[]> {
-    const db = await this.drizzle.getDb();
-    const schema = this.drizzle.getSchema();
-    const info = data.map((x) => {
-      const info: SemiPartial<WeightRow, 'id'> = {
-        ...x,
-        id: x.id ?? undefined,
-        userId: userId,
-        externalId: null,
-        createdAt: x.createdAt,
-        updatedAt: x.updatedAt,
-        deletedAt: x.deletedAt,
-      };
-      return info;
-    });
-    const result = await db.insert(schema.weight).values(info).onConflictDoUpdate({
-      target: schema.weight.id,
-      set: this.drizzle.generateConflictUpdateSetAllColumns(schema.weight),
-    }).returning();
-    return result;
-  }
-
   getRelationKey() {
     return 'weightId' as const;
   }
+
   async upsertOne(userId: number, item: WeightEntryUpsertDto) {
-    const result = await this.upsert(userId, [item.weight]);
-    const weight = result[0];
+    const data = item.weight;
+    const db = await this.drizzle.getDb();
+    const schema = this.drizzle.getSchema();
+    const info: StrictOmit<WeightRow, 'id'> = {
+      weight: data.weight,
+      units: data.units,
+      userId: userId,
+      externalId: null,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      deletedAt: data.deletedAt,
+    };
+    const inserted = await db.insert(schema.weight).values(info).onConflictDoUpdate({
+      target: schema.weight.id,
+      set: this.drizzle.generateConflictUpdateSetAllColumns(schema.weight),
+    }).returning();
+    const weight = inserted[0];
     if (!weight) {
-      throw new Error('Weight not found');
+      throw new Error('Unable to insert weight');
+    }
+    const result = await this.get({ids: [weight.id]});
+    if (!result) {
+      throw new Error('Unable to get inserted weight');
     }
     return {
       id: weight.id,
-      value: weight,
+      value: result,
     };
   }
+
   construct(row: BaseEntry, value: Weight): WeightEntry {
     const created: WeightEntry = {
       ...row,
@@ -145,8 +155,9 @@ export class WeightService implements IEntryService<EntryType.Weight> {
     };
     return created;
   }
+
   async loadMap(ids: number[]): Promise<Map<number, Weight>> {
-    const weights = await this.getAll({id: ids, perPage: ids.length});
+    const weights = await this.paginate({ids: ids, perPage: ids.length});
     return weights.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
   }
 

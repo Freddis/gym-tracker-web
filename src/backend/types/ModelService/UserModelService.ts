@@ -6,7 +6,12 @@ import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
 import {UserIdColumn} from './types/UserIdColumn';
 
-export abstract class UserModelService<TKey extends number | string, TRow extends {id:TKey}, TModel, TFilter extends Filter<TKey>> {
+export abstract class UserModelService<
+  TKey extends number | string,
+  TRow extends {id:TKey},
+  TModel,
+  TFilter extends Filter<TKey> = Filter<TKey>
+> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {

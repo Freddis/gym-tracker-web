@@ -21,7 +21,7 @@ export const getMealEntry = RouteFactory.createRoute({
   handler: async (ctx) => {
     const result = await ctx.services.models.entry.getAll({
       userId: [ctx.viewer.id],
-      id: [ctx.params.path.id],
+      ids: [ctx.params.path.id],
       type: [EntryType.Meal],
     });
     const mealEntry = result.items[0];

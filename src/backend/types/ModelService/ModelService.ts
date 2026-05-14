@@ -1,30 +1,34 @@
 import {TableConfig, SQL, eq, inArray, and, ilike} from 'drizzle-orm';
 import {PgColumn, PgTable} from 'drizzle-orm/pg-core';
 import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
-import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
+import {AppDb, DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
 import {EntityService} from './types/EntityService';
 
-export abstract class ModelService<TRow extends {id:number}, TModel extends {id: number}, TFilter extends Filter = Filter>
-implements EntityService<TModel, number, TFilter> {
+export abstract class ModelService<
+TKey extends number | string,
+TRow extends {id:TKey},
+TModel,
+TFilter extends Filter<TKey> = Filter<TKey>
+>
+implements EntityService<TModel, TKey, TFilter> {
   protected drizzle: DrizzleService;
 
   constructor(drizzle: DrizzleService) {
     this.drizzle = drizzle;
   }
 
-  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn<number>}
+  protected abstract getTable(): PgTable<TableConfig> & {id: IdColumn<TKey>}
   protected abstract getWhere(params: Partial<TFilter>):SQL<unknown> | undefined
   protected abstract decorateRows(rows: TRow[]): Promise<TModel[]>
   protected abstract getOrderBy(): PgColumn | SQL | SQL.Aliased
-  protected async loadRows(ids: number[]): Promise<TRow[]> {
+  protected async loadRows(ids: TKey[]): Promise<TRow[]> {
     const db = await this.drizzle.getDb();
-    const result = await db.select().from(this.getTable()).where(
+    const result: TRow[] = await db.select().from(this.getTable()).where(
       inArray(this.getTable().id, ids),
-    );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return result as any;
+    ) as TRow[];
+    return this.restoreOrder(ids, result);
   }
   async decorateRow(row: TRow): Promise<TModel> {
     const result = await this.decorateRows([row]);
@@ -33,7 +37,7 @@ implements EntityService<TModel, number, TFilter> {
     }
     return result[0];
   }
-  async decorate(id: number): Promise<TModel> {
+  async decorate(id: TKey): Promise<TModel> {
     const rows = await this.loadRows([id]);
     const result = await this.decorateRows(rows);
     if (!result[0]) {
@@ -41,10 +45,10 @@ implements EntityService<TModel, number, TFilter> {
     }
     return result[0];
   }
-  async decorateMany(ids: number[]): Promise<TModel[]> {
+  async decorateMany(ids: TKey[]): Promise<TModel[]> {
     const rows = await this.loadRows(ids);
     const result = await this.decorateRows(rows);
-    return this.restoreOrder(ids, result);
+    return result;
   }
 
   async paginate(params: Partial<TFilter>): Promise<PaginatedResult<TModel>> {
@@ -53,21 +57,10 @@ implements EntityService<TModel, number, TFilter> {
     const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
     const where: SQL<unknown> | undefined = this.getWhere(params);
-    const rows = await db.select({
-      id: this.getTable().id,
-    })
-    .from(this.getTable())
-    .where(where)
-    .orderBy(
-     this.getOrderBy()
-    )
-    .limit(limit)
-    .offset(offset);
-
-    const count = await db.$count(this.getTable(), where);
-
+    const {rows, count} = await this.executeQuery(db, offset, limit, where);
+    const ids: TKey[] = rows.map((x) => x.id);
     const result: PaginatedResult<TModel> = {
-      items: await this.decorateMany(rows.map((x) => x.id)),
+      items: await this.decorateMany(ids),
       info: {
         page,
         count,
@@ -77,8 +70,29 @@ implements EntityService<TModel, number, TFilter> {
     return result;
   }
 
+  protected async executeQuery(
+    db: AppDb,
+    offset: number,
+    limit: number,
+    where: SQL<unknown> | undefined
+  ): Promise<{rows: TRow[], count: number}> {
+    const rows = await db.select()
+    .from(this.getTable())
+    .where(
+      where
+    )
+    .orderBy(
+     this.getOrderBy()
+    )
+    .limit(limit)
+    .offset(offset) as TRow[];
 
-  async getById(id: number): Promise<TModel | null> {
+    const count = await db.$count(this.getTable(), where);
+    return {rows, count};
+  }
+
+
+  async getById(id: TKey): Promise<TModel | null> {
     const params: Partial<TFilter> = {};
     params.ids = [id];
     const result = await this.get(params);
@@ -102,9 +116,11 @@ implements EntityService<TModel, number, TFilter> {
     .orderBy(
      this.getOrderBy()
     );
-    return this.decorateMany(rows.map((x) => x.id));
+    const ids:TKey[] = rows.map((x) => x.id as TKey);
+    return this.decorateMany(ids);
   }
-  async deleteById(id: number) {
+
+  async deleteById(id: TKey) {
     const plan = await this.getById(id);
     if (!plan) {
       throw new Error('Object not found');
@@ -130,14 +146,20 @@ implements EntityService<TModel, number, TFilter> {
     return x;
   }
 
-  protected restoreOrder<T extends {id: number}>(ordered: number[], unordered: T[]): T[] {
-    const map = ordered.reduce((acc, id, i) => acc.set(id, i), new Map<number, number>());
-    const result: T[] = [];
-    for (const obj of unordered) {
-      const i = map.get(obj.id) ?? 0;
-      result[i] = obj;
+  protected restoreOrder(ids: TKey[], rows: TRow[]): TRow[] {
+    const map = new Map<TKey, TRow>();
+    for (const row of rows) {
+      map.set(row.id, row);
     }
-    return result;
+    const ordered: TRow[] = [];
+    for (const id of ids) {
+      const row = map.get(id);
+      if (!row) {
+        throw new Error(`Row ${id} not found`);
+      }
+      ordered.push(row);
+    }
+    return ordered;
   }
 
   protected generateLikeConditions(column: PgColumn, search: string): SQL<unknown> | undefined {

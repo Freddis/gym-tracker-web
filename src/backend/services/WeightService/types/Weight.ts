@@ -1,3 +1,6 @@
 import {WeightRow} from '../../DrizzleService/types/WeightRow';
 
-export type Weight = WeightRow
+export interface Weight extends WeightRow {
+  history: WeightRow[]
+  historySize: number
+}

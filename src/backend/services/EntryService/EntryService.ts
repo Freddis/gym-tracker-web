@@ -8,7 +8,6 @@ import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
 import {WeightService} from '../WeightService/WeightService';
-import {Language} from '../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
 import {ImageService} from '../ImageService/ImageService';
@@ -26,7 +25,7 @@ import {IEntryService} from './types/IEntryService';
 import {PostService} from '../PostService/PostService';
 import {MealService} from '../MealService/MealService';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
-
+import {EntryFilter} from './types/EntryFilter';
 export class EntryService {
   protected workoutService: WorkoutService;
   protected userService: UserService;
@@ -96,7 +95,7 @@ export class EntryService {
   }
 
   async getPostEntry(userId: number, entryId: string): Promise<PostEntry | null> {
-    const entry = await this.get(userId, entryId);
+    const entry = await this.get({ids: [entryId], userId: [userId], type: [EntryType.Post]});
     if (!entry || entry.type !== EntryType.Post) {
       return null;
     }
@@ -213,8 +212,8 @@ export class EntryService {
     return created;
   }
 
-  async get(userId: number, id: string): Promise<Entry | null> {
-    const res = await this.getAll({id: [id], perPage: 1, userId: [userId]});
+  async get<T extends EntryType>(params?: EntryFilter<T>): Promise<(Entry & {type: T}) | null> {
+    const res = await this.getAll(params);
     return res.items[0] ?? null;
   }
 
@@ -224,20 +223,7 @@ export class EntryService {
   }
 
   async getAll<T extends EntryType>(
-    params?: {
-      id?: string[],
-      externalId?: string[],
-      workoutIds?: number[],
-      weightIds?: number[]
-      page?: number,
-      perPage?: number,
-      userId?: number[],
-      type?: T[],
-      includeDeleted?: boolean,
-      updatedAfter?: Date,
-      language?:Language
-      date?: Date,
-    }
+      params?: EntryFilter<T>
   ): Promise<PaginatedResult<Entry & {type: T}>> {
 
     const db = await this.drizzle.getDb();
@@ -245,7 +231,7 @@ export class EntryService {
     const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
     const where = and(
-      params?.id ? inArray(db._.fullSchema.entries.id, params.id) : undefined,
+      params?.ids ? inArray(db._.fullSchema.entries.id, params.ids) : undefined,
       params?.externalId ? inArray(db._.fullSchema.entries.externalId, params.externalId) : undefined,
       params?.weightIds ? inArray(db._.fullSchema.entries.weightId, params.weightIds) : undefined,
       params?.workoutIds ? inArray(db._.fullSchema.entries.workoutId, params.workoutIds) : undefined,
@@ -446,7 +432,7 @@ export class EntryService {
 
   async delete(userId: number, entryId: string): Promise<void> {
     const db = await this.drizzle.getDb();
-    const entry = await this.get(userId, entryId);
+    const entry = await this.get({ids: [entryId], userId: [userId], type: [EntryType.Post]});
     if (!entry || entry.user.id !== userId) {
       throw new Error('Entry not found');
     }
