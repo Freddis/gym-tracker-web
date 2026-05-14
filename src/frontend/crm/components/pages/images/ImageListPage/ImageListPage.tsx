@@ -79,7 +79,9 @@ export const ImageListPage:FC = () => {
     )}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
-        <AppSearchInput debounce={500} placeholder="Search" className="max-w-100 mb-5" onSearch={onSearch} value={searchParams.search} />
+        <div className="max-w-100 mb-5" >
+          <AppSearchInput debounce={500} placeholder="Search" onSearch={onSearch} value={searchParams.search} />
+        </div>
         <CrmTable className="w-full table">
           <thead >
             <tr className="font-medium">

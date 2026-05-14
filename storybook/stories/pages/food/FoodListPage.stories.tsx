@@ -38,7 +38,7 @@ const meta = {
       },
     },
     onPageChanged: () => {},
-    onSearch: () => {},
+    onFilter: () => {},
     onClearFilters: () => {},
   },
   parameters: {

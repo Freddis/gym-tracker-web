@@ -9296,6 +9296,10 @@ export type GetFoodListData = {
      */
     search?: string;
     /**
+     * Filter for dishes only
+     */
+    isDish?: boolean;
+    /**
      * Page
      */
     page?: number;

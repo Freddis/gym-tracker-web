@@ -1,7 +1,7 @@
 import {TableConfig, SQL, eq, inArray, and, or, isNull} from 'drizzle-orm';
 import {PgColumn, PgTable} from 'drizzle-orm/pg-core';
 import {PaginatedResult} from '../../services/ApiService/types/PaginatedResult';
-import {DrizzleService} from '../../services/DrizzleService/DrizzleService';
+import {AppDb, DrizzleService} from '../../services/DrizzleService/DrizzleService';
 import {Filter} from './types/Filter';
 import {IdColumn} from './types/IdColumn';
 import {UserIdColumn} from './types/UserIdColumn';
@@ -17,13 +17,25 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
   protected abstract getWhere(params: Partial<TFilter>):SQL<unknown> | undefined
   protected abstract decorateRows(rows: TRow[]): Promise<TModel[]>
   protected abstract getOrderBy(): PgColumn | SQL | SQL.Aliased
+
   protected async loadRows(ids: TKey[]): Promise<TRow[]> {
     const db = await this.drizzle.getDb();
     const result = await db.select().from(this.getTable()).where(
       inArray(this.getTable().id, ids),
     );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return result as any;
+    const map = new Map<TKey, unknown>();
+    for (const row of result) {
+      map.set(row.id, row);
+    }
+    const ordered: TRow[] = [];
+    for (const id of ids) {
+      const row = map.get(id);
+      if (!row) {
+        throw new Error(`Row ${id} not found`);
+      }
+      ordered.push(row as TRow);
+    }
+    return ordered;
   }
   async decorateRow(row: TRow): Promise<TModel> {
     const result = await this.decorateRows([row]);
@@ -32,6 +44,7 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
     }
     return result[0];
   }
+
   async decorate(id: TKey): Promise<TModel> {
     const rows = await this.loadRows([id]);
     const result = await this.decorateRows(rows);
@@ -40,6 +53,7 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
     }
     return result[0];
   }
+
   async decorateMany(ids: TKey[]): Promise<TModel[]> {
     const rows = await this.loadRows(ids);
     const result = await this.decorateRows(rows);
@@ -52,6 +66,26 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
     const limit = params?.perPage ?? 30;
     const offset = (page - 1) * limit;
     const where: SQL<unknown> | undefined = this.getWhere(params);
+    const {rows, count} = await this.executeQuery(db, userId, offset, limit, where);
+    const ids: TKey[] = rows.map((x) => x.id);
+    const result: PaginatedResult<TModel> = {
+      items: await this.decorateMany(ids),
+      info: {
+        page,
+        count,
+        pageSize: limit,
+      },
+    };
+    return result;
+  }
+
+  protected async executeQuery(
+    db: AppDb,
+    userId: number,
+    offset: number,
+    limit: number,
+    where: SQL<unknown> | undefined
+  ): Promise<{rows: {id: TKey}[], count: number}> {
     const rows = await db.select()
     .from(this.getTable())
     .where(
@@ -67,19 +101,16 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
      this.getOrderBy()
     )
     .limit(limit)
-    .offset(offset);
+    .offset(offset) as TRow[];
 
-    const count = await db.$count(this.getTable(), where);
-    const ids: TKey[] = rows.map((x) => x.id);
-    const result: PaginatedResult<TModel> = {
-      items: await this.decorateMany(ids),
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
-    return result;
+    const count = await db.$count(this.getTable(), and(
+      where,
+      or(
+        eq(this.getTable().userId, userId),
+        isNull(this.getTable().userId),
+      )
+    ));
+    return {rows, count};
   }
 
 
@@ -111,10 +142,10 @@ export abstract class UserModelService<TKey extends number | string, TRow extend
     );
   }
 
-  protected createMap<X, T extends {id: X}>(arr: T[]): Map<X, T> {
+  protected createMap<X, T extends {id: X}>(arr: T[], keySelector: (x: T) => X): Map<X, T> {
     const map = new Map<X, T>();
-    for (const exercise of arr) {
-      map.set(exercise.id, exercise);
+    for (const item of arr) {
+      map.set(keySelector(item), item);
     }
     return map;
   }

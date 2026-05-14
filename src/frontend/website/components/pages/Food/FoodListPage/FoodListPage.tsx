@@ -5,7 +5,7 @@ import {api} from '../../../../../common/utils/api';
 import {getRouteApi} from '@tanstack/react-router';
 import {routeId, RouteId} from '../../../../../common/utils/route';
 import {useRequiredAuth} from '../../../../../common/components/layout/AuthProvider/utils/useRequiredAuth';
-
+import {FoodListQueryParams} from './components/FoodListPagePresenter/types/FoodListQueryParams';
 
 export const FoodListPage = () => {
   const routeApi = getRouteApi(routeId(RouteId.FoodList));
@@ -29,14 +29,9 @@ export const FoodListPage = () => {
       },
     });
   };
-  const onSearch = (search: string | null) => {
-    console.log(search);
+  const onFilter = (filter: FoodListQueryParams) => {
     navigate({
-      search: {
-        ...searchParams,
-        search: search ?? undefined,
-        page: 1,
-      },
+      search: filter,
     });
   };
   const response = useQuery({
@@ -52,7 +47,7 @@ export const FoodListPage = () => {
       response={response}
       onPageChanged={onPageChanged}
       onClearFilters={onClearFilters}
-      onSearch={onSearch}
+      onFilter={onFilter}
       />
   );
 };

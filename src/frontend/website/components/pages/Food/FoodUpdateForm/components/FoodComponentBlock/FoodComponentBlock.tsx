@@ -24,8 +24,9 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
   const [amount, setAmount] = useState(initialAmount.toFixed(0));
   const [servings, setServings] = useState(floorToMax3Decimals(initialServings).toString());
   const {setSmartError, clearSmartError, hasSmartError} = useResponseErrors<{amount: string, servings: string}>();
+  const servedInServings = item.item.food.isMeal || item.item.food.servingSize !== null;
   const multiplier = avoidLet(() => {
-    if (!isNaN(parseFloat(servings))) {
+    if (servedInServings && !isNaN(parseFloat(servings))) {
       return parseFloat(servings);
     }
     if (props.item.item.food.servingSize === null) {
@@ -42,7 +43,6 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
   const fat = getFoodMacro(food, FoodMacros.Fat) * multiplier;
   const calories = getFoodCalories(food) * multiplier;
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
-  const servedInServings = item.item.food.isMeal || item.item.food.servingSize !== null;
   const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setAmount(e.target.value);

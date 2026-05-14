@@ -549,6 +549,8 @@ export const dictionary = {
         heading: 'Create Food',
         buttons: {
           addComponent: 'Add',
+          crateFood: 'Create Food',
+          crateDish: 'Create Dish',
         },
         labels: {
           components: 'Components',
@@ -558,7 +560,7 @@ export const dictionary = {
         },
         toasts: {
           success: 'You successfully added food',
-          noComponents: 'You need to add at least food to the meal',
+          noComponents: 'You need to add at least food to the dish',
         },
       },
       update: {
@@ -582,12 +584,14 @@ export const dictionary = {
         },
         buttons: {
           addFood: 'Add Food',
-          addDish: 'Add Meal',
+          addDish: 'Add Dish',
         },
         filter: {
           clearFilters: 'Clear Filters',
           labels: {
-            search: 'Search:',
+            search: 'Search',
+            isDish: 'Dishes Only',
+            noDishes: 'No Dishes',
           },
         },
         toasts: {

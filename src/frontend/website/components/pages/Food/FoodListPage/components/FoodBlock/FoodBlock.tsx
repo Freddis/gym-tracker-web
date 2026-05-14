@@ -23,7 +23,7 @@ export const FoodBlock: FC<{food: Food}> = (props) => {
    <AppBlock
       image={props.food.image?.url ?? placeholder}
       imageTo={to}
-      imageHeight={208}
+      imageHeight={150}
     >
       <div className="p-5 grow flex flex-col">
         <h3 className="capitalize mb-2 font-semibold">
@@ -45,10 +45,8 @@ export const FoodBlock: FC<{food: Food}> = (props) => {
             </div>
           )}
           {props.food.components.length > 0 && (
-            <div className="flex flex-row gap-5">
-              <AppLabel>
-                {t(i18n.labels.components)}: {props.food.components.map((x) => x.food.name).join(', ')}
-              </AppLabel>
+            <div className="flex flex-row items-start justify-start mt-2 overflow-hidden text-sm text-ellipsis">
+                {props.food.components.map((x) => x.food.name).join(', ')}
             </div>
           )}
         </div>

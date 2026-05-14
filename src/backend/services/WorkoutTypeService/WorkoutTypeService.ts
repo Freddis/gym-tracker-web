@@ -35,7 +35,7 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
     });
     const exerciseIds = newRows.flatMap((x) => x.exercises).map((x) => x.exerciseId);
     const exercises = await this.exerciseService.paginate({perPage: 1000, ids: exerciseIds});
-    const exerciseMap = this.createMap(exercises.items);
+    const exerciseMap = this.createMap(exercises.items, (x) => x.id);
     const workoutTypeExerciseIds = newRows.flatMap((x) => x.exercises.map((x) => x.id));
     const sets = await db.query.workoutTypeExerciseSets.findMany({
       where: (t, {inArray}) => inArray(t.workoutTypeExerciseId, workoutTypeExerciseIds),

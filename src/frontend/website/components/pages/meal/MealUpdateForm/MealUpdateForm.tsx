@@ -29,6 +29,8 @@ import {InputRow} from '../../../../../common/components/atoms/InputRow/InputRow
 import {AppSelect} from '../../../../../common/components/atoms/AppSelect/AppSelect';
 import {SelectValue} from '../../../../../common/components/atoms/AppSelect/types/SelectValue';
 import {EntryUpdateForm} from '../../../blocks/EntryUpdateForm/EntryUpdateForm';
+import {route, RouteId} from '../../../../../common/utils/route';
+import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 
 interface MealUpdateFormProps {
   meal: Meal;
@@ -102,7 +104,7 @@ export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((pr
     props.onSubmit(mealEntry);
   };
 
-  const onAddIngredientClick = () => {
+  const onAddFoodClick = () => {
     const exclusions: Food[] = ingredients.map((x) => ({
       ...x.item.food,
       components: [],
@@ -138,9 +140,13 @@ export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((pr
         />
       </div>
     </InputRow>
-    <div className="flex flex-row gap-5 items-start">
+    <div className="flex flex-row gap-5 items-start w-full">
       <InputLabel>{t.f((x) => x.pages.food.create.labels.components)}</InputLabel>
-      <AppButton onClick={onAddIngredientClick}>{t.f((x) => x.pages.food.create.buttons.addComponent)}</AppButton>
+      <AppButton onClick={onAddFoodClick}>{t.f((x) => x.pages.food.create.buttons.addComponent)}</AppButton>
+      <div className="grow flex flex-row gap-5 items-start justify-end">
+       <RouteLink target="_blank" to={route(RouteId.FoodCreate)}>{t.f((x) => x.pages.food.create.buttons.crateFood)}</RouteLink>
+       <RouteLink target="_blank" to={route(RouteId.FoodCreateMeal)}>{t.f((x) => x.pages.food.create.buttons.crateDish)}</RouteLink>
+      </div>
     </div>
     <div className="flex flex-col gap-5 items-start">
       {ingredients.map((ingredient) => (

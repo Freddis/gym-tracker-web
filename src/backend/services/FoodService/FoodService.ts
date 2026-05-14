@@ -1,4 +1,4 @@
-import {and, eq, ilike, inArray, isNull, SQL} from 'drizzle-orm';
+import {and, eq, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
 import {AppDb, AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Food} from './types/Food';
 import {ImageService} from '../ImageService/ImageService';
@@ -61,6 +61,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       createdAt: food.createdAt,
       updatedAt: food.updatedAt,
       deletedAt: food.deletedAt,
+      isMeal: food.isMeal,
     };
     if (existing) {
       await db.update(schema.food).set(entity).where(eq(schema.food.id, existing.id));
@@ -90,8 +91,73 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       params.ids ? inArray(this.getTable().id, params.ids) : undefined,
       params.search ? ilike(this.getTable().name, `%${params.search}%`) : undefined,
       isNull(this.getTable().deletedAt),
+      params.isDish ? eq(this.getTable().isMeal, params.isDish) : undefined,
     );
     return where;
+  }
+
+  protected override async executeQuery(
+    db: AppDb,
+    userId: number,
+    offset: number,
+    limit: number,
+    where: SQL<unknown> | undefined
+  ): Promise<{rows: AppDbSchema['food']['$inferSelect'][], count: number}> {
+    const rows = await db.select(
+      {
+        id: this.getTable().id,
+        userId: this.getTable().userId,
+        name: this.getTable().name,
+        description: this.getTable().description,
+        imageId: this.getTable().imageId,
+        protein: this.getTable().protein,
+        carbs: this.getTable().carbs,
+        fat: this.getTable().fat,
+        servingSizeUnit: this.getTable().servingSizeUnit,
+        servingSize: this.getTable().servingSize,
+        isMeal: this.getTable().isMeal,
+        createdAt: this.getTable().createdAt,
+        updatedAt: this.getTable().updatedAt,
+        deletedAt: this.getTable().deletedAt,
+      }
+    )
+      .from(this.getTable())
+      .leftJoin(
+        db._.fullSchema.mealFoodComponents,
+        eq(this.getTable().id, db._.fullSchema.mealFoodComponents.foodId)
+      )
+      .leftJoin(
+        db._.fullSchema.meals,
+        eq(db._.fullSchema.mealFoodComponents.mealId, db._.fullSchema.meals.id)
+      )
+      .leftJoin(
+        db._.fullSchema.entries,
+        eq(db._.fullSchema.entries.mealId, db._.fullSchema.meals.id)
+      )
+      .where(
+        and(
+          where,
+          or(
+            eq(this.getTable().userId, userId),
+            isNull(this.getTable().userId),
+          )
+        )
+      ).groupBy(
+        this.getTable().id
+      )
+      .orderBy(
+        sql`GREATEST(MAX(${db._.fullSchema.entries.createdAt}), ${this.getTable().createdAt}) desc nulls last`,
+      )
+      .limit(limit)
+      .offset(offset);
+    const count = await db.$count(this.getTable(), and(
+      where,
+      or(
+        eq(this.getTable().userId, userId),
+        isNull(this.getTable().userId),
+      )
+    ));
+    return {rows: rows, count};
   }
 
   protected override async decorateRows(rows: AppDbSchema['food']['$inferSelect'][]): Promise<Food[]> {

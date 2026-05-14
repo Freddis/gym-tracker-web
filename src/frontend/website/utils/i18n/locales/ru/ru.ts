@@ -449,6 +449,8 @@ export const dictionary: Translation = {
           servings: 'Порций',
         },
         buttons: {
+          crateFood: 'Добавить Еду',
+          crateDish: 'Добавить Блюдо',
           addComponent: 'Добавить Компонент',
         },
         toasts: {
@@ -475,6 +477,8 @@ export const dictionary: Translation = {
           clearFilters: 'Очистить',
           labels: {
             search: 'Поиск:',
+            isDish: 'Только Блюда',
+            noDishes: 'Убрать Блюда',
           },
         },
         toasts: {

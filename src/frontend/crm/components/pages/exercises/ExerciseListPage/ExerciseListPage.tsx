@@ -102,15 +102,18 @@ export const ExerciseListPage:FC = () => {
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
         <div className="flex items-center mb-5 gap-5">
-        <AppSearchInput placeholder="Search" className="max-w-100" onSearch={onSearchChange} value={searchParams.search} />
-        <AppSearchInput
-         placeholder="User ID"
-         minLength={1}
-         className="max-w-20"
-         validator={ZodHelper.validators.numberOrStringNumber}
-         onSearch={onUserTextInputChange}
-         value={searchParams.userId}
-        />
+        <div className="max-w-100" >
+          <AppSearchInput placeholder="Search" onSearch={onSearchChange} value={searchParams.search} />
+        </div>
+        <div className="max-w-20" >
+          <AppSearchInput
+          placeholder="User ID"
+          minLength={1}
+          validator={ZodHelper.validators.numberOrStringNumber}
+          onSearch={onUserTextInputChange}
+          value={searchParams.userId}
+          />
+        </div>
         <AppSwitch checked={!!searchParams.parentsOnly} onCheckedChange={onParentsOnSwitchChange} label="Only Parents" />
         <div className="grow flex flex-row-reverse">
           <AppButton variant="lg" className="inline-block">Create <FaPlus className="inline-block"/></AppButton>

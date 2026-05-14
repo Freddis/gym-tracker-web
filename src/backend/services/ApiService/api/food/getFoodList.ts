@@ -15,6 +15,7 @@ export const getFoodList = RouteFactory.createRoute({
   validators: {
     query: object({
       search: string().optional().openapi({description: 'Search for food by name'}),
+      isDish: RouteFactory.validators.strings.boolean.optional().openapi({description: 'Filter for dishes only'}),
       page: RouteFactory.validators.strings.number.optional().default('1').openapi({
         description: 'Page',
       }),
@@ -25,7 +26,6 @@ export const getFoodList = RouteFactory.createRoute({
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.food.paginate(ctx.viewer.id, ctx.params.query);
-    console.log(result);
     return result;
   },
 });

@@ -1,8 +1,8 @@
-import {FC, useState, ChangeEventHandler, InputHTMLAttributes} from 'react';
-import {AppTextInput} from '../AppTextInput/AppTextInput';
+import {FC, useState, ChangeEventHandler} from 'react';
+import {AppTextInput, AppTextInputProps} from '../AppTextInput/AppTextInput';
 import {ZodTypeAny} from 'zod';
 
-type AppSearchInputProps = InputHTMLAttributes<HTMLInputElement> & {
+type AppSearchInputProps = AppTextInputProps & {
   onSearch: (value:string | null) => void,
   debounce?: number
   minLength?: number
