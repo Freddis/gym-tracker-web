@@ -7,7 +7,7 @@ import {PgColumn} from 'drizzle-orm/pg-core';
 import {ManagerFilter} from './types/ManagerFilter';
 
 export class ManagerService
-extends ModelService<ManagerRow, Manager, ManagerFilter> implements EntityService<Manager, number, ManagerFilter> {
+extends ModelService<number, ManagerRow, Manager, ManagerFilter> implements EntityService<Manager, number, ManagerFilter> {
 
   async create(manager: Omit<Manager, 'id'|'createdAt'|'updatedAt'|'deletedAt'>): Promise<Manager> {
     const db = await this.drizzle.getDb();

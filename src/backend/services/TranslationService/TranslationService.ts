@@ -12,7 +12,7 @@ import {TranslationProviderType} from './types/TranslationProviderType';
 import {GoogleTranslationProvider} from './utils/GoogleTranslationProvider/GoogleTranslationProvider';
 import {LLMTranslationProvider} from './utils/LLMTranslationProvider/LLMTranslationProvider';
 
-export class TranslationService extends ModelService<TranslationRow, Translation, Filter> {
+export class TranslationService extends ModelService<number, TranslationRow, Translation, Filter> {
 
   protected providers: Record<TranslationProviderType, TranslationProvider> = {
     [TranslationProviderType.Google]: new GoogleTranslationProvider(),

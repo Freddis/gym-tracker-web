@@ -17,9 +17,10 @@ import {ImageType} from '../../types/ImageType';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ManagedImage} from './types/ManagedImage';
 import {IImageService} from './types/IImageService';
+import {ImageRow} from '../DrizzleService/types/ImageRow';
 
 export class ManagedImageService
-extends ModelService<ManagedImage, ManagedImage, ImageFilter>
+extends ModelService<number, ImageRow, ManagedImage, ImageFilter>
 implements IImageService<ManagedImage, number, ImageFilter> {
   protected bucket = 'gymtracker-images-23';
   protected s3: S3Client;

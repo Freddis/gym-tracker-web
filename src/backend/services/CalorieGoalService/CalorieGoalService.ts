@@ -10,7 +10,7 @@ import {CalorieGoalEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {CalorieGoal} from './types/CalorieGoal';
 
 export class CalorieGoalService
-extends ModelService<AppDbSchema['calorieGoals']['$inferSelect'], CalorieGoal>
+extends ModelService<number, AppDbSchema['calorieGoals']['$inferSelect'], CalorieGoal>
 implements IEntryService<EntryType.CalorieGoal> {
 
   protected override getTable(): PgTable<TableConfig> & {id: IdColumn<number>;} {

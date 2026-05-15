@@ -16,7 +16,7 @@ import {TemperatureUnit} from '../../types/TemperatureUnit';
 import {DistanceUnit} from '../../types/DistanceUnit';
 import {SemiPartial} from '../../types/SemiPartial';
 
-export class CoreUserService extends ModelService<UserRow, CoreUser, UserFilter> {
+export class CoreUserService extends ModelService<number, UserRow, CoreUser, UserFilter> {
   protected imageService: ImageService;
 
   constructor(drizzle: DrizzleService, imageService: ImageService) {

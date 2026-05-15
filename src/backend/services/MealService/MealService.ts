@@ -12,7 +12,7 @@ import {FoodComponent} from '../FoodService/types/FoodComponent';
 import {FoodService} from '../FoodService/FoodService';
 import {Food} from '../FoodService/types/Food';
 
-export class MealService extends ModelService<AppDbSchema['meals']['$inferSelect'], Meal> implements IEntryService<EntryType.Meal> {
+export class MealService extends ModelService<number, AppDbSchema['meals']['$inferSelect'], Meal> implements IEntryService<EntryType.Meal> {
   protected foodService: FoodService;
 
   constructor(drizzle: DrizzleService, foodService: FoodService) {

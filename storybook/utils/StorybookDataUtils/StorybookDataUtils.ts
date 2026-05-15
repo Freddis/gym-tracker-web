@@ -395,6 +395,8 @@ export class StorybookDataUtils {
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
+      history: [],
+      historySize: 0,
     };
     return weight;
   }
