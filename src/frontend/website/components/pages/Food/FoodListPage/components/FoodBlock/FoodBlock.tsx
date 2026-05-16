@@ -7,7 +7,7 @@ import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/
 import {route, RouteId} from '../../../../../../../common/utils/route';
 import {useRouter} from '@tanstack/react-router';
 import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../../../utils/getFoodValueRecursively';
-import {useImagePlaceHolder} from '../../../../../../utils/getImagePlaceHolder';
+import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
 
 export const FoodBlock: FC<{food: Food}> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food.list);

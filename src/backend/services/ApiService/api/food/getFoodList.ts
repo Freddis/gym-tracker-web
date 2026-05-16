@@ -16,6 +16,10 @@ export const getFoodList = RouteFactory.createRoute({
     query: object({
       search: string().optional().openapi({description: 'Search for food by name'}),
       isDish: RouteFactory.validators.strings.boolean.optional().openapi({description: 'Filter for dishes only'}),
+      updatedAfter: RouteFactory.validators.strings.datetime.optional().openapi({
+        description: 'Only return foods updated after this date.',
+      }),
+      includeDeleted: RouteFactory.validators.strings.boolean.optional().openapi({description: 'Include deleted foods.'}),
       page: RouteFactory.validators.strings.number.optional().default('1').openapi({
         description: 'Page',
       }),

@@ -4,7 +4,7 @@ import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {cn} from '../../../../../common/utils/cn';
 import {FoodComponent} from '../../../../../common/utils/openapi-client';
 import {getFoodMacro, FoodMacros, getFoodCalories} from '../../../../utils/getFoodValueRecursively';
-import {useImagePlaceHolder} from '../../../../utils/getImagePlaceHolder';
+import {useImagePlaceHolder} from '../../../../utils/useImagePlaceHolder';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {Wrapped} from '../../../../utils/wrap';
 import {floorToMax3Decimals} from '../../../pages/Food/FoodUpdateForm/components/FoodComponentBlock/utils/floorToMax3Decimals';

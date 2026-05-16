@@ -9341,6 +9341,14 @@ export type GetFoodListData = {
      */
     isDish?: boolean;
     /**
+     * Only return foods updated after this date.
+     */
+    updatedAfter?: Date;
+    /**
+     * Include deleted foods.
+     */
+    includeDeleted?: boolean;
+    /**
      * Page
      */
     page?: number;

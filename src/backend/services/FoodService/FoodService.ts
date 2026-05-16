@@ -1,4 +1,4 @@
-import {and, eq, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
+import {and, eq, gte, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
 import {AppDb, AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Food} from './types/Food';
 import {ImageService} from '../ImageService/ImageService';
@@ -92,6 +92,12 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       params.search ? ilike(this.getTable().name, `%${params.search}%`) : undefined,
       isNull(this.getTable().deletedAt),
       params.isDish ? eq(this.getTable().isMeal, params.isDish) : undefined,
+      params.updatedAfter ? or(
+        gte(this.getTable().updatedAt, params.updatedAfter),
+        gte(this.getTable().createdAt, params.updatedAfter),
+        gte(this.getTable().deletedAt, params.updatedAfter),
+      ) : undefined,
+      params.includeDeleted ? isNull(this.getTable().deletedAt) : undefined,
     );
     return where;
   }

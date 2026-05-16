@@ -9,7 +9,7 @@ import {cn} from '../../../../../../../common/utils/cn';
 import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../../../utils/getFoodValueRecursively';
 import {FoodComponentBlockProps} from './types/FoodComponentBlockProps';
 import {floorToMax3Decimals} from './utils/floorToMax3Decimals';
-import {useImagePlaceHolder} from '../../../../../../utils/getImagePlaceHolder';
+import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
 import {avoidLet} from '../../../../../../../common/utils/avoidLet';
 import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../../../common/utils/route';
