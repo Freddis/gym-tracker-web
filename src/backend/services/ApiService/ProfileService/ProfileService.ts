@@ -1,57 +1,19 @@
+import {FoodUtility} from '../../../../common/utils/FoodUtility';
+import {Meal} from '../../../../frontend/common/utils/openapi-client';
 import {CoreUserService} from '../../CoreUserService/CoreUserService';
 import {EntryService} from '../../EntryService/EntryService';
 import {EntryType} from '../../EntryService/types/EntryType';
-import {FoodAmountUnit} from '../../FoodService/types/FoodAmountUnit';
-import {FoodComponent} from '../../FoodService/types/FoodComponent';
-import {Meal} from '../../MealService/types/Meal';
 import {User} from '../../UserService/types/User';
 import {UserService} from '../../UserService/UserService';
 import {Goal} from './types/Goal';
 import {GoalType} from './types/GoalType';
 import {UserProfile} from './types/UserProfile';
-
-enum FoodMacros {
-  Protein = 'protein',
-  Carbs = 'carbs',
-  Fat = 'fat',
-}
-
-interface IFood {
-  protein: number;
-  carbs: number;
-  fat: number;
-  servingSize: number | null;
-  isMeal: boolean;
-  components: FoodComponent[];
-}
-
-const getMacroValue = (food: IFood, macro: FoodMacros): number => {
-  const map: Record<FoodMacros, (food: IFood) => number> = {
-    [FoodMacros.Protein]: (food) => food.protein,
-    [FoodMacros.Carbs]: (food) => food.carbs,
-    [FoodMacros.Fat]: (food) => food.fat,
-  };
-  return map[macro](food);
-};
-
-const getFoodMacro = (food: IFood, macro: FoodMacros): number => {
-  if (!food.isMeal) {
-    const servingSize = food.servingSize ?? 100;
-    const servings = servingSize / 100;
-    return getMacroValue(food, macro) * servings;
-  }
-  return food.components.reduce((acc, curr) => {
-    const servingSize = curr.food.servingSize ?? 100;
-    const servings = curr.unit === FoodAmountUnit.Serving ? curr.amount : curr.amount / servingSize;
-    const value = getFoodMacro(curr.food, macro) * servings;
-    return acc + value;
-  }, 0);
-};
-
 export class ProfileService {
   protected readonly coreUserService: CoreUserService;
   protected readonly userService: UserService;
   protected readonly entryService: EntryService;
+  protected readonly foodUtility: FoodUtility = new FoodUtility();
+
   constructor(
     coreUserService: CoreUserService,
     userService: UserService,
@@ -60,7 +22,6 @@ export class ProfileService {
     this.coreUserService = coreUserService;
     this.userService = userService;
     this.entryService = entryService;
-
   }
 
   async getProfile(id: number): Promise<UserProfile> {
@@ -71,22 +32,28 @@ export class ProfileService {
     const goals = await this.getGoalsForUser(coreUser);
     const weight = await this.getWeightForUser(coreUser);
     const age = new Date().getFullYear() - coreUser.birthDate.getFullYear();
-
+    const historySize = 30;
     const meals = await this.entryService.getAll({
       userId: [id],
       type: [EntryType.Meal],
       perPage: 100,
-      date: new Date(),
+      after: new Date(new Date().setDate(new Date().getDate() - historySize)),
+      before: new Date(new Date().setDate(new Date().getDate() + 1)),
     });
-    const consumedCalories = meals.items.reduce((acc, cur) => {
-      const calories = this.calculateCalories(cur.meal);
-      return {
-        calories: acc.calories + calories.calories,
-        carbs: acc.carbs + calories.carbs,
-        protein: acc.protein + calories.protein,
-        fat: acc.fat + calories.fat,
-      };
-    }, {calories: 0, carbs: 0, protein: 0, fat: 0});
+    const todayText = new Date().toDateString();
+    const todayMeals = meals.items.filter((x) => x.time.toDateString() === todayText).flatMap((x) => x.meal.food);
+    const map = new Map<string, Meal[]>();
+    for (const meal of meals.items) {
+      const date = meal.time.toDateString();
+      const rows = map.get(date) ?? [];
+      rows.push(meal.meal);
+      map.set(date, rows);
+    }
+    const history = Array.from(map.entries()).map(([date, meals]) => ({
+      date: new Date(date),
+      value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.food)).calories,
+    }));
+    const consumedCalories = this.foodUtility.getNutritionFacts(todayMeals);
     const profile: UserProfile = {
       user: this.userService.decorateFromCore(coreUser),
       goals,
@@ -101,21 +68,13 @@ export class ProfileService {
         height: coreUser.heightUnit,
         temperature: coreUser.temperatureUnit,
       },
-      consumedCalories: {
-        calories: Math.round(consumedCalories.calories),
-        carbs: Math.round(consumedCalories.carbs),
-        protein: Math.round(consumedCalories.protein),
-        fat: Math.round(consumedCalories.fat),
+      consumedCalories,
+      consumedCaloriesHistory: {
+        data: history,
+        size: historySize,
       },
     };
     return profile;
-  }
-
-  protected calculateCalories(meal: Meal): {calories: number, carbs: number, protein: number, fat: number} {
-    const carbs = getFoodMacro({protein: 0, carbs: 0, fat: 0, servingSize: 0, isMeal: true, components: meal.food}, FoodMacros.Carbs);
-    const protein = getFoodMacro({protein: 0, carbs: 0, fat: 0, servingSize: 0, isMeal: true, components: meal.food}, FoodMacros.Protein);
-    const fat = getFoodMacro({protein: 0, carbs: 0, fat: 0, servingSize: 0, isMeal: true, components: meal.food}, FoodMacros.Fat);
-    return {calories: protein * 4 + carbs * 4 + fat * 9, carbs: carbs, protein: protein, fat: fat};
   }
 
   protected async getGoalsForUser(user: User): Promise<Goal[]> {

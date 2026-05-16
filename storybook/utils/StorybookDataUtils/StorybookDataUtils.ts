@@ -303,6 +303,10 @@ export class StorybookDataUtils {
         protein: 20,
         fat: 64,
       },
+      consumedCaloriesHistory: {
+        data: [],
+        size: 0,
+      },
     };
     return profile;
   }

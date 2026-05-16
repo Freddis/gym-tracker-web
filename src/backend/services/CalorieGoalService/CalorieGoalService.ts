@@ -8,7 +8,6 @@ import {EntryType} from '../EntryService/types/EntryType';
 import {BaseEntry, CalorieGoalEntry} from '../EntryService/types/Entry';
 import {CalorieGoalEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {CalorieGoal} from './types/CalorieGoal';
-
 export class CalorieGoalService
 extends ModelService<number, AppDbSchema['calorieGoals']['$inferSelect'], CalorieGoal>
 implements IEntryService<EntryType.CalorieGoal> {

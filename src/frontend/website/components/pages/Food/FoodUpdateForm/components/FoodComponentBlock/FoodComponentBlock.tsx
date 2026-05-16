@@ -6,16 +6,18 @@ import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppParti
 import {AppTextInput} from '../../../../../../../common/components/atoms/AppTextInput/AppTextInput';
 import {useResponseErrors} from '../../../../../../../common/utils/useResponseErrors';
 import {cn} from '../../../../../../../common/utils/cn';
-import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../../../utils/getFoodValueRecursively';
 import {FoodComponentBlockProps} from './types/FoodComponentBlockProps';
 import {floorToMax3Decimals} from './utils/floorToMax3Decimals';
 import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
 import {avoidLet} from '../../../../../../../common/utils/avoidLet';
 import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../../../common/utils/route';
+import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../../../common/utils/types/FoodMacros';
 
 
 export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
+  const foodUtility = new FoodUtility();
   const item = props.item;
   const food = props.item.item.food;
   const defaultAmount = props.item.item.food.servingSize ?? 100;
@@ -40,10 +42,10 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
     return 1;
   });
 
-  const protein = getFoodMacro(food, FoodMacros.Protein) * multiplier;
-  const carbs = getFoodMacro(food, FoodMacros.Carbs) * multiplier;
-  const fat = getFoodMacro(food, FoodMacros.Fat) * multiplier;
-  const calories = getFoodCalories(food) * multiplier;
+  const protein = foodUtility.getFoodMacro(food, FoodMacros.Protein) * multiplier;
+  const carbs = foodUtility.getFoodMacro(food, FoodMacros.Carbs) * multiplier;
+  const fat = foodUtility.getFoodMacro(food, FoodMacros.Fat) * multiplier;
+  const calories = foodUtility.getFoodCalories(food) * multiplier;
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
   const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);

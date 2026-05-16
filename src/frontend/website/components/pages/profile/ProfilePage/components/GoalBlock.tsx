@@ -1,18 +1,18 @@
 import {FC} from 'react';
-import {ConsumedCalories, Goal, UnitSettings} from '../../../../../../common/utils/openapi-client';
+import {ConsumedCalories, ConsumedCaloriesHistory, Goal, UnitSettings} from '../../../../../../common/utils/openapi-client';
 import {CalorieGoalBlock} from './CalorieGoalBlock';
 import {WeightGoalBlock} from './WeightGoalBlock';
 import {AppBlock} from '../../../../../../common/components/atoms/AppBlock/AppBlock';
 import {FaQuestion} from 'react-icons/fa6';
-
 interface GoalBlockProps {
   goal: Goal;
   units: UnitSettings;
   consumedCalories: ConsumedCalories;
+  history: ConsumedCaloriesHistory;
 }
-export const GoalBlock: FC<GoalBlockProps> = ({goal, consumedCalories, units}) => {
+export const GoalBlock: FC<GoalBlockProps> = ({goal, consumedCalories, units, history}) => {
   if (goal.calorie) {
-    return <CalorieGoalBlock units={units} goal={goal.calorie} consumedCalories={consumedCalories} />;
+    return <CalorieGoalBlock units={units} goal={goal.calorie} consumedCalories={consumedCalories} history={history} />;
   }
   if (goal.weight) {
     return <WeightGoalBlock goal={goal.weight} />;

@@ -7,7 +7,6 @@ import {EntryBlockHeader} from './EntryBlockHeader';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {wrap} from '../../../../utils/wrap';
 import {MealEntryBlockFoodComponent} from './MealEntryBlockFoodComponent';
-import {getFoodMacro, FoodMacros, getFoodCalories} from '../../../../utils/getFoodValueRecursively';
 import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
 import {AppSeparator} from '../../../../../common/components/atoms/AppSeparator/AppSeparator';
 import {PostContent} from './PostContent';
@@ -15,6 +14,8 @@ import {ChartData} from 'chart.js';
 import 'chart.js/auto';
 import {Pie} from 'react-chartjs-2';
 import {customColors} from '../../../../../common/utils/design-system/customColors';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
 interface MealEntryBlockProps {
   entry: Entry;
   meal: Meal;
@@ -22,6 +23,7 @@ interface MealEntryBlockProps {
 }
 
 export const MealEntryBlock: FC<MealEntryBlockProps> = (props) => {
+  const foodUtility = new FoodUtility();
   const {entry, meal, own} = props;
   const t = useAppPartialTranslation((x) => x.pages.activities.list.objects.meal);
   const food = meal.food.map(wrap);
@@ -42,10 +44,10 @@ export const MealEntryBlock: FC<MealEntryBlockProps> = (props) => {
     updatedAt: null,
     deletedAt: null,
   };
-  const totalProtein = getFoodMacro(updatedFood, FoodMacros.Protein);
-  const totalCarbs = getFoodMacro(updatedFood, FoodMacros.Carbs);
-  const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
-  const totalCalories = getFoodCalories(updatedFood);
+  const totalProtein = foodUtility.getFoodMacro(updatedFood, FoodMacros.Protein);
+  const totalCarbs = foodUtility.getFoodMacro(updatedFood, FoodMacros.Carbs);
+  const totalFat = foodUtility.getFoodMacro(updatedFood, FoodMacros.Fat);
+  const totalCalories = foodUtility.getFoodCalories(updatedFood);
   const data: ChartData<'pie', number[], string> = {
     labels: [
       t.f((x) => x.pages.food.list.labels.protein),

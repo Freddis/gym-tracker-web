@@ -6,18 +6,20 @@ import {useAppPartialTranslation} from '../../../../../../utils/i18n/useAppParti
 import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../../../common/utils/route';
 import {useRouter} from '@tanstack/react-router';
-import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../../../utils/getFoodValueRecursively';
 import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
+import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../../../common/utils/types/FoodMacros';
 
 export const FoodBlock: FC<{food: Food}> = (props) => {
+  const foodUtility = new FoodUtility();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food.list);
   const router = useRouter();
   const placeholder = useImagePlaceHolder();
   const servingSize = props.food.servingSize ?? 100;
-  const totalProtein = getFoodMacro(props.food, FoodMacros.Protein);
-  const totalCarbs = getFoodMacro(props.food, FoodMacros.Carbs);
-  const totalFat = getFoodMacro(props.food, FoodMacros.Fat);
-  const totalCalories = getFoodCalories(props.food);
+  const totalProtein = foodUtility.getFoodMacro(props.food, FoodMacros.Protein);
+  const totalCarbs = foodUtility.getFoodMacro(props.food, FoodMacros.Carbs);
+  const totalFat = foodUtility.getFoodMacro(props.food, FoodMacros.Fat);
+  const totalCalories = foodUtility.getFoodCalories(props.food);
   const to = router.buildLocation({to: route(RouteId.FoodUpdate), params: {id: props.food.id}}).href;
   return (
    <AppBlock

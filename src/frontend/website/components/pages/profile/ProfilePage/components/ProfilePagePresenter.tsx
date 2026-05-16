@@ -34,13 +34,6 @@ export const ProfilePagePresenter: FC<ProfilePagePresenterProps> = (props) => {
     <BasicPage>
       <div className="w-full text-left mb-5 flex">
         <AppPageHeading>{t.p((x) => x.heading)}</AppPageHeading>
-        <div className="grow flex flex-row-reverse gap-5 items-center">
-          {/* {props.own && (
-            <RouteLink to={route(RouteId.EntryAdd)} className="z-0">
-              <AppButton>{'Edit'}</AppButton>
-            </RouteLink>
-          )} */}
-        </div>
       </div>
       <div className="flex flex-col md:flex-row gap-5 items-start">
         <UserProfileBlock user={user} own={props.own} />
@@ -77,12 +70,6 @@ export const ProfilePagePresenter: FC<ProfilePagePresenterProps> = (props) => {
                     <div>{profile.age} </div>
                   </div>
                 </div>
-                {/* {props.own && (
-                  <div className="flex flex-col gap-2 items-start w-full">
-                    <div className="text-lg bold">{t.p((x) => x.labels.visibility)}</div>
-                    <div className="font-semibold">Public </div>
-                  </div>
-                )} */}
               </div>
             </AppBlock>
             <div className="flex flex-col gap-2 items-start w-full">
@@ -98,7 +85,13 @@ export const ProfilePagePresenter: FC<ProfilePagePresenterProps> = (props) => {
               </div>
               <div className="flex flex-col gap-5 w-full">
               {goals.map((goal) => (
-                <GoalBlock units={profile.units} key={goal.key} goal={goal.item} consumedCalories={profile.consumedCalories} />
+                <GoalBlock
+                units={profile.units}
+                key={goal.key}
+                goal={goal.item}
+                consumedCalories={profile.consumedCalories}
+                history={profile.consumedCaloriesHistory}
+                />
               ))}
               {goals.length === 0 && (
                 <AppToast variant={Color.Warning}>{t.p((x) => x.toasts.noGoals)}</AppToast>

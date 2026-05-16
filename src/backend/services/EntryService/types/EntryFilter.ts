@@ -12,4 +12,6 @@ export interface EntryFilter<T extends EntryType> extends Filter<string> {
   updatedAfter?: Date,
   language?:Language
   date?: Date,
+  after?: Date,
+  before?: Date,
 }

@@ -3,15 +3,17 @@ import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel
 import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {cn} from '../../../../../common/utils/cn';
 import {FoodComponent} from '../../../../../common/utils/openapi-client';
-import {getFoodMacro, FoodMacros, getFoodCalories} from '../../../../utils/getFoodValueRecursively';
 import {useImagePlaceHolder} from '../../../../utils/useImagePlaceHolder';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {Wrapped} from '../../../../utils/wrap';
 import {floorToMax3Decimals} from '../../../pages/Food/FoodUpdateForm/components/FoodComponentBlock/utils/floorToMax3Decimals';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
 
 export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own?: boolean}> = (props) => {
+  const foodUtility = new FoodUtility();
   const item = props.item;
   const food = props.item.item.food;
   const defaultAmount = props.item.item.food.servingSize ?? 100;
@@ -34,10 +36,10 @@ export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own
     return 1;
   });
 
-  const protein = getFoodMacro(food, FoodMacros.Protein) * multiplier;
-  const carbs = getFoodMacro(food, FoodMacros.Carbs) * multiplier;
-  const fat = getFoodMacro(food, FoodMacros.Fat) * multiplier;
-  const calories = getFoodCalories(food) * multiplier;
+  const protein = foodUtility.getFoodMacro(food, FoodMacros.Protein) * multiplier;
+  const carbs = foodUtility.getFoodMacro(food, FoodMacros.Carbs) * multiplier;
+  const fat = foodUtility.getFoodMacro(food, FoodMacros.Fat) * multiplier;
+  const calories = foodUtility.getFoodCalories(food) * multiplier;
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
   const servedInServings = item.item.food.isMeal || item.item.food.servingSize !== null;
 

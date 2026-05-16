@@ -14,7 +14,6 @@ import {usePopup} from '../../../../../common/components/atoms/Popup/utils/usePo
 import {IngredientSelectionPopup} from '../IngredientSelectionPopup/IngredientSelectionPopup';
 import {FoodComponentBlock} from './components/FoodComponentBlock/FoodComponentBlock';
 import {wrap, Wrapped} from '../../../../utils/wrap';
-import {FoodMacros, getFoodCalories, getFoodMacro} from '../../../../utils/getFoodValueRecursively';
 import {FoodUpdateFormProps} from './types/FoodUpdateFormProps';
 import {FormSubmitRef} from '../../../../../common/types/FormSubmitRef';
 import {foodValidator} from './validators/foodValidator';
@@ -24,8 +23,11 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {FoodAmountUnit} from '../../../../../../backend/services/FoodService/types/FoodAmountUnit';
 import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {stringToNumber} from '../../../../utils/stringToNumber';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
 
 export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((props, ref) => {
+  const foodUtility = new FoodUtility();
   const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
   const [hasServingSize, setHasServingSize] = useState(props.food.servingSize !== null);
   const {getSmartError, setErrors} = useResponseErrors<Food>(props.errors);
@@ -52,10 +54,10 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
     servingSize: hasServingSize ? stringToNumber(servingSize, 0) : null,
   };
 
-  const totalProtein = getFoodMacro(updatedFood, FoodMacros.Protein);
-  const totalCarbs = getFoodMacro(updatedFood, FoodMacros.Carbs);
-  const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
-  const totalCalories = getFoodCalories(updatedFood);
+  const totalProtein = foodUtility.getFoodMacro(updatedFood, FoodMacros.Protein);
+  const totalCarbs = foodUtility.getFoodMacro(updatedFood, FoodMacros.Carbs);
+  const totalFat = foodUtility.getFoodMacro(updatedFood, FoodMacros.Fat);
+  const totalCalories = foodUtility.getFoodCalories(updatedFood);
   const calories = avoidLet(() => {
     if (updatedFood.servingSize === 0) {
       return 0;

@@ -6,7 +6,7 @@ import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {BaseEntry, Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
-import {and, inArray, isNull, desc, gte, or, eq, sql, between} from 'drizzle-orm';
+import {and, inArray, isNull, desc, gte, or, eq, sql, between, lte} from 'drizzle-orm';
 import {WeightService} from '../WeightService/WeightService';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
@@ -238,6 +238,8 @@ export class EntryService {
       params?.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
       params?.userId ? inArray(db._.fullSchema.entries.userId, params.userId) : undefined,
       params?.includeDeleted ? undefined : isNull(db._.fullSchema.entries.deletedAt),
+      params?.after ? gte(db._.fullSchema.entries.time, params.after) : undefined,
+      params?.before ? lte(db._.fullSchema.entries.time, params.before) : undefined,
       params?.updatedAfter ? or(
         gte(db._.fullSchema.entries.updatedAt, params.updatedAfter),
         gte(db._.fullSchema.entries.createdAt, params.updatedAfter),

@@ -422,6 +422,7 @@ export const dictionary: Translation = {
         noGoals: 'У вас пока нет целей. Попробуйте добавить одну!',
       },
       labels: {
+        from: 'От',
         remainingToday: 'Осталось Сегодня',
         visibility: 'Видимость',
         about: 'О себе',

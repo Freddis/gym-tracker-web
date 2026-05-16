@@ -547,10 +547,22 @@ const goalSchemaResponseTransformer = (data: any) => {
   return data;
 };
 
+const consumedCaloriesHistorySchemaResponseTransformer = (data: any) => {
+  data.data = data.data.map((item: any) => {
+    item.date = new Date(item.date);
+    return item;
+  });
+  return data;
+};
+
 const profileSchemaResponseTransformer = (data: any) => {
   data.goals = data.goals.map((item: any) => {
     return goalSchemaResponseTransformer(item);
   });
+  data.consumedCaloriesHistory =
+    consumedCaloriesHistorySchemaResponseTransformer(
+      data.consumedCaloriesHistory,
+    );
   return data;
 };
 

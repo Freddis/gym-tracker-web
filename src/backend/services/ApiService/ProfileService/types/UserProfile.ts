@@ -5,7 +5,15 @@ import {DistanceUnit} from '../../../../types/DistanceUnit';
 import {HeightUnit} from '../../../../types/HeightUnit';
 import {TemperatureUnit} from '../../../../types/TemperatureUnit';
 import {WeightUnit} from '../../../../types/WeightUnit';
+import {NutritionFacts} from '../../../../../common/utils/FoodUtility';
 
+interface ConsumedCaloriesHistory {
+  data: {
+    date: Date;
+    value: number;
+  }[];
+  size: number;
+}
 export interface UserProfile {
   user: User;
   goals: Goal[]
@@ -20,10 +28,6 @@ export interface UserProfile {
     height: HeightUnit
     temperature: TemperatureUnit
   }
-  consumedCalories: {
-    calories: number;
-    carbs: number;
-    protein: number;
-    fat: number;
-  }
+  consumedCaloriesHistory: ConsumedCaloriesHistory
+  consumedCalories: NutritionFacts
 }

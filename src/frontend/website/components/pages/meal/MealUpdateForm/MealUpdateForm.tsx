@@ -19,7 +19,6 @@ import {
   MealEntryUpsertDto,
   EntryType,
   } from '../../../../../common/utils/openapi-client';
-import {getFoodMacro, FoodMacros, getFoodCalories} from '../../../../utils/getFoodValueRecursively';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {wrap, Wrapped} from '../../../../utils/wrap';
 import {FoodComponentBlock} from '../../Food/FoodUpdateForm/components/FoodComponentBlock/FoodComponentBlock';
@@ -31,13 +30,15 @@ import {SelectValue} from '../../../../../common/components/atoms/AppSelect/type
 import {EntryUpdateForm} from '../../../blocks/EntryUpdateForm/EntryUpdateForm';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
-
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
 interface MealUpdateFormProps {
   meal: Meal;
   entry: Entry;
   onSubmit: (meal: MealEntryUpsertDto) => void;
 }
 export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((props, ref) => {
+  const foodUtility = new FoodUtility();
   const t = useAppPartialTranslation((x) => x.pages.meals);
   const toasts = useToasts();
   const popup = usePopup();
@@ -71,10 +72,10 @@ export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((pr
     deletedAt: null,
   };
 
-  const totalProtein = getFoodMacro(updatedFood, FoodMacros.Protein);
-  const totalCarbs = getFoodMacro(updatedFood, FoodMacros.Carbs);
-  const totalFat = getFoodMacro(updatedFood, FoodMacros.Fat);
-  const totalCalories = getFoodCalories(updatedFood);
+  const totalProtein = foodUtility.getFoodMacro(updatedFood, FoodMacros.Protein);
+  const totalCarbs = foodUtility.getFoodMacro(updatedFood, FoodMacros.Carbs);
+  const totalFat = foodUtility.getFoodMacro(updatedFood, FoodMacros.Fat);
+  const totalCalories = foodUtility.getFoodCalories(updatedFood);
 
   const onEntrySubmit = (entry: PostEntryUpsertDto) => {
     const components: FoodComponentUpsertDto[] = ingredients.map((wrapper) => {

@@ -1,4 +1,4 @@
-import {object, array, string, number, nativeEnum} from 'zod';
+import {object, array, string, number, nativeEnum, date} from 'zod';
 import {calorieGoalValidator} from '../../entries/validators/calorieGoalValidator';
 import {genderValidator} from '../../settings/validators/genderValidator';
 import {userValidator} from '../../users/validators/userValidator';
@@ -9,6 +9,14 @@ const goalTypeValidator = nativeEnum(GoalType).openapi({ref: 'GoalType', descrip
 const weightGoalValidator = object({
   target: number().openapi({description: 'Target weight of the goal'}),
 }).openapi({ref: 'WeightGoal', description: 'Weight goal record'});
+
+const consumedCaloriesHistoryValidator = object({
+  data: object({
+    date: date().openapi({description: 'Date of the consumed calories'}),
+    value: number().openapi({description: 'Calories consumed on the date'}),
+  }).array().openapi({description: 'History records'}),
+  size: number().openapi({description: 'Size of the history in days'}),
+}).openapi({ref: 'ConsumedCaloriesHistory', description: 'Consumed calories history'});
 
 const consumedCaloriesValidator = object({
   calories: number().openapi({description: 'Calories consumed today'}),
@@ -33,4 +41,5 @@ export const profileValidator = object({
   gender: genderValidator,
   units: unitsValidator,
   consumedCalories: consumedCaloriesValidator,
+  consumedCaloriesHistory: consumedCaloriesHistoryValidator,
 }).openapi({ref: 'Profile', description: 'Profile of the user'});

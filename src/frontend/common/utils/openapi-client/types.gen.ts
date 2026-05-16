@@ -2978,6 +2978,7 @@ export type Profile = {
   gender: Gender;
   units: UnitSettings;
   consumedCalories: ConsumedCalories;
+  consumedCaloriesHistory: ConsumedCaloriesHistory;
 };
 
 /**
@@ -3100,6 +3101,29 @@ export type ConsumedCalories = {
    * Fat consumed today
    */
   fat: number;
+};
+
+/**
+ * Consumed calories history
+ */
+export type ConsumedCaloriesHistory = {
+  /**
+   * History records
+   */
+  data: Array<{
+    /**
+     * Date of the consumed calories
+     */
+    date: Date;
+    /**
+     * Calories consumed on the date
+     */
+    value: number;
+  }>;
+  /**
+   * Size of the history in days
+   */
+  size: number;
 };
 
 /**

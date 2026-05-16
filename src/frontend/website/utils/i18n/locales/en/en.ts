@@ -409,6 +409,7 @@ export const dictionary = {
         addGoal: 'Add Goal',
       },
       labels: {
+        from: 'From',
         remainingToday: 'Remaining Today',
         visibility: 'Visibility',
         about: 'About',
