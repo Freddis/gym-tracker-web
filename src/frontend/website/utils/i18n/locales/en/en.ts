@@ -417,6 +417,7 @@ export const dictionary = {
         height: 'Height',
         weight: 'Weight',
         age: 'Age',
+        deviation: 'Daily Deviation: {deviation} ({percentage}%)',
       },
       toasts: {
         noGoals: 'You don\'t have any goals yet. Try to add one!',

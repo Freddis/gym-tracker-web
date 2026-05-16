@@ -430,6 +430,7 @@ export const dictionary: Translation = {
         goals: 'Цели',
         height: 'Рост',
         weight: 'Вес',
+        deviation: 'Ежедневное Отклонение: {deviation} ({percentage}%)',
       },
     },
     food: {

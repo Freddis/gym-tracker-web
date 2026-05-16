@@ -24,7 +24,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   const bgColor = theme === Theme.Dark ? '#111' : '#eee';
   const calories: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [consumedCalories.calories, Math.max(0, goal.calories - consumedCalories.calories)],
+      data: [Math.round(consumedCalories.calories), Math.max(0, Math.round(goal.calories - consumedCalories.calories))],
       backgroundColor: [
         customColors.calories,
         bgColor,
@@ -36,7 +36,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const protein: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [consumedCalories.protein, Math.max(0, goal.protein - consumedCalories.protein)],
+      data: [Math.round(consumedCalories.protein), Math.max(0, Math.round(goal.protein - consumedCalories.protein))],
       backgroundColor: [
         customColors.protein,
         bgColor,
@@ -46,7 +46,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const fat: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [consumedCalories.fat, Math.max(0, goal.fat - consumedCalories.fat)],
+      data: [Math.round(consumedCalories.fat), Math.max(0, Math.round(goal.fat - consumedCalories.fat))],
       backgroundColor: [
         customColors.fat,
         bgColor,
@@ -56,7 +56,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const carbs: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [consumedCalories.carbs, Math.max(0, goal.carbs - consumedCalories.carbs)],
+      data: [Math.round(consumedCalories.carbs), Math.max(0, Math.round(goal.carbs - consumedCalories.carbs))],
       backgroundColor: [
         customColors.carbs,
         bgColor,
@@ -114,7 +114,8 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
       ],
     };
   };
-  const chartData = buildChart(props.history.data, props.history.size);
+  const historyWithoutToday = props.history.data.filter((item) => item.date.toDateString() !== new Date().toDateString());
+  const chartData = buildChart(historyWithoutToday, props.history.size, new Date(new Date().getTime() - 1000 * 60 * 60 * 24));
   const chartOptions: ChartOptions<'bar'> = {
     maintainAspectRatio: false,
     plugins: {
@@ -139,8 +140,9 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
         },
       },
     },
-
   };
+  const deviation = historyWithoutToday.reduce((acc, curr) => acc + (curr.value - props.goal.calories), 0) / historyWithoutToday.length;
+  const deviationPercentage = (deviation / props.goal.calories * 100).toFixed(1);
   return (
     <AppBlock>
     <div className="w-full flex flex-row gap-5 items-center">
@@ -194,6 +196,9 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
         </div>
         <div className="w-full h-50 mt-5">
           <Bar data={chartData} options={chartOptions} />
+        </div>
+        <div>
+          {t.p((x) => x.labels.deviation, {deviation: deviation.toFixed(0), percentage: deviationPercentage})}
         </div>
       </div>
     </div>
