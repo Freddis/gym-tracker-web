@@ -51,7 +51,7 @@ export class ProfileService {
     }
     const history = Array.from(map.entries()).map(([date, meals]) => ({
       date: new Date(date),
-      value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.food)).calories,
+      value: this.foodUtility.getNutritionFacts(meals.flatMap((x) => x.food)),
     }));
     const consumedCalories = this.foodUtility.getNutritionFacts(todayMeals);
     const profile: UserProfile = {

@@ -10,20 +10,21 @@ const weightGoalValidator = object({
   target: number().openapi({description: 'Target weight of the goal'}),
 }).openapi({ref: 'WeightGoal', description: 'Weight goal record'});
 
-const consumedCaloriesHistoryValidator = object({
-  data: object({
-    date: date().openapi({description: 'Date of the consumed calories'}),
-    value: number().openapi({description: 'Calories consumed on the date'}),
-  }).array().openapi({description: 'History records'}),
-  size: number().openapi({description: 'Size of the history in days'}),
-}).openapi({ref: 'ConsumedCaloriesHistory', description: 'Consumed calories history'});
-
 const consumedCaloriesValidator = object({
   calories: number().openapi({description: 'Calories consumed today'}),
   carbs: number().openapi({description: 'Carbs consumed today'}),
   protein: number().openapi({description: 'Protein consumed today'}),
   fat: number().openapi({description: 'Fat consumed today'}),
 }).openapi({ref: 'ConsumedCalories', description: 'Consumed calories'});
+
+const consumedCaloriesHistoryValidator = object({
+  data: object({
+    date: date().openapi({description: 'Date of the consumed calories'}),
+    value: consumedCaloriesValidator,
+  }).array().openapi({description: 'History records'}),
+  size: number().openapi({description: 'Size of the history in days'}),
+}).openapi({ref: 'ConsumedCaloriesHistory', description: 'Consumed calories history'});
+
 
 const goalValidator = object({
   type: goalTypeValidator,

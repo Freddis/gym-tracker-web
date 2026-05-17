@@ -3115,10 +3115,7 @@ export type ConsumedCaloriesHistory = {
      * Date of the consumed calories
      */
     date: Date;
-    /**
-     * Calories consumed on the date
-     */
-    value: number;
+    value: ConsumedCalories;
   }>;
   /**
    * Size of the history in days

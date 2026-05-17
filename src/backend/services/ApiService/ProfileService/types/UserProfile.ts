@@ -10,7 +10,7 @@ import {NutritionFacts} from '../../../../../common/utils/FoodUtility';
 interface ConsumedCaloriesHistory {
   data: {
     date: Date;
-    value: number;
+    value: NutritionFacts;
   }[];
   size: number;
 }

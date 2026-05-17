@@ -67,6 +67,20 @@ export class FoodUtility {
     return protein * 4 + carbs * 4 + fat * 9;
   }
 
+  macroToCalories(macro: FoodMacros, value: number): number {
+    const map: Record<FoodMacros, number> = {
+      [FoodMacros.Protein]: 4,
+      [FoodMacros.Carbs]: 4,
+      [FoodMacros.Fat]: 9,
+    };
+    return value * map[macro];
+  }
+  macrosToCalories(protein: number, carbs: number, fat: number): number {
+    const proteinCalories = this.macroToCalories(FoodMacros.Protein, protein);
+    const carbsCalories = this.macroToCalories(FoodMacros.Carbs, carbs);
+    const fatCalories = this.macroToCalories(FoodMacros.Fat, fat);
+    return proteinCalories + carbsCalories + fatCalories;
+  }
 }
 
 
