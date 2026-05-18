@@ -1,4 +1,4 @@
-import {eq, and, desc, gte, isNull, inArray} from 'drizzle-orm';
+import {eq, and, desc, isNull, inArray} from 'drizzle-orm';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {Workout} from 'src/backend/services/WorkoutService/types/Workout';
 import {dbSchema} from 'src/backend/services/DrizzleService/types/db';
@@ -293,7 +293,7 @@ export class WorkoutService implements IEntryService<EntryType.Workout> {
         params?.id ? inArray(dbSchema.workouts.id, params.id) : undefined,
         params?.userId ? eq(dbSchema.workouts.userId, params.userId) : undefined,
         // isNull(dbSchema.workouts.deletedAt),
-        params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
+        // params?.updatedAfter ? gte(dbSchema.workouts.updatedAt, params.updatedAfter) : undefined
       );
     const query = db.select({
       id: dbSchema.workouts.id,

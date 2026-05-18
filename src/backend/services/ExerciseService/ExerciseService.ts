@@ -1,4 +1,4 @@
-import {and, inArray, eq, exists, isNull, asc, or, gte, ilike, sql, not, Query} from 'drizzle-orm';
+import {and, inArray, eq, exists, isNull, asc, or, ilike, sql, not, Query, gt} from 'drizzle-orm';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseRow} from 'src/backend/services/DrizzleService/types/ExerciseRow';
 import {ExerciseUpsertDto} from 'src/backend/services/ExerciseService/types/ExerciseUpsertDto';
@@ -329,7 +329,7 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
           params?.includeBuiltIn ? isNull(db._.fullSchema.exercises.userId) : undefined,
         ) : undefined
       ),
-      params?.updatedAfter ? gte(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
+      params?.updatedAfter ? gt(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
       params?.filter ? or(
         and(
           isNull(db._.fullSchema.translations.value),
