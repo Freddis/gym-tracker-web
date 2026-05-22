@@ -25,10 +25,12 @@ import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {stringToNumber} from '../../../../utils/stringToNumber';
 import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
 import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
+import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
+import {route, RouteId} from '../../../../../common/utils/route';
 
 export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((props, ref) => {
   const foodUtility = new FoodUtility();
-  const {translations, i18n, t} = useAppPartialTranslation((x) => x.pages.food);
+  const t = useAppPartialTranslation((x) => x.pages.food);
   const [hasServingSize, setHasServingSize] = useState(props.food.servingSize !== null);
   const {getSmartError, setErrors} = useResponseErrors<Food>(props.errors);
   const [name, setName] = useState(props.food.name ?? '');
@@ -79,7 +81,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
       });
       if (!validated.success) {
         setErrors(validated.error.errors.map((x) => ({field: x.path.join('.'), message: x.message})));
-        toasts.addDanger(t(i18n.update.toasts.invalidForm));
+        toasts.addDanger(t.f((x) => x.pages.food.update.toasts.invalidForm));
         return;
       }
       const imageData: ImageUpsertDto | undefined = validated.data.image ? {
@@ -146,7 +148,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
     <div className="flex flex-col items-start">
     <div className="flex flex-row gap-5 items-start">
       <div className="w-30">
-        <AppLabel>{translations.utils.objects.food.fields.name}</AppLabel>
+        <AppLabel>{t.f((x) => x.utils.objects.food.fields.name)}</AppLabel>
       </div>
       <div className="flex flex-col grow">
         <div className="w-100 max-w-full">
@@ -157,7 +159,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
     </div>
     <div className="flex flex-row gap-5 items-start">
       <div className="w-30">
-        <AppLabel>{translations.utils.objects.food.fields.description}</AppLabel>
+        <AppLabel>{t.f((x) => x.utils.objects.food.fields.description)}</AppLabel>
       </div>
       <div className="flex flex-col grow">
         <div className="w-100 max-w-full h-25">
@@ -168,7 +170,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
     </div>
     <div className="flex flex-row gap-5 items-start">
       <div className="w-30">
-        <AppLabel>{translations.utils.objects.food.fields.image}</AppLabel>
+        <AppLabel>{t.f((x) => x.utils.objects.food.fields.image)}</AppLabel>
       </div>
       <div className="flex flex-col grow">
         <AppImageInput onUpdate={setImage} url={props.food?.image?.url} className="w-100 h-80" />
@@ -179,31 +181,31 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
       <>
         <div className="flex flex-row gap-5">
           <div className="flex flex-row gap-5 items-start">
-            <AppLabel>{translations.utils.objects.food.fields.protein}</AppLabel>
+            <AppLabel>{t.f((x) => x.utils.objects.food.fields.protein)}</AppLabel>
             <div className="flex flex-col grow">
               <div className="w-20 max-w-full flex items-center gap-2">
                 <AppTextInput onChange={(e) => setProtein(e.target.value)} value={protein}/>
-                <span>{translations.utils.objects.units.g}</span>
+                <span>{t.f((x) => x.utils.objects.units.g)}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.protein)} />
             </div>
           </div>
           <div className="flex flex-row gap-5 items-start">
-            <AppLabel>{translations.utils.objects.food.fields.fat}</AppLabel>
+            <AppLabel>{t.f((x) => x.utils.objects.food.fields.fat)}</AppLabel>
             <div className="flex flex-col grow">
               <div className="w-20 max-w-full flex items-center gap-2">
                 <AppTextInput onChange={(e) => setFat(e.target.value)} value={fat}/>
-                <span>{translations.utils.objects.units.g}</span>
+                <span>{t.f((x) => x.utils.objects.units.g)}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.fat)} />
             </div>
           </div>
           <div className="flex flex-row gap-5 items-start">
-            <AppLabel>{translations.utils.objects.food.fields.carbs}</AppLabel>
+            <AppLabel>{t.f((x) => x.utils.objects.food.fields.carbs)}</AppLabel>
             <div className="flex flex-col grow">
               <div className="w-20 max-w-full flex items-center gap-2">
                 <AppTextInput onChange={(e) => setCarbs(e.target.value)} value={carbs}/>
-                <span>{translations.utils.objects.units.g}</span>
+                <span>{t.f((x) => x.utils.objects.units.g)}</span>
               </div>
               <AppInputError error={getSmartError((x) => x.carbs)} />
             </div>
@@ -211,7 +213,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
         </div>
         <div className="flex flex-row gap-5 items-start">
           <div className="w-30">
-            <AppLabel>{translations.utils.objects.food.fields.calories}</AppLabel>
+            <AppLabel>{t.f((x) => x.utils.objects.food.fields.calories)}</AppLabel>
           </div>
           <div className="flex flex-col">
               <div className="h-10 flex items-center">{calories.toFixed(0)}</div>
@@ -220,7 +222,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
         </div>
         <div className="flex flex-row gap-5 items-start">
           <div className="w-30">
-            <AppLabel>{t(i18n.create.labels.hasServingSize)}</AppLabel>
+            <AppLabel>{t.f((x) => x.pages.food.create.labels.hasServingSize)}</AppLabel>
           </div>
           <div className="flex flex-col">
             <div className="h-10 flex items-center">
@@ -233,22 +235,22 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
           <>
             <div className="flex flex-row gap-5 items-start">
               <div className="w-30">
-                <AppLabel>{translations.utils.objects.food.fields.servingSize}</AppLabel>
+                <AppLabel>{t.f((x) => x.utils.objects.food.fields.servingSize)}</AppLabel>
               </div>
               <div className="flex flex-col grow">
                 <div className="w-20 max-w-full flex items-center gap-2">
                   <AppTextInput onChange={(e) => setServingSize(e.target.value)} value={servingSize}/>
-                  <span>{translations.utils.objects.units.g}</span>
+                  <span>{t.f((x) => x.utils.objects.units.g)}</span>
                 </div>
                 <AppInputError error={getSmartError((x) => x.servingSize)} />
               </div>
             </div>
             <div className="w-full border-b-1 border-neutral-on-surface"/>
             <div className="flex flex-row gap-5 items-start">
-              <AppLabel>{t(i18n.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
-              <AppLabel>{t(i18n.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
-              <AppLabel>{t(i18n.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
-              <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
+              <AppLabel>{t.f((x) => x.pages.food.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
+              <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
+              <AppLabel>{t.f((x) => x.pages.food.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+              <AppLabel>{t.f((x) => x.pages.food.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
             </div>
           </>
         )}
@@ -257,8 +259,12 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
     {props.food.isMeal && (
       <div className="w-full">
         <div className="flex flex-row gap-5 items-start">
-          <AppBlockHeader>{t(i18n.create.labels.components)}:</AppBlockHeader>
-          <AppButton onClick={onAddIngredientClick}>{t(i18n.create.buttons.addComponent)}</AppButton>
+          <AppBlockHeader>{t.f((x) => x.pages.food.create.labels.components)}:</AppBlockHeader>
+          <AppButton onClick={onAddIngredientClick}>{t.f((x) => x.pages.food.create.buttons.addComponent)}</AppButton>
+          <div className="grow flex flex-row gap-5 items-start justify-end">
+          <RouteLink target="_blank" to={route(RouteId.FoodCreate)}>{t.f((x) => x.pages.food.create.buttons.crateFood)}</RouteLink>
+          <RouteLink target="_blank" to={route(RouteId.FoodCreateMeal)}>{t.f((x) => x.pages.food.create.buttons.crateDish)}</RouteLink>
+      </div>
         </div>
         <div className="flex flex-col gap-5 items-start">
           {ingredients.map((ingredient) => (
@@ -267,10 +273,10 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
         </div>
         <div className="mt-5 border-b-1 border-neutral-on-surface"/>
         <div className="flex flex-row gap-5 items-start">
-          <AppLabel>{t(i18n.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
-          <AppLabel>{t(i18n.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
-          <AppLabel>{t(i18n.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
-          <AppLabel>{t(i18n.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
+          <AppLabel>{t.f((x) => x.pages.food.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
+          <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
+          <AppLabel>{t.f((x) => x.pages.food.list.labels.fat)}: {totalFat.toFixed(1)}</AppLabel>
+          <AppLabel>{t.f((x) => x.pages.food.list.labels.carbs)}: {totalCarbs.toFixed(1)}</AppLabel>
         </div>
       </div>
     )}

@@ -2,16 +2,14 @@ import {FC, useContext} from 'react';
 import {AppBlock} from '../../../../../../common/components/atoms/AppBlock/AppBlock';
 import {CalorieGoal, ConsumedCalories, ConsumedCaloriesHistory, UnitSettings} from '../../../../../../common/utils/openapi-client';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
-import {Chart, ChartData, ChartOptions} from 'chart.js';
+import {ChartData, ChartOptions} from 'chart.js';
 import {Bar, Doughnut, Pie} from 'react-chartjs-2';
-import 'chart.js/auto';
 import {customColors} from '../../../../../../common/utils/design-system/customColors';
 import {ThemeContext} from '../../../../../../common/components/layout/ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../../../../common/components/layout/ThemeProvider/enums/Theme';
-import annotationPlugin from 'chartjs-plugin-annotation';
 import {FoodUtility} from '../../../../../../../common/utils/FoodUtility';
 import {FoodMacros} from '../../../../../../../common/utils/types/FoodMacros';
-Chart.register(annotationPlugin);
+
 interface CalorieGoalBlockProps {
   goal: CalorieGoal;
   consumedCalories: ConsumedCalories;

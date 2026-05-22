@@ -10,6 +10,10 @@ import {PopupProvider} from '../../atoms/Popup/PopupProvider';
 import {CrmLayout} from '../../../../crm/components/layout/CrmLayout/CrmLayout';
 import {WebsiteLayout} from '../../../../website/components/layout/WebsiteLayout/WebsiteLayout';
 import {APIProvider} from '@vis.gl/react-google-maps';
+import {Chart} from 'chart.js';
+import 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+Chart.register(annotationPlugin);
 
 const queryClient = new QueryClient({
   defaultOptions: {
