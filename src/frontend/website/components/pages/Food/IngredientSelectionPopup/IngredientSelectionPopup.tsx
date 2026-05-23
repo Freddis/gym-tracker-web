@@ -18,6 +18,7 @@ export const IngredientSelectionPopup: FC<IngredientSelectionPopupProps> = (prop
   const {t, i18n} = useAppPartialTranslation((x) => x.layout.popups.foodSelection);
   const [search, setSearch] = useState<string>('');
   const [ownLibrary, setOwnLibrary] = useState(false);
+  const [focusedItem, setFocusedItem] = useState<Food | null>(null);
   const {ref, inView} = useInView({
     rootMargin: '50%',
   });
@@ -55,10 +56,69 @@ export const IngredientSelectionPopup: FC<IngredientSelectionPopupProps> = (prop
 
   const flatResponse = response.data?.pages.flatMap((x) => x.data?.items).filter((x) => x !== undefined) ?? [];
   const items = flatResponse.filter((x) => !props.exclude?.some((y) => y.id === x.id));
+
+  useEffect(() => {
+    const alreadyFocused = !!items.find((x) => x.id === focusedItem?.id);
+    if (alreadyFocused) {
+      return;
+    }
+    const firstItem = items[0];
+    if (firstItem) {
+      setFocusedItem(firstItem);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown') {
+        focusNext();
+      }
+      if (e.key === 'ArrowUp') {
+        focusPrevious();
+      }
+      if (e.key === 'Enter') {
+        selectFocusedItem();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [focusedItem]);
+
+  const focusNext = () => {
+    const currentIndex = items.findIndex((x) => x.id === focusedItem?.id);
+    if (currentIndex === -1) {
+      return;
+    }
+    const nextIndex = currentIndex + 1;
+    const nextItem = items[nextIndex];
+    if (nextItem) {
+      setFocusedItem(nextItem);
+    }
+  };
+
+  const focusPrevious = () => {
+    const currentIndex = items.findIndex((x) => x.id === focusedItem?.id);
+    if (currentIndex === -1) {
+      return;
+    }
+    const previousIndex = currentIndex - 1;
+    const previousItem = items[previousIndex];
+    if (previousItem) {
+      setFocusedItem(previousItem);
+    }
+  };
+
+  const selectFocusedItem = () => {
+    if (focusedItem) {
+      props.onSelect?.(focusedItem);
+    }
+  };
   return (
     <div className="flex flex-col items-stretch max-w-full max-h-full w-200 h-200">
       <h2 className="mb-10 text-center text-xl">{t(i18n.heading)}</h2>
-      <AppTextInput value={search} onChange={onSearchInputChange} placeholder={t(i18n.labels.searchPlaceholder)}/>
+      <AppTextInput autoFocus value={search} onChange={onSearchInputChange} placeholder={t(i18n.labels.searchPlaceholder)}/>
       <div className="mt-5">
         <AppSwitch onCheckedChange={(e) => setOwnLibrary(e)} label={t(i18n.labels.ownLibrary)} />
       </div>
@@ -68,7 +128,7 @@ export const IngredientSelectionPopup: FC<IngredientSelectionPopupProps> = (prop
           <div>{t(i18n.labels.food)}</div>
           <div className="h-200 overflow-scroll mt-2 bg-main p-2 rounded-xs">
             {items.map((item) => (
-              <FoodRow key={item.id} item={item} onSelect={props.onSelect}/>)
+              <FoodRow key={item.id} item={item} focused={focusedItem?.id === item.id} onSelect={props.onSelect}/>)
             )}
             {response.isFetchingNextPage ? <AppSpinner/> : null}
             {!response.isLoading && items.length === 0 && <AppToast variant={Color.Warning}>{t(i18n.toasts.noFoodFound)}</AppToast>}

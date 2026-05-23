@@ -1,6 +1,13 @@
-import {FC, InputHTMLAttributes} from 'react';
+import {FC, InputHTMLAttributes, useRef, useEffect} from 'react';
 import {cn} from '../../../utils/cn';
+const useAutoFocus = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
 
+  return ref;
+};
 export interface AppTextInputProps {
   ['data-testid']?: string;
   hasError?: boolean;
@@ -10,8 +17,10 @@ export interface AppTextInputProps {
   placeholder?: InputHTMLAttributes<HTMLInputElement> ['placeholder'];
   centerText?: boolean;
   noAutoComplete?: boolean;
+  autoFocus?: boolean;
 }
 export const AppTextInput: FC<AppTextInputProps> = (props) => {
+  const focusRef = useAutoFocus();
   const className = cn(
     'h-10 w-full bg-white p-3 bg-cavity border-in-cavity border-1 rounded-sm',
     props.centerText ? 'text-center' : undefined,
@@ -19,6 +28,7 @@ export const AppTextInput: FC<AppTextInputProps> = (props) => {
   );
   return (
     <input
+      ref={props.autoFocus ? focusRef : undefined}
       data-testid={props['data-testid']}
       value={props.value}
       onChange={props.onChange}

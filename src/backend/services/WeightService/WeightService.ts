@@ -3,7 +3,7 @@ import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';
-import {and, isNull, desc, eq, inArray, SQL, gte, min, max} from 'drizzle-orm';
+import {and, isNull, desc, eq, inArray, SQL, gte, min} from 'drizzle-orm';
 import {EntryType} from '../EntryService/types/EntryType';
 import {BaseEntry, WeightEntry} from '../EntryService/types/Entry';
 import {WeightEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
