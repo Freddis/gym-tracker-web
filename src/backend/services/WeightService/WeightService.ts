@@ -3,7 +3,7 @@ import {NewModel} from '../../types/NewModel';
 import {WeightRow} from '../DrizzleService/types/WeightRow';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Weight} from './types/Weight';
-import {and, isNull, desc, eq, inArray, SQL, gte} from 'drizzle-orm';
+import {and, isNull, desc, eq, inArray, SQL, gte, min, max} from 'drizzle-orm';
 import {EntryType} from '../EntryService/types/EntryType';
 import {BaseEntry, WeightEntry} from '../EntryService/types/Entry';
 import {WeightEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
@@ -34,18 +34,36 @@ implements IEntryService<EntryType.Weight> {
       return [];
     }
     const historySize = 30;
-    const result = rows.reduce((acc, cur) => ({
-      min: cur.createdAt.getTime() < acc.min.getTime() ? cur.createdAt : acc.min,
-      max: cur.createdAt.getTime() > acc.max.getTime() ? cur.createdAt : acc.max,
-    }), {min: first.createdAt, max: first.createdAt});
-    const from = new Date(result.min.getTime() - 1000 * 60 * 60 * 24 * historySize);
-    const history = await this.executeQuery(await this.drizzle.getDb(), 0, 1000, and(
-      gte(this.getTable().createdAt, from),
-    ));
+    const db = await this.drizzle.getDb();
+    const minMax = await db.select({
+      min: min(db._.fullSchema.entries.time),
+    }).from(db._.fullSchema.entries).where(
+      and(
+        inArray(db._.fullSchema.entries.weightId, rows.map((x) => x.id)),
+        isNull(db._.fullSchema.entries.deletedAt),
+      )
+    );
+    const minTime = minMax[0]?.min ?? first.createdAt;
+    const from = new Date(minTime?.getTime() - 1000 * 60 * 60 * 24 * historySize);
+    const userIds = rows.map((x) => x.userId);
+    const history = await db.select().from(
+      this.getTable()
+    )
+    .leftJoin(
+      db._.fullSchema.entries,
+      eq(this.getTable().id, db._.fullSchema.entries.weightId),
+    )
+    .where(
+      and(
+        gte(db._.fullSchema.entries.time, from),
+        inArray(db._.fullSchema.entries.userId, userIds),
+        isNull(db._.fullSchema.entries.deletedAt),
+      )
+    );
 
     const final = rows.map((x) => ({
       ...x,
-      history: history.rows.filter((h) => h.userId === x.userId && h.createdAt < x.createdAt),
+      history: history.filter((h) => h.entries?.userId === x.userId && h.entries?.time < x.createdAt).map((h) => h.weight),
       historySize: historySize,
     }));
     return final;
