@@ -3,7 +3,8 @@ import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTran
 
 export const EntryBlockDate: FC<{date: Date}> = ({date}) => {
   const {translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
-  const weekDayString = translations.utils.time.weekDays[date.getDay() - 1];
+  const weekDayString = translations.utils.time.weekDays[date.getDay()];
+  console.log(date.getDay());
   return (
     <>
        {weekDayString} {date.toLocaleDateString()}, {date.toLocaleTimeString()}
