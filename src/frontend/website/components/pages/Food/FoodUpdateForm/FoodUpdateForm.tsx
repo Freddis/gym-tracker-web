@@ -23,8 +23,8 @@ import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/u
 import {FoodAmountUnit} from '../../../../../../backend/services/FoodService/types/FoodAmountUnit';
 import {avoidLet} from '../../../../../common/utils/avoidLet';
 import {stringToNumber} from '../../../../utils/stringToNumber';
-import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
 

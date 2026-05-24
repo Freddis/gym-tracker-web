@@ -14,8 +14,8 @@ import {ChartData} from 'chart.js';
 import 'chart.js/auto';
 import {Pie} from 'react-chartjs-2';
 import {customColors} from '../../../../../common/utils/design-system/customColors';
-import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
 interface MealEntryBlockProps {
   entry: Entry;
   meal: Meal;

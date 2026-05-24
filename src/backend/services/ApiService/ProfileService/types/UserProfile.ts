@@ -5,7 +5,7 @@ import {DistanceUnit} from '../../../../types/DistanceUnit';
 import {HeightUnit} from '../../../../types/HeightUnit';
 import {TemperatureUnit} from '../../../../types/TemperatureUnit';
 import {WeightUnit} from '../../../../types/WeightUnit';
-import {NutritionFacts} from '../../../../../common/utils/FoodUtility';
+import {NutritionFacts} from '../../../../../common/utils/FoodUtility/FoodUtility';
 
 interface ConsumedCaloriesHistory {
   data: {

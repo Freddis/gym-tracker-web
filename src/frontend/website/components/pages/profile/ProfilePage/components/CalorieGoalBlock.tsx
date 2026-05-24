@@ -7,8 +7,8 @@ import {Bar, Doughnut, Pie} from 'react-chartjs-2';
 import {customColors} from '../../../../../../common/utils/design-system/customColors';
 import {ThemeContext} from '../../../../../../common/components/layout/ThemeProvider/context/ThemeContext';
 import {Theme} from '../../../../../../common/components/layout/ThemeProvider/enums/Theme';
-import {FoodUtility} from '../../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../../common/utils/FoodUtility/types/FoodMacros';
 
 interface CalorieGoalBlockProps {
   goal: CalorieGoal;
@@ -59,7 +59,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const protein: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [Math.round(consumedCalories.protein), Math.max(0, Math.round(goal.protein - consumedCalories.protein))],
+      data: [Math.round(consumedCalories.protein), Math.max(0, Math.round((goal.protein ?? 0) - consumedCalories.protein))],
       backgroundColor: [
         customColors.protein,
         bgColor,
@@ -69,7 +69,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const fat: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [Math.round(consumedCalories.fat), Math.max(0, Math.round(goal.fat - consumedCalories.fat))],
+      data: [Math.round(consumedCalories.fat), Math.max(0, Math.round((goal.fat ?? 0) - consumedCalories.fat))],
       backgroundColor: [
         customColors.fat,
         bgColor,
@@ -79,7 +79,7 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
   };
   const carbs: ChartData<'doughnut', number[], string> = {
     datasets: [{
-      data: [Math.round(consumedCalories.carbs), Math.max(0, Math.round(goal.carbs - consumedCalories.carbs))],
+      data: [Math.round(consumedCalories.carbs), Math.max(0, Math.round((goal.carbs ?? 0) - consumedCalories.carbs))],
       backgroundColor: [
         customColors.carbs,
         bgColor,
@@ -269,22 +269,28 @@ export const CalorieGoalBlock: FC<CalorieGoalBlockProps> = (props) => {
           <div>
           </div>
           <div>
-          <div className="text-base">{consumedCalories.calories.toFixed(0)}/{goal.calories.toFixed(0)}</div>
-          <div>{t.f((x) => x.utils.objects.food.fields.calories)}</div>
+            <div className="text-base">{consumedCalories.calories.toFixed(0)}/{goal.calories.toFixed(0)}</div>
+            <div>{t.f((x) => x.utils.objects.food.fields.calories)}</div>
           </div>
           <div>
-          <div className="text-base">
-            {consumedCalories.protein.toFixed(0)}/{goal.protein}{t.f((x) => x.utils.objects.foodUnits.Gram)}</div>
+            <div className="text-base">
+              {consumedCalories.protein.toFixed(0)}{goal.protein ? `/${goal.protein.toFixed(0)}` : ''}
+              {t.f((x) => x.utils.objects.foodUnits.Gram)}
+            </div>
             <div>{t.f((x) => x.utils.objects.food.fields.protein)}</div>
           </div>
           <div>
-          <div className="text-base">
-            {consumedCalories.fat.toFixed(0)}/{goal.fat.toFixed(0)}{t.f((x) => x.utils.objects.foodUnits.Gram)}</div>
+            <div className="text-base">
+              {consumedCalories.fat.toFixed(0)}{goal.fat ? `/${goal.fat.toFixed(0)}` : ''}
+              {t.f((x) => x.utils.objects.foodUnits.Gram)}
+            </div>
             <div>{t.f((x) => x.utils.objects.food.fields.fat)}</div>
           </div>
           <div>
-          <div className="text-base">
-            {consumedCalories.carbs.toFixed(0)}/{goal.carbs.toFixed(0)}  {t.f((x) => x.utils.objects.foodUnits.Gram)}</div>
+            <div className="text-base">
+              {consumedCalories.carbs.toFixed(0)}{goal.carbs ? `/${goal.carbs.toFixed(0)}` : ''}
+              {t.f((x) => x.utils.objects.foodUnits.Gram)}
+            </div>
             <div>{t.f((x) => x.utils.objects.food.fields.carbs)}</div>
           </div>
         </div>

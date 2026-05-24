@@ -23,9 +23,9 @@ export const CalorieGoalEntryBlock: FC<{entry: Entry, goal: CalorieGoal, own?: b
     <PostContent entry={props.entry} />
     <div className="flex flex-row gap-5 items-center">
       <AppLabel>{t.f((x) => x.pages.food.list.labels.calories)}: {goal.calories.toFixed(0)}</AppLabel>
-      <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {goal.protein.toFixed(1)}</AppLabel>
-      <AppLabel>{t.f((x) => x.pages.food.list.labels.fat)}: {goal.fat.toFixed(1)}</AppLabel>
-      <AppLabel>{t.f((x) => x.pages.food.list.labels.carbs)}: {goal.carbs.toFixed(1)}</AppLabel>
+      {goal.protein && <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {goal.protein.toFixed(1)}</AppLabel>}
+      {goal.fat && <AppLabel>{t.f((x) => x.pages.food.list.labels.fat)}: {goal.fat.toFixed(1)}</AppLabel>}
+      {goal.carbs && <AppLabel>{t.f((x) => x.pages.food.list.labels.carbs)}: {goal.carbs.toFixed(1)}</AppLabel>}
     </div>
     <EntryBlockBottom entry={entry} own={own} />
   </AppBlock>

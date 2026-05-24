@@ -1,4 +1,4 @@
-import {FoodUtility} from '../../../../common/utils/FoodUtility';
+import {FoodUtility} from '../../../../common/utils/FoodUtility/FoodUtility';
 import {Meal} from '../../../../frontend/common/utils/openapi-client';
 import {CoreUserService} from '../../CoreUserService/CoreUserService';
 import {EntryService} from '../../EntryService/EntryService';

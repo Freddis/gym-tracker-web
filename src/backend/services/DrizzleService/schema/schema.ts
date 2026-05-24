@@ -435,9 +435,9 @@ export const calorieGoals = gymTracker.table('calorie_goals', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   calories: real().notNull(),
-  carbs: real().notNull(),
-  protein: real().notNull(),
-  fat: real().notNull(),
+  carbs: real(),
+  protein: real(),
+  fat: real(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   end: timestamp({withTimezone: true, mode: 'date'}),
 });

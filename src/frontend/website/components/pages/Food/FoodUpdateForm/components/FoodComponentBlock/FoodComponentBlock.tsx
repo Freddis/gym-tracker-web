@@ -12,8 +12,8 @@ import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
 import {avoidLet} from '../../../../../../../common/utils/avoidLet';
 import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../../../common/utils/route';
-import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../../../common/utils/FoodUtility/types/FoodMacros';
 
 
 export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {

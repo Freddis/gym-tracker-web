@@ -1,5 +1,5 @@
-import {FoodAmountUnit} from '../../backend/services/FoodService/types/FoodAmountUnit';
-import {avoidLet} from '../../frontend/common/utils/avoidLet';
+import {FoodAmountUnit} from '../../../backend/services/FoodService/types/FoodAmountUnit';
+import {avoidLet} from '../../../frontend/common/utils/avoidLet';
 import {FoodMacros} from './types/FoodMacros';
 import {IFood} from './types/IFood';
 import {IFoodComponent} from './types/IFoodComponent';

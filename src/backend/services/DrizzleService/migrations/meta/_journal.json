@@ -316,6 +316,13 @@
       "when": 1778588957566,
       "tag": "0044_calorie_goals",
       "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1779604099136,
+      "tag": "0045_calorie_goal_macros_now_nullable",
+      "breakpoints": true
     }
   ]
 }

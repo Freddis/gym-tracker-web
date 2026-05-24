@@ -9,8 +9,8 @@ import {Wrapped} from '../../../../utils/wrap';
 import {floorToMax3Decimals} from '../../../pages/Food/FoodUpdateForm/components/FoodComponentBlock/utils/floorToMax3Decimals';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {route, RouteId} from '../../../../../common/utils/route';
-import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
 
 export const MealEntryBlockFoodComponent: FC< {item: Wrapped<FoodComponent>, own?: boolean}> = (props) => {
   const foodUtility = new FoodUtility();

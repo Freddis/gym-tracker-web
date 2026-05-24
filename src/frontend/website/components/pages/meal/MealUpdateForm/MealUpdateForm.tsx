@@ -30,8 +30,8 @@ import {SelectValue} from '../../../../../common/components/atoms/AppSelect/type
 import {EntryUpdateForm} from '../../../blocks/EntryUpdateForm/EntryUpdateForm';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
-import {FoodUtility} from '../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
 interface MealUpdateFormProps {
   meal: Meal;
   entry: Entry;

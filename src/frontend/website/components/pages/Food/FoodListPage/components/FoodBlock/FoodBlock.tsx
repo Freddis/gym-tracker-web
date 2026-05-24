@@ -7,8 +7,8 @@ import {RouteLink} from '../../../../../../../common/components/atoms/RouteLink/
 import {route, RouteId} from '../../../../../../../common/utils/route';
 import {useRouter} from '@tanstack/react-router';
 import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
-import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility';
-import {FoodMacros} from '../../../../../../../../common/utils/types/FoodMacros';
+import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility/FoodUtility';
+import {FoodMacros} from '../../../../../../../../common/utils/FoodUtility/types/FoodMacros';
 
 export const FoodBlock: FC<{food: Food}> = (props) => {
   const foodUtility = new FoodUtility();

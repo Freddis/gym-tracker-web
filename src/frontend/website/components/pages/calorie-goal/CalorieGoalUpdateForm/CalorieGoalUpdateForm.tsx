@@ -19,9 +19,9 @@ interface CalorieGoalUpdateFormProps {
 export const CalorieGoalUpdateForm = forwardRef<FormSubmitRef, CalorieGoalUpdateFormProps>((props, ref) => {
   const {setSmartError, hasSmartError, clearErrors} = useResponseErrors(props.errors);
   const [calories, setCalories] = useState(props.goal.calories.toFixed(0));
-  const [carbs, setCarbs] = useState(props.goal.carbs.toFixed(1));
-  const [protein, setProtein] = useState(props.goal.protein.toFixed(1));
-  const [fat, setFat] = useState(props.goal.fat.toFixed(1));
+  const [carbs, setCarbs] = useState(props.goal.carbs?.toFixed(1) ?? '');
+  const [protein, setProtein] = useState(props.goal.protein?.toFixed(1) ?? '');
+  const [fat, setFat] = useState(props.goal.fat?.toFixed(1) ?? '');
   // const [start, setStart] = useState(props.goal.start.toString());
   // const [end, setEnd] = useState(props.goal.end);
   const entryUpdateFormRef = useRef<FormSubmitRef>(null);
