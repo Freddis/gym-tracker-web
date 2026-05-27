@@ -55,6 +55,7 @@ export const FoodComponentBlock: FC<FoodComponentBlockProps> = (props) => {
       return;
     }
     clearSmartError((x) => x.amount);
+    clearSmartError((x) => x.servings);
     let servings = null;
     if (props.item.item.food.servingSize !== null) {
       servings = value / props.item.item.food.servingSize;

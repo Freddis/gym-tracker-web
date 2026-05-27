@@ -9623,6 +9623,125 @@ export type UpsertFoodResponses = {
 
 export type UpsertFoodResponse = UpsertFoodResponses[keyof UpsertFoodResponses];
 
+export type UpsertFoodsData = {
+  /**
+   * List of foods to update or insert
+   */
+  body?: Array<FoodUpsertDto>;
+  path?: never;
+  query?: never;
+  url: "/food/list";
+};
+
+export type UpsertFoodsErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type UpsertFoodsError = UpsertFoodsErrors[keyof UpsertFoodsErrors];
+
+export type UpsertFoodsResponses = {
+  /**
+   * List of updated or inserted foods
+   */
+  200: Array<Food>;
+};
+
+export type UpsertFoodsResponse =
+  UpsertFoodsResponses[keyof UpsertFoodsResponses];
+
 export type GetFoodData = {
   body?: never;
   path: {

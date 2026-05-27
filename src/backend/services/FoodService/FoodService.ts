@@ -28,6 +28,18 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     });
   }
 
+  async upsertMany(userId: number, food: FoodUpsertDto[]): Promise<Food[]> {
+    const db = await this.drizzle.getDb();
+    return await db.transaction(async (tx) => {
+      const result: Food[] = [];
+      for (const item of food) {
+        const newFood = await this.upsertInTransaction(userId, item, tx);
+        result.push(newFood);
+      }
+      return result;
+    });
+  }
+
   protected async upsertInTransaction(userId: number, food: FoodUpsertDto, db: AppDb): Promise<Food> {
     if (food.isMeal && food.components.length === 0) {
       throw new EmptyMealError();
@@ -90,7 +102,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     const where = and(
       params.ids ? inArray(this.getTable().id, params.ids) : undefined,
       params.search ? ilike(this.getTable().name, `%${params.search}%`) : undefined,
-      isNull(this.getTable().deletedAt),
+      params.includeDeleted ? undefined : isNull(this.getTable().deletedAt),
       params.isDish ? eq(this.getTable().isMeal, params.isDish) : undefined,
       params.updatedAfter ? or(
         gt(this.getTable().updatedAt, params.updatedAfter),

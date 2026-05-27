@@ -46,6 +46,7 @@ import {
   patchPostsById,
   getFoodList,
   upsertFood,
+  upsertFoods,
   getFood,
   getOwnProfile,
   getSettings,
@@ -183,6 +184,9 @@ import type {
   UpsertFoodData,
   UpsertFoodError,
   UpsertFoodResponse,
+  UpsertFoodsData,
+  UpsertFoodsError,
+  UpsertFoodsResponse,
   GetFoodData,
   GetFoodError,
   GetFoodResponse,
@@ -2149,6 +2153,33 @@ export const upsertFoodMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await upsertFood({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const upsertFoodsMutation = (
+  options?: Partial<Options<UpsertFoodsData>>,
+): UseMutationOptions<
+  UpsertFoodsResponse,
+  AxiosError<UpsertFoodsError>,
+  Options<UpsertFoodsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    UpsertFoodsResponse,
+    AxiosError<UpsertFoodsError>,
+    Options<UpsertFoodsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await upsertFoods({
         ...options,
         ...localOptions,
         throwOnError: true,

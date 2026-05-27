@@ -33,6 +33,7 @@ import type {
   PatchPostsByIdResponse,
   GetFoodListResponse,
   UpsertFoodResponse,
+  UpsertFoodsResponse,
   GetFoodResponse,
   GetOwnProfileResponse,
   GetSettingsResponse,
@@ -530,6 +531,15 @@ export const upsertFoodResponseTransformer = async (
   data: any,
 ): Promise<UpsertFoodResponse> => {
   data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+export const upsertFoodsResponseTransformer = async (
+  data: any,
+): Promise<UpsertFoodsResponse> => {
+  data = data.map((item: any) => {
+    return foodSchemaResponseTransformer(item);
+  });
   return data;
 };
 

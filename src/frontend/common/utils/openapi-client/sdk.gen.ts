@@ -134,6 +134,9 @@ import type {
   UpsertFoodData,
   UpsertFoodResponses,
   UpsertFoodErrors,
+  UpsertFoodsData,
+  UpsertFoodsResponses,
+  UpsertFoodsErrors,
   GetFoodData,
   GetFoodResponses,
   GetFoodErrors,
@@ -214,6 +217,7 @@ import {
   patchPostsByIdResponseTransformer,
   getFoodListResponseTransformer,
   upsertFoodResponseTransformer,
+  upsertFoodsResponseTransformer,
   getFoodResponseTransformer,
   getOwnProfileResponseTransformer,
   getSettingsResponseTransformer,
@@ -1310,6 +1314,34 @@ export const upsertFood = <ThrowOnError extends boolean = false>(
     ],
     responseTransformer: upsertFoodResponseTransformer,
     url: "/food",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Updates or inserts food for user
+ */
+export const upsertFoods = <ThrowOnError extends boolean = false>(
+  options?: Options<UpsertFoodsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).put<
+    UpsertFoodsResponses,
+    UpsertFoodsErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: upsertFoodsResponseTransformer,
+    url: "/food/list",
     ...options,
     headers: {
       "Content-Type": "application/json",

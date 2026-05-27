@@ -59,6 +59,7 @@ import {changePassword} from '../api/auth/changePassword';
 import {getSettings} from '../api/settings/getSettings';
 import {updateSettings} from '../api/settings/updateSettings';
 import {getOwnProfile} from '../api/profile/getOwnProfile';
+import {upsertFoods} from '../api/food/upsertFoods';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -123,6 +124,7 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   ],
   '/food': [
     upsertFood,
+    upsertFoods,
     getFood,
     getFoodList,
   ],
