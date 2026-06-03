@@ -97,10 +97,11 @@ export class CoreUserService extends ModelService<number, UserRow, CoreUser, Use
   }
 
   protected override async decorateRows(rows: UserRow[]): Promise<CoreUser[]> {
-    const images = await this.imageService.getMany({ids: rows.map((x) => x.imageId ?? 0)});
-    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
+    const ids = rows.map((x) => x.imageId).filter((x) => x !== null);
+    const images = ids.length > 0 ? await this.imageService.getMany({ids: ids}) : [];
+    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<string, Image>());
     return rows.map((x) => {
-      const profilePicture = imageMap.get(x.imageId ?? 0) ?? null;
+      const profilePicture = imageMap.get(x.imageId ?? '') ?? null;
       const result: CoreUser = {
         id: x.id,
         name: x.name,

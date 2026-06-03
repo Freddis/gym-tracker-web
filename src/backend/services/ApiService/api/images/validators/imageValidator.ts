@@ -1,4 +1,4 @@
-import {number, object, string} from 'zod';
+import {object, string} from 'zod';
 // import {imageRowValidator} from '../../../../DrizzleService/types/ImageRow';
 import {Image} from '../../../../ImageService/types/Image';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
@@ -17,7 +17,7 @@ export const imageValidatorDescriptions: OpenApiDescriptions<Image> = {
 };
 // const imageTypeValidator = nativeEnum(ImageType).openapi({ref: 'Image Type', description: 'Type of object this image attaches to'});
 const validator = object({
-  id: number(),
+  id: string(),
   url: string(),
   // imageType: imageTypeValidator,
 });

@@ -294,7 +294,7 @@ export class EntryService {
     const userMap = users.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
     const imageIds = [...new Set(rows.map((x) => x.imageId).filter((x) => x !== null))];
     const images = await this.imageService.getMany({ids: imageIds, perPage: limit});
-    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
+    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<string, Image>());
 
     const getOrThrow = <T>(map: Map<number, T>, key: number | null): T => {
       if (!key) {

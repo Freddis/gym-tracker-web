@@ -6,7 +6,7 @@ export const authUserValidator = z.object({
   email: z.string(),
   jwt: z.string(),
   profilePicture: z.object({
-    id: z.number(),
+    id: z.string(),
     url: z.string(),
   }).nullable(),
 });

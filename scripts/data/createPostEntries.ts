@@ -31,7 +31,7 @@ for (const row of items.items.reverse()) {
     continue;
   }
 
-  let imageId: number | null = null;
+  let imageId: string | null = null;
   const image = status.data.photos?.[0];
   if (image) {
     const imageRecord = await imageService.createFromUrl(image.href, image.id + '.jpg', ImageType.Entry);

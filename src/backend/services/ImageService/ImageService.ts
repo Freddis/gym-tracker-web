@@ -6,7 +6,7 @@ import {ManagedImage} from './types/ManagedImage';
 import {IImageService} from './types/IImageService';
 import {ImageType} from '../../types/ImageType';
 
-export class ImageService implements IImageService<Image, number, ImageFilter> {
+export class ImageService implements IImageService<Image, string, ImageFilter> {
   private managedImageService: ManagedImageService;
 
   constructor(managedImageService: ManagedImageService) {
@@ -55,7 +55,7 @@ export class ImageService implements IImageService<Image, number, ImageFilter> {
     return result ? this.remapOne(result) : null;
   }
 
-  async getById(id: number): Promise<Image | null> {
+  async getById(id: string): Promise<Image | null> {
     const result = await this.managedImageService.getById(id);
     return result ? this.remapOne(result) : null;
   }
@@ -65,7 +65,7 @@ export class ImageService implements IImageService<Image, number, ImageFilter> {
     return this.remapMany(result);
   }
 
-  async deleteById(id: number): Promise<void> {
+  async deleteById(id: string): Promise<void> {
     await this.managedImageService.deleteById(id);
   }
 

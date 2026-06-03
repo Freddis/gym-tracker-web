@@ -35,7 +35,7 @@ export class StorybookDataUtils {
 
   static getImage(): Image {
     const image: Image = {
-      id: 1,
+      id: '123e4567-e89b-12d3-a456-426614174000',
       url: this.getExerciseImageUrl(),
     };
     return image;
@@ -328,7 +328,7 @@ export class StorybookDataUtils {
       id: 1,
       name: 'John Doe',
       profilePicture: {
-        id: 1,
+        id: '321e4567-e89b-12d3-a456-426614174000',
         url: '/images/users/user1.jpg',
       },
     };

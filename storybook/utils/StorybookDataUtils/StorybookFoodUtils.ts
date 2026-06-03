@@ -27,7 +27,7 @@ export class StorybookFoodUtils {
       fat: 10,
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/omelette.jpg',
       },
       servingSize: null,
@@ -58,7 +58,7 @@ export class StorybookFoodUtils {
       name: 'Egg',
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/egg.jpg',
       },
       calories: 0,
@@ -86,7 +86,7 @@ export class StorybookFoodUtils {
       fat: 10,
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/salad.jpg',
       },
       servingSize: null,
@@ -110,7 +110,7 @@ export class StorybookFoodUtils {
       fat: 1.0,
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/pasta.jpg',
       },
       servingSize: null,
@@ -134,7 +134,7 @@ export class StorybookFoodUtils {
       fat: 10,
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/coffee.jpg',
       },
       servingSize: null,
@@ -165,7 +165,7 @@ export class StorybookFoodUtils {
       name: 'Milk 1.5%',
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/milk.jpg',
       },
       calories: 45,
@@ -213,7 +213,7 @@ export class StorybookFoodUtils {
       fat: 0.3,
       description: null,
       image: {
-        id: 1,
+        id: '321e4562-e89b-12d3-a456-426614174000',
         url: '/images/food/apples.jpg',
       },
       servingSize: 50,

@@ -18,10 +18,11 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ManagedImage} from './types/ManagedImage';
 import {IImageService} from './types/IImageService';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
+import {randomUUID} from 'crypto';
 
 export class ManagedImageService
-extends ModelService<number, ImageRow, ManagedImage, ImageFilter>
-implements IImageService<ManagedImage, number, ImageFilter> {
+extends ModelService<string, ImageRow, ManagedImage, ImageFilter>
+implements IImageService<ManagedImage, string, ImageFilter> {
   protected bucket = 'gymtracker-images-23';
   protected s3: S3Client;
   protected logger = new Logger(ManagedImageService.name);
@@ -31,7 +32,7 @@ implements IImageService<ManagedImage, number, ImageFilter> {
     this.s3 = new S3Client({});
   }
 
-  override async deleteById(id: number): Promise<void> {
+  override async deleteById(id: string): Promise<void> {
     this.logger.info(`Deleting image '${id}'`);
     const image = await this.getById(id);
     if (!image) {
@@ -123,6 +124,7 @@ implements IImageService<ManagedImage, number, ImageFilter> {
   protected async saveImageToDb(name: string, imageType: ImageType): Promise<ManagedImage> {
     const db = await this.drizzle.getDb();
     const inserted = await db.insert(db._.fullSchema.images).values({
+      id: randomUUID(),
       url: this.generateUrl(name),
       imageType: imageType,
       createdAt: new Date(),
@@ -151,7 +153,7 @@ implements IImageService<ManagedImage, number, ImageFilter> {
     }
   }
 
-  async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<ManagedImage>> {
+  async getAll(params: {id: string[]; perPage: number; page?: number;}): Promise<PaginatedResult<ManagedImage>> {
     const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
     const limit = params?.perPage ?? 30;

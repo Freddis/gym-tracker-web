@@ -1,7 +1,7 @@
 import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../../utils/RouteFactory';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {emptyOperationResponse} from '../../../validators/emptyOperationResponse';
 import {RouteTag} from '../../../types/RouteTag';
 
@@ -13,7 +13,7 @@ export const deleteManagedImage = RouteFactory.createRoute({
   tags: [RouteTag.CrmImages],
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the image'}),
+      id: string().uuid().openapi({description: 'Id of the image'}),
     }),
     response: emptyOperationResponse,
   },

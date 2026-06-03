@@ -144,7 +144,7 @@ export const users = gymTracker.table('users', {
   gender: genderEnum().notNull(),
   birthDate: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   visibility: entryVisibilityEnum().notNull(),
-  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  imageId: uuid().references(() => images.id, {onDelete: 'set null'}),
   country: countryEnum().notNull(),
   note: text(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -282,7 +282,7 @@ export const workoutExerciseSets = gymTracker.table('workout_exercise_sets', {
 
 
 export const images = gymTracker.table('images', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid().primaryKey(),
   url: text().notNull().unique(),
   imageType: imageTypeEnum().notNull(),
   userId: integer().references((): AnyPgColumn => users.id, {onDelete: 'set null'}),
@@ -312,7 +312,7 @@ export const entries = gymTracker.table('entries', {
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   workoutId: integer().references(() => workouts.id, {onDelete: 'cascade'}),
   weightId: integer().references(() => weight.id, {onDelete: 'cascade'}),
-  imageId: integer().references(() => images.id, {onDelete: 'cascade'}),
+  imageId: uuid().references(() => images.id, {onDelete: 'cascade'}),
   outdoorRunId: integer().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
   outdoorWalkId: integer().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
   mealId: integer().references(() => meals.id, {onDelete: 'cascade'}),
@@ -411,7 +411,7 @@ export const food = gymTracker.table('food', {
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   name: varchar().notNull(),
   description: text(),
-  imageId: integer().references(() => images.id, {onDelete: 'set null'}),
+  imageId: uuid().references(() => images.id, {onDelete: 'set null'}),
   protein: real().notNull(),
   carbs: real().notNull(),
   fat: real().notNull(),

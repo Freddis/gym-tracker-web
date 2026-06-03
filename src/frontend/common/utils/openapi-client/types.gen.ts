@@ -548,7 +548,7 @@ export type Image = {
   /**
    * Id of the image
    */
-  id: number;
+  id: string;
   /**
    * URL of the image
    */
@@ -3293,7 +3293,7 @@ export type ManagedImage = {
   /**
    * Id of the image
    */
-  id: number;
+  id: string;
   /**
    * URL of the image
    */
@@ -11707,7 +11707,7 @@ export type DeleteCrmImagesByIdData = {
     /**
      * Id of the image
      */
-    id: number;
+    id: string;
   };
   query?: never;
   url: "/crm/images/{id}";

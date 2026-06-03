@@ -181,7 +181,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   protected override async decorateRows(rows: AppDbSchema['food']['$inferSelect'][]): Promise<Food[]> {
     const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
     const images = await this.imageService.getMany({ids: imageIds});
-    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
+    const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<string, Image>());
     const componentsMap = await this.getFoodComponents(rows.map((x) => x.id));
     const result = rows.map((row) => {
       const components = componentsMap.get(row.id) ?? [];
@@ -189,7 +189,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         id: row.id,
         name: row.name,
         description: row.description,
-        image: imageMap.get(row.imageId ?? 0) ?? null,
+        image: imageMap.get(row.imageId ?? '') ?? null,
         calories: row.protein * 4 + row.carbs * 4 + row.fat * 9,
         protein: row.protein,
         carbs: row.carbs,
