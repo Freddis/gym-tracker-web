@@ -48,7 +48,7 @@ jobs:
     - name: 'Migrate'
       run: npm run db:migrate
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install chromium
     - name: Run Playwright tests
       run: npx playwright test
     - name: docker-compose logs
