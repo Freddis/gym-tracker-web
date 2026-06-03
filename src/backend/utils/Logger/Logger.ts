@@ -2,8 +2,11 @@ import {OpenApiLogger} from 'snap-on-openapi';
 
 export class Logger extends OpenApiLogger {
   protected override transformData(data: object): unknown {
-    const reducedData = this.removeLongArrays(data, 30);
-    return super.transformData(reducedData);
+    const transformed = super.transformData(data);
+    if (typeof transformed === 'object' && transformed !== null) {
+      return this.removeLongArrays(transformed, 30);
+    }
+    return transformed;
   }
 
   protected removeLongArrays(data: object, maxLength: number): object {
