@@ -1,0 +1,6 @@
+UPDATE "gym_tracker"."workouts" SET "typeId" = NULL;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."workout_type_exercise_sets" ADD CONSTRAINT "workout_type_exercise_sets_workoutTypeId_workout_type_id_fk" FOREIGN KEY ("workoutTypeId") REFERENCES "gym_tracker"."workout_type"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."workout_type_exercise_sets" ADD CONSTRAINT "workout_type_exercise_sets_workoutTypeExerciseId_workout_type_exercise_id_fk" FOREIGN KEY ("workoutTypeExerciseId") REFERENCES "gym_tracker"."workout_type_exercise"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."workout_type_exercise" ADD CONSTRAINT "workout_type_exercise_workoutTypeId_workout_type_id_fk" FOREIGN KEY ("workoutTypeId") REFERENCES "gym_tracker"."workout_type"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."workout_type" ADD CONSTRAINT "workout_type_planId_workout_plan_id_fk" FOREIGN KEY ("planId") REFERENCES "gym_tracker"."workout_plan"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "gym_tracker"."workouts" ADD CONSTRAINT "workouts_typeId_workout_type_id_fk" FOREIGN KEY ("typeId") REFERENCES "gym_tracker"."workout_type"("id") ON DELETE restrict ON UPDATE no action;

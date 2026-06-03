@@ -1,5 +1,5 @@
 import {OpenApiMethod} from 'snap-on-openapi';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {ApiRouteType} from '../../types/ApiRouteType';
@@ -13,7 +13,7 @@ export const getWorkoutPlan = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the workout plan'}),
+      id: string().uuid().openapi({description: 'Id of the workout plan'}),
     }),
     response: workoutPlanValidator,
   },

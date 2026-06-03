@@ -152,7 +152,7 @@ export const users = gymTracker.table('users', {
 });
 
 export const workoutPlans = gymTracker.table('workout_plan', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid().primaryKey(),
   name: varchar(),
   description: text(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
@@ -166,10 +166,10 @@ export const workoutPlans = gymTracker.table('workout_plan', {
 ]);
 
 export const workoutTypes = gymTracker.table('workout_type', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid().primaryKey(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   planIndex: integer(),
-  planId: integer().references(() => workoutPlans.id, {onDelete: 'cascade'}),
+  planId: uuid().references(() => workoutPlans.id, {onDelete: 'cascade'}),
   name: varchar().notNull(),
   description: text(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -182,10 +182,10 @@ export const workoutTypes = gymTracker.table('workout_type', {
 ]);
 
 export const workoutTypeExercises = gymTracker.table('workout_type_exercise', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid().primaryKey(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   index: integer().notNull(),
-  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  workoutTypeId: uuid().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
   exerciseId: uuid().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
   description: text(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -198,12 +198,12 @@ export const workoutTypeExercises = gymTracker.table('workout_type_exercise', {
 ]);
 
 export const workoutTypeExerciseSets = gymTracker.table('workout_type_exercise_sets', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: uuid().primaryKey(),
   reps: integer(),
   exerciseId: uuid().notNull().references(() => exercises.id, {onDelete: 'restrict'}),
-  workoutTypeId: integer().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
+  workoutTypeId: uuid().notNull().references(() => workoutTypes.id, {onDelete: 'cascade'}),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
-  workoutTypeExerciseId: integer().notNull().references(() => workoutTypeExercises.id, {onDelete: 'cascade'}),
+  workoutTypeExerciseId: uuid().notNull().references(() => workoutTypeExercises.id, {onDelete: 'cascade'}),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
@@ -218,7 +218,7 @@ export const workoutTypeExerciseSets = gymTracker.table('workout_type_exercise_s
 export const workouts = gymTracker.table('workouts', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   externalId: varchar(),
-  typeId: integer().references(() => workoutTypes.id, {onDelete: 'restrict'}),
+  typeId: uuid().references(() => workoutTypes.id, {onDelete: 'restrict'}),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
   calories: real().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),

@@ -23,7 +23,7 @@ export const WorkoutTypeCreatePage: FC = () => {
   const toasts = useToasts();
   const navigate = useNavigate();
   const [workoutType, setWorkoutType] = useState<WorkoutType>({
-    id: 0,
+    id: '',
     name: '',
     description: null,
     userId: 0,

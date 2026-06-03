@@ -20,7 +20,7 @@ export const WorkoutPlanCreatePage: FC = () => {
   const toasts = useToasts();
   const navigate = useNavigate();
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>({
-    id: 0,
+    id: '',
     name: null,
     description: null,
     userId: 0,

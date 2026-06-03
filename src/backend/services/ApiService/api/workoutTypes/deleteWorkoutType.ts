@@ -1,5 +1,5 @@
 import {OpenApiMethod} from 'snap-on-openapi';
-import {object} from 'zod';
+import {object, string} from 'zod';
 import {ApiRouteType} from '../../types/ApiRouteType';
 import {RouteFactory} from '../../utils/RouteFactory';
 
@@ -10,7 +10,7 @@ export const deleteWorkoutType = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the workout type'}),
+      id: string().uuid().openapi({description: 'Id of the workout type'}),
     }),
     response: object({}).openapi({description: 'Empty response on success'}),
   },

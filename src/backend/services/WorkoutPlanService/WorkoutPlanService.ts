@@ -2,12 +2,12 @@ import {and, inArray, isNull, desc, SQL, eq} from 'drizzle-orm';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {WorkoutPlan} from './types/WorkoutPlan';
 import {PgColumn} from 'drizzle-orm/pg-core';
-import {NewModel} from '../../types/NewModel';
-import {NewModelDto} from '../../types/NewModelDto';
 import {UserModelService} from '../../types/ModelService/UserModelService';
 import {WorkoutPlanFilter} from './types/WorkoutPlanFilter';
 import {WorkoutPlanRow} from '../DrizzleService/types/WorkoutPlanRow';
-export class WorkoutPlanService extends UserModelService<number, WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
+import {randomUUID} from 'crypto';
+import {NewModelDto} from '../../types/NewModelDto';
+export class WorkoutPlanService extends UserModelService<string, WorkoutPlanRow, WorkoutPlan, WorkoutPlanFilter> {
 
   protected table: AppDbSchema['workoutPlans'];
 
@@ -38,8 +38,9 @@ export class WorkoutPlanService extends UserModelService<number, WorkoutPlanRow,
 
   async create(data: Omit<WorkoutPlan, 'id'|'createdAt'|'updatedAt'| 'deletedAt'>): Promise<WorkoutPlan> {
     const db = await this.drizzle.getDb();
-    const newRow: NewModel<WorkoutPlan> = {
+    const newRow: WorkoutPlanRow = {
       ...data,
+      id: randomUUID(),
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
@@ -52,7 +53,7 @@ export class WorkoutPlanService extends UserModelService<number, WorkoutPlanRow,
     return result;
   }
 
-  async update(userId: number, id: number, update: NewModelDto<WorkoutPlan>): Promise<WorkoutPlan> {
+  async update(userId: number, id: string, update: NewModelDto<WorkoutPlan>): Promise<WorkoutPlan> {
     const plan = await this.getById(userId, id);
     if (!plan) {
       throw new Error('Plan not found');

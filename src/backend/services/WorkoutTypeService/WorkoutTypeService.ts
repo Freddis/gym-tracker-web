@@ -1,8 +1,6 @@
 import {SQL, and, desc, eq, gt, inArray, isNull, or} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {UserModelService} from '../../types/ModelService/UserModelService';
-import {NewModelDto} from '../../types/NewModelDto';
-import {NewModel} from '../../types/NewModel';
 import {WorkoutType} from './types/WorkoutType';
 import {WorkoutTypeFilter} from './types/WorkoutTypeFilter';
 import {WorkoutTypeRow} from '../DrizzleService/types/WorkoutTypeRow';
@@ -11,8 +9,10 @@ import {WorkoutTypeExerciseRow} from '../DrizzleService/types/WorkoutTypeExercis
 import {AppDb, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ExerciseService} from '../ExerciseService/ExerciseService';
 import {WorkoutTypeExerciseSetRow} from '../DrizzleService/types/WorkoutTypeExerciseSetRow';
+import {randomUUID} from 'crypto';
+import {NewModelDto} from '../../types/NewModelDto';
 
-export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
+export class WorkoutTypeService extends UserModelService<string, WorkoutTypeRow, WorkoutType, WorkoutTypeFilter> {
   protected exerciseService: ExerciseService;
 
   constructor(drizzle: DrizzleService, exerciseService: ExerciseService) {
@@ -21,7 +21,14 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
   }
 
   async create(userId: number, data: NewModelDto<WorkoutTypeUpdateDto>): Promise<WorkoutType> {
-    const insertedId = await this.upsert(userId, data);
+    const insertedId = await this.upsert(userId, {
+      ...data,
+      id: randomUUID(),
+      userId: userId,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    });
     return this.decorate(insertedId);
   }
 
@@ -54,7 +61,7 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
   protected async upsertRow(
     db: AppDb,
     userId: number,
-    update: NewModelDto<WorkoutTypeUpdateDto>,
+    update: WorkoutTypeUpdateDto,
     existing?: WorkoutTypeRow): Promise<WorkoutTypeRow> {
     if (existing) {
       const upserted = await db.update(this.getTable()).set({
@@ -74,7 +81,6 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
     }
     const upserted = await db.insert(this.getTable()).values({
       ...update,
-      id: undefined,
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
@@ -86,7 +92,7 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
     }
     return upserted[0];
   }
-  protected async upsert(userId: number, update: NewModelDto<WorkoutTypeUpdateDto>, existing?: WorkoutTypeRow): Promise<number> {
+  protected async upsert(userId: number, update: WorkoutTypeUpdateDto, existing?: WorkoutTypeRow): Promise<string> {
     const db = await this.drizzle.getDb();
     const inserted = await db.transaction(async (db) => {
       const upserted = await this.upsertRow(db, userId, update, existing);
@@ -97,7 +103,8 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
         eq(db._.fullSchema.workoutTypeExerciseSets.workoutTypeId, upserted.id)
       );
       for (const exercise of update.exercises) {
-        const newExercise: NewModel<WorkoutTypeExerciseRow> = {
+        const newExercise: WorkoutTypeExerciseRow = {
+          id: randomUUID(),
           index: exercise.index,
           workoutTypeId: upserted.id,
           description: null,
@@ -112,7 +119,8 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
         if (!insertedExercise) {
           throw new Error("Couldn't obtain inserted values");
         }
-        const sets: NewModel<WorkoutTypeExerciseSetRow>[] = exercise.sets.map((row) => ({
+        const sets: WorkoutTypeExerciseSetRow[] = exercise.sets.map((row) => ({
+          id: randomUUID(),
           workoutTypeId: upserted.id,
           userId,
           reps: row.reps,
@@ -131,12 +139,19 @@ export class WorkoutTypeService extends UserModelService<number, WorkoutTypeRow,
     return inserted;
   }
 
-  async update(userId: number, id:number, update: NewModelDto<WorkoutTypeUpdateDto>) {
+  async update(userId: number, id:string, update: NewModelDto<WorkoutTypeUpdateDto>) {
     const existing = await this.getById(userId, id);
     if (!existing) {
       throw new Error('Workout type not found');
     }
-    await this.upsert(userId, update, existing);
+    await this.upsert(userId, {
+      ...update,
+      id: existing.id,
+      userId: existing.userId,
+      createdAt: existing.createdAt,
+      updatedAt: new Date(),
+      deletedAt: existing.deletedAt,
+    }, existing);
     const updated = await this.getById(userId, id);
     if (!updated) {
       throw new Error('Workout type not found after update');

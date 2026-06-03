@@ -46,7 +46,7 @@ export class StorybookDataUtils {
   ): WorkoutType {
     if (type === 'pull day') {
       const type: WorkoutType = {
-        id: 1,
+        id: '129e4267-e89b-12d3-a456-426614174000',
         userId: 1,
         planIndex: null,
         planId: null,
@@ -115,7 +115,7 @@ export class StorybookDataUtils {
       return type;
     }
     const legDay: WorkoutType = {
-      id: 0,
+      id: '129e1067-e89b-12d3-a456-426614174001',
       userId: 0,
       planIndex: null,
       planId: null,
@@ -376,7 +376,7 @@ export class StorybookDataUtils {
   static getEmptyWorkout(): Workout {
     const workout: Workout = {
       id: 10,
-      typeId: 2,
+      typeId: '129e4267-e89b-12d3-a456-42661417400',
       userId: 0,
       calories: 120,
       start: new Date(new Date().getTime() - 1000 * 60 * 60 * 15.62),
@@ -408,7 +408,7 @@ export class StorybookDataUtils {
   static getWorkout(): Workout {
     const workout: Workout = {
       id: 10,
-      typeId: 2,
+      typeId: '129e4267-e89b-12d3-a456-426614174002',
       userId: 0,
       calories: 120,
       start: new Date(new Date().getTime() - 1000 * 60 * 60 * 15.62),

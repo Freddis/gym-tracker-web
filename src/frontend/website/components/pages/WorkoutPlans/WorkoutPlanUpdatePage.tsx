@@ -22,7 +22,7 @@ export const WorkoutPlanUpdatePage: FC = () => {
   const toasts = useToasts();
   const navigate = useNavigate();
   const params = routeApi.useParams();
-  const id = !Number.isNaN(Number(params.id)) ? Number(params.id) : 0;
+  const id = params.id;
   const response = useQuery({
     queryFn: () => getWorkoutPlansById({
       path: {

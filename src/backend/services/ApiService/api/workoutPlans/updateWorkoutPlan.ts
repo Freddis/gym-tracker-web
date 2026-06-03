@@ -2,7 +2,7 @@ import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {workoutPlanValidator} from './validators/workoutPlanValidator';
-import {object} from 'zod';
+import {object, string} from 'zod';
 
 export const updateWorkoutPlan = RouteFactory.createRoute({
   method: OpenApiMethod.PATCH,
@@ -11,7 +11,7 @@ export const updateWorkoutPlan = RouteFactory.createRoute({
   path: '/{id}',
   validators: {
     path: object({
-      id: RouteFactory.validators.strings.number.openapi({description: 'Id of the workout plan'}),
+      id: string().uuid().openapi({description: 'Id of the workout plan'}),
     }),
     body: workoutPlanValidator.omit({id: true, userId: true, deletedAt: true, createdAt: true, updatedAt: true}),
     response: workoutPlanValidator,
