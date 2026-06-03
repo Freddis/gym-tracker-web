@@ -11,7 +11,7 @@ export class DbSyncService {
   protected local: DrizzleService;
   protected prod: DrizzleService;
   protected logger: Logger;
-  protected chunkSize = 500;
+  protected chunkSize = 300;
 
   constructor(local: DrizzleService, prod: DrizzleService) {
     this.local = local;
@@ -22,32 +22,32 @@ export class DbSyncService {
   async pushSync() {
     this.logger.info('Starting sync');
     const localDb = await this.local.getDb();
-    const tables: Array<[string, PgTable, PgColumn, boolean]> = [
-      ['managers', localDb._.fullSchema.managers, localDb._.fullSchema.managers.id, false],
-      ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id, false],
-      ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id, false],
-      ['food', localDb._.fullSchema.food, localDb._.fullSchema.food.id, true],
-      ['food components', localDb._.fullSchema.foodComponents, localDb._.fullSchema.foodComponents.id, false],
-      ['meals', localDb._.fullSchema.meals, localDb._.fullSchema.meals.id, false],
-      ['meal food', localDb._.fullSchema.mealFoodComponents, localDb._.fullSchema.mealFoodComponents.id, false],
-      ['outdoor runs', localDb._.fullSchema.outdoorRuns, localDb._.fullSchema.outdoorRuns.id, false],
-      ['outdoor walks', localDb._.fullSchema.outdoorWalks, localDb._.fullSchema.outdoorWalks.id, false],
-      ['calorie goals', localDb._.fullSchema.calorieGoals, localDb._.fullSchema.calorieGoals.id, false],
-      ['exercises', localDb._.fullSchema.exercises, localDb._.fullSchema.exercises.id, true],
-      ['exercise muscles', localDb._.fullSchema.muscles, localDb._.fullSchema.muscles.id, false],
-      ['workouts', localDb._.fullSchema.workouts, localDb._.fullSchema.workouts.id, false],
-      ['workout exercises', localDb._.fullSchema.workoutExercises, localDb._.fullSchema.workoutExercises.id, false],
-      ['workout sets', localDb._.fullSchema.workoutExerciseSets, localDb._.fullSchema.workoutExerciseSets.id, false],
-      ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id, false],
-      ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id, true],
-      ['translations', localDb._.fullSchema.translations, localDb._.fullSchema.translations.id, false],
+    const tables: Array<[string, PgTable, PgColumn, boolean, number| undefined]> = [
+      ['managers', localDb._.fullSchema.managers, localDb._.fullSchema.managers.id, false, undefined],
+      ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id, false, undefined],
+      ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id, false, undefined],
+      ['food', localDb._.fullSchema.food, localDb._.fullSchema.food.id, true, undefined],
+      ['food components', localDb._.fullSchema.foodComponents, localDb._.fullSchema.foodComponents.id, false, undefined],
+      ['meals', localDb._.fullSchema.meals, localDb._.fullSchema.meals.id, false, undefined],
+      ['meal food', localDb._.fullSchema.mealFoodComponents, localDb._.fullSchema.mealFoodComponents.id, false, undefined],
+      ['outdoor runs', localDb._.fullSchema.outdoorRuns, localDb._.fullSchema.outdoorRuns.id, false, 1],
+      ['outdoor walks', localDb._.fullSchema.outdoorWalks, localDb._.fullSchema.outdoorWalks.id, false, 1],
+      ['calorie goals', localDb._.fullSchema.calorieGoals, localDb._.fullSchema.calorieGoals.id, false, undefined],
+      ['exercises', localDb._.fullSchema.exercises, localDb._.fullSchema.exercises.id, true, undefined],
+      ['exercise muscles', localDb._.fullSchema.muscles, localDb._.fullSchema.muscles.id, false, undefined],
+      ['workouts', localDb._.fullSchema.workouts, localDb._.fullSchema.workouts.id, false, undefined],
+      ['workout exercises', localDb._.fullSchema.workoutExercises, localDb._.fullSchema.workoutExercises.id, false, undefined],
+      ['workout sets', localDb._.fullSchema.workoutExerciseSets, localDb._.fullSchema.workoutExerciseSets.id, false, undefined],
+      ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id, false, undefined],
+      ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id, true, undefined],
+      ['translations', localDb._.fullSchema.translations, localDb._.fullSchema.translations.id, false, undefined],
     ];
 
     for (const [name, table] of [...tables].reverse()) {
       await this.deleteTable(name, table);
     }
-    for (const [name, table, id, uuid] of tables) {
-      await this.syncTable(name, table, id, uuid);
+    for (const [name, table, id, uuid, limit] of tables) {
+      await this.syncTable(name, table, id, uuid, limit);
     }
     this.logger.info('Done');
   }
@@ -58,7 +58,7 @@ export class DbSyncService {
     await prodDb.delete(table);
   }
 
-  protected async syncTable(name: string, table: PgTable, orderColumn: PgColumn, uuid: boolean) {
+  protected async syncTable(name: string, table: PgTable, orderColumn: PgColumn, uuid: boolean, limit: number = this.chunkSize) {
     const nameSmb = Symbol.for('drizzle:Name');
     const schemaSmb = Symbol.for('drizzle:Schema');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,7 +69,6 @@ export class DbSyncService {
     const prodDb = await this.prod.getDb();
     const localDb = await this.local.getDb();
     await prodDb.delete(table);
-    const limit = this.chunkSize;
     let offset = 0;
     while (true) {
       const values = await localDb.select().from(table).orderBy(desc(orderColumn)).limit(limit).offset(offset);
