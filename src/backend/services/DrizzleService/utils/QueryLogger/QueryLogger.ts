@@ -11,7 +11,7 @@ export class QueryLogger implements Logger {
     this.dbType = dbType;
   }
 
-  logQuery(query: string, parameters?: unknown[]): void {
+  logQuery(query: string, parameters?: unknown[], durationMs?: number): void {
     if (this.isProductionLike) {
       return;
     }
@@ -67,6 +67,7 @@ export class QueryLogger implements Logger {
       }
       return x;
     }).join(',')}]`;
-    console.log(`${paramString}${sql}\n`);
+    const durationStr = durationMs ? `\n${cyan}duration:${reset} ${(durationMs).toFixed(0)}ms` : '';
+    console.log(`${paramString}${durationStr}${sql}\n`);
   }
 }

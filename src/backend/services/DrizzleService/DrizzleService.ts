@@ -6,6 +6,23 @@ import {QueryLogger} from './utils/QueryLogger/QueryLogger';
 import pg from 'pg';
 import {DrizzleServiceConfig} from './types/DrizzleServiceConfig';
 
+const originalSubmit = pg.Query.prototype.submit;
+const logger = new QueryLogger(false, true, 'postgres');
+pg.Query.prototype.submit = function(...args) {
+  const startTime = performance.now();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const text = (this as any).text;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const values = (this as any).values || [];
+
+  this.once('end', () => {
+    const duration = performance.now() - startTime;
+    logger.logQuery(text, values, duration);
+  });
+
+  return originalSubmit.apply(this, args);
+};
+
 const schema = {...dbSchema, ...dbRelations};
 export type AppDbSchema = typeof schema;
 export type AppDb = NodePgDatabase<AppDbSchema>
@@ -27,7 +44,7 @@ export class DrizzleService {
       });
       await this.pgClient.connect();
       this.db = drizzle(this.pgClient, {
-        logger: new QueryLogger(false, true, 'postgres'),
+        // logger: new QueryLogger(false, true, 'postgres'), //swapped in favor of performance-tracking hack
         schema: schema,
       });
     }
