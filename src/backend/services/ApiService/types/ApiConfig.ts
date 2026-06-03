@@ -31,6 +31,7 @@ import {ActionErrorResponse} from '../validators/ActionErrorResponse';
 import {ActionErrorCode} from './ActionErrorCode';
 import {ApiRouteParamsMap} from './ApiRouteParamsMap';
 import {ApiRouteContextMap} from './ApiRouteContextMap';
+import {Logger} from '../../../utils/Logger/Logger';
 
 export class ApiConfig implements OpenApiConfig<
  ApiRouteType,
@@ -40,6 +41,7 @@ export class ApiConfig implements OpenApiConfig<
  ApiRouteContextMap,
  ApiRouteConfig
 > {
+  logger: Logger;
   basePath = '/api' as const;
   apiName = 'Discipline API';
   apiVersion = '1.0.0';
@@ -54,8 +56,9 @@ export class ApiConfig implements OpenApiConfig<
     },
   } as const;
 
-  constructor(factory: GlobalServiceFactory, baseUrl: string) {
+  constructor(factory: GlobalServiceFactory, baseUrl: string, logger: Logger) {
     this.routes = new ApiRouteConfig(factory, baseUrl);
+    this.logger = logger;
   }
 
   async onRoute(e: OpenApiOnRouteEvent<ApiRouteType, ApiRouteParamsMap>): Promise<void> {

@@ -1,115 +1,33 @@
-import {LogLevel} from './types/LogLevel';
+import {OpenApiLogger} from 'snap-on-openapi';
 
-
-export class Logger {
-  protected invoker: string;
-  public static logLevel: LogLevel = LogLevel.all;
-  public static showTime: boolean = true;
-
-  constructor(invoker: string, originalInvoker?: string) {
-    this.invoker = (originalInvoker ? `${originalInvoker}:` : '') + invoker;
+export class Logger extends OpenApiLogger {
+  protected override transformData(data: object): unknown {
+    const reducedData = this.removeLongArrays(data, 30);
+    return super.transformData(reducedData);
   }
 
-  public info(message: string, data?: Record<string, unknown>) {
-    if (Logger.logLevel === LogLevel.error) {
-      return;
-    }
-    this.log(message, 'info', data);
-  }
-
-  public debug(message: string, data?: object) {
-    if (Logger.logLevel !== LogLevel.all) {
-      return;
-    }
-    this.log(message, 'debug', data);
-  }
-
-  public error(message: string | null, error: unknown, data?: object) {
-    let newMessage = 'UnkownError: ';
-    if (!message) {
-      if (error instanceof Error) {
-        newMessage = error.message;
-      }
-    } else {
-      newMessage = message;
-    }
-    this.log(newMessage, 'error', data);
-    console.log(error);
-  }
-
-  public getInvoker(): string {
-    return this.invoker;
-  }
-
-  public static setLogLevel(level: LogLevel) {
-    this.logLevel = level;
-  }
-
-  protected log(message: string, level: string, data?: object) {
-    const now = new Date();
-    const timePart = Logger.showTime ? now.toISOString() : '';
-    const msg = `${timePart}[${level}][${this.invoker}]: ${message}`;
-    console.log(msg);
-    if (data) {
-      console.dir(this.transformData(data), {depth: null});
-    }
-  }
-
-  protected transformData(data: object): unknown {
-    const plain = this.removeCircularity(data);
-    return plain;
-  }
-
-  protected removeCircularity(data: object): unknown {
-    if (typeof data !== 'object') {
-      return data;
-    }
-    // todo: for some reason this is slow
-    // update: this reason is DOM objects, which are much deeeper than backend objects
-    const seen = new Set();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const recurse = (obj: Record<string, any>, path: string[] = []) => {
-      // This is done like that to avoid fighting with types.
-      // There is no actual need in processing arrays and objects in separate cycles.
-      if (Array.isArray(obj)) {
-        const result: unknown[] = [];
-        let index = -1;
-        for (const val of obj) {
-          index++;
-          if (typeof val === 'object' && val) {
-            if (seen.has(val)) {
-              result.push('circular->' + path.join('.'));
-              continue;
-            }
-            seen.add(val);
-            const newPath = [...path, index.toString()];
-            result.push(recurse(val, newPath));
-            continue;
-          }
-          result.push(val);
+  protected removeLongArrays(data: object, maxLength: number): object {
+    const visit = (value: unknown): unknown => {
+      if (Array.isArray(value)) {
+        if (value.length > maxLength) {
+          return [
+            ...value.slice(0, maxLength),
+            `... (${value.length - maxLength} more items omitted)`,
+          ];
         }
-        return result;
+
+        return value.map(visit);
       }
-      if (obj instanceof Date) {
-        return obj;
+
+      if (value && typeof value === 'object') {
+        return Object.fromEntries(
+          Object.entries(value).map(([key, val]) => [key, visit(val)]),
+        );
       }
-      const result: Record<string, unknown> = {};
-      for (const key of Object.keys(obj)) {
-        if (typeof obj[key] === 'object' && obj[key]) {
-          if (seen.has(obj[key])) {
-            result[key] = 'circular->' + path.join('.');
-            continue;
-          }
-          seen.add(obj[key]);
-          const newPath = [...path, key];
-          result[key] = recurse(obj[key], newPath);
-          continue;
-        }
-        result[key] = obj[key];
-      }
-      return result;
+
+      return value;
     };
-    const result = recurse(data);
-    return result;
+
+    return visit(data) as object;
   }
 }

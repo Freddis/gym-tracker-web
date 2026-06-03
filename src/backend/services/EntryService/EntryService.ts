@@ -251,7 +251,6 @@ export class EntryService {
          new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate() + 1)
         ) : undefined,
     );
-
     const count = await db.$count(db._.fullSchema.entries, where);
     const rows = await db
       .select()
