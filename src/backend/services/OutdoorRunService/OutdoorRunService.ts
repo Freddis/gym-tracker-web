@@ -1,5 +1,4 @@
 import {and, eq, inArray} from 'drizzle-orm';
-import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {OutdoorRun} from './types/OutdoorRun';
 import {IEntryService} from '../EntryService/types/IEntryService';
@@ -15,30 +14,15 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
     this.table = drizzle.getSchema().outdoorRuns;
   }
 
-  async getAll(params: {id: number[]; perPage: number; page?: number;}): Promise<PaginatedResult<OutdoorRun>> {
+  async loadRows(params: {id: number[]}): Promise<OutdoorRun[]> {
     const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
-    const offset = (page - 1) * limit;
     const where = and(
-        params.id ? inArray(this.table.id, params.id) : undefined,
+        inArray(this.table.id, params.id),
       );
     const rows = await db.select()
     .from(this.table)
-    .where(where)
-    .limit(limit)
-    .offset(offset);
-
-    const count = await db.$count(this.table, where);
-    const result: PaginatedResult<OutdoorRun> = {
-      items: rows,
-      info: {
-        page,
-        count,
-        pageSize: limit,
-      },
-    };
-    return result;
+    .where(where);
+    return rows;
   }
 
   async deleteOne(userId: number, id: number): Promise<void> {
@@ -86,7 +70,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
     };
   }
   async loadMap(ids: number[]): Promise<Map<number, OutdoorRun>> {
-    const outdoorRuns = await this.getAll({id: ids, perPage: ids.length});
-    return outdoorRuns.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
+    const outdoorRuns = await this.loadRows({id: ids});
+    return outdoorRuns.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, OutdoorRun>());
   }
 }

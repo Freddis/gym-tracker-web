@@ -1,4 +1,4 @@
-import {TableConfig, SQL, desc, inArray} from 'drizzle-orm';
+import {TableConfig, SQL, desc, inArray, and} from 'drizzle-orm';
 import {PgTable, PgColumn} from 'drizzle-orm/pg-core';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {IdColumn} from '../../types/ModelService/types/IdColumn';
@@ -11,6 +11,7 @@ import {MealEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {FoodComponent} from '../FoodService/types/FoodComponent';
 import {FoodService} from '../FoodService/FoodService';
 import {Food} from '../FoodService/types/Food';
+import {Filter} from '../../types/ModelService/types/Filter';
 
 export class MealService extends ModelService<number, AppDbSchema['meals']['$inferSelect'], Meal> implements IEntryService<EntryType.Meal> {
   protected foodService: FoodService;
@@ -22,8 +23,11 @@ export class MealService extends ModelService<number, AppDbSchema['meals']['$inf
   protected override getTable(): PgTable<TableConfig> & {id: IdColumn<number>;} {
     return this.drizzle.getSchema().meals;
   }
-  protected override getWhere(): SQL<unknown> | undefined {
-    return undefined;
+
+  protected override getWhere(filter: Partial<Filter<number>>): SQL<unknown> | undefined {
+    return and(
+      filter.ids ? inArray(this.getTable().id, [...new Set(filter.ids)]) : undefined,
+    );
   }
 
   protected override async decorateRows(rows: AppDbSchema['meals']['$inferSelect'][]): Promise<Meal[]> {
@@ -124,11 +128,5 @@ export class MealService extends ModelService<number, AppDbSchema['meals']['$inf
       type: EntryType.Meal,
     };
   }
-
-  async loadMap(ids: number[]): Promise<Map<number, Meal>> {
-    const meals = await this.getMany({ids: ids, perPage: ids.length});
-    return meals.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Meal>());
-  }
-
 
 }

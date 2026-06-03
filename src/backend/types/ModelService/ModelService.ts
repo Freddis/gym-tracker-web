@@ -9,7 +9,7 @@ import {EntityService} from './types/EntityService';
 export abstract class ModelService<
 TKey extends number | string,
 TRow extends {id:TKey},
-TModel,
+TModel extends {id: TKey},
 TFilter extends Filter<TKey> = Filter<TKey>
 >
 implements EntityService<TModel, TKey, TFilter> {
@@ -169,6 +169,11 @@ implements EntityService<TModel, TKey, TFilter> {
           .filter((x) => !!x.trim())
           .map((x) => ilike(column, `%${x.trim()}%`))
       );
+  }
+
+  async loadMap(ids: TKey[]): Promise<Map<TKey, TModel>> {
+    const result = await this.decorateMany(ids);
+    return result.reduce((acc, cur) => acc.set(cur.id, cur), new Map<TKey, TModel>());
   }
 
 }

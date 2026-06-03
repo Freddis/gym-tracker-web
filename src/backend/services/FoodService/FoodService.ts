@@ -100,7 +100,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
 
   protected override getWhere(params: Partial<FoodFilter>): SQL<unknown> | undefined {
     const where = and(
-      params.ids ? inArray(this.getTable().id, params.ids) : undefined,
+      params.ids ? inArray(this.getTable().id, [...new Set(params.ids)]) : undefined,
       params.search ? ilike(this.getTable().name, `%${params.search}%`) : undefined,
       params.includeDeleted ? undefined : isNull(this.getTable().deletedAt),
       params.isDish ? eq(this.getTable().isMeal, params.isDish) : undefined,
@@ -214,7 +214,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     const db = await this.drizzle.getDb();
     const foodComponents = await db.query.foodComponents.findMany({
       where: (t, op) => op.and(
-        inArray(t.mealId, mealIds),
+        inArray(t.mealId, [...new Set(mealIds)]),
       ),
     });
     if (foodComponents.length === 0) {

@@ -344,8 +344,8 @@ export class WorkoutService implements IEntryService<EntryType.Workout> {
   }
 
   async loadMap(ids: number[]): Promise<Map<number, Workout>> {
-    const workouts = await this.getAll({id: ids, perPage: ids.length});
-    return workouts.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
+    const workouts = await this.load(ids);
+    return workouts.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Workout>());
   }
 
   async upsertOne(userId: number, entry: WorkoutEntryUpsertDto): Promise<{id: number, value: Workout}> {

@@ -45,7 +45,7 @@ implements IEntryService<EntryType.Weight> {
     );
     const minTime = minMax[0]?.min ?? first.createdAt;
     const from = new Date(minTime?.getTime() - 1000 * 60 * 60 * 24 * historySize);
-    const userIds = rows.map((x) => x.userId);
+    const userIds = [...new Set(rows.map((x) => x.userId))];
     const history = await db.select().from(
       this.getTable()
     )
@@ -172,11 +172,6 @@ implements IEntryService<EntryType.Weight> {
       type: EntryType.Weight,
     };
     return created;
-  }
-
-  async loadMap(ids: number[]): Promise<Map<number, Weight>> {
-    const weights = await this.paginate({ids: ids, perPage: ids.length});
-    return weights.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Weight>());
   }
 
 }

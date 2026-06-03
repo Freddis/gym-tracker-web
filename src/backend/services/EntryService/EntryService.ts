@@ -272,7 +272,11 @@ export class EntryService {
         return new Map();
       }
       const ids = rows.map((x) => x[key]).filter((x) => x !== null);
-      return await entryService.loadMap(ids);
+      if (ids.length === 0) {
+        return new Map();
+      }
+      const uniqueIds = [...new Set(ids)];
+      return await entryService.loadMap(uniqueIds);
     };
 
     const mapMap: EntryObjectMapMap = {
@@ -285,10 +289,10 @@ export class EntryService {
       [EntryType.CalorieGoal]: await createMap(EntryType.CalorieGoal, rows),
     };
 
-    const userIds = rows.map((x) => x.userId);
-    const users = await this.userService.paginate({ids: userIds, perPage: limit});
-    const userMap = users.items.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
-    const imageIds = rows.map((x) => x.imageId).filter((x) => x !== null);
+    const userIds = [...new Set(rows.map((x) => x.userId))];
+    const users = await this.userService.getMany({ids: userIds, perPage: limit});
+    const userMap = users.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, User>());
+    const imageIds = [...new Set(rows.map((x) => x.imageId).filter((x) => x !== null))];
     const images = await this.imageService.getMany({ids: imageIds, perPage: limit});
     const imageMap = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, Image>());
 

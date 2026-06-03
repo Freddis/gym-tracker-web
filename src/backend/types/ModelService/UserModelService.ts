@@ -60,7 +60,8 @@ export abstract class UserModelService<
   }
 
   async decorateMany(ids: TKey[]): Promise<TModel[]> {
-    const rows = await this.loadRows(ids);
+    const uniqueIds = [...new Set(ids)];
+    const rows = await this.loadRows(uniqueIds);
     const result = await this.decorateRows(rows);
     return result;
   }

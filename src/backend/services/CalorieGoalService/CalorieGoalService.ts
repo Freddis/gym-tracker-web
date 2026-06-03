@@ -1,4 +1,4 @@
-import {TableConfig, SQL, desc} from 'drizzle-orm';
+import {TableConfig, SQL, desc, and, inArray} from 'drizzle-orm';
 import {PgTable, PgColumn} from 'drizzle-orm/pg-core';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {IdColumn} from '../../types/ModelService/types/IdColumn';
@@ -8,6 +8,7 @@ import {EntryType} from '../EntryService/types/EntryType';
 import {BaseEntry, CalorieGoalEntry} from '../EntryService/types/Entry';
 import {CalorieGoalEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {CalorieGoal} from './types/CalorieGoal';
+import {Filter} from '../../types/ModelService/types/Filter';
 export class CalorieGoalService
 extends ModelService<number, AppDbSchema['calorieGoals']['$inferSelect'], CalorieGoal>
 implements IEntryService<EntryType.CalorieGoal> {
@@ -15,8 +16,11 @@ implements IEntryService<EntryType.CalorieGoal> {
   protected override getTable(): PgTable<TableConfig> & {id: IdColumn<number>;} {
     return this.drizzle.getSchema().calorieGoals;
   }
-  protected override getWhere(): SQL<unknown> | undefined {
-    return undefined;
+
+  protected override getWhere(filter: Partial<Filter<number>>): SQL<unknown> | undefined {
+    return and(
+      filter.ids ? inArray(this.getTable().id, [...new Set(filter.ids)]) : undefined,
+    );
   }
 
   protected override async decorateRows(rows: AppDbSchema['calorieGoals']['$inferSelect'][]): Promise<CalorieGoal[]> {
@@ -61,10 +65,5 @@ implements IEntryService<EntryType.CalorieGoal> {
     };
     return created;
   };
-
-  async loadMap(ids: number[]) {
-    const calorieGoals = await this.getMany({ids: ids, perPage: ids.length});
-    return calorieGoals.reduce((acc, cur) => acc.set(cur.id, cur), new Map<number, CalorieGoal>());
-  }
 
 }
