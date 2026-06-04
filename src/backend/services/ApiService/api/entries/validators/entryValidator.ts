@@ -1,4 +1,4 @@
-import {date, object, string} from 'zod';
+import {date, number, object, string} from 'zod';
 import {userValidator} from '../../users/validators/userValidator';
 import {workoutValidator} from '../../workouts/validators/workoutValidator';
 import {weightValidator} from '../../weight/validators/weightValidator';
@@ -23,6 +23,13 @@ const baseEntryValidator = object({
   note: string().nullable().openapi({description: 'Note of the entry'}),
   externalId: string().nullable().openapi({description: 'External id of the entry'}),
   externalSource: externalSourceValidator.nullable().openapi({description: 'External source of the entry. Another app.'}),
+  healthkitId: string().nullable().openapi({description: 'Healthkit id of the entry'}),
+  healthkitAnchor: number().nullable().openapi({description: 'Healthkit anchor of the entry'}),
+  healthkitAnchors_3_0: string().nullable().openapi({description: 'Healthkit anchors_3_0 of the entry'}),
+  healthkitSource: string().nullable().openapi({description: 'Healthkit source of the entry'}),
+  healthkitSourceName: string().nullable().openapi({description: 'Healthkit source name of the entry'}),
+  healthkitDevice: string().nullable().openapi({description: 'Healthkit device of the entry'}),
+  healthkitDeviceName: string().nullable().openapi({description: 'Healthkit device name of the entry'}),
 });
 
 export const entryValidator = baseEntryValidator.extend({
