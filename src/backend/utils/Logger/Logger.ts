@@ -22,7 +22,7 @@ export class Logger extends OpenApiLogger {
         return value.map(visit);
       }
 
-      if (value && typeof value === 'object') {
+      if (value && typeof value === 'object' && !(value instanceof Date)) {
         return Object.fromEntries(
           Object.entries(value).map(([key, val]) => [key, visit(val)]),
         );
