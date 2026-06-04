@@ -1,4 +1,4 @@
-import {literal, number, string, union} from 'zod';
+import {discriminatedUnion, literal, number, string} from 'zod';
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {workoutUpsertDtoValidator} from '../../workouts/validators/workoutUpsertDtoValidator';
 import {entryValidator} from './entryValidator';
@@ -90,7 +90,7 @@ const calorieGoalEntryUpsertDtoValidator = baseEntryUpsertDtoValidator.extend({
   type: literal(EntryType.CalorieGoal),
 });
 
-const validator = union([
+const validator = discriminatedUnion('type', [
   RouteFactory.validators.describeShape(workoutEntryUpsertDtoValidator, descriptions).openapi({ref: 'WorkoutEntryUpsertDto'}),
   RouteFactory.validators.describeShape(weightEntryUpsertDtoValidator, descriptions).openapi({ref: 'WeightEntryUpsertDto'}),
   RouteFactory.validators.describeShape(postEntryUpsertDtoValidator, descriptions).openapi({ref: 'PostEntryUpsertDto'}),

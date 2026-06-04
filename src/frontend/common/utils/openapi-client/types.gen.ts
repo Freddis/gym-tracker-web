@@ -1922,13 +1922,27 @@ export type CalorieGoal = {
  * Fields needed to update a workout
  */
 export type EntryUpsertDto =
-  | WorkoutEntryUpsertDto
-  | WeightEntryUpsertDto
-  | PostEntryUpsertDto
-  | OutdoorRunEntryUpsertDto
-  | OutdoorWalkEntryUpsertDto
-  | MealEntryUpsertDto
-  | CalorieGoalEntryUpsertDto;
+  | ({
+      type: "Workout";
+    } & WorkoutEntryUpsertDto)
+  | ({
+      type: "Weight";
+    } & WeightEntryUpsertDto)
+  | ({
+      type: "Post";
+    } & PostEntryUpsertDto)
+  | ({
+      type: "OutdoorRun";
+    } & OutdoorRunEntryUpsertDto)
+  | ({
+      type: "OutdoorWalk";
+    } & OutdoorWalkEntryUpsertDto)
+  | ({
+      type: "Meal";
+    } & MealEntryUpsertDto)
+  | ({
+      type: "CalorieGoal";
+    } & CalorieGoalEntryUpsertDto);
 
 export type WorkoutEntryUpsertDto = {
   /**
