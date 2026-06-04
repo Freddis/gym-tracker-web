@@ -3,6 +3,7 @@ import {FC} from 'react';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {EntryBlockDate} from './EntryBlockDate';
 import {Entry} from '../../../../../common/utils/openapi-client';
+import {route, RouteId} from '../../../../../common/utils/route';
 
 interface EntryBlockHeaderProps extends LinkProps {
   entry: Entry;
@@ -15,7 +16,9 @@ export const EntryBlockHeader: FC<EntryBlockHeaderProps> = (props) => {
   return (
   <div className="flex flex-col sm:flex-row">
     <div className="text-lg font-normal mb-5">
-      {!own && title}
+      {!own && (
+        <RouteLink accented={false} to={route(RouteId.EntryView)} params={{id: entry.id.toString()}}>{title}</RouteLink>
+      )}
       {own && (
         <RouteLink accented={false} {...restProps}>{title}</RouteLink>
       )}

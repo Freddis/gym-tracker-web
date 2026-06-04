@@ -31,6 +31,7 @@ import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesBuiltInRouteImport } from './routes/exercises/built-in'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
 import { Route as EntriesAddRouteImport } from './routes/entries/add'
+import { Route as EntriesIdRouteImport } from './routes/entries/$id'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthPasswordResetRouteImport } from './routes/auth/password-reset'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -162,6 +163,11 @@ const ExercisesExerciseIdRoute = ExercisesExerciseIdRouteImport.update({
 const EntriesAddRoute = EntriesAddRouteImport.update({
   id: '/entries/add',
   path: '/entries/add',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntriesIdRoute = EntriesIdRouteImport.update({
+  id: '/entries/$id',
+  path: '/entries/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
@@ -324,6 +330,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/$id': typeof EntriesIdRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
@@ -372,6 +379,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/$id': typeof EntriesIdRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
@@ -421,6 +429,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/password-reset': typeof AuthPasswordResetRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/entries/$id': typeof EntriesIdRoute
   '/entries/add': typeof EntriesAddRoute
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
@@ -471,6 +480,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/password-reset'
     | '/auth/register'
+    | '/entries/$id'
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
@@ -519,6 +529,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/password-reset'
     | '/auth/register'
+    | '/entries/$id'
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
@@ -567,6 +578,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/password-reset'
     | '/auth/register'
+    | '/entries/$id'
     | '/entries/add'
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
@@ -616,6 +628,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthPasswordResetRoute: typeof AuthPasswordResetRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  EntriesIdRoute: typeof EntriesIdRoute
   EntriesAddRoute: typeof EntriesAddRoute
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesBuiltInRoute: typeof ExercisesBuiltInRoute
@@ -831,6 +844,13 @@ declare module '@tanstack/react-router' {
       path: '/entries/add'
       fullPath: '/entries/add'
       preLoaderRoute: typeof EntriesAddRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entries/$id': {
+      id: '/entries/$id'
+      path: '/entries/$id'
+      fullPath: '/entries/$id'
+      preLoaderRoute: typeof EntriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -1057,6 +1077,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthPasswordResetRoute: AuthPasswordResetRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  EntriesIdRoute: EntriesIdRoute,
   EntriesAddRoute: EntriesAddRoute,
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesBuiltInRoute: ExercisesBuiltInRoute,

@@ -11,7 +11,7 @@ export const OutdoorWalkEntryBlock: FC<{entry: Entry, outdoorWalk: OutdoorWalk, 
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.outdoorWalk);
   return (
     <AppBlock data-testid={`entry-${entry.id}`}>
-      <EntryBlockHeader entry={entry} own={own} to={route(RouteId.WorkoutUpdate)} params={{id: entry.id.toString()}} title={t(i18n.type)} />
+      <EntryBlockHeader entry={entry} own={own} to={route(RouteId.EntryView)} params={{id: entry.id.toString()}} title={t(i18n.type)} />
       <RoutedWorkoutContent entry={entry} workout={outdoorWalk} />
       <EntryBlockBottom entry={entry} own={own} />
     </AppBlock>
