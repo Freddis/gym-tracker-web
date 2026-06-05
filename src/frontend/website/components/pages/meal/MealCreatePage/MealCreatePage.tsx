@@ -41,6 +41,13 @@ export const MealCreatePage: FC = () => {
     note: null,
     externalId: null,
     externalSource: null,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   const onSave = async (meal: MealEntryUpsertDto) => {
     const response = await api.putEntries({

@@ -45,6 +45,13 @@ export const CalorieGoalCreatePage: FC = () => {
     note: null,
     externalId: null,
     externalSource: null,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   const onSave = async (meal: CalorieGoalEntryUpsertDto) => {
     const response = await api.putEntries({

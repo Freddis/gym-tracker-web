@@ -23,6 +23,13 @@ export const PostCreatePagePresenter: FC<Omit<PostUpdateFormProps, 'entry'>> = (
     externalId: null,
     externalSource: null,
     image: null,
+    healthkitId: null,
+    healthkitAnchor: null,
+    healthkitAnchors_3_0: null,
+    healthkitSource: null,
+    healthkitSourceName: null,
+    healthkitDevice: null,
+    healthkitDeviceName: null,
   };
   return (
     <PageContainer>

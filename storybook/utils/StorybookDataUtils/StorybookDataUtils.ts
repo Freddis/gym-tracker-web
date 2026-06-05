@@ -233,6 +233,13 @@ export class StorybookDataUtils {
       note: null,
       externalId: null,
       externalSource: null,
+      healthkitId: null,
+      healthkitAnchor: null,
+      healthkitAnchors_3_0: null,
+      healthkitSource: null,
+      healthkitSourceName: null,
+      healthkitDevice: null,
+      healthkitDeviceName: null,
     };
     return entry;
   }
@@ -252,6 +259,13 @@ export class StorybookDataUtils {
       externalSource: null,
       type: 'Post',
       image: this.getImage(),
+      healthkitId: null,
+      healthkitAnchor: null,
+      healthkitAnchors_3_0: null,
+      healthkitSource: null,
+      healthkitSourceName: null,
+      healthkitDevice: null,
+      healthkitDeviceName: null,
     };
     return postEntry;
   }
