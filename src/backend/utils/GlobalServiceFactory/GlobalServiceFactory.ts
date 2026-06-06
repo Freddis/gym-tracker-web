@@ -28,11 +28,17 @@ import {PostService} from '../../services/PostService/PostService';
 import {MealService} from '../../services/MealService/MealService';
 import {CalorieGoalService} from '../../services/CalorieGoalService/CalorieGoalService';
 import {ProfileService} from '../../services/ApiService/ProfileService/ProfileService';
+import {FatsecretService} from '../../services/FatsecretService/FatsecretService';
+import {RedisService} from '../../services/RedisService/RedisService';
+import {OpenFoodFactsService} from '../../services/OpenFoodFactsService/OpenFoodFactsService';
+import {C0rService} from '../../services/C0rService/C0rService';
 
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
+  protected fatsecretCached?: FatsecretService;
+  protected redisCached?: RedisService;
   protected config: ServerConfig;
 
   constructor(config: ServerConfig) {
@@ -190,5 +196,26 @@ export class GlobalServiceFactory {
 
   async email(): Promise<EmailService> {
     return new EmailService(this.config.services.email);
+  }
+
+  async redis(): Promise<RedisService> {
+    if (!this.redisCached) {
+      this.redisCached = new RedisService(serverConfig.services.redis);
+    }
+    return this.redisCached;
+  }
+
+  async fatsecret(): Promise<FatsecretService> {
+    if (!this.fatsecretCached) {
+      this.fatsecretCached = new FatsecretService(this.config.services.fatsecret, await this.redis());
+    }
+    return this.fatsecretCached;
+  }
+
+  async openFoodFacts(): Promise<OpenFoodFactsService> {
+    return new OpenFoodFactsService();
+  }
+  async c0r(): Promise<C0rService> {
+    return new C0rService(this.config.services.c0r);
   }
 }

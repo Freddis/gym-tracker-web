@@ -43,5 +43,16 @@ export const serverConfig: ServerConfig = {
       fromName: EnvHelper.getString('EMAIL_FROM_NAME'),
       environment: EnvHelper.getEnumValue('NODE_ENV', Environment, Environment.development),
     },
+    fatsecret: {
+      deviceIdentifier: EnvHelper.getString('FATSECRET_DEVICE_IDENTIFIER'),
+      userName: EnvHelper.getString('FATSECRET_USERNAME'),
+      password: EnvHelper.getString('FATSECRET_PASSWORD'),
+    },
+    c0r: {
+      apiKey: EnvHelper.getString('C0R_API_KEY'),
+    },
+    redis: {
+      tmpFolderPath: join(realpathSync('.'), '/temp'),
+    },
   },
 };
