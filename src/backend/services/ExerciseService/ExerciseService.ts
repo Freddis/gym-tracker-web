@@ -46,6 +46,17 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     this.images = images;
   }
 
+  async copy(userId: number, id: string): Promise<Exercise> {
+    const exercise = await this.getById(id);
+    if (!exercise) {
+      throw new ActionError(ActionErrorCode.ExerciseNotFound);
+    }
+    return await this.create({
+      ...exercise,
+      userId,
+    });
+  }
+
   async create(data: Omit<Exercise, 'id' | 'variations' | 'createdAt' | 'updatedAt'>) {
     const db = await this.drizzle.getDb();
     const dbSchema = this.drizzle.getSchema();
