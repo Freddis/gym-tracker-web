@@ -33,12 +33,13 @@ export class ProfileService {
     const weight = await this.getWeightForUser(coreUser);
     const age = new Date().getFullYear() - coreUser.birthDate.getFullYear();
     const historySize = 30;
+    const dayMs = 1000 * 60 * 60 * 24;
     const meals = await this.entryService.getAll({
       userId: [id],
       type: [EntryType.Meal],
-      perPage: 100,
-      after: new Date(new Date().setDate(new Date().getDate() - historySize)),
-      before: new Date(new Date().setDate(new Date().getDate() + 1)),
+      perPage: 10000,
+      after: new Date(new Date().getTime() - historySize * dayMs),
+      before: new Date(),
     });
     const todayText = new Date().toDateString();
     const todayMeals = meals.items.filter((x) => x.time.toDateString() === todayText).flatMap((x) => x.meal.food);
