@@ -4,6 +4,8 @@ import {C0rServiceConfig} from './types/C0rServiceConfig';
 import {C0rSearchResponse, C0rSearchResponseSchema} from './types/C0rSearchResponse';
 import {C0rBarcodeSearchResponse, C0rBarcodeSearchResponseSchema} from './types/C0rBarcodeSearchResponse';
 
+//todo: I don't think you actually need token to access this API. Token limits to 100 requests per day.
+// most likely without token it would work better
 export class C0rService {
   protected logger: Logger;
   protected httpClient: AxiosInstance;
