@@ -5,23 +5,12 @@ import {drizzle, NodePgDatabase} from 'drizzle-orm/node-postgres';
 import {QueryLogger} from './utils/QueryLogger/QueryLogger';
 import pg from 'pg';
 import {DrizzleServiceConfig} from './types/DrizzleServiceConfig';
-
-const originalSubmit = pg.Query.prototype.submit;
-const logger = new QueryLogger(false, true, 'postgres');
-pg.Query.prototype.submit = function(...args) {
-  const startTime = performance.now();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const text = (this as any).text;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const values = (this as any).values || [];
-
-  this.once('end', () => {
-    const duration = performance.now() - startTime;
-    logger.logQuery(text, values, duration);
-  });
-
-  return originalSubmit.apply(this, args);
-};
+import {Logger} from '../../utils/Logger/Logger';
+declare module 'pg' {
+  interface Query {
+    patched?: boolean;
+  }
+}
 
 const schema = {...dbSchema, ...dbRelations};
 export type AppDbSchema = typeof schema;
@@ -31,9 +20,35 @@ export class DrizzleService {
   protected db?: AppDb;
   protected pgClient?: pg.Client;
   protected config: DrizzleServiceConfig;
+  protected logger = new Logger(DrizzleService.name);
 
   constructor(config: DrizzleServiceConfig) {
     this.config = config;
+    this.patchPg();
+  }
+  patchPg() {
+    if (!pg.Query.prototype.patched) {
+      this.logger.info('Monkey patching PG to track query performance');
+      pg.Query.prototype.patched = true;
+      const originalSubmit = pg.Query.prototype.submit;
+      const logger = new QueryLogger(false, true, 'postgres');
+      pg.Query.prototype.submit = function(...args) {
+        const startTime = performance.now();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const text = (this as any).text;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const values = (this as any).values || [];
+
+        this.once('end', () => {
+          const duration = performance.now() - startTime;
+          logger.logQuery(text, values, duration);
+        });
+
+        return originalSubmit.apply(this, args);
+      };
+    } else {
+      this.logger.info('PG already patched');
+    }
   }
 
   async getDb(): Promise<AppDb> {
