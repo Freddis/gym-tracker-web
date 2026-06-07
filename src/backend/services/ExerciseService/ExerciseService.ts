@@ -340,7 +340,11 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
           params?.includeBuiltIn ? isNull(db._.fullSchema.exercises.userId) : undefined,
         ) : undefined
       ),
-      params?.updatedAfter ? gt(db._.fullSchema.exercises.updatedAt, params.updatedAfter) : undefined,
+      params?.updatedAfter ? or(
+        gt(db._.fullSchema.exercises.updatedAt, params.updatedAfter),
+        gt(db._.fullSchema.exercises.createdAt, params.updatedAfter),
+        gt(db._.fullSchema.exercises.deletedAt, params.updatedAfter),
+      ) : undefined,
       params?.filter ? or(
         and(
           isNull(db._.fullSchema.translations.value),
@@ -366,7 +370,6 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
       params?.language ? eq(db._.fullSchema.translations.language, params.language) : sql`FALSE`,
       eq(db._.fullSchema.translations.key, sql`${db._.fullSchema.exercises.id}::varchar`),
     );
-
     const query = db.select({
       id: db._.fullSchema.exercises.id,
       name: db._.fullSchema.exercises.name,
