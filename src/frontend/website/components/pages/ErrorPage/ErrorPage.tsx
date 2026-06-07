@@ -13,7 +13,7 @@ export const ErrorPage: FC<ErrorComponentProps> = (props) => {
       <head>
         <link rel="stylesheet" href={appCss} />
       </head>
-      <ThemeProvider>
+      <ThemeProvider useBodyContainer>
         <LanguageProvider>
           <ErrorPagePresenter {...props} />
         </LanguageProvider>

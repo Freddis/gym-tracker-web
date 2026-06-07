@@ -24,7 +24,6 @@ export const PostUpdateForm: FC<PostUpdateFormProps> = (props) => {
     const trimmed = note.trim() === '' ? null : note.trim();
     props.onSave({data, note: trimmed, time});
   };
-
   return (
     <>
       <AppLabel>{t(i18n.list.objects.post.time)}</AppLabel>

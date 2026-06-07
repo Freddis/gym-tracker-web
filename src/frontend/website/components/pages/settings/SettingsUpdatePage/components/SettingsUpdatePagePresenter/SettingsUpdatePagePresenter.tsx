@@ -104,7 +104,6 @@ export const SettingsUpdatePagePresenter: FC<SettingsUpdatePagePresenterProps> =
       setSmartError((x) => x.height, '');
       return;
     }
-    console.log(profilePicture);
     const update: SettingsUpdateDto = {
       name,
       note: note.trim() === '' ? null : note,

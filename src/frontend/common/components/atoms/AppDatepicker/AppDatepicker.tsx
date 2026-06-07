@@ -47,14 +47,21 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
     setDate(newDate);
     setTime(dateToTimeString(newDate, true));
     setOpen(false);
-    if (props.onChange) {
-      props.onChange(newDate);
-    }
+    props?.onChange?.(newDate);
   };
 
   const onTimeChanged:ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.value === '') {
+      // with controlled input, i don't know what was erased - hours or minutes
+      // so I set everything to 00:00:00 and then blur and focus to trigger browser to focus on hours
+      // naturally browser resets only currently focused part, but it's impossible to recreate that behavior
+      // without going with a dirty hacks and swapping between controlled and uncontrolled inpu
+      e.target.value = '00:00:00';
+      e.target.blur();
+      e.target.focus();
+    }
     const newTime = e.target.value;
-    const newDate = date ?? new Date();
+    const newDate = new Date(date ? date.getTime() : Date.now()); // careful not to reuse date object from state
     const timeDate = new Date(`1970-01-01T${newTime}`);
     newDate.setHours(timeDate.getHours());
     newDate.setMinutes(timeDate.getMinutes());
@@ -62,9 +69,7 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
     newDate.setMilliseconds(timeDate.getMilliseconds());
     setDate(newDate);
     setTime(dateToTimeString(newDate, true));
-    if (props.onChange) {
-      props.onChange(newDate);
-    }
+    props?.onChange?.(newDate);
   };
 
   return (
@@ -104,22 +109,24 @@ export const AppDatepicker: FC<AppDatepickerProps> = (props) => {
               components={{
                 Day: ({day}) => {
                   return (
-                    <Button
-                    onClick={() => onDateSelected(day.date)}
-                    disabled={props.markedDays?.includes(day.date)}
-                    variant={date && day.isEqualTo(new CalendarDay(date, date)) ? 'default' : 'secondary'}
-                    size="icon"
-                    className="relative mx-0.5"
-                    >
-                      {(props.markedDays ?? []).find((d) => d.toDateString() === day.date.toDateString()) && (
-                        <div
-                        className={cn(
-                          'size-1 absolute left-1/2 -translate-x-1/2 bottom-0.5 rounded-full',
-                          date && day.isEqualTo(new CalendarDay(date, date)) ? 'bg-white' : 'bg-accent'
-                        )} />
-                      )}
-                      <span>{day.date.getDate()}</span>
-                    </Button>
+                    <td>
+                      <Button
+                      onClick={() => onDateSelected(day.date)}
+                      disabled={props.markedDays?.includes(day.date)}
+                      variant={date && day.isEqualTo(new CalendarDay(date, date)) ? 'default' : 'secondary'}
+                      size="icon"
+                      className="relative mx-0.5"
+                      >
+                        {(props.markedDays ?? []).find((d) => d.toDateString() === day.date.toDateString()) && (
+                          <div
+                          className={cn(
+                            'size-1 absolute left-1/2 -translate-x-1/2 bottom-0.5 rounded-full',
+                            date && day.isEqualTo(new CalendarDay(date, date)) ? 'bg-white' : 'bg-accent'
+                          )} />
+                        )}
+                        <span>{day.date.getDate()}</span>
+                      </Button>
+                    </td>
                   );
                 },
               }}
