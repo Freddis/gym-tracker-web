@@ -1,0 +1,3883 @@
+{
+  "id": "5b6fb32b-e754-4375-a886-58a418e96701",
+  "prevId": "42feb7d3-6afd-4864-956a-14ea2f6c6a33",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "gym_tracker.argus-checkins": {
+      "name": "argus-checkins",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "argus-checkins_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "externalId": {
+          "name": "externalId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subtype": {
+          "name": "subtype",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "data": {
+          "name": "data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.calorie_goals": {
+      "name": "calorie_goals",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "calorie_goals_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calories": {
+          "name": "calories",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "carbs": {
+          "name": "carbs",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "protein": {
+          "name": "protein",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fat": {
+          "name": "fat",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "calorie_goals_userId_users_id_fk": {
+          "name": "calorie_goals_userId_users_id_fk",
+          "tableFrom": "calorie_goals",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.entries": {
+      "name": "entries",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "externalId": {
+          "name": "externalId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "externalSource": {
+          "name": "externalSource",
+          "type": "ExternalSource",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "EntryType",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutId": {
+          "name": "workoutId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weightId": {
+          "name": "weightId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "imageId": {
+          "name": "imageId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "outdoorRunId": {
+          "name": "outdoorRunId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "outdoorWalkId": {
+          "name": "outdoorWalkId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mealId": {
+          "name": "mealId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "calorieGoalId": {
+          "name": "calorieGoalId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "visibility": {
+          "name": "visibility",
+          "type": "EntryVisibility",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time": {
+          "name": "time",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "healthkitId": {
+          "name": "healthkitId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitAnchor": {
+          "name": "healthkitAnchor",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitAnchors_3_0": {
+          "name": "healthkitAnchors_3_0",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitSource": {
+          "name": "healthkitSource",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitSourceName": {
+          "name": "healthkitSourceName",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitDevice": {
+          "name": "healthkitDevice",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "healthkitDeviceName": {
+          "name": "healthkitDeviceName",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "entries_userId_users_id_fk": {
+          "name": "entries_userId_users_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_workoutId_workouts_id_fk": {
+          "name": "entries_workoutId_workouts_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "workouts",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_weightId_weight_id_fk": {
+          "name": "entries_weightId_weight_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "weight",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "weightId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_imageId_images_id_fk": {
+          "name": "entries_imageId_images_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "images",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "imageId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_outdoorRunId_outdoor_runs_id_fk": {
+          "name": "entries_outdoorRunId_outdoor_runs_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "outdoor_runs",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorRunId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_outdoorWalkId_outdoor_walks_id_fk": {
+          "name": "entries_outdoorWalkId_outdoor_walks_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "outdoor_walks",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorWalkId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_mealId_meals_id_fk": {
+          "name": "entries_mealId_meals_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "meals",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "mealId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "entries_calorieGoalId_calorie_goals_id_fk": {
+          "name": "entries_calorieGoalId_calorie_goals_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "calorie_goals",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "calorieGoalId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.exercises": {
+      "name": "exercises",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment": {
+          "name": "equipment",
+          "type": "Equipment",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "images": {
+          "name": "images",
+          "type": "varchar[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "params": {
+          "name": "params",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "copiedFromId": {
+          "name": "copiedFromId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parentExerciseId": {
+          "name": "parentExerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isArchived": {
+          "name": "isArchived",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "exercises_userId_index": {
+          "name": "exercises_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "exercises_deletedAt_index": {
+          "name": "exercises_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.food": {
+      "name": "food",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "imageId": {
+          "name": "imageId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "protein": {
+          "name": "protein",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "carbs": {
+          "name": "carbs",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fat": {
+          "name": "fat",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "servingSize": {
+          "name": "servingSize",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "servingSizeUnit": {
+          "name": "servingSizeUnit",
+          "type": "ServingSizeUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isMeal": {
+          "name": "isMeal",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "food_userId_users_id_fk": {
+          "name": "food_userId_users_id_fk",
+          "tableFrom": "food",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "food_imageId_images_id_fk": {
+          "name": "food_imageId_images_id_fk",
+          "tableFrom": "food",
+          "tableTo": "images",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "imageId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.food_components": {
+      "name": "food_components",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "food_components_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "mealId": {
+          "name": "mealId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "componentId": {
+          "name": "componentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unit": {
+          "name": "unit",
+          "type": "FoodAmountUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "food_components_mealId_food_id_fk": {
+          "name": "food_components_mealId_food_id_fk",
+          "tableFrom": "food_components",
+          "tableTo": "food",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "mealId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "food_components_componentId_food_id_fk": {
+          "name": "food_components_componentId_food_id_fk",
+          "tableFrom": "food_components",
+          "tableTo": "food",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "componentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.images": {
+      "name": "images",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imageType": {
+          "name": "imageType",
+          "type": "ImageType",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "images_userId_users_id_fk": {
+          "name": "images_userId_users_id_fk",
+          "tableFrom": "images",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "images_url_unique": {
+          "name": "images_url_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "url"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.managers": {
+      "name": "managers",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "managers_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profilePicture": {
+          "name": "profilePicture",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.meal_food": {
+      "name": "meal_food",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "meal_food_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "mealId": {
+          "name": "mealId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "foodId": {
+          "name": "foodId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unit": {
+          "name": "unit",
+          "type": "FoodAmountUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meal_food_mealId_meals_id_fk": {
+          "name": "meal_food_mealId_meals_id_fk",
+          "tableFrom": "meal_food",
+          "tableTo": "meals",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "mealId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "meal_food_foodId_food_id_fk": {
+          "name": "meal_food_foodId_food_id_fk",
+          "tableFrom": "meal_food",
+          "tableTo": "food",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "foodId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.meals": {
+      "name": "meals",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "meals_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "MealType",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meals_userId_users_id_fk": {
+          "name": "meals_userId_users_id_fk",
+          "tableFrom": "meals",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.exercise_muscles": {
+      "name": "exercise_muscles",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "exercise_muscles_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "muscle": {
+          "name": "muscle",
+          "type": "Muscle",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isPrimary": {
+          "name": "isPrimary",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "exercise_muscles_exerciseId_index": {
+          "name": "exercise_muscles_exerciseId_index",
+          "columns": [
+            {
+              "expression": "exerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "exercise_muscles_exerciseId_exercises_id_fk": {
+          "name": "exercise_muscles_exerciseId_exercises_id_fk",
+          "tableFrom": "exercise_muscles",
+          "tableTo": "exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_run_geo_data": {
+      "name": "outdoor_run_geo_data",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_run_geo_data_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "outdoorRunId": {
+          "name": "outdoorRunId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "altitude": {
+          "name": "altitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course": {
+          "name": "course",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "speed": {
+          "name": "speed",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "speedAccuracy": {
+          "name": "speedAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "horizontalAccuracy": {
+          "name": "horizontalAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verticalAccuracy": {
+          "name": "verticalAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "distance": {
+          "name": "distance",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "outdoor_run_geo_data_outdoorRunId_timestamp_index": {
+          "name": "outdoor_run_geo_data_outdoorRunId_timestamp_index",
+          "columns": [
+            {
+              "expression": "outdoorRunId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "outdoor_run_geo_data_outdoorRunId_outdoor_runs_id_fk": {
+          "name": "outdoor_run_geo_data_outdoorRunId_outdoor_runs_id_fk",
+          "tableFrom": "outdoor_run_geo_data",
+          "tableTo": "outdoor_runs",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorRunId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_run_heart_rate_data": {
+      "name": "outdoor_run_heart_rate_data",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_run_heart_rate_data_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "outdoorRunId": {
+          "name": "outdoorRunId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "heartRate": {
+          "name": "heartRate",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "outdoor_run_heart_rate_data_outdoorRunId_timestamp_index": {
+          "name": "outdoor_run_heart_rate_data_outdoorRunId_timestamp_index",
+          "columns": [
+            {
+              "expression": "outdoorRunId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "outdoor_run_heart_rate_data_outdoorRunId_outdoor_runs_id_fk": {
+          "name": "outdoor_run_heart_rate_data_outdoorRunId_outdoor_runs_id_fk",
+          "tableFrom": "outdoor_run_heart_rate_data",
+          "tableTo": "outdoor_runs",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorRunId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_runs": {
+      "name": "outdoor_runs",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_runs_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "distance": {
+          "name": "distance",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pace": {
+          "name": "pace",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxPace": {
+          "name": "maxPace",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cadence": {
+          "name": "cadence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "maxCadence": {
+          "name": "maxCadence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "elevationGain": {
+          "name": "elevationGain",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heartRate": {
+          "name": "heartRate",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "maxHeartRate": {
+          "name": "maxHeartRate",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heartRateData": {
+          "name": "heartRateData",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "geoData": {
+          "name": "geoData",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calories": {
+          "name": "calories",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "outdoor_runs_userId_users_id_fk": {
+          "name": "outdoor_runs_userId_users_id_fk",
+          "tableFrom": "outdoor_runs",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_walk_geo_data": {
+      "name": "outdoor_walk_geo_data",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_walk_geo_data_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "outdoorWalkId": {
+          "name": "outdoorWalkId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "altitude": {
+          "name": "altitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course": {
+          "name": "course",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "speed": {
+          "name": "speed",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "speedAccuracy": {
+          "name": "speedAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "horizontalAccuracy": {
+          "name": "horizontalAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verticalAccuracy": {
+          "name": "verticalAccuracy",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "distance": {
+          "name": "distance",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "outdoor_walk_geo_data_outdoorWalkId_timestamp_index": {
+          "name": "outdoor_walk_geo_data_outdoorWalkId_timestamp_index",
+          "columns": [
+            {
+              "expression": "outdoorWalkId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "outdoor_walk_geo_data_outdoorWalkId_outdoor_walks_id_fk": {
+          "name": "outdoor_walk_geo_data_outdoorWalkId_outdoor_walks_id_fk",
+          "tableFrom": "outdoor_walk_geo_data",
+          "tableTo": "outdoor_walks",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorWalkId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_walk_heart_rate_data": {
+      "name": "outdoor_walk_heart_rate_data",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_walk_heart_rate_data_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "outdoorWalkId": {
+          "name": "outdoorWalkId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "heartRate": {
+          "name": "heartRate",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "outdoor_walk_heart_rate_data_outdoorWalkId_timestamp_index": {
+          "name": "outdoor_walk_heart_rate_data_outdoorWalkId_timestamp_index",
+          "columns": [
+            {
+              "expression": "outdoorWalkId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "outdoor_walk_heart_rate_data_outdoorWalkId_outdoor_walks_id_fk": {
+          "name": "outdoor_walk_heart_rate_data_outdoorWalkId_outdoor_walks_id_fk",
+          "tableFrom": "outdoor_walk_heart_rate_data",
+          "tableTo": "outdoor_walks",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "outdoorWalkId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.outdoor_walks": {
+      "name": "outdoor_walks",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "outdoor_walks_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "distance": {
+          "name": "distance",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pace": {
+          "name": "pace",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxPace": {
+          "name": "maxPace",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cadence": {
+          "name": "cadence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "maxCadence": {
+          "name": "maxCadence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "elevationGain": {
+          "name": "elevationGain",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heartRate": {
+          "name": "heartRate",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "maxHeartRate": {
+          "name": "maxHeartRate",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "heartRateData": {
+          "name": "heartRateData",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "geoData": {
+          "name": "geoData",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calories": {
+          "name": "calories",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "outdoor_walks_userId_users_id_fk": {
+          "name": "outdoor_walks_userId_users_id_fk",
+          "tableFrom": "outdoor_walks",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.translations": {
+      "name": "translations",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "translations_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "key": {
+          "name": "key",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numericKey": {
+          "name": "numericKey",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "TranslationType",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language": {
+          "name": "language",
+          "type": "language",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "auto": {
+          "name": "auto",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "locked": {
+          "name": "locked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "translations_type_index": {
+          "name": "translations_type_index",
+          "columns": [
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "translations_language_type_numericKey_index": {
+          "name": "translations_language_type_numericKey_index",
+          "columns": [
+            {
+              "expression": "language",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "numericKey",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "translations_language_type_key_index": {
+          "name": "translations_language_type_key_index",
+          "columns": [
+            {
+              "expression": "language",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "key",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "translations_createdAt_index": {
+          "name": "translations_createdAt_index",
+          "columns": [
+            {
+              "expression": "createdAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "translations_updatedAt_index": {
+          "name": "translations_updatedAt_index",
+          "columns": [
+            {
+              "expression": "updatedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "translations_key_type_language_unique": {
+          "name": "translations_key_type_language_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "key",
+            "type",
+            "language"
+          ]
+        },
+        "translations_numericKey_type_language_unique": {
+          "name": "translations_numericKey_type_language_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "numericKey",
+            "type",
+            "language"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.users": {
+      "name": "users",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "users_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "height": {
+          "name": "height",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "heightUnit": {
+          "name": "heightUnit",
+          "type": "HeightUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weightUnit": {
+          "name": "weightUnit",
+          "type": "WeightUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "temperatureUnit": {
+          "name": "temperatureUnit",
+          "type": "TemperatureUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "distanceUnit": {
+          "name": "distanceUnit",
+          "type": "DistanceUnit",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "name": "gender",
+          "type": "Gender",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthDate": {
+          "name": "birthDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "visibility": {
+          "name": "visibility",
+          "type": "EntryVisibility",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imageId": {
+          "name": "imageId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
+          "type": "Country",
+          "typeSchema": "gym_tracker",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "users_imageId_images_id_fk": {
+          "name": "users_imageId_images_id_fk",
+          "tableFrom": "users",
+          "tableTo": "images",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "imageId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.weight": {
+      "name": "weight",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "weight_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "externalId": {
+          "name": "externalId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weight": {
+          "name": "weight",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "units": {
+          "name": "units",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "weight_userId_index": {
+          "name": "weight_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "weight_deletedAt_index": {
+          "name": "weight_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "weight_userId_users_id_fk": {
+          "name": "weight_userId_users_id_fk",
+          "tableFrom": "weight",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_exercise_sets": {
+      "name": "workout_exercise_sets",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "workout_exercise_sets_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutId": {
+          "name": "workoutId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutExerciseId": {
+          "name": "workoutExerciseId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weight": {
+          "name": "weight",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reps": {
+          "name": "reps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_exercise_sets_workoutId_index": {
+          "name": "workout_exercise_sets_workoutId_index",
+          "columns": [
+            {
+              "expression": "workoutId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_exercise_sets_exerciseId_index": {
+          "name": "workout_exercise_sets_exerciseId_index",
+          "columns": [
+            {
+              "expression": "exerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_exercise_sets_userId_index": {
+          "name": "workout_exercise_sets_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_exercise_sets_workoutExerciseId_index": {
+          "name": "workout_exercise_sets_workoutExerciseId_index",
+          "columns": [
+            {
+              "expression": "workoutExerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_exercise_sets_exerciseId_exercises_id_fk": {
+          "name": "workout_exercise_sets_exerciseId_exercises_id_fk",
+          "tableFrom": "workout_exercise_sets",
+          "tableTo": "exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "workout_exercise_sets_workoutId_workouts_id_fk": {
+          "name": "workout_exercise_sets_workoutId_workouts_id_fk",
+          "tableFrom": "workout_exercise_sets",
+          "tableTo": "workouts",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_exercise_sets_userId_users_id_fk": {
+          "name": "workout_exercise_sets_userId_users_id_fk",
+          "tableFrom": "workout_exercise_sets",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_exercise_sets_workoutExerciseId_workout_exercises_id_fk": {
+          "name": "workout_exercise_sets_workoutExerciseId_workout_exercises_id_fk",
+          "tableFrom": "workout_exercise_sets",
+          "tableTo": "workout_exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutExerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_exercises": {
+      "name": "workout_exercises",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "workout_exercises_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "workoutId": {
+          "name": "workoutId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_exercises_workoutId_index": {
+          "name": "workout_exercises_workoutId_index",
+          "columns": [
+            {
+              "expression": "workoutId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_exercises_exerciseId_index": {
+          "name": "workout_exercises_exerciseId_index",
+          "columns": [
+            {
+              "expression": "exerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_exercises_userId_index": {
+          "name": "workout_exercises_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_exercises_workoutId_workouts_id_fk": {
+          "name": "workout_exercises_workoutId_workouts_id_fk",
+          "tableFrom": "workout_exercises",
+          "tableTo": "workouts",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_exercises_userId_users_id_fk": {
+          "name": "workout_exercises_userId_users_id_fk",
+          "tableFrom": "workout_exercises",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_exercises_exerciseId_exercises_id_fk": {
+          "name": "workout_exercises_exerciseId_exercises_id_fk",
+          "tableFrom": "workout_exercises",
+          "tableTo": "exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_plan": {
+      "name": "workout_plan",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_plan_userId_index": {
+          "name": "workout_plan_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_plan_deletedAt_index": {
+          "name": "workout_plan_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_plan_userId_users_id_fk": {
+          "name": "workout_plan_userId_users_id_fk",
+          "tableFrom": "workout_plan",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_type_exercise_sets": {
+      "name": "workout_type_exercise_sets",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "reps": {
+          "name": "reps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutTypeId": {
+          "name": "workoutTypeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutTypeExerciseId": {
+          "name": "workoutTypeExerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_type_exercise_sets_workoutTypeId_index": {
+          "name": "workout_type_exercise_sets_workoutTypeId_index",
+          "columns": [
+            {
+              "expression": "workoutTypeId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_type_exercise_sets_exerciseId_index": {
+          "name": "workout_type_exercise_sets_exerciseId_index",
+          "columns": [
+            {
+              "expression": "exerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_type_exercise_sets_userId_index": {
+          "name": "workout_type_exercise_sets_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_type_exercise_sets_workoutTypeExerciseId_index": {
+          "name": "workout_type_exercise_sets_workoutTypeExerciseId_index",
+          "columns": [
+            {
+              "expression": "workoutTypeExerciseId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_type_exercise_sets_exerciseId_exercises_id_fk": {
+          "name": "workout_type_exercise_sets_exerciseId_exercises_id_fk",
+          "tableFrom": "workout_type_exercise_sets",
+          "tableTo": "exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "workout_type_exercise_sets_workoutTypeId_workout_type_id_fk": {
+          "name": "workout_type_exercise_sets_workoutTypeId_workout_type_id_fk",
+          "tableFrom": "workout_type_exercise_sets",
+          "tableTo": "workout_type",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutTypeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_type_exercise_sets_userId_users_id_fk": {
+          "name": "workout_type_exercise_sets_userId_users_id_fk",
+          "tableFrom": "workout_type_exercise_sets",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_type_exercise_sets_workoutTypeExerciseId_workout_type_exercise_id_fk": {
+          "name": "workout_type_exercise_sets_workoutTypeExerciseId_workout_type_exercise_id_fk",
+          "tableFrom": "workout_type_exercise_sets",
+          "tableTo": "workout_type_exercise",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutTypeExerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_type_exercise": {
+      "name": "workout_type_exercise",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "index": {
+          "name": "index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workoutTypeId": {
+          "name": "workoutTypeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "exerciseId": {
+          "name": "exerciseId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_type_exercise_userId_index": {
+          "name": "workout_type_exercise_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_type_exercise_deletedAt_index": {
+          "name": "workout_type_exercise_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_type_exercise_userId_users_id_fk": {
+          "name": "workout_type_exercise_userId_users_id_fk",
+          "tableFrom": "workout_type_exercise",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_type_exercise_workoutTypeId_workout_type_id_fk": {
+          "name": "workout_type_exercise_workoutTypeId_workout_type_id_fk",
+          "tableFrom": "workout_type_exercise",
+          "tableTo": "workout_type",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "workoutTypeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_type_exercise_exerciseId_exercises_id_fk": {
+          "name": "workout_type_exercise_exerciseId_exercises_id_fk",
+          "tableFrom": "workout_type_exercise",
+          "tableTo": "exercises",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "exerciseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workout_type": {
+      "name": "workout_type",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "planIndex": {
+          "name": "planIndex",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "planId": {
+          "name": "planId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workout_type_userId_index": {
+          "name": "workout_type_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workout_type_deletedAt_index": {
+          "name": "workout_type_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workout_type_userId_users_id_fk": {
+          "name": "workout_type_userId_users_id_fk",
+          "tableFrom": "workout_type",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "workout_type_planId_workout_plan_id_fk": {
+          "name": "workout_type_planId_workout_plan_id_fk",
+          "tableFrom": "workout_type",
+          "tableTo": "workout_plan",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "planId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "gym_tracker.workouts": {
+      "name": "workouts",
+      "schema": "gym_tracker",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "workouts_id_seq",
+            "schema": "gym_tracker",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "externalId": {
+          "name": "externalId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "typeId": {
+          "name": "typeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calories": {
+          "name": "calories",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "workouts_userId_index": {
+          "name": "workouts_userId_index",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "workouts_deletedAt_index": {
+          "name": "workouts_deletedAt_index",
+          "columns": [
+            {
+              "expression": "deletedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workouts_typeId_workout_type_id_fk": {
+          "name": "workouts_typeId_workout_type_id_fk",
+          "tableFrom": "workouts",
+          "tableTo": "workout_type",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "typeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "workouts_userId_users_id_fk": {
+          "name": "workouts_userId_users_id_fk",
+          "tableFrom": "workouts",
+          "tableTo": "users",
+          "schemaTo": "gym_tracker",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "gym_tracker.Country": {
+      "name": "Country",
+      "schema": "gym_tracker",
+      "values": [
+        "AF",
+        "AX",
+        "AL",
+        "DZ",
+        "AS",
+        "AD",
+        "AO",
+        "AI",
+        "AQ",
+        "AG",
+        "AR",
+        "AM",
+        "AW",
+        "AU",
+        "AT",
+        "AZ",
+        "BS",
+        "BH",
+        "BD",
+        "BB",
+        "BY",
+        "BE",
+        "BZ",
+        "BJ",
+        "BM",
+        "BT",
+        "BO",
+        "BQ",
+        "BA",
+        "BW",
+        "BV",
+        "BR",
+        "IO",
+        "BN",
+        "BG",
+        "BF",
+        "BI",
+        "KH",
+        "CM",
+        "CA",
+        "CV",
+        "KY",
+        "CF",
+        "TD",
+        "CL",
+        "CN",
+        "CX",
+        "CC",
+        "CO",
+        "KM",
+        "CG",
+        "CD",
+        "CK",
+        "CR",
+        "CI",
+        "HR",
+        "CU",
+        "CW",
+        "CY",
+        "CZ",
+        "DK",
+        "DJ",
+        "DM",
+        "DO",
+        "EC",
+        "EG",
+        "SV",
+        "GQ",
+        "ER",
+        "EE",
+        "ET",
+        "FK",
+        "FO",
+        "FJ",
+        "FI",
+        "FR",
+        "GF",
+        "PF",
+        "TF",
+        "GA",
+        "GM",
+        "GE",
+        "DE",
+        "GH",
+        "GI",
+        "GR",
+        "GL",
+        "GD",
+        "GP",
+        "GU",
+        "GT",
+        "GG",
+        "GN",
+        "GW",
+        "GY",
+        "HT",
+        "HM",
+        "VA",
+        "HN",
+        "HK",
+        "HU",
+        "IS",
+        "IN",
+        "ID",
+        "IR",
+        "IQ",
+        "IE",
+        "IM",
+        "IL",
+        "IT",
+        "JM",
+        "JP",
+        "JE",
+        "JO",
+        "KZ",
+        "KE",
+        "KI",
+        "KR",
+        "KP",
+        "KW",
+        "KG",
+        "LA",
+        "LV",
+        "LB",
+        "LS",
+        "LR",
+        "LY",
+        "LI",
+        "LT",
+        "LU",
+        "MO",
+        "MK",
+        "MG",
+        "MW",
+        "MY",
+        "MV",
+        "ML",
+        "MT",
+        "MH",
+        "MQ",
+        "MR",
+        "MU",
+        "YT",
+        "MX",
+        "FM",
+        "MD",
+        "MC",
+        "MN",
+        "ME",
+        "MS",
+        "MA",
+        "MZ",
+        "MM",
+        "NA",
+        "NR",
+        "NP",
+        "NL",
+        "NC",
+        "NZ",
+        "NI",
+        "NE",
+        "NG",
+        "NU",
+        "NF",
+        "MP",
+        "NO",
+        "OM",
+        "PK",
+        "PW",
+        "PS",
+        "PA",
+        "PG",
+        "PY",
+        "PE",
+        "PH",
+        "PN",
+        "PL",
+        "PT",
+        "PR",
+        "QA",
+        "RE",
+        "RO",
+        "RU",
+        "RW",
+        "BL",
+        "SH",
+        "KN",
+        "LC",
+        "MF",
+        "PM",
+        "VC",
+        "WS",
+        "SM",
+        "ST",
+        "SA",
+        "SN",
+        "RS",
+        "SC",
+        "SL",
+        "SG",
+        "SX",
+        "SK",
+        "SI",
+        "SB",
+        "SO",
+        "ZA",
+        "GS",
+        "SS",
+        "ES",
+        "LK",
+        "SD",
+        "SR",
+        "SJ",
+        "SZ",
+        "SE",
+        "CH",
+        "SY",
+        "TW",
+        "TJ",
+        "TZ",
+        "TH",
+        "TL",
+        "TG",
+        "TK",
+        "TO",
+        "TT",
+        "TN",
+        "TR",
+        "TM",
+        "TC",
+        "TV",
+        "UG",
+        "UA",
+        "AE",
+        "GB",
+        "US",
+        "UM",
+        "UY",
+        "UZ",
+        "VU",
+        "VE",
+        "VN",
+        "VG",
+        "VI",
+        "WF",
+        "EH",
+        "YE",
+        "ZM",
+        "ZW"
+      ]
+    },
+    "gym_tracker.DistanceUnit": {
+      "name": "DistanceUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "Km",
+        "Mi"
+      ]
+    },
+    "gym_tracker.EntryType": {
+      "name": "EntryType",
+      "schema": "gym_tracker",
+      "values": [
+        "Workout",
+        "Weight",
+        "Post",
+        "OutdoorRun",
+        "OutdoorWalk",
+        "Meal",
+        "CalorieGoal"
+      ]
+    },
+    "gym_tracker.EntryVisibility": {
+      "name": "EntryVisibility",
+      "schema": "gym_tracker",
+      "values": [
+        "Public",
+        "Private"
+      ]
+    },
+    "gym_tracker.Equipment": {
+      "name": "Equipment",
+      "schema": "gym_tracker",
+      "values": [
+        "rowing",
+        "swimming",
+        "plate loaded",
+        "foam roller",
+        "pullup bar",
+        "stair climber",
+        "selectorized",
+        "dip bar",
+        "preacher",
+        "hyperextension",
+        "sandbag",
+        "elliptical",
+        "chair",
+        "cable",
+        "captains chair",
+        "towel",
+        "water bottle",
+        "stability ball",
+        "table",
+        "smith",
+        "kettlebell",
+        "cycling",
+        "step aerobics",
+        "plate",
+        "platform",
+        "medicine ball",
+        "running",
+        "barbell",
+        "backpack",
+        "ez curl bar",
+        "walking",
+        "bench",
+        "bodyweight",
+        "resistance band",
+        "dumbbell",
+        "jump rope",
+        "treadmill",
+        "bosu ball"
+      ]
+    },
+    "gym_tracker.ExternalSource": {
+      "name": "ExternalSource",
+      "schema": "gym_tracker",
+      "values": [
+        "Argus",
+        "AppleHealth"
+      ]
+    },
+    "gym_tracker.FoodAmountUnit": {
+      "name": "FoodAmountUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "Gram",
+        "Serving"
+      ]
+    },
+    "gym_tracker.Gender": {
+      "name": "Gender",
+      "schema": "gym_tracker",
+      "values": [
+        "Male",
+        "Female",
+        "Other"
+      ]
+    },
+    "gym_tracker.HeightUnit": {
+      "name": "HeightUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "Cm",
+        "Ft"
+      ]
+    },
+    "gym_tracker.ImageType": {
+      "name": "ImageType",
+      "schema": "gym_tracker",
+      "values": [
+        "Exercise",
+        "UserProfile",
+        "Entry",
+        "Food"
+      ]
+    },
+    "gym_tracker.language": {
+      "name": "language",
+      "schema": "gym_tracker",
+      "values": [
+        "en",
+        "ru"
+      ]
+    },
+    "gym_tracker.MealType": {
+      "name": "MealType",
+      "schema": "gym_tracker",
+      "values": [
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Snack",
+        "Other"
+      ]
+    },
+    "gym_tracker.Muscle": {
+      "name": "Muscle",
+      "schema": "gym_tracker",
+      "values": [
+        "Lower Back",
+        "Soleus",
+        "Front Deltoids",
+        "Lats",
+        "Forearms",
+        "Pecs",
+        "Hamstrings",
+        "Wrist Flexors",
+        "Biceps",
+        "Triceps",
+        "Rear Deltoids",
+        "Rotator Cuff",
+        "Ankle",
+        "Abdominals",
+        "Glutes",
+        "Quadriceps",
+        "Obliques",
+        "Abductors",
+        "Gastrocnemius",
+        "Lateral Deltoids",
+        "Hip Flexors",
+        "Trapezius",
+        "Neck",
+        "Adductors"
+      ]
+    },
+    "gym_tracker.ServingSizeUnit": {
+      "name": "ServingSizeUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "Gram"
+      ]
+    },
+    "gym_tracker.TemperatureUnit": {
+      "name": "TemperatureUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "C",
+        "F"
+      ]
+    },
+    "gym_tracker.TranslationType": {
+      "name": "TranslationType",
+      "schema": "gym_tracker",
+      "values": [
+        "ExeciseName",
+        "ExeciseDescription"
+      ]
+    },
+    "gym_tracker.WeightUnit": {
+      "name": "WeightUnit",
+      "schema": "gym_tracker",
+      "values": [
+        "Kg",
+        "Lbs"
+      ]
+    }
+  },
+  "schemas": {
+    "gym_tracker": "gym_tracker"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -365,6 +365,13 @@
       "when": 1780508536042,
       "tag": "0051_workout_types_uuids2",
       "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1780928734903,
+      "tag": "0052_geo_data_tables",
+      "breakpoints": true
     }
   ]
 }

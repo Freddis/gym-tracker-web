@@ -12,6 +12,8 @@ import {
   jsonb,
   uuid,
   AnyPgColumn,
+  doublePrecision,
+  bigint,
 } from 'drizzle-orm/pg-core';
 import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
@@ -387,6 +389,34 @@ export const outdoorRuns = gymTracker.table('outdoor_runs', {
   end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
 });
 
+export const outdoorRunGeoData = gymTracker.table('outdoor_run_geo_data', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  latitude: doublePrecision().notNull(),
+  longitude: doublePrecision().notNull(),
+  altitude: doublePrecision().notNull(),
+  course: doublePrecision(),
+  speed: doublePrecision(),
+  speedAccuracy: doublePrecision(),
+  horizontalAccuracy: doublePrecision(),
+  verticalAccuracy: doublePrecision(),
+  distance: doublePrecision(),
+  timestamp: bigint({mode: 'number'}).notNull(),
+},
+(table) => [
+  index().on(table.outdoorRunId, table.timestamp),
+]);
+
+export const outdoorRunHeartRateData = gymTracker.table('outdoor_run_heart_rate_data', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  outdoorRunId: integer().notNull().references(() => outdoorRuns.id, {onDelete: 'cascade'}),
+  heartRate: integer().notNull(),
+  timestamp: bigint({mode: 'number'}).notNull(),
+},
+(table) => [
+  index().on(table.outdoorRunId, table.timestamp),
+]);
+
 export const outdoorWalks = gymTracker.table('outdoor_walks', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer().notNull().references(() => users.id, {onDelete: 'cascade'}),
@@ -405,6 +435,34 @@ export const outdoorWalks = gymTracker.table('outdoor_walks', {
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   end: timestamp({withTimezone: true, mode: 'date'}).notNull(),
 });
+
+export const outdoorWalkGeoData = gymTracker.table('outdoor_walk_geo_data', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  outdoorWalkId: integer().notNull().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  latitude: doublePrecision().notNull(),
+  longitude: doublePrecision().notNull(),
+  altitude: doublePrecision().notNull(),
+  course: doublePrecision(),
+  speed: doublePrecision(),
+  speedAccuracy: doublePrecision(),
+  horizontalAccuracy: doublePrecision(),
+  verticalAccuracy: doublePrecision(),
+  distance: doublePrecision(),
+  timestamp: bigint({mode: 'number'}).notNull(),
+},
+(table) => [
+  index().on(table.outdoorWalkId, table.timestamp),
+]);
+
+export const outdoorWalkHeartRateData = gymTracker.table('outdoor_walk_heart_rate_data', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  outdoorWalkId: integer().notNull().references(() => outdoorWalks.id, {onDelete: 'cascade'}),
+  heartRate: integer().notNull(),
+  timestamp: bigint({mode: 'number'}).notNull(),
+},
+(table) => [
+  index().on(table.outdoorWalkId, table.timestamp),
+]);
 
 export const food = gymTracker.table('food', {
   id: uuid().primaryKey(),

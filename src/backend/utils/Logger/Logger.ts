@@ -6,7 +6,7 @@ export class Logger extends OpenApiLogger {
   protected override transformData(data: object): unknown {
     const transformed = super.transformData(data);
     if (typeof transformed === 'object' && transformed !== null) {
-      return this.removeLongArrays(transformed, [30, 10, 5]);
+      return this.removeLongArrays(transformed, [10, 5, 3]);
     }
     return transformed;
   }

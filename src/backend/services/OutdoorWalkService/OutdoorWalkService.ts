@@ -5,6 +5,9 @@ import {EntryType} from '../EntryService/types/EntryType';
 import {IEntryService} from '../EntryService/types/IEntryService';
 import {OutdoorWalkEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
 import {BaseEntry, OutdoorWalkEntry} from '../EntryService/types/Entry';
+import {OutdoorRun} from '../OutdoorRunService/types/OutdoorRun';
+import {HeartRatePoint} from './types/HeartRatePoint';
+import {PathPoint} from './types/PathPoint';
 
 export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> {
   protected drizzle: DrizzleService;
@@ -16,6 +19,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
   }
 
   async loadRows(params: {id: number[]}): Promise<OutdoorWalk[]> {
+    // return this.loadFromSeparateTable(params);
     const db = await this.drizzle.getDb();
     const where = and(
         inArray(this.table.id, params.id)
@@ -24,6 +28,66 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
     .from(this.table)
     .where(where);
     return rows;
+  }
+
+  async loadFromSeparateTable(params: {id: number[]}): Promise<OutdoorWalk[]> {
+    const db = await this.drizzle.getDb();
+    const schema = this.drizzle.getSchema();
+    const rows = await db.select({
+      id: this.table.id,
+      userId: this.table.userId,
+      distance: this.table.distance,
+      elevationGain: this.table.elevationGain,
+      duration: this.table.duration,
+      calories: this.table.calories,
+      pace: this.table.pace,
+      cadence: this.table.cadence,
+      maxPace: this.table.maxPace,
+      maxCadence: this.table.maxCadence,
+      heartRate: this.table.heartRate,
+      maxHeartRate: this.table.maxHeartRate,
+      start: this.table.start,
+      end: this.table.end,
+    })
+    .from(this.table)
+    .where(
+      and(
+        inArray(this.table.id, params.id),
+      )
+    );
+    const walkIds = rows.map((x) => x.id);
+    const heartRateData = await db.select()
+    .from(schema.outdoorWalkHeartRateData)
+    .where(
+      inArray(schema.outdoorWalkHeartRateData.outdoorWalkId, walkIds),
+    )
+    .orderBy(schema.outdoorWalkHeartRateData.timestamp);
+    const geoData = await db.select()
+    .from(schema.outdoorWalkGeoData)
+    .where(
+      inArray(schema.outdoorWalkGeoData.outdoorWalkId, walkIds),
+    )
+    .orderBy(schema.outdoorWalkGeoData.timestamp);
+    const geoMap = geoData.reduce((acc, cur) => {
+      const points = acc.get(cur.outdoorWalkId) ?? [];
+      points.push(cur);
+      acc.set(cur.outdoorWalkId, points);
+      return acc;
+    }, new Map<number, PathPoint[]>());
+    const heartRateMap = heartRateData.reduce((acc, cur) => {
+      const points = acc.get(cur.outdoorWalkId) ?? [];
+      points.push(cur);
+      acc.set(cur.outdoorWalkId, points);
+      return acc;
+    }, new Map<number, HeartRatePoint[]>());
+    const result: OutdoorRun[] = rows.map((x) => {
+      return {
+        ...x,
+        geoData: geoMap.get(x.id) ?? [],
+        heartRateData: heartRateMap.get(x.id) ?? [],
+      };
+    });
+    return result;
   }
 
   async deleteOne(userId: number, id: number): Promise<void> {
