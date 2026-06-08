@@ -17,15 +17,15 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
   }
 
   async loadRows(params: {id: number[]}): Promise<OutdoorRun[]> {
-    // return this.loadFromSeparateTable(params);
-    const db = await this.drizzle.getDb();
-    const where = and(
-        inArray(this.table.id, params.id)
-      );
-    const rows = await db.select()
-    .from(this.table)
-    .where(where);
-    return rows;
+    return this.loadFromSeparateTable(params);
+    // const db = await this.drizzle.getDb();
+    // const where = and(
+    //     inArray(this.table.id, params.id)
+    //   );
+    // const rows = await db.select()
+    // .from(this.table)
+    // .where(where);
+    // return rows;
   }
 
   async loadFromSeparateTable(params: {id: number[]}): Promise<OutdoorRun[]> {

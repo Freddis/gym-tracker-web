@@ -24,7 +24,7 @@ export class DbSyncService {
     const localDb = await this.local.getDb();
     const tables: Array<[string, PgTable, PgColumn, boolean, number| undefined]> = [
       ['managers', localDb._.fullSchema.managers, localDb._.fullSchema.managers.id, false, undefined],
-      ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id, false, undefined],
+      ['images', localDb._.fullSchema.images, localDb._.fullSchema.images.id, true, undefined],
       ['users', localDb._.fullSchema.users, localDb._.fullSchema.users.id, false, undefined],
       ['food', localDb._.fullSchema.food, localDb._.fullSchema.food.id, true, undefined],
       ['food components', localDb._.fullSchema.foodComponents, localDb._.fullSchema.foodComponents.id, false, undefined],
@@ -41,6 +41,22 @@ export class DbSyncService {
       ['weight', localDb._.fullSchema.weight, localDb._.fullSchema.weight.id, false, undefined],
       ['entries', localDb._.fullSchema.entries, localDb._.fullSchema.entries.id, true, undefined],
       ['translations', localDb._.fullSchema.translations, localDb._.fullSchema.translations.id, false, undefined],
+      ['outdoor run geo data', localDb._.fullSchema.outdoorRunGeoData, localDb._.fullSchema.outdoorRunGeoData.id, false, 500],
+      [
+        'outdoor run heart rate data',
+        localDb._.fullSchema.outdoorRunHeartRateData,
+        localDb._.fullSchema.outdoorRunHeartRateData.id,
+        false,
+        500,
+      ],
+      ['outdoor walk geo data', localDb._.fullSchema.outdoorWalkGeoData, localDb._.fullSchema.outdoorWalkGeoData.id, false, 500],
+      [
+        'outdoor walk heart rate data',
+        localDb._.fullSchema.outdoorWalkHeartRateData,
+        localDb._.fullSchema.outdoorWalkHeartRateData.id,
+        false,
+        500,
+      ],
     ];
 
     for (const [name, table] of [...tables].reverse()) {

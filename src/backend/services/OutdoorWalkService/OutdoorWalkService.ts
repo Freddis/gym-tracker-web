@@ -19,15 +19,15 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
   }
 
   async loadRows(params: {id: number[]}): Promise<OutdoorWalk[]> {
-    // return this.loadFromSeparateTable(params);
-    const db = await this.drizzle.getDb();
-    const where = and(
-        inArray(this.table.id, params.id)
-      );
-    const rows = await db.select()
-    .from(this.table)
-    .where(where);
-    return rows;
+    return this.loadFromSeparateTable(params);
+    // const db = await this.drizzle.getDb();
+    // const where = and(
+    //     inArray(this.table.id, params.id)
+    //   );
+    // const rows = await db.select()
+    // .from(this.table)
+    // .where(where);
+    // return rows;
   }
 
   async loadFromSeparateTable(params: {id: number[]}): Promise<OutdoorWalk[]> {
