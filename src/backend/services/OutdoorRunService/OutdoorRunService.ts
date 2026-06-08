@@ -1,4 +1,4 @@
-import {and, eq, inArray} from 'drizzle-orm';
+import {and, eq, inArray, sql} from 'drizzle-orm';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {OutdoorRun} from './types/OutdoorRun';
 import {IEntryService} from '../EntryService/types/IEntryService';
@@ -60,16 +60,38 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
       inArray(schema.outdoorRunHeartRateData.outdoorRunId, runIds),
     );
     // .orderBy(schema.outdoorRunHeartRateData.timestamp);
-    const geoData = await db.select()
+    const geoData = await db.select({
+      data: sql<[number, number, number, number, number, number][] | null>`array_agg(array[
+        ${schema.outdoorRunGeoData.outdoorRunId},
+        ${schema.outdoorRunGeoData.latitude}, 
+        ${schema.outdoorRunGeoData.longitude},
+        ${schema.outdoorRunGeoData.altitude},
+        ${schema.outdoorRunGeoData.speed},
+        ${schema.outdoorRunGeoData.timestamp}
+        ])`,
+    }
+    )
     .from(schema.outdoorRunGeoData)
     .where(
       inArray(schema.outdoorRunGeoData.outdoorRunId, runIds),
     );
     // .orderBy(schema.outdoorRunGeoData.timestamp);
-    const geoMap = geoData.reduce((acc, cur) => {
-      const points = acc.get(cur.outdoorRunId) ?? [];
-      points.push(cur);
-      acc.set(cur.outdoorRunId, points);
+    const geoMap = geoData.flatMap((x) => x.data ?? []).reduce((acc, cur) => {
+      const [outdoorRunId, latitude, longitude, altitude, speed, timestamp] = cur;
+      const points = acc.get(outdoorRunId) ?? [];
+      points.push({
+        altitude,
+        course: null,
+        timestamp,
+        distance: null,
+        horizontalAccuracy: null,
+        latitude,
+        longitude,
+        speed,
+        speedAccuracy: null,
+        verticalAccuracy: null,
+      });
+      acc.set(outdoorRunId, points);
       return acc;
     }, new Map<number, PathPoint[]>());
     const heartRateMap = heartRateData.reduce((acc, cur) => {
@@ -81,7 +103,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
     const result: OutdoorRun[] = rows.map((x) => {
       return {
         ...x,
-        geoData: geoMap.get(x.id) ?? [],
+        geoData: geoMap.get(x.id)?.sort((a, b) => a.timestamp - b.timestamp) ?? [],
         heartRateData: heartRateMap.get(x.id) ?? [],
       };
     });
