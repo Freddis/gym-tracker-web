@@ -228,7 +228,7 @@ export class EntryService {
 
     const db = await this.drizzle.getDb();
     const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 30;
+    const limit = params?.perPage ?? 10;
     const offset = (page - 1) * limit;
     const where = and(
       params?.ids ? inArray(db._.fullSchema.entries.id, params.ids) : undefined,

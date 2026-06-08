@@ -22,6 +22,7 @@ export const getOwnEntryList = RouteFactory.createRoute({
       ...ctx.params.query,
       userId: [ctx.viewer.id],
       language: ctx.language,
+      perPage: 20,
     });
     return result;
   },

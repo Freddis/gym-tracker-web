@@ -21,6 +21,7 @@ export const getEntryList = RouteFactory.createRoute({
     const result = await ctx.services.models.entry.getAll({
       ...ctx.params.query,
       language: ctx.language,
+      perPage: 10,
     });
     return result;
   },
