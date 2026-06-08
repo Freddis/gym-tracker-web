@@ -54,11 +54,11 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
       )
     );
     const runIds = rows.map((x) => x.id);
-    const heartRateData = await db.select()
-    .from(schema.outdoorRunHeartRateData)
-    .where(
-      inArray(schema.outdoorRunHeartRateData.outdoorRunId, runIds),
-    );
+    // const heartRateData = await db.select()
+    // .from(schema.outdoorRunHeartRateData)
+    // .where(
+    //   inArray(schema.outdoorRunHeartRateData.outdoorRunId, runIds),
+    // );
     // .orderBy(schema.outdoorRunHeartRateData.timestamp);
     const geoData = await db.select({
       data: sql<[number, number, number, number, number, number][] | null>`array_agg(array[
@@ -79,32 +79,21 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
     const geoMap = geoData.flatMap((x) => x.data ?? []).reduce((acc, cur) => {
       const [outdoorRunId, latitude, longitude, altitude, speed, timestamp] = cur;
       const points = acc.get(outdoorRunId) ?? [];
-      points.push({
-        altitude,
-        course: null,
-        timestamp,
-        distance: null,
-        horizontalAccuracy: null,
-        latitude,
-        longitude,
-        speed,
-        speedAccuracy: null,
-        verticalAccuracy: null,
-      });
+      points.push([latitude, longitude, altitude, speed, timestamp]);
       acc.set(outdoorRunId, points);
       return acc;
     }, new Map<number, PathPoint[]>());
-    const heartRateMap = heartRateData.reduce((acc, cur) => {
-      const points = acc.get(cur.outdoorRunId) ?? [];
-      points.push(cur);
-      acc.set(cur.outdoorRunId, points);
-      return acc;
-    }, new Map<number, HeartRatePoint[]>());
+    // const heartRateMap = heartRateData.reduce((acc, cur) => {
+    //   const points = acc.get(cur.outdoorRunId) ?? [];
+    //   points.push(cur);
+    //   acc.set(cur.outdoorRunId, points);
+    //   return acc;
+    // }, new Map<number, HeartRatePoint[]>());
     const result: OutdoorRun[] = rows.map((x) => {
       return {
         ...x,
-        geoData: geoMap.get(x.id)?.sort((a, b) => a.timestamp - b.timestamp) ?? [],
-        heartRateData: heartRateMap.get(x.id) ?? [],
+        geoData: geoMap.get(x.id)?.sort((a, b) => a[4] - b[4]) ?? [],
+        heartRateData: [], //heartRateMap.get(x.id) ?? [],
       };
     });
     return result;

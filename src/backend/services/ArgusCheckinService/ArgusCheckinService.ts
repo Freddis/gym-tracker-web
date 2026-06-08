@@ -128,18 +128,19 @@ export class ArgusCheckinService {
           const [time, lat, lon, horizontalAccuracy, elevation, verticalAccuracy] = x;
           const speed = findSpeed(time);
           const distance = findDistance(time);
-          const geodata: PathPoint = {
-            altitude: elevation,
-            course: null,
-            timestamp: time,
-            distance: distance,
-            horizontalAccuracy: horizontalAccuracy,
-            latitude: lat,
-            longitude: lon,
-            speed: speed,
-            speedAccuracy: 0,
-            verticalAccuracy: verticalAccuracy,
-          };
+          console.log(distance, horizontalAccuracy, verticalAccuracy); //todo: remove it
+          const geodata: PathPoint = [lat, lon, elevation, speed ?? 0, time];
+            // altitude: elevation,
+            // course: null,
+            // timestamp: time,
+            // distance: distance,
+            // horizontalAccuracy: horizontalAccuracy,
+            // latitude: lat,
+            // longitude: lon,
+            // speed: speed,
+            // speedAccuracy: 0,
+            // verticalAccuracy: verticalAccuracy,
+          // };
           return geodata;
         }) : null,
       },
@@ -235,18 +236,8 @@ export class ArgusCheckinService {
           const [time, lat, lon, horizontalAccuracy, elevation, verticalAccuracy] = x;
           const speed = findSpeed(time);
           const distance = findDistance(time);
-          const geodata: PathPoint = {
-            altitude: elevation,
-            course: null,
-            timestamp: time,
-            distance: distance,
-            horizontalAccuracy: horizontalAccuracy,
-            latitude: lat,
-            longitude: lon,
-            speed: speed,
-            speedAccuracy: 0,
-            verticalAccuracy: verticalAccuracy,
-          };
+          const geodata: PathPoint = [lat, lon, elevation, speed ?? 0, time];
+          console.log(distance, horizontalAccuracy, verticalAccuracy); //todo: remove it
           return geodata;
         }) : null,
       },

@@ -1645,48 +1645,7 @@ export type OutdoorRun = {
 /**
  * Path point used to display routes on map for activities such as walking, hiking, etc.
  */
-export type PathPoint = {
-  /**
-   * Altitude of the geo data point
-   */
-  altitude: number;
-  /**
-   * Course of the geo data point
-   */
-  course: number | null;
-  /**
-   * Speed of the geo data point
-   */
-  speed: number | null;
-  /**
-   * Distance of the geo data point
-   */
-  distance: number | null;
-  /**
-   * Latitude of the geo data point
-   */
-  latitude: number;
-  /**
-   * Longitude of the geo data point
-   */
-  longitude: number;
-  /**
-   * Horizontal accuracy of the geo data point
-   */
-  horizontalAccuracy: number | null;
-  /**
-   * Vertical accuracy of the geo data point
-   */
-  verticalAccuracy: number | null;
-  /**
-   * Speed accuracy of the geo data point
-   */
-  speedAccuracy: number | null;
-  /**
-   * Timestamp of the path point
-   */
-  timestamp: number;
-};
+export type PathPoint = [number, number, number, number, number];
 
 /**
  * Heart rate point

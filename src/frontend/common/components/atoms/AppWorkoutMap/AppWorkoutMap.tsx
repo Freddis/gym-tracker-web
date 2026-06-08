@@ -12,12 +12,12 @@ export const AppWorkoutMap: FC<AppWorkoutMapProps> = (props) => {
   const theme = useContext(ThemeContext);
   const lines = useMemo(() => props.data.chunks.map((chunk, i) => {
     const {minSpeed, maxSpeed} = props.data;
-    const speed = chunk.reduce((acc, curr) => acc + (curr.speed ?? 0), 0) / chunk.length;
+    const speed = chunk.reduce((acc, curr) => acc + (curr[3] ?? 0), 0) / chunk.length;
     const color = getHeatColor(speed, minSpeed, maxSpeed);
     return (
       <Polyline
         key={i}
-        path={chunk.map((x) => ({lat: x.latitude, lng: x.longitude}))}
+        path={chunk.map((x) => ({lat: x[0], lng: x[1]}))}
         strokeColor={color}
         strokeWeight={3}
       />

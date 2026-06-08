@@ -1,4 +1,4 @@
-import {and, eq, inArray} from 'drizzle-orm';
+import {and, eq, inArray, sql} from 'drizzle-orm';
 import {AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {OutdoorWalk} from './types/OutdoorWalk';
 import {EntryType} from '../EntryService/types/EntryType';
@@ -19,15 +19,15 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
   }
 
   async loadRows(params: {id: number[]}): Promise<OutdoorWalk[]> {
-    // return this.loadFromSeparateTable(params);
-    const db = await this.drizzle.getDb();
-    const where = and(
-        inArray(this.table.id, params.id)
-      );
-    const rows = await db.select()
-    .from(this.table)
-    .where(where);
-    return rows;
+    return this.loadFromSeparateTable(params);
+    // const db = await this.drizzle.getDb();
+    // const where = and(
+    //     inArray(this.table.id, params.id)
+    //   );
+    // const rows = await db.select()
+    // .from(this.table)
+    // .where(where);
+    // return rows;
   }
 
   async loadFromSeparateTable(params: {id: number[]}): Promise<OutdoorWalk[]> {
@@ -62,16 +62,26 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
       inArray(schema.outdoorWalkHeartRateData.outdoorWalkId, walkIds),
     )
     .orderBy(schema.outdoorWalkHeartRateData.timestamp);
-    const geoData = await db.select()
+    const geoData = await db.select({
+      data: sql<[number, number, number, number, number, number][] | null>`array_agg(array[
+        ${schema.outdoorWalkGeoData.outdoorWalkId},
+        ${schema.outdoorWalkGeoData.latitude}, 
+        ${schema.outdoorWalkGeoData.longitude},
+        ${schema.outdoorWalkGeoData.altitude},
+        ${schema.outdoorWalkGeoData.speed},
+        ${schema.outdoorWalkGeoData.timestamp}
+        ])`,
+    }
+    )
     .from(schema.outdoorWalkGeoData)
     .where(
       inArray(schema.outdoorWalkGeoData.outdoorWalkId, walkIds),
-    )
-    .orderBy(schema.outdoorWalkGeoData.timestamp);
-    const geoMap = geoData.reduce((acc, cur) => {
-      const points = acc.get(cur.outdoorWalkId) ?? [];
-      points.push(cur);
-      acc.set(cur.outdoorWalkId, points);
+    );
+    const geoMap = geoData.flatMap((x) => x.data ?? []).reduce((acc, cur) => {
+      const [outdoorWalkId, latitude, longitude, altitude, speed, timestamp] = cur;
+      const points = acc.get(outdoorWalkId) ?? [];
+      points.push([latitude, longitude, altitude, speed, timestamp]);
+      acc.set(outdoorWalkId, points);
       return acc;
     }, new Map<number, PathPoint[]>());
     const heartRateMap = heartRateData.reduce((acc, cur) => {
@@ -83,7 +93,7 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
     const result: OutdoorRun[] = rows.map((x) => {
       return {
         ...x,
-        geoData: geoMap.get(x.id) ?? [],
+        geoData: geoMap.get(x.id)?.sort((a, b) => a[4] - b[4]) ?? [],
         heartRateData: heartRateMap.get(x.id) ?? [],
       };
     });

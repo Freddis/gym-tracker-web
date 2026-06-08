@@ -34,9 +34,11 @@ export const usePathDataProcessing = (geoData: PathPoint[], start: Date, deps: u
 
     let prevSmoothed: number | null = null;
     for (const point of geoData ?? []) {
+      const [latitude, longitude, altitude, speed, timestamp] = point;
+
        // --- smoothing ---
-      elevationWindow.push(point.altitude);
-      elevationSum += point.altitude;
+      elevationWindow.push(altitude);
+      elevationSum += altitude;
       if (elevationWindow.length > windowSize) {
         elevationSum -= elevationWindow.shift()!;
       }
@@ -55,26 +57,26 @@ export const usePathDataProcessing = (geoData: PathPoint[], start: Date, deps: u
       //   }
       // }
       // prevPoint = point;
-      if (point.speed !== null) {
-        speedCounter.add(point.speed);
+      if (speed !== null) {
+        speedCounter.add(speed);
       }
       // minSpeed = Math.min(minSpeed, point.speed ?? 0);
       // maxSpeed = Math.max(maxSpeed, point.speed ?? 0);
-      minLng = Math.min(minLng, point.longitude);
-      maxLng = Math.max(maxLng, point.longitude);
-      minLat = Math.min(minLat, point.latitude);
-      maxLat = Math.max(maxLat, point.latitude);
-      minElevation = Math.min(minElevation, point.altitude);
-      maxElevation = Math.max(maxElevation, point.altitude);
+      minLng = Math.min(minLng, longitude);
+      maxLng = Math.max(maxLng, longitude);
+      minLat = Math.min(minLat, latitude);
+      maxLat = Math.max(maxLat, latitude);
+      minElevation = Math.min(minElevation, altitude);
+      maxElevation = Math.max(maxElevation, altitude);
 
-      if (nextChunkLimit.getTime() - (start.getTime() + point.timestamp) > 0) {
+      if (nextChunkLimit.getTime() - (start.getTime() + timestamp) > 0) {
         currentChunk.push(point);
       } else {
         currentChunk.push(point);
         chunks.push(currentChunk);
         currentChunk = [];
         currentChunk.push(point);
-        nextChunkLimit = new Date(start.getTime() + point.timestamp + chunkSize);
+        nextChunkLimit = new Date(start.getTime() + timestamp + chunkSize);
       }
     }
     chunks.push(currentChunk);
