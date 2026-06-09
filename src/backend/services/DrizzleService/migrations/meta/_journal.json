@@ -372,6 +372,13 @@
       "when": 1780928734903,
       "tag": "0052_geo_data_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1780995885033,
+      "tag": "0053_removing_geodata_bson_fields",
+      "breakpoints": true
     }
   ]
 }

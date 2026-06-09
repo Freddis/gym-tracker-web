@@ -9,7 +9,6 @@ import {
   index,
   boolean,
   unique,
-  jsonb,
   uuid,
   AnyPgColumn,
   doublePrecision,
@@ -24,8 +23,6 @@ import {TranslationType} from '../../TranslationService/types/TranslationType';
 import {Language} from '../../../../frontend/common/components/layout/LanguageProvider/enums/Language';
 import {ImageType} from '../../../types/ImageType';
 import {ExternalSource} from '../../EntryService/types/ExternalSource';
-import {HeartRatePoint} from '../../OutdoorWalkService/types/HeartRatePoint';
-import {PathPoint} from '../../OutdoorWalkService/types/PathPoint';
 import {ServingSizeUnit} from '../../FoodService/types/ServingSizeUnit';
 import {FoodAmountUnit} from '../../FoodService/types/FoodAmountUnit';
 import {Gender} from '../../../types/Gender';
@@ -381,8 +378,6 @@ export const outdoorRuns = gymTracker.table('outdoor_runs', {
   elevationGain: real(),
   heartRate: real(),
   maxHeartRate: real(),
-  heartRateData: jsonb().$type<HeartRatePoint[]>(),
-  geoData: jsonb().$type<PathPoint[]>(),
   duration: integer().notNull(),
   calories: integer().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
@@ -428,8 +423,6 @@ export const outdoorWalks = gymTracker.table('outdoor_walks', {
   elevationGain: real(),
   heartRate: real(),
   maxHeartRate: real(),
-  heartRateData: jsonb().$type<HeartRatePoint[]>(),
-  geoData: jsonb().$type<PathPoint[]>(),
   duration: integer().notNull(),
   calories: integer().notNull(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),

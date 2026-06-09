@@ -12,7 +12,7 @@ export const AppWorkoutMap: FC<AppWorkoutMapProps> = (props) => {
   const theme = useContext(ThemeContext);
   const lines = useMemo(() => props.data.chunks.map((chunk, i) => {
     const {minSpeed, maxSpeed} = props.data;
-    const speed = chunk.reduce((acc, curr) => acc + (curr[3] ?? 0), 0) / chunk.length;
+    const speed = chunk.reduce((acc, curr) => acc + (curr[4] ?? 0), 0) / chunk.length;
     const color = getHeatColor(speed, minSpeed, maxSpeed);
     return (
       <Polyline

@@ -16,7 +16,18 @@ import {number, tuple} from 'zod';
 //   description: 'Path point used to display routes on map for activities such as walking, hiking, etc.',
 // });
 
-export const pathPointValidator = tuple([number(), number(), number(), number(), number()]).openapi({
+export const pathPointValidator = tuple([
+  number().openapi({description: 'Latitude of the path point'}),
+  number().openapi({description: 'Longitude of the path point'}),
+  number().openapi({description: 'Altitude of the path point'}),
+  number().openapi({description: 'Timestamp of the path point'}),
+  number().nullable().openapi({description: 'Speed of the path point'}),
+  number().nullable().openapi({description: 'Distance of the path point'}),
+  number().nullable().openapi({description: 'Course of the path point'}),
+  number().nullable().openapi({description: 'Horizontal accuracy of the path point'}),
+  number().nullable().openapi({description: 'Vertical accuracy of the path point'}),
+  number().nullable().openapi({description: 'Speed accuracy of the path point'}),
+]).openapi({
   ref: 'PathPoint',
   description: 'Path point used to display routes on map for activities such as walking, hiking, etc.',
 });

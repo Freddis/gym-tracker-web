@@ -34,7 +34,7 @@ export const usePathDataProcessing = (geoData: PathPoint[], start: Date, deps: u
 
     let prevSmoothed: number | null = null;
     for (const point of geoData ?? []) {
-      const [latitude, longitude, altitude, speed, timestamp] = point;
+      const [latitude, longitude, altitude, timestamp, speed] = point;
 
        // --- smoothing ---
       elevationWindow.push(altitude);

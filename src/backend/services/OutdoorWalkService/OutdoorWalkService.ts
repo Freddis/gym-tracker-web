@@ -8,6 +8,7 @@ import {BaseEntry, OutdoorWalkEntry} from '../EntryService/types/Entry';
 import {OutdoorRun} from '../OutdoorRunService/types/OutdoorRun';
 import {HeartRatePoint} from './types/HeartRatePoint';
 import {PathPoint} from './types/PathPoint';
+import {ArrayHelper} from '../../utils/ArrayHelper/ArrayHelper';
 
 export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> {
   protected drizzle: DrizzleService;
@@ -56,20 +57,42 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
       )
     );
     const walkIds = rows.map((x) => x.id);
-    const heartRateData = await db.select()
+    const heartRateData = await db.select({
+      data: sql<[number, number, number][] | null>`array_agg(array[
+        ${schema.outdoorWalkHeartRateData.outdoorWalkId},
+        ${schema.outdoorWalkHeartRateData.heartRate},
+        ${schema.outdoorWalkHeartRateData.timestamp}
+      ])`,
+    })
     .from(schema.outdoorWalkHeartRateData)
     .where(
       inArray(schema.outdoorWalkHeartRateData.outdoorWalkId, walkIds),
-    )
-    .orderBy(schema.outdoorWalkHeartRateData.timestamp);
+    );
     const geoData = await db.select({
-      data: sql<[number, number, number, number, number, number][] | null>`array_agg(array[
+      data: sql<[
+      number,
+      number,
+      number,
+      number,
+      number,
+      number | null,
+      number | null,
+      number | null,
+      number | null,
+      number | null,
+      number | null,
+      ][] | null>`array_agg(array[
         ${schema.outdoorWalkGeoData.outdoorWalkId},
         ${schema.outdoorWalkGeoData.latitude}, 
         ${schema.outdoorWalkGeoData.longitude},
         ${schema.outdoorWalkGeoData.altitude},
+        ${schema.outdoorWalkGeoData.timestamp},
         ${schema.outdoorWalkGeoData.speed},
-        ${schema.outdoorWalkGeoData.timestamp}
+        ${schema.outdoorWalkGeoData.distance},
+        ${schema.outdoorWalkGeoData.course},
+        ${schema.outdoorWalkGeoData.horizontalAccuracy},
+        ${schema.outdoorWalkGeoData.verticalAccuracy},
+        ${schema.outdoorWalkGeoData.speedAccuracy}
         ])`,
     }
     )
@@ -78,23 +101,24 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
       inArray(schema.outdoorWalkGeoData.outdoorWalkId, walkIds),
     );
     const geoMap = geoData.flatMap((x) => x.data ?? []).reduce((acc, cur) => {
-      const [outdoorWalkId, latitude, longitude, altitude, speed, timestamp] = cur;
+      const [outdoorWalkId, ...rest] = cur;
       const points = acc.get(outdoorWalkId) ?? [];
-      points.push([latitude, longitude, altitude, speed, timestamp]);
+      points.push(rest);
       acc.set(outdoorWalkId, points);
       return acc;
     }, new Map<number, PathPoint[]>());
-    const heartRateMap = heartRateData.reduce((acc, cur) => {
-      const points = acc.get(cur.outdoorWalkId) ?? [];
-      points.push(cur);
-      acc.set(cur.outdoorWalkId, points);
+    const heartRateMap = heartRateData.flatMap((x) => x.data ?? []).reduce((acc, cur) => {
+      const [outdoorWalkId, heartRate, timestamp] = cur;
+      const points = acc.get(outdoorWalkId) ?? [];
+      points.push([heartRate, timestamp]);
+      acc.set(outdoorWalkId, points);
       return acc;
     }, new Map<number, HeartRatePoint[]>());
     const result: OutdoorRun[] = rows.map((x) => {
       return {
         ...x,
-        geoData: geoMap.get(x.id)?.sort((a, b) => a[4] - b[4]) ?? [],
-        heartRateData: heartRateMap.get(x.id) ?? [],
+        geoData: geoMap.get(x.id)?.sort((a, b) => a[3] - b[3]) ?? [],
+        heartRateData: heartRateMap.get(x.id)?.sort((a, b) => a[1] - b[1]) ?? [],
       };
     });
     return result;
@@ -113,7 +137,16 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
     const db = await this.drizzle.getDb();
     const schema = this.drizzle.getSchema();
     const info: typeof db._.fullSchema.outdoorRuns.$inferInsert = {
-      ...data,
+      start: data.start,
+      end: data.end,
+      distance: data.distance,
+      pace: data.pace,
+      maxPace: data.maxPace,
+      cadence: data.cadence,
+      maxCadence: data.maxCadence,
+      heartRate: data.heartRate,
+      maxHeartRate: data.maxHeartRate,
+      elevationGain: data.elevationGain,
       calories: Math.round(data.calories),
       duration: Math.round(data.duration),
       userId: userId,
@@ -126,7 +159,47 @@ export class OutdoorWalkService implements IEntryService<EntryType.OutdoorWalk> 
     if (!insertedRow) {
       throw new Error('Unable to insert outdoor run');
     }
-    const result: OutdoorWalk = insertedRow;
+    const geo: typeof db._.fullSchema.outdoorWalkGeoData.$inferInsert[] = [];
+    for (const point of data.geoData ?? []) {
+      geo.push({
+        latitude: point[0],
+        longitude: point[1],
+        altitude: point[2],
+        timestamp: point[3],
+        speed: point[4],
+        distance: point[5],
+        course: point[6],
+        horizontalAccuracy: point[7],
+        verticalAccuracy: point[8],
+        speedAccuracy: point[9],
+        outdoorWalkId: insertedRow.id,
+      });
+    }
+    if (geo.length > 0) {
+      await ArrayHelper.inBatch(500, geo, async (batch) => {
+        await db.insert(schema.outdoorWalkGeoData).values(batch);
+        return true;
+      });
+    }
+    const heartRate: typeof db._.fullSchema.outdoorWalkHeartRateData.$inferInsert[] = [];
+    for (const point of data.heartRateData ?? []) {
+      heartRate.push({
+        outdoorWalkId: insertedRow.id,
+        heartRate: point[0],
+        timestamp: point[1],
+      });
+    }
+    if (heartRate.length > 0) {
+      await ArrayHelper.inBatch(500, heartRate, async (batch) => {
+        await db.insert(schema.outdoorWalkHeartRateData).values(batch);
+        return true;
+      });
+    }
+    const result: OutdoorWalk = {
+      ...insertedRow,
+      geoData: entry.outdoorWalk.geoData ?? null,
+      heartRateData: entry.outdoorWalk.heartRateData ?? null,
+    };
     return {id: result.id, value: result};
   }
   getRelationKey(): 'outdoorWalkId' {

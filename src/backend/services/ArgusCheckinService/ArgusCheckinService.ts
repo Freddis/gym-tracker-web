@@ -123,13 +123,22 @@ export class ArgusCheckinService {
         maxCadence: data.maxCadence ?? null,
         start: new Date(data.start),
         end: new Date(data.end),
-        heartRateData: data.heartrate_profile?.map((x) => ({timestamp: x[0], heartRate: x[1]})) ?? null,
+        heartRateData: data.heartrate_profile?.map((x) => ([x[1], x[0]])) ?? null,
         geoData: data.path ? data.path.map((x) => {
           const [time, lat, lon, horizontalAccuracy, elevation, verticalAccuracy] = x;
           const speed = findSpeed(time);
           const distance = findDistance(time);
-          console.log(distance, horizontalAccuracy, verticalAccuracy); //todo: remove it
-          const geodata: PathPoint = [lat, lon, elevation, speed ?? 0, time];
+          const geodata: PathPoint = [
+            lat, lon, elevation, time,
+            speed,
+            distance,
+            null,
+            horizontalAccuracy,
+            verticalAccuracy,
+            null,
+          ];
+          // console.log(distance, horizontalAccuracy, verticalAccuracy); //todo: remove it
+          // const geodata: PathPoint = [lat, lon, elevation, speed ?? 0, time];
             // altitude: elevation,
             // course: null,
             // timestamp: time,
@@ -141,6 +150,7 @@ export class ArgusCheckinService {
             // speedAccuracy: 0,
             // verticalAccuracy: verticalAccuracy,
           // };
+
           return geodata;
         }) : null,
       },
@@ -231,12 +241,23 @@ export class ArgusCheckinService {
         maxCadence: data.maxCadence ?? null,
         start: new Date(data.start),
         end: new Date(data.end),
-        heartRateData: data.heartrate_profile?.map((x) => ({timestamp: x[0], heartRate: x[1]})) ?? null,
+        heartRateData: data.heartrate_profile?.map((x) => ([x[1], x[0]])) ?? null,
         geoData: data.path ? data.path.map((x) => {
           const [time, lat, lon, horizontalAccuracy, elevation, verticalAccuracy] = x;
           const speed = findSpeed(time);
           const distance = findDistance(time);
-          const geodata: PathPoint = [lat, lon, elevation, speed ?? 0, time];
+          const geodata: PathPoint = [
+            lat,
+            lon,
+            elevation,
+            time,
+            speed,
+            distance,
+            null,
+            horizontalAccuracy,
+            verticalAccuracy,
+            null,
+          ];
           console.log(distance, horizontalAccuracy, verticalAccuracy); //todo: remove it
           return geodata;
         }) : null,

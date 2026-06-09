@@ -1645,21 +1645,23 @@ export type OutdoorRun = {
 /**
  * Path point used to display routes on map for activities such as walking, hiking, etc.
  */
-export type PathPoint = [number, number, number, number, number];
+export type PathPoint = [
+  number,
+  number,
+  number,
+  number,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+];
 
 /**
  * Heart rate point
  */
-export type HeartRatePoint = {
-  /**
-   * Timestamp of the heart rate point
-   */
-  timestamp: number;
-  /**
-   * Heart rate of the heart rate point
-   */
-  heartRate: number;
-};
+export type HeartRatePoint = [number, number];
 
 /**
  * Outdoor walk
