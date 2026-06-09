@@ -3,6 +3,7 @@ import {imageValidator} from '../../images/validators/imageValidator';
 import {Food} from '../../../../FoodService/types/Food';
 import {foodAmountUnitValidator} from './foodAmountUnitValidator';
 import {servingSizeUnitValidator} from './servingSizeUnitValidator';
+import {entryVisibilityValidator} from '../../entries/validators/entryVisibilityValidator';
 
 const baseFoodValidator = object({
   id: string().openapi({description: 'Id of the food'}),
@@ -15,6 +16,9 @@ const baseFoodValidator = object({
   fat: number().openapi({description: 'Fat of the food'}),
   servingSize: number().nullable().openapi({description: 'Serving size of the food'}),
   servingSizeUnit: servingSizeUnitValidator.openapi({description: 'Unit in which the food is measured'}),
+  visibility: entryVisibilityValidator.openapi({description: 'Visibility of the food'}),
+  barcode: number().nullable().openapi({description: 'Barcode of the food'}),
+  copiedFromId: string().nullable().openapi({description: 'Id of the food that was copied from'}),
   createdAt: date().openapi({description: 'Date the creation'}),
   updatedAt: date().nullable().openapi({description: 'Date of last update'}),
   deletedAt: date().nullable().openapi({description: 'Date of deletion'}),

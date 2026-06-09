@@ -53,6 +53,9 @@ export const dictionary: Translation = {
           updatedAt: 'Дата обновления',
           deletedAt: 'Дата удаления',
           id: 'ID',
+          barcode: 'Штрихкод',
+          copiedFromId: 'Скопирована из',
+          visibility: 'Видимость',
         },
       },
       entryType: {

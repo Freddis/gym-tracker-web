@@ -7,7 +7,7 @@ export type UserIdColumn = PgColumn<{
     columnType: 'PgInteger';
     data: number;
     driverParam: string | number;
-    notNull: true;
+    notNull: boolean;
     hasDefault: false;
     isPrimaryKey: false;
     isAutoincrement: false;

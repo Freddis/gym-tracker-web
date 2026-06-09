@@ -379,6 +379,13 @@
       "when": 1780995885033,
       "tag": "0053_removing_geodata_bson_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1781043620062,
+      "tag": "0054_food_barcode_and_ownership_changes",
+      "breakpoints": true
     }
   ]
 }

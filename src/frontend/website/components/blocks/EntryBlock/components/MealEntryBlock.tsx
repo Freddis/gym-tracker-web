@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Meal, FeedEntry, Food} from '../../../../../common/utils/openapi-client';
+import {Meal, FeedEntry} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
@@ -16,6 +16,7 @@ import {Pie} from 'react-chartjs-2';
 import {customColors} from '../../../../../common/utils/design-system/customColors';
 import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
 import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
+import {IFood} from '../../../../../../common/utils/FoodUtility/types/IFood';
 interface MealEntryBlockProps {
   entry: FeedEntry;
   meal: Meal;
@@ -27,22 +28,13 @@ export const MealEntryBlock: FC<MealEntryBlockProps> = (props) => {
   const {entry, meal, own} = props;
   const t = useAppPartialTranslation((x) => x.pages.activities.list.objects.meal);
   const food = meal.food.map(wrap);
-  const updatedFood: Food = {
+  const updatedFood: IFood = {
     isMeal: true,
     components: meal.food,
     servingSize: null,
-    id: '',
-    name: '',
-    description: null,
-    image: null,
-    calories: 0,
     protein: 0,
     carbs: 0,
     fat: 0,
-    servingSizeUnit: 'Gram',
-    createdAt: new Date(),
-    updatedAt: null,
-    deletedAt: null,
   };
   const totalProtein = foodUtility.getFoodMacro(updatedFood, FoodMacros.Protein);
   const totalCarbs = foodUtility.getFoodMacro(updatedFood, FoodMacros.Carbs);

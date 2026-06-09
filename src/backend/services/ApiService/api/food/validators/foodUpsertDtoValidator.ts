@@ -3,6 +3,7 @@ import {imageUpsertDtoValidator} from '../../entries/validators/imageUpsertDtoVa
 import {RouteFactory} from '../../../utils/RouteFactory';
 import {foodAmountUnitValidator} from './foodAmountUnitValidator';
 import {servingSizeUnitValidator} from './servingSizeUnitValidator';
+import {entryVisibilityValidator} from '../../entries/validators/entryVisibilityValidator';
 
 const baseFoodUpsertDtoValidator = object({
   id: string().openapi({description: 'Id of the food'}),
@@ -12,6 +13,10 @@ const baseFoodUpsertDtoValidator = object({
   protein: number().openapi({description: 'Protein of the food'}),
   carbs: number().openapi({description: 'Carbs of the food'}),
   fat: number().openapi({description: 'Fat of the food'}),
+  visibility: entryVisibilityValidator.openapi({description: 'Visibility of the food'}),
+  barcode: number().nullable().openapi({description: 'Barcode of the food'}),
+  copiedFromId: string().nullable().openapi({description: 'Id of the food that was copied from'}),
+  calories: number().nullable().openapi({description: 'Calories of the food'}),
   isMeal: boolean().openapi({description: 'Is the food a dish'}),
   servingSize: number().nullable().openapi({description: 'Serving size of the food'}),
   servingSizeUnit: servingSizeUnitValidator.openapi({description: 'Serving size unit of the food'}),

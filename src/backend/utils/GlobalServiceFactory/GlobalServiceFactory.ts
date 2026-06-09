@@ -159,7 +159,7 @@ export class GlobalServiceFactory {
   }
 
   async food() {
-    return new FoodService(await this.drizzle(), await this.image());
+    return new FoodService(await this.drizzle(), await this.image(), await this.fatsecret());
   }
 
   async meal() {

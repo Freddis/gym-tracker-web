@@ -1,3 +1,4 @@
+import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 import {Image} from '../../ImageService/types/Image';
 import {FoodComponent} from './FoodComponent';
 import {ServingSizeUnit} from './ServingSizeUnit';
@@ -15,6 +16,9 @@ export interface Food {
   servingSize: number | null;
   servingSizeUnit: ServingSizeUnit;
   components: FoodComponent[];
+  visibility: EntryVisibility;
+  barcode: number | null;
+  copiedFromId: string | null;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;

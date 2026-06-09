@@ -60,6 +60,7 @@ import {getSettings} from '../api/settings/getSettings';
 import {updateSettings} from '../api/settings/updateSettings';
 import {getOwnProfile} from '../api/profile/getOwnProfile';
 import {upsertFoods} from '../api/food/upsertFoods';
+import {scanBarcode} from '../api/food/scanBarcode';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -127,6 +128,7 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
     upsertFoods,
     getFood,
     getFoodList,
+    scanBarcode,
   ],
   '/profile': [
     getOwnProfile,

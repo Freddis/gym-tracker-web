@@ -1741,6 +1741,18 @@ export type MealFoodComponent = {
     servingSize: number | null;
     servingSizeUnit: ServingSizeUnit;
     /**
+     * Visibility of the food
+     */
+    visibility: EntryVisibility;
+    /**
+     * Barcode of the food
+     */
+    barcode: number | null;
+    /**
+     * Id of the food that was copied from
+     */
+    copiedFromId: string | null;
+    /**
      * Date the creation
      */
     createdAt: Date;
@@ -1812,6 +1824,18 @@ export type Food = {
    */
   servingSize: number | null;
   servingSizeUnit: ServingSizeUnit;
+  /**
+   * Visibility of the food
+   */
+  visibility: EntryVisibility;
+  /**
+   * Barcode of the food
+   */
+  barcode: number | null;
+  /**
+   * Id of the food that was copied from
+   */
+  copiedFromId: string | null;
   /**
    * Date the creation
    */
@@ -3176,6 +3200,22 @@ export type FoodUpsertDto = {
    * Fat of the food
    */
   fat: number;
+  /**
+   * Visibility of the food
+   */
+  visibility: EntryVisibility;
+  /**
+   * Barcode of the food
+   */
+  barcode: number | null;
+  /**
+   * Id of the food that was copied from
+   */
+  copiedFromId: string | null;
+  /**
+   * Calories of the food
+   */
+  calories: number | null;
   /**
    * Is the food a dish
    */
@@ -10134,6 +10174,127 @@ export type GetFoodResponses = {
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
+
+export type ScanBarcodeData = {
+  body?: {
+    /**
+     * Barcode to scan
+     */
+    barcode: number;
+  };
+  path?: never;
+  query?: never;
+  url: "/food/barcode";
+};
+
+export type ScanBarcodeErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type ScanBarcodeError = ScanBarcodeErrors[keyof ScanBarcodeErrors];
+
+export type ScanBarcodeResponses = {
+  /**
+   * Good Response
+   */
+  200: Food;
+};
+
+export type ScanBarcodeResponse =
+  ScanBarcodeResponses[keyof ScanBarcodeResponses];
 
 export type GetOwnProfileData = {
   body?: never;

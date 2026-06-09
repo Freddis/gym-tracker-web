@@ -79,6 +79,9 @@ export const dictionary = {
           updatedAt: 'Updated At',
           deletedAt: 'Deleted At',
           id: 'Id',
+          barcode: 'Barcode',
+          copiedFromId: 'Copied From Id',
+          visibility: 'Visibility',
         } satisfies Record<keyof Food, string>,
       },
       weight: {

@@ -1,4 +1,4 @@
-import {and, eq, gt, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
+import {and, desc, eq, gt, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
 import {AppDb, AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Food} from './types/Food';
 import {ImageService} from '../ImageService/ImageService';
@@ -13,12 +13,76 @@ import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {FoodComponent} from './types/FoodComponent';
 import {EmptyMealError} from './types/EmptyMealError';
+import {FatsecretService} from '../FatsecretService/FatsecretService';
+import {ServingSizeUnit} from './types/ServingSizeUnit';
+import {EntryVisibility} from '../EntryService/types/EntryVisibility';
+import {Logger} from '../../utils/Logger/Logger';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
-
-  constructor(drizzle: DrizzleService, imageService: ImageService) {
+  protected fatsecretService: FatsecretService;
+  protected logger = new Logger(FoodService.name);
+  constructor(drizzle: DrizzleService, imageService: ImageService, fatsecretService: FatsecretService) {
     super(drizzle);
     this.imageService = imageService;
+    this.fatsecretService = fatsecretService;
+  }
+
+  async scanBarcode(userId: number, barcode: number): Promise<Food | null> {
+    const existing = await this.getByBarcode(barcode, userId);
+    if (existing) {
+      this.logger.info('Food already exists', {barcode, userId, existing});
+      return existing;
+    }
+    const result = await this.fatsecretService.searchFoodByBarcode(barcode);
+    if (!result) {
+      return null;
+    }
+    const foodUpsertDto: FoodUpsertDto = {
+      id: randomUUID(),
+      name: result.name,
+      description: result.brand ?? '',
+      image: null,
+      calories: result.calories ?? null,
+      protein: result.protein ?? 0,
+      carbs: result.carbs ?? 0,
+      fat: result.fat ?? 0,
+      servingSize: null,
+      servingSizeUnit: ServingSizeUnit.Gram,
+      components: [],
+      visibility: EntryVisibility.Public,
+      createdAt: new Date(),
+      updatedAt: null,
+      isMeal: false,
+      deletedAt: null,
+      barcode: barcode,
+      copiedFromId: null,
+    };
+    const db = await this.drizzle.getDb();
+    const food = await db.transaction(async (tx) => {
+      return await this.upsertInTransaction(null, foodUpsertDto, tx);
+    });
+    return food;
+  }
+
+  async getByBarcode(barcode: number, userId: number): Promise<Food | null> {
+    const db = await this.drizzle.getDb();
+    const food = await db.query.food.findFirst({
+      where: (t, op) => op.and(
+        op.eq(t.barcode, barcode),
+        op.isNull(t.deletedAt),
+        op.or(
+          op.eq(t.userId, userId),
+          op.isNull(t.userId),
+        ),
+      ),
+      orderBy: (t) => [desc(t.userId)],
+    });
+
+    if (!food) {
+      return null;
+    }
+    const decorated = await this.decorate(food.id);
+    return decorated;
   }
 
   async upsert(userId: number, food: FoodUpsertDto): Promise<Food> {
@@ -40,7 +104,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     });
   }
 
-  protected async upsertInTransaction(userId: number, food: FoodUpsertDto, db: AppDb): Promise<Food> {
+  protected async upsertInTransaction(userId: number | null, food: FoodUpsertDto, db: AppDb): Promise<Food> {
     if (food.isMeal && food.components.length === 0) {
       throw new EmptyMealError();
     }
@@ -68,6 +132,10 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       protein: food.protein,
       carbs: food.carbs,
       fat: food.fat,
+      calories: food.calories,
+      barcode: food.barcode,
+      copiedFromId: food.copiedFromId,
+      visibility: food.visibility,
       servingSize: food.servingSize,
       servingSizeUnit: food.servingSizeUnit,
       createdAt: food.createdAt,
@@ -97,6 +165,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   protected override getTable(): AppDbSchema['food'] {
     return this.drizzle.getSchema().food;
   }
+
 
   protected override getWhere(params: Partial<FoodFilter>): SQL<unknown> | undefined {
     const where = and(
@@ -130,6 +199,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         imageId: this.getTable().imageId,
         protein: this.getTable().protein,
         carbs: this.getTable().carbs,
+        calories: this.getTable().calories,
         fat: this.getTable().fat,
         servingSizeUnit: this.getTable().servingSizeUnit,
         servingSize: this.getTable().servingSize,
@@ -137,6 +207,9 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         createdAt: this.getTable().createdAt,
         updatedAt: this.getTable().updatedAt,
         deletedAt: this.getTable().deletedAt,
+        barcode: this.getTable().barcode,
+        visibility: this.getTable().visibility,
+        copiedFromId: this.getTable().copiedFromId,
       }
     )
       .from(this.getTable())
@@ -190,10 +263,11 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         name: row.name,
         description: row.description,
         image: imageMap.get(row.imageId ?? '') ?? null,
-        calories: row.protein * 4 + row.carbs * 4 + row.fat * 9,
+        calories: row.calories ?? (row.protein * 4 + row.carbs * 4 + row.fat * 9),
         protein: row.protein,
         carbs: row.carbs,
         fat: row.fat,
+        visibility: row.visibility,
         servingSizeUnit: row.servingSizeUnit,
         servingSize: row.servingSize,
         components: components,
@@ -201,6 +275,8 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         updatedAt: row.updatedAt,
         deletedAt: row.deletedAt ?? null,
         isMeal: row.isMeal,
+        barcode: row.barcode,
+        copiedFromId: row.copiedFromId,
       };
       return food;
     });

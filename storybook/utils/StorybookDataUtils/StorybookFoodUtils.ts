@@ -48,6 +48,9 @@ export class StorybookFoodUtils {
           unit: FoodAmountUnit.GRAM,
         },
       ],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return omelette;
   }
@@ -72,6 +75,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return egg;
   }
@@ -96,6 +102,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return salad;
   }
@@ -120,6 +129,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return pasta;
   }
@@ -155,6 +167,9 @@ export class StorybookFoodUtils {
           unit: FoodAmountUnit.GRAM,
         },
       ],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return coffee;
   }
@@ -179,6 +194,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return milk;
   }
@@ -199,6 +217,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return sugar;
   }
@@ -223,6 +244,9 @@ export class StorybookFoodUtils {
       deletedAt: null,
       isMeal: false,
       components: [],
+      visibility: 'Public',
+      barcode: null,
+      copiedFromId: null,
     };
     return apple;
 

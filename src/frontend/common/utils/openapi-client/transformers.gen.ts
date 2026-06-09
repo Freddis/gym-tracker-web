@@ -35,6 +35,7 @@ import type {
   UpsertFoodResponse,
   UpsertFoodsResponse,
   GetFoodResponse,
+  ScanBarcodeResponse,
   GetOwnProfileResponse,
   GetSettingsResponse,
   UpdateSettingsResponse,
@@ -592,6 +593,13 @@ export const upsertFoodsResponseTransformer = async (
 export const getFoodResponseTransformer = async (
   data: any,
 ): Promise<GetFoodResponse> => {
+  data = foodSchemaResponseTransformer(data);
+  return data;
+};
+
+export const scanBarcodeResponseTransformer = async (
+  data: any,
+): Promise<ScanBarcodeResponse> => {
   data = foodSchemaResponseTransformer(data);
   return data;
 };

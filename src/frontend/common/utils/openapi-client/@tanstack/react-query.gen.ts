@@ -48,6 +48,7 @@ import {
   upsertFood,
   upsertFoods,
   getFood,
+  scanBarcode,
   getOwnProfile,
   getSettings,
   updateSettings,
@@ -190,6 +191,9 @@ import type {
   GetFoodData,
   GetFoodError,
   GetFoodResponse,
+  ScanBarcodeData,
+  ScanBarcodeError,
+  ScanBarcodeResponse,
   GetOwnProfileData,
   GetSettingsData,
   UpdateSettingsData,
@@ -2257,6 +2261,54 @@ export const getFoodInfiniteOptions = (options: Options<GetFoodData>) => {
       queryKey: getFoodInfiniteQueryKey(options),
     },
   );
+};
+
+export const scanBarcodeQueryKey = (options?: Options<ScanBarcodeData>) =>
+  createQueryKey("scanBarcode", options);
+
+/**
+ * Scans a barcode and returns data on food
+ */
+export const scanBarcodeOptions = (options?: Options<ScanBarcodeData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await scanBarcode({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: scanBarcodeQueryKey(options),
+  });
+};
+
+/**
+ * Scans a barcode and returns data on food
+ */
+export const scanBarcodeMutation = (
+  options?: Partial<Options<ScanBarcodeData>>,
+): UseMutationOptions<
+  ScanBarcodeResponse,
+  AxiosError<ScanBarcodeError>,
+  Options<ScanBarcodeData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    ScanBarcodeResponse,
+    AxiosError<ScanBarcodeError>,
+    Options<ScanBarcodeData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await scanBarcode({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
 export const getOwnProfileQueryKey = (options?: Options<GetOwnProfileData>) =>

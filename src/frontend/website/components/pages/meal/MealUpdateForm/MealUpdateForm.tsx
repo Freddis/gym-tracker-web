@@ -32,6 +32,7 @@ import {route, RouteId} from '../../../../../common/utils/route';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
 import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
+import {IFood} from '../../../../../../common/utils/FoodUtility/types/IFood';
 interface MealUpdateFormProps {
   meal: Meal;
   entry: Entry;
@@ -54,22 +55,13 @@ export const MealUpdateForm = forwardRef<FormSubmitRef, MealUpdateFormProps>((pr
       entryUpdateFormRef.current?.submit();
     },
   }));
-  const updatedFood: Food = {
+  const updatedFood: IFood = {
     isMeal: ingredients.length > 0,
     components: ingredients.map((x) => x.item),
     servingSize: null,
-    id: '',
-    name: '',
-    description: null,
-    image: null,
-    calories: 0,
     protein: 0,
     carbs: 0,
     fat: 0,
-    servingSizeUnit: 'Gram',
-    createdAt: new Date(),
-    updatedAt: null,
-    deletedAt: null,
   };
 
   const totalProtein = foodUtility.getFoodMacro(updatedFood, FoodMacros.Protein);

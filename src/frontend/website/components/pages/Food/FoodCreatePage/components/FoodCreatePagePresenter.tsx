@@ -34,6 +34,9 @@ export const FoodCreatePagePresenter: FC<FoodCreatePagePresenterProps> = (props)
     isMeal: !!props.isMeal,
     components: [],
     servingSizeUnit: ServingSizeUnit.GRAM,
+    visibility: 'Public',
+    barcode: null,
+    copiedFromId: null,
   };
 
   const onSaveClick = async () => {

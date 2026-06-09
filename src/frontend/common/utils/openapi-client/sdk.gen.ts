@@ -140,6 +140,9 @@ import type {
   GetFoodData,
   GetFoodResponses,
   GetFoodErrors,
+  ScanBarcodeData,
+  ScanBarcodeResponses,
+  ScanBarcodeErrors,
   GetOwnProfileData,
   GetOwnProfileResponses,
   GetOwnProfileErrors,
@@ -219,6 +222,7 @@ import {
   upsertFoodResponseTransformer,
   upsertFoodsResponseTransformer,
   getFoodResponseTransformer,
+  scanBarcodeResponseTransformer,
   getOwnProfileResponseTransformer,
   getSettingsResponseTransformer,
   updateSettingsResponseTransformer,
@@ -1371,6 +1375,34 @@ export const getFood = <ThrowOnError extends boolean = false>(
     responseTransformer: getFoodResponseTransformer,
     url: "/food/{id}",
     ...options,
+  });
+};
+
+/**
+ * Scans a barcode and returns data on food
+ */
+export const scanBarcode = <ThrowOnError extends boolean = false>(
+  options?: Options<ScanBarcodeData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    ScanBarcodeResponses,
+    ScanBarcodeErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: scanBarcodeResponseTransformer,
+    url: "/food/barcode",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };
 
