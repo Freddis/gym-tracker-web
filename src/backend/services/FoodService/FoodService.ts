@@ -228,10 +228,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       .where(
         and(
           where,
-          or(
-            eq(this.getTable().userId, userId),
-            isNull(this.getTable().userId),
-          )
+          eq(this.getTable().userId, userId),
         )
       ).groupBy(
         this.getTable().id
@@ -245,7 +242,6 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       where,
       or(
         eq(this.getTable().userId, userId),
-        isNull(this.getTable().userId),
       )
     ));
     return {rows: rows, count};
