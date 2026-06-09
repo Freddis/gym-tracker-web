@@ -163,7 +163,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
         latitude: point[0],
         longitude: point[1],
         altitude: point[2],
-        timestamp: point[3],
+        timestamp: Math.round(point[3]),
         speed: point[4],
         distance: point[5],
         course: point[6],
@@ -184,7 +184,7 @@ export class OutdoorRunService implements IEntryService<EntryType.OutdoorRun> {
       heartRate.push({
         outdoorRunId: insertedRow.id,
         heartRate: point[0],
-        timestamp: point[1],
+        timestamp: Math.round(point[1]),
       });
     }
     if (heartRate.length > 0) {
