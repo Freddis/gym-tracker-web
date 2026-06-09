@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {Entry, Weight} from '../../../../../common/utils/openapi-client';
+import {FeedEntry, Weight} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
@@ -10,7 +10,7 @@ import {Line} from 'react-chartjs-2';
 import {ChartData, ChartOptions} from 'chart.js';
 import {StrictPick} from '../../../../../../backend/types/StrictPick';
 
-export const WeightEntryBlock: FC<{weight: Weight, entry: Entry, own?: boolean}> = ({weight, entry, own}) => {
+export const WeightEntryBlock: FC<{weight: Weight, entry: FeedEntry, own?: boolean}> = ({weight, entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
 
   const buildWeightChartData = (

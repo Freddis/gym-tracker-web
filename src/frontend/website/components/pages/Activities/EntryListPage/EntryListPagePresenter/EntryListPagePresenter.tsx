@@ -13,11 +13,11 @@ import {PageContainer} from '../../../../../../common/components/layout/PageCont
 import {Color} from '../../../../../../common/utils/design-system/types/Color';
 import {
   EntryType,
-  GetEntriesOwnResponse,
-  GetEntriesOwnError,
   GetEntriesOwnDatesError,
   GetEntriesOwnDatesResponse,
-  User} from '../../../../../../common/utils/openapi-client';
+  User,
+  GetEntriesResponse,
+  GetEntriesError} from '../../../../../../common/utils/openapi-client';
 import {route, RouteId} from '../../../../../../common/utils/route';
 import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialTranslation';
 import {EntryBlock} from '../../../../blocks/EntryBlock/EntryBlock';
@@ -29,7 +29,7 @@ import {UserProfileBlock} from '../../../../layout/UserProfileBlock/UserProfileB
 
 
 type EntryListPagePresenterProps = {
-  response: ApiResponse<GetEntriesOwnResponse, GetEntriesOwnError>;
+  response: ApiResponse<GetEntriesResponse, GetEntriesError>;
   datesResponse: ApiResponse<GetEntriesOwnDatesResponse, GetEntriesOwnDatesError>;
   onPageChanged: (page: number) => void;
   onDateChanged: (date: Date | null) => void;

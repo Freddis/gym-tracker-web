@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {Entry, Workout} from '../../../../../common/utils/openapi-client';
+import {FeedEntry, Workout} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {route, RouteId} from '../../../../../common/utils/route';
@@ -9,7 +9,7 @@ import {durationToTimeString} from '../../../../utils/durationToTimeString';
 import {EntryBlockHeader} from './EntryBlockHeader';
 
 
-export const WorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: boolean}> = ({workout, entry, own}) => {
+export const WorkoutEntryBlock: FC<{workout: Workout, entry: FeedEntry, own?: boolean}> = ({workout, entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.workout);
   const duration = workout.end ? (new Date(workout.end).getTime() - new Date(workout.start).getTime()) / 1000 : 0;
   const time = durationToTimeString(duration);

@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {CalorieGoal, Entry} from '../../../../../common/utils/openapi-client';
+import {CalorieGoal, FeedEntry} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
@@ -8,7 +8,7 @@ import {PostContent} from './PostContent';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel';
 
-export const CalorieGoalEntryBlock: FC<{entry: Entry, goal: CalorieGoal, own?: boolean}> = (props) => {
+export const CalorieGoalEntryBlock: FC<{entry: FeedEntry, goal: CalorieGoal, own?: boolean}> = (props) => {
   const t = useAppPartialTranslation((x) => x.pages.activities.list.objects.calorieGoal);
   const {entry, goal, own} = props;
   return (

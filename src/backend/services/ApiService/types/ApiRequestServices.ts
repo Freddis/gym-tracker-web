@@ -10,6 +10,7 @@ import {WorkoutPlanService} from '../../WorkoutPlanService/WorkoutPlanService';
 import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../TranslationService/TranslationService';
 import {FoodService} from '../../FoodService/FoodService';
+import {FeedEntryService} from '../../FeedEntryService/FeedEntryService';
 export interface ApiRequestServices {
   auth: AuthService
   models: {
@@ -21,6 +22,7 @@ export interface ApiRequestServices {
     weight: WeightService
     food: FoodService
     entry: EntryService
+    feedEntry: FeedEntryService
     user: UserService
     manager: ManagerService
     translation: TranslationService

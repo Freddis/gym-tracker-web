@@ -6,15 +6,36 @@ import {paceToString} from '../../../../utils/paceToString';
 import {speedToPace} from '../../../../utils/speedToPace';
 import {usePathDataProcessing} from '../../../../utils/usePathDataProcessing';
 import {PostContent} from './PostContent';
-import {Entry, OutdoorRun, OutdoorWalk} from '../../../../../common/utils/openapi-client';
+import {FeedEntry, OutdoorRun, OutdoorWalk, ReducedOutdoorRun, ReducedOutdoorWalk} from '../../../../../common/utils/openapi-client';
+import {useInView} from 'react-intersection-observer';
+import {useDebouncedFetchAfterDelay} from '../../../../utils/useDebouncedFetchAfterDelay';
+import {avoidLet} from '../../../../../common/utils/avoidLet';
 
-export interface RoutedWorkoutContentProps {
-  entry: Entry;
-  workout: OutdoorRun | OutdoorWalk;
+type ReducedRoutedWorkout = ReducedOutdoorRun | ReducedOutdoorWalk;
+type RoutedWorkout = OutdoorRun | OutdoorWalk;
+interface RoutedWorkoutContentProps {
+  entry: FeedEntry;
+  workout: ReducedRoutedWorkout | RoutedWorkout;
+  fetchWorkout: () => Promise<RoutedWorkout | null>;
 }
 export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.activities.list.objects.outdoorRun);
-  const path = usePathDataProcessing(props.workout.geoData ?? [], props.workout.start, [props.workout]);
+  const {ref, inView} = useInView({
+    rootMargin: '50%',
+  });
+  const propsWorkout: RoutedWorkout | null = avoidLet(() => {
+    if ('geoData' in props.workout) {
+      const wk: RoutedWorkout = {
+        ...props.workout,
+      };
+      return wk;
+    }
+    return null;
+  });
+  const shouldLoad = !propsWorkout && inView;
+  const loadedRun = useDebouncedFetchAfterDelay(shouldLoad, 1500, props.fetchWorkout);
+  const workout: RoutedWorkout | null = propsWorkout ?? loadedRun;
+  const path = usePathDataProcessing(workout?.geoData ?? [], workout?.start ?? new Date(), [workout]);
   return (
     <>
       <div className="flex flex-row">
@@ -33,11 +54,15 @@ export const RoutedWorkoutContent: FC<RoutedWorkoutContentProps> = (props) => {
       </div>
       <div className="mt-5 flex flex-col gap-5 justify-center">
         <PostContent entry={props.entry} />
-        {props.workout.geoData && props.workout.geoData.length > 1 && (
+        {workout?.geoData && workout?.geoData.length > 1 && (
           <div className="w-full h-100 rounded-lg overflow-hidden">
             <AppWorkoutMap data={path} />
           </div>
         )}
+        {!workout && (
+          <div className="w-full h-100 rounded-lg overflow-hidden bg-blue-950/50" />
+        )}
+        <div ref={ref} />
       </div>
     </>
   );

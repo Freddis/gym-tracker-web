@@ -32,7 +32,8 @@ import {FatsecretService} from '../../services/FatsecretService/FatsecretService
 import {RedisService} from '../../services/RedisService/RedisService';
 import {OpenFoodFactsService} from '../../services/OpenFoodFactsService/OpenFoodFactsService';
 import {C0rService} from '../../services/C0rService/C0rService';
-
+import {EntryRepositoryService} from '../../services/EntryRepositoryService/EntryRepositoryService';
+import {FeedEntryService} from '../../services/FeedEntryService/FeedEntryService';
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
@@ -111,10 +112,14 @@ export class GlobalServiceFactory {
   async workout(): Promise<WorkoutService> {
     return new WorkoutService(await this.drizzle(), await this.exercise());
   }
+  async entryRepository(): Promise<EntryRepositoryService> {
+    return new EntryRepositoryService(await this.drizzle(), await this.image(), await this.user());
+  }
 
   async entry() {
     return new EntryService(
         await this.drizzle(),
+        await this.entryRepository(),
         await this.user(),
         await this.workout(),
         await this.weight(),
@@ -124,6 +129,20 @@ export class GlobalServiceFactory {
         new PostService(),
         await this.meal(),
         await this.calorieGoal(),
+    );
+  }
+
+  async feedEntry(): Promise<FeedEntryService> {
+    return new FeedEntryService(
+      await this.drizzle(),
+      await this.user(),
+      await this.image(),
+      await this.entryRepository(),
+      await this.workout(),
+      await this.weight(),
+      new PostService(),
+      await this.meal(),
+      await this.calorieGoal(),
     );
   }
 

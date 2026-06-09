@@ -115,6 +115,7 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
         argusCheckin: await this.factory.argusCheckin(),
         workout: await this.factory.workout(),
         exercise: await this.factory.exercise(),
+        feedEntry: await this.factory.feedEntry(),
         weight: await this.factory.weight(),
         entry: await this.factory.entry(),
         user: await this.factory.user(),

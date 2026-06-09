@@ -8,7 +8,7 @@ export interface EntityService<TModel, TId extends string | number = number, TFi
   getMany(filter: TFilter): Promise<TModel[]>
   deleteById(id: TId): void
 }
-export interface UserEntityService<TModel, TFilter = Filter> {
+export interface UserEntityService<TModel, TId extends string | number = number, TFilter = Filter<TId>> {
   paginateForUser(params: Partial<TFilter>): Promise<PaginatedResult<TModel>>
   getForUser(filter: TFilter): Promise<TModel | null>
   getByIdForUser(id: number): Promise<TModel | null>

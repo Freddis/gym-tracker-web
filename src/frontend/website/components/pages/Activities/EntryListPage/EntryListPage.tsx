@@ -11,11 +11,12 @@ export const EntryListPage: FC = () => {
   const searchParams = routeApi.useSearch();
   const auth = useRequiredAuth();
   const response = useQuery({
-    queryFn: () => api.getEntriesOwn({
+    queryFn: () => api.getEntries({
       query: {
         page: searchParams.page,
         type: searchParams.type,
         date: searchParams.date,
+        own: true,
       },
     }),
     queryKey: ['workouts', searchParams],

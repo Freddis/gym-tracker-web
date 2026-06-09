@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Meal, Entry, Food} from '../../../../../common/utils/openapi-client';
+import {Meal, FeedEntry, Food} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
@@ -17,7 +17,7 @@ import {customColors} from '../../../../../common/utils/design-system/customColo
 import {FoodUtility} from '../../../../../../common/utils/FoodUtility/FoodUtility';
 import {FoodMacros} from '../../../../../../common/utils/FoodUtility/types/FoodMacros';
 interface MealEntryBlockProps {
-  entry: Entry;
+  entry: FeedEntry;
   meal: Meal;
   own?: boolean;
 }

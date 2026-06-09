@@ -1,9 +1,9 @@
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {cn} from '../../../../../common/utils/cn';
-import {Entry} from '../../../../../common/utils/openapi-client';
+import {FeedEntry} from '../../../../../common/utils/openapi-client';
 import {FC} from 'react';
 
-export const PostContent: FC<{entry: Entry}> = ({entry}) => {
+export const PostContent: FC<{entry: FeedEntry}> = ({entry}) => {
   return (
     <div className="w-full">
     {entry.title && (

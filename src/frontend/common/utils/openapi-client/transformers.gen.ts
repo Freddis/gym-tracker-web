@@ -434,11 +434,57 @@ export const getEntriesByIdResponseTransformer = async (
   return data;
 };
 
+const reducedOutdoorRunSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  data.end = new Date(data.end);
+  return data;
+};
+
+const reducedOutdoorWalkSchemaResponseTransformer = (data: any) => {
+  data.start = new Date(data.start);
+  data.end = new Date(data.end);
+  return data;
+};
+
+const feedEntrySchemaResponseTransformer = (data: any) => {
+  data.time = new Date(data.time);
+  data.createdAt = new Date(data.createdAt);
+  if (data.updatedAt) {
+    data.updatedAt = new Date(data.updatedAt);
+  }
+  if (data.deletedAt) {
+    data.deletedAt = new Date(data.deletedAt);
+  }
+  if (data.weight) {
+    data.weight = weightSchemaResponseTransformer(data.weight);
+  }
+  if (data.workout) {
+    data.workout = workoutSchemaResponseTransformer(data.workout);
+  }
+  if (data.outdoorRun) {
+    data.outdoorRun = reducedOutdoorRunSchemaResponseTransformer(
+      data.outdoorRun,
+    );
+  }
+  if (data.outdoorWalk) {
+    data.outdoorWalk = reducedOutdoorWalkSchemaResponseTransformer(
+      data.outdoorWalk,
+    );
+  }
+  if (data.meal) {
+    data.meal = mealSchemaResponseTransformer(data.meal);
+  }
+  if (data.calorieGoal) {
+    data.calorieGoal = calorieGoalSchemaResponseTransformer(data.calorieGoal);
+  }
+  return data;
+};
+
 export const getEntriesResponseTransformer = async (
   data: any,
 ): Promise<GetEntriesResponse> => {
   data.items = data.items.map((item: any) => {
-    return entrySchemaResponseTransformer(item);
+    return feedEntrySchemaResponseTransformer(item);
   });
   return data;
 };

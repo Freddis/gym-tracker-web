@@ -4,7 +4,7 @@ import {EntryObjectMap} from './EntryObjectMap';
 import {EntryType} from './EntryType';
 import {EntryUpsertDto} from './EntryUpsertDto';
 
-type NumericEntryKeys = {
+export type NumericEntryKeys = {
   [K in keyof EntryRow]: Exclude<EntryRow[K], null> extends number ? K : never
 }[keyof EntryRow];
 

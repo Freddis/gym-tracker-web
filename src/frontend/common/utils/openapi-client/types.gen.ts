@@ -1908,6 +1908,231 @@ export type CalorieGoal = {
 };
 
 /**
+ * Entry. Reduced version of entry for feed.
+ */
+export type FeedEntry = {
+  /**
+   * Id of an entry
+   */
+  id: string;
+  user: User;
+  visibility: EntryVisibility;
+  /**
+   * Time of the entry. Can be changed by user.
+   */
+  time: Date;
+  /**
+   * Date of the entry, when the entry was created by user. Immutable.
+   */
+  createdAt: Date;
+  /**
+   * Date of the last update
+   */
+  updatedAt: Date | null;
+  /**
+   * Date of the deletion
+   */
+  deletedAt: Date | null;
+  /**
+   * Title of the entry
+   */
+  title: string | null;
+  /**
+   * Note of the entry
+   */
+  note: string | null;
+  /**
+   * External id of the entry
+   */
+  externalId: string | null;
+  /**
+   * External source of the entry. Another app.
+   */
+  externalSource: ExternalSource | null;
+  /**
+   * Healthkit id of the entry
+   */
+  healthkitId: string | null;
+  /**
+   * Healthkit anchor of the entry
+   */
+  healthkitAnchor: number | null;
+  /**
+   * Healthkit anchors_3_0 of the entry
+   */
+  healthkitAnchors_3_0: string | null;
+  /**
+   * Healthkit source of the entry
+   */
+  healthkitSource: string | null;
+  /**
+   * Healthkit source name of the entry
+   */
+  healthkitSourceName: string | null;
+  /**
+   * Healthkit device of the entry
+   */
+  healthkitDevice: string | null;
+  /**
+   * Healthkit device name of the entry
+   */
+  healthkitDeviceName: string | null;
+  type: EntryType;
+  /**
+   * Weight. Only for weight entries
+   */
+  weight?: Weight;
+  /**
+   * Workout. Only for workout entries.
+   */
+  workout?: Workout;
+  /**
+   * Image. Only for image entries.
+   */
+  image?: Image | null;
+  /**
+   * Outdoor run. Only for outdoor run entries.
+   */
+  outdoorRun?: ReducedOutdoorRun;
+  /**
+   * Outdoor walk. Only for outdoor walk entries.
+   */
+  outdoorWalk?: ReducedOutdoorWalk;
+  /**
+   * Meal. Only for meal entries.
+   */
+  meal?: Meal;
+  /**
+   * Calorie goal. Only for calorie goal entries.
+   */
+  calorieGoal?: CalorieGoal;
+};
+
+/**
+ * Reduced outdoor run.
+ */
+export type ReducedOutdoorRun = {
+  /**
+   * Id of the outdoor run
+   */
+  id: number;
+  /**
+   * User id of the outdoor run
+   */
+  userId: number;
+  /**
+   * Distance of the outdoor run
+   */
+  distance: number;
+  /**
+   * Duration of the outdoor run
+   */
+  duration: number;
+  /**
+   * Calories of the outdoor run
+   */
+  calories: number;
+  /**
+   * Pace of the outdoor run
+   */
+  pace: number;
+  /**
+   * Max pace of the outdoor run
+   */
+  maxPace: number;
+  /**
+   * Cadence of the outdoor run
+   */
+  cadence: number | null;
+  /**
+   * Max cadence of the outdoor run
+   */
+  maxCadence: number | null;
+  /**
+   * Heart rate of the outdoor run
+   */
+  heartRate: number | null;
+  /**
+   * Max heart rate of the outdoor run
+   */
+  maxHeartRate: number | null;
+  /**
+   * Start time of the outdoor run
+   */
+  start: Date;
+  /**
+   * End time of the outdoor run
+   */
+  end: Date;
+  /**
+   * Elevation gain of the outdoor run
+   */
+  elevationGain: number | null;
+};
+
+/**
+ * Reduced outdoor walk.
+ */
+export type ReducedOutdoorWalk = {
+  /**
+   * Id of the outdoor run
+   */
+  id: number;
+  /**
+   * User id of the outdoor run
+   */
+  userId: number;
+  /**
+   * Distance of the outdoor run
+   */
+  distance: number;
+  /**
+   * Duration of the outdoor run
+   */
+  duration: number;
+  /**
+   * Calories of the outdoor run
+   */
+  calories: number;
+  /**
+   * Pace of the outdoor run
+   */
+  pace: number;
+  /**
+   * Max pace of the outdoor run
+   */
+  maxPace: number;
+  /**
+   * Cadence of the outdoor run
+   */
+  cadence: number | null;
+  /**
+   * Max cadence of the outdoor run
+   */
+  maxCadence: number | null;
+  /**
+   * Heart rate of the outdoor run
+   */
+  heartRate: number | null;
+  /**
+   * Max heart rate of the outdoor run
+   */
+  maxHeartRate: number | null;
+  /**
+   * Start time of the outdoor run
+   */
+  start: Date;
+  /**
+   * End time of the outdoor run
+   */
+  end: Date;
+  /**
+   * Elevation gain of the outdoor run
+   */
+  elevationGain: number | null;
+};
+
+/**
  * Fields needed to update a workout
  */
 export type EntryUpsertDto =
@@ -8177,6 +8402,10 @@ export type GetEntriesOwnData = {
           | "CalorieGoal"
         >;
     /**
+     * Only return entries for the current user.
+     */
+    own?: boolean;
+    /**
      * Only return entries from this date.
      */
     date?: Date;
@@ -8598,6 +8827,10 @@ export type GetEntriesData = {
           | "CalorieGoal"
         >;
     /**
+     * Only return entries for the current user.
+     */
+    own?: boolean;
+    /**
      * Only return entries from this date.
      */
     date?: Date;
@@ -8706,7 +8939,7 @@ export type GetEntriesResponses = {
     /**
      * Page or items
      */
-    items: Array<Entry>;
+    items: Array<FeedEntry>;
     /**
      * Pagination details
      */

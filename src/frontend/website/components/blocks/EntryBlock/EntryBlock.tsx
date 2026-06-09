@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {Entry} from '../../../../common/utils/openapi-client';
+import {FeedEntry} from '../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../common/components/atoms/AppBlock/AppBlock';
 import {WeightEntryBlock} from './components/WeightEntryBlock';
 import {WorkoutEntryBlock} from './components/WorkoutEntryBlock';
@@ -10,7 +10,7 @@ import {OutdoorWalkEntryBlock} from './components/OutdoorWalkEntryBlock';
 import {MealEntryBlock} from './components/MealEntryBlock';
 import {CalorieGoalEntryBlock} from './components/CalorieGoalEntryBlock';
 
-export const EntryBlock: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
+export const EntryBlock: FC<{entry: FeedEntry, own?: boolean}> = ({entry, own}) => {
   const {t, i18n} = useAppPartialTranslation((x) => x.components.entryBlock.labels);
   if (entry.workout) {
     return <WorkoutEntryBlock entry={entry} workout={entry.workout!} own={own}/>;

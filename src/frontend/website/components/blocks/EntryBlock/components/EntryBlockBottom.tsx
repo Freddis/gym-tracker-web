@@ -1,8 +1,8 @@
 import {FC} from 'react';
 import {AppAvatar} from '../../../../../common/components/atoms/AppAvatar/AppAvatar';
-import {Entry} from '../../../../../common/utils/openapi-client';
+import {FeedEntry} from '../../../../../common/utils/openapi-client';
 
-export const EntryBlockBottom: FC<{entry: Entry, own?: boolean}> = ({entry, own}) => {
+export const EntryBlockBottom: FC<{entry: FeedEntry, own?: boolean}> = ({entry, own}) => {
   if (own) {
     return null;
   }

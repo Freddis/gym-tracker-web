@@ -6,7 +6,7 @@ import {WorkoutService} from '../WorkoutService/WorkoutService';
 import {BaseEntry, Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/Entry';
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
-import {and, inArray, isNull, desc, gte, or, eq, sql, between, lte, gt} from 'drizzle-orm';
+import {and, inArray, isNull, eq, sql, between} from 'drizzle-orm';
 import {WeightService} from '../WeightService/WeightService';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
@@ -26,7 +26,9 @@ import {PostService} from '../PostService/PostService';
 import {MealService} from '../MealService/MealService';
 import {CalorieGoalService} from '../CalorieGoalService/CalorieGoalService';
 import {EntryFilter} from './types/EntryFilter';
+import {EntryRepositoryService} from '../EntryRepositoryService/EntryRepositoryService';
 export class EntryService {
+  protected entryRepositoryService: EntryRepositoryService;
   protected workoutService: WorkoutService;
   protected userService: UserService;
   protected drizzle: DrizzleService;
@@ -35,6 +37,7 @@ export class EntryService {
   protected entryServiceMap: EntryServiceMap;
   constructor(
     drizzle: DrizzleService,
+    entryRepositoryService: EntryRepositoryService,
     userService: UserService,
     workoutService: WorkoutService,
     weightService: WeightService,
@@ -45,6 +48,7 @@ export class EntryService {
     mealService: MealService,
     calorieGoalService: CalorieGoalService,
   ) {
+    this.entryRepositoryService = entryRepositoryService;
     this.workoutService = workoutService;
     this.userService = userService;
     this.drizzle = drizzle;
@@ -225,43 +229,9 @@ export class EntryService {
   async getAll<T extends EntryType>(
       params?: EntryFilter<T>
   ): Promise<PaginatedResult<Entry & {type: T}>> {
-
-    const db = await this.drizzle.getDb();
-    const page = params?.page ?? 1;
-    const limit = params?.perPage ?? 10;
-    const offset = (page - 1) * limit;
-    const where = and(
-      params?.ids ? inArray(db._.fullSchema.entries.id, params.ids) : undefined,
-      params?.externalId ? inArray(db._.fullSchema.entries.externalId, params.externalId) : undefined,
-      params?.weightIds ? inArray(db._.fullSchema.entries.weightId, params.weightIds) : undefined,
-      params?.workoutIds ? inArray(db._.fullSchema.entries.workoutId, params.workoutIds) : undefined,
-      params?.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
-      params?.userId ? inArray(db._.fullSchema.entries.userId, params.userId) : undefined,
-      params?.includeDeleted ? undefined : isNull(db._.fullSchema.entries.deletedAt),
-      params?.after ? gte(db._.fullSchema.entries.time, params.after) : undefined,
-      params?.before ? lte(db._.fullSchema.entries.time, params.before) : undefined,
-      params?.updatedAfter ? or(
-        gt(db._.fullSchema.entries.updatedAt, params.updatedAfter),
-        gt(db._.fullSchema.entries.createdAt, params.updatedAfter),
-        gt(db._.fullSchema.entries.deletedAt, params.updatedAfter),
-      ) : undefined,
-      params?.date ? between(
-        db._.fullSchema.entries.time,
-         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate()),
-         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate() + 1)
-        ) : undefined,
-    );
-    const count = await db.$count(db._.fullSchema.entries, where);
-    const rows = await db
-      .select()
-      .from(db._.fullSchema.entries)
-      .where(where)
-      .limit(limit)
-      .offset(offset)
-      .orderBy(desc(
-        db._.fullSchema.entries.time
-      ));
-
+    const rowsResult = await this.entryRepositoryService.paginate(params ?? {});
+    const limit = rowsResult.info.pageSize;
+    const rows = rowsResult.items;
     const createMap = async <T extends EntryType>(type: T, rows: EntryRow[]): Promise<Map<number, EntryObjectMap[T]>> => {
       if (rows.length === 0) {
         return new Map();
@@ -352,11 +322,7 @@ export class EntryService {
 
     const result: PaginatedResult<Entry & {type: T}> = {
       items: items as (Entry & {type: T})[],
-      info: {
-        page: page,
-        count: count,
-        pageSize: limit,
-      },
+      info: rowsResult.info,
     };
     return result;
   }

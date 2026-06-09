@@ -2,11 +2,11 @@ import {LinkProps} from '@tanstack/react-router';
 import {FC} from 'react';
 import {RouteLink} from '../../../../../common/components/atoms/RouteLink/RouteLink';
 import {EntryBlockDate} from './EntryBlockDate';
-import {Entry} from '../../../../../common/utils/openapi-client';
+import {FeedEntry} from '../../../../../common/utils/openapi-client';
 import {route, RouteId} from '../../../../../common/utils/route';
 
 interface EntryBlockHeaderProps extends LinkProps {
-  entry: Entry;
+  entry: FeedEntry;
   own?: boolean;
   title: string;
 }
