@@ -32,6 +32,7 @@ import {HeightUnit} from '../../../types/HeightUnit';
 import {TemperatureUnit} from '../../../types/TemperatureUnit';
 import {Country} from '../../../types/Country';
 import {MealType} from '../../MealService/types/MealType';
+import {FoodSource} from '../../FoodService/types/FoodSource';
 
 export const gymTracker = pgSchema('gym_tracker');
 
@@ -85,6 +86,9 @@ export const countryEnum = gymTracker.enum('Country', countryValues);
 
 const mealTypeValues = array(nativeEnum(MealType)).nonempty().parse(Object.values(MealType));
 export const mealTypeEnum = gymTracker.enum('MealType', mealTypeValues);
+
+const foodSourceValues = array(nativeEnum(FoodSource)).nonempty().parse(Object.values(FoodSource));
+export const foodSourceEnum = gymTracker.enum('FoodSource', foodSourceValues);
 
 export const argusCheckins = gymTracker.table('argus-checkins', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
@@ -472,6 +476,8 @@ export const food = gymTracker.table('food', {
   servingSizeUnit: servingSizeUnitEnum().notNull(),
   isMeal: boolean().notNull().default(false),
   copiedFromId: uuid(),
+  source: foodSourceEnum(),
+  externalId: varchar(),
   visibility: entryVisibilityEnum().default(EntryVisibility.Public).notNull(),
   createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),

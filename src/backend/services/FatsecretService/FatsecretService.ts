@@ -62,14 +62,18 @@ export class FatsecretService {
         facts[key] = value;
       }
     });
+    const servingMatch = page.match(/\((\s*\d+(?:\.\d+)?)\s*(g|г)\s*\)/i);
+    const servingSizeGrams = servingMatch && servingMatch[1] ? parseFloat(servingMatch[1]) : null;
+    const multiplier = 100 / (servingSizeGrams ?? 100);
     const food: FatsecretFoodResponse = {
       id: foodId,
       name,
       brand,
-      calories: facts.calories ?? 0,
-      fat: facts.fat ?? 0,
-      carbs: facts.carbs ?? 0,
-      protein: facts.protein ?? 0,
+      calories: (facts.calories ?? 0) * multiplier,
+      fat: (facts.fat ?? 0) * multiplier,
+      carbs: (facts.carbs ?? 0) * multiplier,
+      protein: (facts.protein ?? 0) * multiplier,
+      servingSize: servingSizeGrams !== 100 ? servingSizeGrams : null,
     };
     return food;
   }

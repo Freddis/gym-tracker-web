@@ -6,4 +6,5 @@ export interface FatsecretFoodResponse {
   protein: number | null;
   carbs: number | null;
   fat: number | null;
+  servingSize: number | null;
 }

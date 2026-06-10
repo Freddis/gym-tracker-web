@@ -17,6 +17,7 @@ import {FatsecretService} from '../FatsecretService/FatsecretService';
 import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
+import {FoodSource} from './types/FoodSource';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -46,7 +47,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       protein: result.protein ?? 0,
       carbs: result.carbs ?? 0,
       fat: result.fat ?? 0,
-      servingSize: null,
+      servingSize: result.servingSize,
       servingSizeUnit: ServingSizeUnit.Gram,
       components: [],
       visibility: EntryVisibility.Public,
@@ -59,7 +60,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     };
     const db = await this.drizzle.getDb();
     const food = await db.transaction(async (tx) => {
-      return await this.upsertInTransaction(null, foodUpsertDto, tx);
+      return await this.upsertInTransaction(null, foodUpsertDto, tx, FoodSource.Fatsecret, result.id.toString());
     });
     return food;
   }
@@ -104,7 +105,13 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     });
   }
 
-  protected async upsertInTransaction(userId: number | null, food: FoodUpsertDto, db: AppDb): Promise<Food> {
+  protected async upsertInTransaction(
+    userId: number | null,
+    food: FoodUpsertDto,
+    db: AppDb,
+    source?: FoodSource,
+    externalId?: string
+  ): Promise<Food> {
     if (food.isMeal && food.components.length === 0) {
       throw new EmptyMealError();
     }
@@ -137,6 +144,8 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       copiedFromId: food.copiedFromId,
       visibility: food.visibility,
       servingSize: food.servingSize,
+      source: source,
+      externalId: externalId,
       servingSizeUnit: food.servingSizeUnit,
       createdAt: food.createdAt,
       updatedAt: food.updatedAt,
@@ -210,6 +219,8 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         barcode: this.getTable().barcode,
         visibility: this.getTable().visibility,
         copiedFromId: this.getTable().copiedFromId,
+        source: this.getTable().source,
+        externalId: this.getTable().externalId,
       }
     )
       .from(this.getTable())
