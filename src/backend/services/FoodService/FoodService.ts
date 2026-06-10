@@ -17,7 +17,6 @@ import {FatsecretService} from '../FatsecretService/FatsecretService';
 import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
-import {FoodSource} from './types/FoodSource';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -38,16 +37,21 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     if (!result) {
       return null;
     }
+
+    const calories = result.calories ?? null;
+    const protein = result.protein ?? 0;
+    const carbs = result.carbs ?? 0;
+    const fat = result.fat ?? 0;
     const foodUpsertDto: FoodUpsertDto = {
       id: randomUUID(),
       name: result.name,
       description: result.brand ?? '',
       image: null,
-      calories: result.calories ?? null,
-      protein: result.protein ?? 0,
-      carbs: result.carbs ?? 0,
-      fat: result.fat ?? 0,
-      servingSize: result.servingSize,
+      calories: calories ? (Math.round(calories * 10) / 10) : null,
+      protein: Math.round(protein * 10) / 10,
+      carbs: Math.round(carbs * 10) / 10,
+      fat: Math.round(fat * 10) / 10,
+      servingSize: null,
       servingSizeUnit: ServingSizeUnit.Gram,
       components: [],
       visibility: EntryVisibility.Public,
@@ -60,7 +64,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     };
     const db = await this.drizzle.getDb();
     const food = await db.transaction(async (tx) => {
-      return await this.upsertInTransaction(null, foodUpsertDto, tx, FoodSource.Fatsecret, result.id.toString());
+      return await this.upsertInTransaction(null, foodUpsertDto, tx);
     });
     return food;
   }
@@ -105,13 +109,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     });
   }
 
-  protected async upsertInTransaction(
-    userId: number | null,
-    food: FoodUpsertDto,
-    db: AppDb,
-    source?: FoodSource,
-    externalId?: string
-  ): Promise<Food> {
+  protected async upsertInTransaction(userId: number | null, food: FoodUpsertDto, db: AppDb): Promise<Food> {
     if (food.isMeal && food.components.length === 0) {
       throw new EmptyMealError();
     }
@@ -144,8 +142,6 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       copiedFromId: food.copiedFromId,
       visibility: food.visibility,
       servingSize: food.servingSize,
-      source: source,
-      externalId: externalId,
       servingSizeUnit: food.servingSizeUnit,
       createdAt: food.createdAt,
       updatedAt: food.updatedAt,
@@ -219,8 +215,6 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         barcode: this.getTable().barcode,
         visibility: this.getTable().visibility,
         copiedFromId: this.getTable().copiedFromId,
-        source: this.getTable().source,
-        externalId: this.getTable().externalId,
       }
     )
       .from(this.getTable())
