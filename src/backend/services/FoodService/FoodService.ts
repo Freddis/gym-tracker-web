@@ -212,6 +212,8 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         createdAt: this.getTable().createdAt,
         updatedAt: this.getTable().updatedAt,
         deletedAt: this.getTable().deletedAt,
+        source: this.getTable().source,
+        externalId: this.getTable().externalId,
         barcode: this.getTable().barcode,
         visibility: this.getTable().visibility,
         copiedFromId: this.getTable().copiedFromId,
