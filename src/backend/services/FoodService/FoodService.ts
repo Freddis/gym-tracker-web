@@ -17,6 +17,7 @@ import {FatsecretService} from '../FatsecretService/FatsecretService';
 import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
+import {FoodSource} from './types/FoodSource';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -64,7 +65,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     };
     const db = await this.drizzle.getDb();
     const food = await db.transaction(async (tx) => {
-      return await this.upsertInTransaction(null, foodUpsertDto, tx);
+      return await this.upsertInTransaction(null, foodUpsertDto, tx, FoodSource.Fatsecret, result.id.toString());
     });
     return food;
   }
@@ -109,7 +110,13 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     });
   }
 
-  protected async upsertInTransaction(userId: number | null, food: FoodUpsertDto, db: AppDb): Promise<Food> {
+  protected async upsertInTransaction(
+    userId: number | null,
+    food: FoodUpsertDto,
+    db: AppDb,
+    source?: FoodSource,
+    externalId?: string
+  ): Promise<Food> {
     if (food.isMeal && food.components.length === 0) {
       throw new EmptyMealError();
     }
@@ -147,6 +154,8 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       updatedAt: food.updatedAt,
       deletedAt: food.deletedAt,
       isMeal: food.isMeal,
+      source: source,
+      externalId: externalId,
     };
     if (existing) {
       await db.update(schema.food).set(entity).where(eq(schema.food.id, existing.id));
