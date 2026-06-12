@@ -18,6 +18,7 @@ import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
 import {FoodSource} from './types/FoodSource';
+import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -27,6 +28,37 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     this.imageService = imageService;
     this.fatsecretService = fatsecretService;
   }
+
+
+  async findFood(params: {query?: string, page?: number}): Promise<PaginatedResult<Food>> {
+    const db = await this.drizzle.getDb();
+    const page = params.page ?? 1;
+    const limit = 30;
+    const offset = (page - 1) * limit;
+    const where = and(
+      eq(this.getTable().visibility, EntryVisibility.Public),
+      isNull(this.getTable().copiedFromId),
+      isNull(this.getTable().deletedAt),
+    );
+    const rows = await db.select()
+    .from(db._.fullSchema.food)
+    .where(where)
+    .orderBy(desc(this.getTable().createdAt))
+    .limit(limit)
+    .offset(offset);
+    const count = await db.$count(this.getTable(), where);
+    const ids = rows.map((x) => x.id);
+    const result: PaginatedResult<Food> = {
+      items: await this.decorateMany(ids),
+      info: {
+        page,
+        count,
+        pageSize: limit,
+      },
+    };
+    return result;
+  }
+
 
   async scanBarcode(userId: number, barcode: number): Promise<Food | null> {
     const existing = await this.getByBarcode(barcode, userId);

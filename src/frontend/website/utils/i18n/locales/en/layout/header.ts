@@ -14,5 +14,6 @@ export const header = {
     home: 'Home',
     activities: 'My Entries',
     exerciseLibrary: 'Exercise Library',
+    foodLibrary: 'Food',
   },
 };

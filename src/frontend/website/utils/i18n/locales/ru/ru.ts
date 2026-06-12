@@ -257,6 +257,7 @@ export const dictionary: Translation = {
         home: 'Главная',
         activities: 'Активность',
         exerciseLibrary: 'Упражнения',
+        foodLibrary: 'Еда',
       },
     },
     toasts: {

@@ -32,6 +32,7 @@ export const MenuBar:FC<{onMobileMenuClick: () => void}> = ({onMobileMenuClick})
             <HeaderLink to={route(RouteId.EntryList)}>{t(i18n.menu.activities)}</HeaderLink>
           </Conditional>
           <HeaderLink to={route(RouteId.ExerciseLibrary)}>{t(i18n.menu.exerciseLibrary)}</HeaderLink>
+          <HeaderLink to={route(RouteId.FoodLibrary)}>{t(i18n.menu.foodLibrary)}</HeaderLink>
           <Conditional condition={!auth.user}>
             <HeaderLink to={route(RouteId.Login)}>{t(i18n.menu.signIn)}</HeaderLink>
           </Conditional>

@@ -10,7 +10,7 @@ import {useImagePlaceHolder} from '../../../../../../utils/useImagePlaceHolder';
 import {FoodUtility} from '../../../../../../../../common/utils/FoodUtility/FoodUtility';
 import {FoodMacros} from '../../../../../../../../common/utils/FoodUtility/types/FoodMacros';
 
-export const FoodBlock: FC<{food: Food}> = (props) => {
+export const FoodBlock: FC<{food: Food, own: boolean}> = (props) => {
   const foodUtility = new FoodUtility();
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food.list);
   const router = useRouter();
@@ -29,7 +29,12 @@ export const FoodBlock: FC<{food: Food}> = (props) => {
     >
       <div className="p-5 grow flex flex-col">
         <h3 className="capitalize mb-2 font-semibold">
-          <RouteLink accented={false} to={route(RouteId.FoodUpdate)} params={{id: props.food.id}}>{props.food.name}</RouteLink>
+          {props.own && (
+            <RouteLink accented={false} to={route(RouteId.FoodUpdate)} params={{id: props.food.id}}>{props.food.name}</RouteLink>
+          )}
+          {!props.own && (
+            <span>{props.food.name}</span>
+          )}
         </h3>
         <p>{props.food.description}</p>
         <div className="flex flex-row gap-5">

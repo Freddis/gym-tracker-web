@@ -34,6 +34,7 @@ import type {
   GetFoodListResponse,
   UpsertFoodResponse,
   UpsertFoodsResponse,
+  FindFoodResponse,
   GetFoodResponse,
   ScanBarcodeResponse,
   GetOwnProfileResponse,
@@ -585,6 +586,15 @@ export const upsertFoodsResponseTransformer = async (
   data: any,
 ): Promise<UpsertFoodsResponse> => {
   data = data.map((item: any) => {
+    return foodSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const findFoodResponseTransformer = async (
+  data: any,
+): Promise<FindFoodResponse> => {
+  data.items = data.items.map((item: any) => {
     return foodSchemaResponseTransformer(item);
   });
   return data;

@@ -47,6 +47,7 @@ import {
   getFoodList,
   upsertFood,
   upsertFoods,
+  findFood,
   getFood,
   scanBarcode,
   getOwnProfile,
@@ -188,6 +189,9 @@ import type {
   UpsertFoodsData,
   UpsertFoodsError,
   UpsertFoodsResponse,
+  FindFoodData,
+  FindFoodError,
+  FindFoodResponse,
   GetFoodData,
   GetFoodError,
   GetFoodResponse,
@@ -2192,6 +2196,75 @@ export const upsertFoodsMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const findFoodQueryKey = (options?: Options<FindFoodData>) =>
+  createQueryKey("findFood", options);
+
+/**
+ * Search for food by name
+ */
+export const findFoodOptions = (options?: Options<FindFoodData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await findFood({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: findFoodQueryKey(options),
+  });
+};
+
+export const findFoodInfiniteQueryKey = (
+  options?: Options<FindFoodData>,
+): QueryKey<Options<FindFoodData>> => createQueryKey("findFood", options, true);
+
+/**
+ * Search for food by name
+ */
+export const findFoodInfiniteOptions = (options?: Options<FindFoodData>) => {
+  return infiniteQueryOptions<
+    FindFoodResponse,
+    AxiosError<FindFoodError>,
+    InfiniteData<FindFoodResponse>,
+    QueryKey<Options<FindFoodData>>,
+    | number
+    | Pick<
+        QueryKey<Options<FindFoodData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<FindFoodData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  page: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await findFood({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: findFoodInfiniteQueryKey(options),
+    },
+  );
 };
 
 export const getFoodQueryKey = (options: Options<GetFoodData>) =>

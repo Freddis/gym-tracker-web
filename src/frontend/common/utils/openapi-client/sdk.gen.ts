@@ -137,6 +137,9 @@ import type {
   UpsertFoodsData,
   UpsertFoodsResponses,
   UpsertFoodsErrors,
+  FindFoodData,
+  FindFoodResponses,
+  FindFoodErrors,
   GetFoodData,
   GetFoodResponses,
   GetFoodErrors,
@@ -221,6 +224,7 @@ import {
   getFoodListResponseTransformer,
   upsertFoodResponseTransformer,
   upsertFoodsResponseTransformer,
+  findFoodResponseTransformer,
   getFoodResponseTransformer,
   scanBarcodeResponseTransformer,
   getOwnProfileResponseTransformer,
@@ -1112,12 +1116,6 @@ export const getEntriesById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
-    security: [
-      {
-        name: "authorization",
-        type: "apiKey",
-      },
-    ],
     responseTransformer: getEntriesByIdResponseTransformer,
     url: "/entries/{id}",
     ...options,
@@ -1351,6 +1349,30 @@ export const upsertFoods = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
+  });
+};
+
+/**
+ * Search for food by name
+ */
+export const findFood = <ThrowOnError extends boolean = false>(
+  options?: Options<FindFoodData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    FindFoodResponses,
+    FindFoodErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    responseTransformer: findFoodResponseTransformer,
+    url: "/food/find",
+    ...options,
   });
 };
 

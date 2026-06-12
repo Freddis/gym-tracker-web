@@ -58,11 +58,16 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.NotFound]: true,
     },
-    contextFactory: async (ctx) => ({
-      baseUrl: this.baseUrl,
-      services: await this.createRequestServices(),
-      language: this.getRequestLangauge(ctx.request),
-    }),
+    contextFactory: async (ctx) => {
+      const services = await this.createRequestServices();
+      const viewer = await services.auth.getUserFromRequest(ctx.request);
+      return {
+        baseUrl: this.baseUrl,
+        services: services,
+        language: this.getRequestLangauge(ctx.request),
+        viewer,
+      };
+    },
   };
   User: OpenApiRouteConfig<ApiRouteType.User, ApiErrorCode, undefined, UserRouteContext > = {
     authorization: true,

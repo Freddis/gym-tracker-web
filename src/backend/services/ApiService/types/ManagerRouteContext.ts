@@ -3,7 +3,7 @@ import {Manager} from '../../ManagerService/types/Manager';
 import {ApiRequestServices} from './ApiRequestServices';
 import {PublicRouteContext} from './PublicRouteContext';
 
-export interface ManagerRouteContext extends PublicRouteContext{
+export interface ManagerRouteContext extends Omit<PublicRouteContext, 'viewer'>{
   viewer: Manager
   services: ApiRequestServices & {
     image: ManagedImageService

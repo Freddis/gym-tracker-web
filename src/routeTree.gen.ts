@@ -27,6 +27,7 @@ import { Route as PostsCreateRouteImport } from './routes/posts/create'
 import { Route as MealsCreateRouteImport } from './routes/meals/create'
 import { Route as FoodCreateMealRouteImport } from './routes/food/create-meal'
 import { Route as FoodCreateRouteImport } from './routes/food/create'
+import { Route as FoodBuiltInRouteImport } from './routes/food/built-in'
 import { Route as ExercisesCreateRouteImport } from './routes/exercises/create'
 import { Route as ExercisesBuiltInRouteImport } from './routes/exercises/built-in'
 import { Route as ExercisesExerciseIdRouteImport } from './routes/exercises/$exerciseId'
@@ -143,6 +144,11 @@ const FoodCreateMealRoute = FoodCreateMealRouteImport.update({
 const FoodCreateRoute = FoodCreateRouteImport.update({
   id: '/food/create',
   path: '/food/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoodBuiltInRoute = FoodBuiltInRouteImport.update({
+  id: '/food/built-in',
+  path: '/food/built-in',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesCreateRoute = ExercisesCreateRouteImport.update({
@@ -335,6 +341,7 @@ export interface FileRoutesByFullPath {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/built-in': typeof FoodBuiltInRoute
   '/food/create': typeof FoodCreateRoute
   '/food/create-meal': typeof FoodCreateMealRoute
   '/meals/create': typeof MealsCreateRoute
@@ -384,6 +391,7 @@ export interface FileRoutesByTo {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/built-in': typeof FoodBuiltInRoute
   '/food/create': typeof FoodCreateRoute
   '/food/create-meal': typeof FoodCreateMealRoute
   '/meals/create': typeof MealsCreateRoute
@@ -434,6 +442,7 @@ export interface FileRoutesById {
   '/exercises/$exerciseId': typeof ExercisesExerciseIdRoute
   '/exercises/built-in': typeof ExercisesBuiltInRoute
   '/exercises/create': typeof ExercisesCreateRoute
+  '/food/built-in': typeof FoodBuiltInRoute
   '/food/create': typeof FoodCreateRoute
   '/food/create-meal': typeof FoodCreateMealRoute
   '/meals/create': typeof MealsCreateRoute
@@ -485,6 +494,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
     | '/exercises/create'
+    | '/food/built-in'
     | '/food/create'
     | '/food/create-meal'
     | '/meals/create'
@@ -534,6 +544,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
     | '/exercises/create'
+    | '/food/built-in'
     | '/food/create'
     | '/food/create-meal'
     | '/meals/create'
@@ -583,6 +594,7 @@ export interface FileRouteTypes {
     | '/exercises/$exerciseId'
     | '/exercises/built-in'
     | '/exercises/create'
+    | '/food/built-in'
     | '/food/create'
     | '/food/create-meal'
     | '/meals/create'
@@ -633,6 +645,7 @@ export interface RootRouteChildren {
   ExercisesExerciseIdRoute: typeof ExercisesExerciseIdRoute
   ExercisesBuiltInRoute: typeof ExercisesBuiltInRoute
   ExercisesCreateRoute: typeof ExercisesCreateRoute
+  FoodBuiltInRoute: typeof FoodBuiltInRoute
   FoodCreateRoute: typeof FoodCreateRoute
   FoodCreateMealRoute: typeof FoodCreateMealRoute
   MealsCreateRoute: typeof MealsCreateRoute
@@ -816,6 +829,13 @@ declare module '@tanstack/react-router' {
       path: '/food/create'
       fullPath: '/food/create'
       preLoaderRoute: typeof FoodCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/food/built-in': {
+      id: '/food/built-in'
+      path: '/food/built-in'
+      fullPath: '/food/built-in'
+      preLoaderRoute: typeof FoodBuiltInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/create': {
@@ -1082,6 +1102,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesExerciseIdRoute: ExercisesExerciseIdRoute,
   ExercisesBuiltInRoute: ExercisesBuiltInRoute,
   ExercisesCreateRoute: ExercisesCreateRoute,
+  FoodBuiltInRoute: FoodBuiltInRoute,
   FoodCreateRoute: FoodCreateRoute,
   FoodCreateMealRoute: FoodCreateMealRoute,
   MealsCreateRoute: MealsCreateRoute,

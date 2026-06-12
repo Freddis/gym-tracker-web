@@ -7,7 +7,7 @@ import {ApiError} from '../../errors/ApiError';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 
 export const getEntry = RouteFactory.createRoute({
-  type: ApiRouteType.User,
+  type: ApiRouteType.Public,
   method: OpenApiMethod.GET,
   path: '/{id}',
   description: 'Returns the list of public entries',
@@ -18,7 +18,8 @@ export const getEntry = RouteFactory.createRoute({
     response: entryValidator,
   },
   handler: async (ctx) => {
-    const result = await ctx.services.models.entry.get({ids: [ctx.params.path.id], userId: [ctx.viewer.id]});
+    const ids = ctx.viewer ? [ctx.viewer.id] : undefined;
+    const result = await ctx.services.models.entry.get({ids: [ctx.params.path.id], userId: ids});
     if (!result) {
       throw new ApiError(ApiErrorCode.NotFound);
     }

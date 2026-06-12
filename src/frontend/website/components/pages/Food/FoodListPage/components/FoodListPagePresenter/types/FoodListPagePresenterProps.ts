@@ -4,7 +4,7 @@ import {FoodListQueryParams} from './FoodListQueryParams';
 
 export interface FoodListPagePresenterProps {
   filters: FoodListQueryParams
-  user: User;
+  user?: User;
   response: ApiResponse<GetFoodListResponse, GetFoodListError>;
   onPageChanged: (page: number) => void;
   onFilter: (filter: FoodListQueryParams) => void;

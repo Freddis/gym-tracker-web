@@ -8792,20 +8792,6 @@ export type GetEntriesByIdErrors = {
         };
       };
   /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "Unauthorized";
-    };
-  };
-  /**
    * Entity not found
    */
   404: {
@@ -10045,6 +10031,152 @@ export type UpsertFoodsResponses = {
 
 export type UpsertFoodsResponse =
   UpsertFoodsResponses[keyof UpsertFoodsResponses];
+
+export type FindFoodData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Query to search for food
+     */
+    query?: string;
+    /**
+     * Page number
+     */
+    page?: number;
+  };
+  url: "/food/find";
+};
+
+export type FindFoodErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type FindFoodError = FindFoodErrors[keyof FindFoodErrors];
+
+export type FindFoodResponses = {
+  /**
+   * List of found food
+   */
+  200: {
+    /**
+     * Page or items
+     */
+    items: Array<Food>;
+    /**
+     * Pagination details
+     */
+    info: {
+      /**
+       * Total number of items
+       */
+      count: number;
+      /**
+       * Current page
+       */
+      page: number;
+      /**
+       * Number of itemss per page
+       */
+      pageSize: number;
+    };
+  };
+};
+
+export type FindFoodResponse = FindFoodResponses[keyof FindFoodResponses];
 
 export type GetFoodData = {
   body?: never;

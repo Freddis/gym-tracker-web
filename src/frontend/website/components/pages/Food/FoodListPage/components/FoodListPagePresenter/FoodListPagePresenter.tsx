@@ -51,18 +51,20 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
     <BasicPage>
       <div className=" w-full mb-5 flex flex-row gap-5 items-start">
       <AppPageHeading>{t.p((x) => x.heading)}</AppPageHeading>
-        <div className="grow flex flex-row-reverse gap-5">
-          <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
-            <AppButton>{t.p((x) => x.buttons.addFood)}</AppButton>
-          </RouteLink>
-          <RouteLink to={route(RouteId.FoodCreateMeal)} className="z-0">
-            <AppButton>{t.p((x) => x.buttons.addDish)}</AppButton>
-        </RouteLink>
-        </div>
+        {props.user && (
+          <div className="grow flex flex-row-reverse gap-5">
+            <RouteLink to={route(RouteId.FoodCreate)} className="z-0">
+                <AppButton>{t.p((x) => x.buttons.addFood)}</AppButton>
+              </RouteLink>
+              <RouteLink to={route(RouteId.FoodCreateMeal)} className="z-0">
+                <AppButton>{t.p((x) => x.buttons.addDish)}</AppButton>
+            </RouteLink>
+          </div>
+        )}
       </div>
       <div className="flex flex-col md:flex-row gap-5 items-start">
         <div className="flex flex-col gap-5">
-          <UserProfileBlock user={props.user} own/>
+          {props.user && <UserProfileBlock user={props.user} own/>}
           <AppSidebarBlock>
             {hasFilters && (
               <AppLink className="absolute top-5 right-5" onClick={props.onClearFilters}>
@@ -97,7 +99,7 @@ export const FoodListPagePresenter: FC<FoodListPagePresenterProps> = (props) => 
           {props.response.data?.data && props.response.data.data.items.length > 0 && (
             <>
               <div className="grid grid-cols-3 gap-5">
-              {props.response.data.data.items.map((item) => <FoodBlock key={item.id} food={item} />)}
+              {props.response.data.data.items.map((item) => <FoodBlock key={item.id} food={item} own={!!props.user} />)}
               </div>
               <div className="flex justify-center">
                 <Pagination onPageChanged={props.onPageChanged} info={props.response.data?.data.info} />
