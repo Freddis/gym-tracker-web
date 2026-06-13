@@ -10112,20 +10112,6 @@ export type FindFoodErrors = {
         };
       };
   /**
-   * Unauthorized
-   */
-  401: {
-    /**
-     * Error response
-     */
-    error: {
-      /**
-       * Code to handle on the frontend
-       */
-      code: "Unauthorized";
-    };
-  };
-  /**
    * Entity not found
    */
   404: {

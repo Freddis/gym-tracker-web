@@ -7,7 +7,7 @@ import {Image} from '../ImageService/types/Image';
 import {ImageType} from '../../types/ImageType';
 import {FoodUpsertDto} from './types/FoodUpsertDto';
 import {UserModelService} from '../../types/ModelService/UserModelService';
-import {PgColumn} from 'drizzle-orm/pg-core';
+import {alias, PgColumn} from 'drizzle-orm/pg-core';
 import {FoodFilter} from './types/FoodFilter';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
@@ -40,14 +40,19 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       isNull(this.getTable().copiedFromId),
       isNull(this.getTable().deletedAt),
     );
-    const rows = await db.select()
+    const food2 = alias(this.getTable(), 'f2');
+    const rows = await db.select({
+      food: this.getTable(),
+      copy: food2,
+    })
     .from(db._.fullSchema.food)
     .where(where)
+    .leftJoin(food2, eq(this.getTable().copiedFromId, food2.id))
     .orderBy(desc(this.getTable().createdAt))
     .limit(limit)
     .offset(offset);
     const count = await db.$count(this.getTable(), where);
-    const ids = rows.map((x) => x.id);
+    const ids = rows.map((x) => x.copy?.id ?? x.food.id);
     const result: PaginatedResult<Food> = {
       items: await this.decorateMany(ids),
       info: {

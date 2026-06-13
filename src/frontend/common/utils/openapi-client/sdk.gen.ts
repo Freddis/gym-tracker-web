@@ -1364,12 +1364,6 @@ export const findFood = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     responseType: "json",
-    security: [
-      {
-        name: "authorization",
-        type: "apiKey",
-      },
-    ],
     responseTransformer: findFoodResponseTransformer,
     url: "/food/find",
     ...options,
