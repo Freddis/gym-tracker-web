@@ -29,7 +29,6 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     this.fatsecretService = fatsecretService;
   }
 
-
   async findFood(params: {query?: string, page?: number}): Promise<PaginatedResult<Food>> {
     const db = await this.drizzle.getDb();
     const page = params.page ?? 1;
@@ -47,8 +46,15 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     })
     .from(db._.fullSchema.food)
     .where(where)
-    .leftJoin(food2, eq(this.getTable().copiedFromId, food2.id))
-    .orderBy(desc(this.getTable().createdAt))
+    .leftJoin(food2, eq(this.getTable().id, food2.copiedFromId))
+    .orderBy(
+      desc(
+        sql`GREATEST(
+          ${this.getTable().createdAt},
+          COALESCE(${food2.createdAt}, ${this.getTable().createdAt})
+        )`
+      ),
+    )
     .limit(limit)
     .offset(offset);
     const count = await db.$count(this.getTable(), where);

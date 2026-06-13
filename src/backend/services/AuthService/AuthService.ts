@@ -272,7 +272,7 @@ export class AuthService {
     try {
       jwt.verify(jwtToken, this.config.jwtSecret);
     } catch (e: unknown) {
-      this.logger.error("Can't verify JWT tokern", e);
+      this.logger.error("Can't verify JWT token", e);
       return null;
     }
     const value = jwt.decode(jwtToken);
