@@ -1,4 +1,4 @@
-import {and, desc, eq, gt, ilike, inArray, isNull, or, sql, SQL} from 'drizzle-orm';
+import {and, desc, eq, gt, ilike, inArray, isNull, lt, or, sql, SQL} from 'drizzle-orm';
 import {AppDb, AppDbSchema, DrizzleService} from '../DrizzleService/DrizzleService';
 import {Food} from './types/Food';
 import {ImageService} from '../ImageService/ImageService';
@@ -17,9 +17,10 @@ import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
 import {FoodSource} from './types/FoodSource';
-import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {FatsecretFoodResponse} from '../FatsecretService/types/FatsecretFoodResponse';
 import {FatsecretService} from '../FatsecretService/FatsecretService';
+import {CursorResult} from '../ApiService/types/CursorResult';
+import {coerce, number, object, string} from 'zod';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -30,11 +31,20 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     this.fatsecretService = fatsecretService;
   }
 
-  async findFood(params: {query?: string, page?: number}): Promise<PaginatedResult<Food>> {
+  async findFood(params: {query?: string, cursor?: string}): Promise<CursorResult<Food>> {
     if (!params.query) {
       return this.getPublicFood(params);
     }
-    const page = params.page ?? 1;
+    const cursorValidator = object({
+      page: number(),
+    });
+    const cursorObj = params.cursor ? cursorValidator.safeParse(
+      JSON.parse(Buffer.from(params.cursor, 'base64').toString('utf-8'))
+    ) : undefined;
+    if (cursorObj && !cursorObj.success) {
+      throw new Error('Invalid cursor');
+    }
+    const page = cursorObj?.data.page ?? 1;
     const searchResult = await this.fatsecretService.getFoodByQuery({
       query: params.query,
       page: page,
@@ -42,27 +52,30 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     const fatsecretIds = searchResult.items.map((x) => x.id.toString());
     const existingFood = await this.getByExternalIds(fatsecretIds, [FoodSource.Fatsecret]);
     const db = await this.drizzle.getDb();
-    const result: Food[] = [];
+    const items: Food[] = [];
     for (const recipe of searchResult.items) {
       const existing = existingFood.get(recipe.id.toString());
       if (existing) {
-        result.push(existing);
+        items.push(existing);
         continue;
       }
       this.logger.info('Adding food', {recipe});
       const dto = this.mapFatsecretFoodToUpsertDto(recipe, null);
       const food = await this.upsertInTransaction(null, dto, db, FoodSource.Fatsecret, recipe.id.toString());
-      result.push(food);
+      items.push(food);
     }
-    const paginatedResult: PaginatedResult<Food> = {
-      items: result,
+    const hasNextPage = items.length !== 0;
+    const nextCursorObj = hasNextPage ? {
+      page: searchResult.info.page + 1,
+    } : undefined;
+    const nextCursor = nextCursorObj ? Buffer.from(JSON.stringify(nextCursorObj), 'utf-8').toString('base64') : undefined;
+    const result: CursorResult<Food> = {
+      items,
       info: {
-        page,
-        count: searchResult.info.count,
-        pageSize: searchResult.info.pageSize,
+        nextCursor,
       },
     };
-    return paginatedResult;
+    return result;
   }
 
   protected async getByExternalIds(ids: string[], sources: FoodSource[]): Promise<Map<string, Food>> {
@@ -89,17 +102,39 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   }
 
 
-  protected async getPublicFood(params: {page?: number}): Promise<PaginatedResult<Food>> {
+  protected async getPublicFood(params: {cursor?: string}): Promise<CursorResult<Food>> {
     const db = await this.drizzle.getDb();
-    const page = params.page ?? 1;
     const limit = 30;
-    const offset = (page - 1) * limit;
+    const cursorValidator = object({
+      id: string(),
+      createdAt: coerce.date(),
+    });
+    const cursorObj = params.cursor ? cursorValidator.safeParse(
+      JSON.parse(Buffer.from(params.cursor, 'base64').toString('utf-8'))
+    ) : undefined;
+    if (cursorObj && !cursorObj.success) {
+      throw new Error('Invalid cursor');
+    }
+    const cursor = cursorObj?.data;
+    const food2 = alias(this.getTable(), 'f2');
+    const dateSql = sql<Date>`GREATEST(
+      ${this.getTable().createdAt},
+      COALESCE(${food2.createdAt}, ${this.getTable().createdAt})
+    )`;
     const where = and(
       eq(this.getTable().visibility, EntryVisibility.Public),
       isNull(this.getTable().copiedFromId),
       isNull(this.getTable().deletedAt),
+      cursor ? or(
+        lt(dateSql, cursor.createdAt),
+      and(
+        eq(dateSql, cursor.createdAt),
+        lt(this.getTable().id, cursor.id),
+      ),
+      ) : undefined,
+      cursor ? lt(dateSql, cursor.createdAt) : undefined,
     );
-    const food2 = alias(this.getTable(), 'f2');
+
     const rows = await db.select({
       food: this.getTable(),
       copy: food2,
@@ -108,23 +143,21 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     .where(where)
     .leftJoin(food2, eq(this.getTable().id, food2.copiedFromId))
     .orderBy(
-      desc(
-        sql`GREATEST(
-          ${this.getTable().createdAt},
-          COALESCE(${food2.createdAt}, ${this.getTable().createdAt})
-        )`
-      ),
+      desc(dateSql),
+      desc(this.getTable().id),
     )
-    .limit(limit)
-    .offset(offset);
-    const count = await db.$count(this.getTable(), where);
+    .limit(limit);
     const ids = rows.map((x) => x.copy?.id ?? x.food.id);
-    const result: PaginatedResult<Food> = {
+    const last = rows[rows.length - 1];
+    const nextCursorObj = last ? {
+      id: last.food.id,
+      createdAt: last.copy?.createdAt ?? last.food.createdAt,
+    } : undefined;
+    const nextCursor = nextCursorObj ? Buffer.from(JSON.stringify(nextCursorObj), 'utf-8').toString('base64') : undefined;
+    const result: CursorResult<Food> = {
       items: await this.decorateMany(ids),
       info: {
-        page,
-        count,
-        pageSize: limit,
+        nextCursor,
       },
     };
     return result;

@@ -2,7 +2,7 @@ import {ApiRouteType} from 'src/backend/services/ApiService/types/ApiRouteType';
 import {OpenApiMethod} from 'snap-on-openapi';
 import {RouteFactory} from '../../utils/RouteFactory';
 import {foodValidator} from './validators/foodValidator';
-import {coerce, object, string} from 'zod';
+import {object, string} from 'zod';
 import {RouteTag} from '../../types/RouteTag';
 
 export const findFood = RouteFactory.createRoute({
@@ -15,16 +15,16 @@ export const findFood = RouteFactory.createRoute({
   validators: {
     query: object({
       query: string().optional().openapi({description: 'Query to search for food'}),
-      page: coerce.number().optional().openapi({description: 'Page number'}),
+      cursor: string().optional().openapi({description: 'Cursor for pagination'}),
     }),
-    response: RouteFactory.validators.paginatedResponse(foodValidator).openapi({
+    response: RouteFactory.cursorResponse(foodValidator).openapi({
       description: 'List of found food',
     }),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.food.findFood({
       query: ctx.params.query.query,
-      page: ctx.params.query.page,
+      cursor: ctx.params.query.cursor,
     });
     return result;
   },

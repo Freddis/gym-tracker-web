@@ -2232,7 +2232,7 @@ export const findFoodInfiniteOptions = (options?: Options<FindFoodData>) => {
     AxiosError<FindFoodError>,
     InfiniteData<FindFoodResponse>,
     QueryKey<Options<FindFoodData>>,
-    | number
+    | string
     | Pick<
         QueryKey<Options<FindFoodData>>[0],
         "body" | "headers" | "path" | "query"
@@ -2250,7 +2250,7 @@ export const findFoodInfiniteOptions = (options?: Options<FindFoodData>) => {
             ? pageParam
             : {
                 query: {
-                  page: pageParam,
+                  cursor: pageParam,
                 },
               };
         const params = createInfiniteParams(queryKey, page);

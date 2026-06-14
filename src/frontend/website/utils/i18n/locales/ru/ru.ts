@@ -467,7 +467,7 @@ export const dictionary: Translation = {
         },
       },
       list: {
-        heading: 'Моя Еда',
+        heading: 'Еда',
         labels: {
           calories: 'Калории',
           protein: 'Белки',

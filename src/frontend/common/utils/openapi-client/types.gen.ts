@@ -10053,9 +10053,9 @@ export type FindFoodData = {
      */
     query?: string;
     /**
-     * Page number
+     * Cursor for pagination
      */
-    page?: number;
+    cursor?: string;
   };
   url: "/food/find";
 };
@@ -10159,17 +10159,9 @@ export type FindFoodResponses = {
      */
     info: {
       /**
-       * Total number of items
+       * Cursor for next page
        */
-      count: number;
-      /**
-       * Current page
-       */
-      page: number;
-      /**
-       * Number of itemss per page
-       */
-      pageSize: number;
+      nextCursor?: string;
     };
   };
 };
