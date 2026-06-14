@@ -51,6 +51,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return omelette;
   }
@@ -78,6 +79,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: 'Chicken For Everyone',
     };
     return egg;
   }
@@ -105,6 +107,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return salad;
   }
@@ -132,6 +135,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return pasta;
   }
@@ -170,6 +174,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return coffee;
   }
@@ -197,6 +202,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: 'President',
     };
     return milk;
   }
@@ -220,6 +226,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return sugar;
   }
@@ -247,6 +254,7 @@ export class StorybookFoodUtils {
       visibility: 'Public',
       barcode: null,
       copiedFromId: null,
+      brand: null,
     };
     return apple;
 

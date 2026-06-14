@@ -13,12 +13,13 @@ import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {FoodComponent} from './types/FoodComponent';
 import {EmptyMealError} from './types/EmptyMealError';
-import {FatsecretService} from '../FatsecretService/FatsecretService';
 import {ServingSizeUnit} from './types/ServingSizeUnit';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {Logger} from '../../utils/Logger/Logger';
 import {FoodSource} from './types/FoodSource';
 import {PaginatedResult} from '../ApiService/types/PaginatedResult';
+import {FatsecretFoodResponse} from '../FatsecretService/types/FatsecretFoodResponse';
+import {FatsecretService} from '../FatsecretService/FatsecretService';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -30,6 +31,65 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   }
 
   async findFood(params: {query?: string, page?: number}): Promise<PaginatedResult<Food>> {
+    if (!params.query) {
+      return this.getPublicFood(params);
+    }
+    const page = params.page ?? 1;
+    const searchResult = await this.fatsecretService.getFoodByQuery({
+      query: params.query,
+      page: page,
+    });
+    const fatsecretIds = searchResult.items.map((x) => x.id.toString());
+    const existingFood = await this.getByExternalIds(fatsecretIds, [FoodSource.Fatsecret]);
+    const db = await this.drizzle.getDb();
+    const result: Food[] = [];
+    for (const recipe of searchResult.items) {
+      const existing = existingFood.get(recipe.id.toString());
+      if (existing) {
+        result.push(existing);
+        continue;
+      }
+      this.logger.info('Adding food', {recipe});
+      const dto = this.mapFatsecretFoodToUpsertDto(recipe, null);
+      const food = await this.upsertInTransaction(null, dto, db, FoodSource.Fatsecret, recipe.id.toString());
+      result.push(food);
+    }
+    const paginatedResult: PaginatedResult<Food> = {
+      items: result,
+      info: {
+        page,
+        count: searchResult.info.count,
+        pageSize: searchResult.info.pageSize,
+      },
+    };
+    return paginatedResult;
+  }
+
+  protected async getByExternalIds(ids: string[], sources: FoodSource[]): Promise<Map<string, Food>> {
+    const db = await this.drizzle.getDb();
+    const rows = await db.select()
+    .from(this.getTable())
+    .where(
+      and(
+        inArray(this.getTable().externalId, ids),
+        inArray(this.getTable().source, sources),
+      )
+    );
+    const idMap = rows.reduce((acc, cur) => acc.set(cur.id, cur.externalId ?? ''), new Map<string, string>());
+    const decorated = await this.decorateRows(rows);
+    const result = new Map<string, Food>();
+    for (const food of decorated) {
+      const externalId = idMap.get(food.id);
+      if (!externalId) {
+        throw new Error(`External ID ${food.id} not found`); // never
+      }
+      result.set(externalId, food);
+    }
+    return result;
+  }
+
+
+  protected async getPublicFood(params: {page?: number}): Promise<PaginatedResult<Food>> {
     const db = await this.drizzle.getDb();
     const page = params.page ?? 1;
     const limit = 30;
@@ -72,16 +132,35 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
 
 
   async scanBarcode(userId: number, barcode: number): Promise<Food | null> {
+    const db = await this.drizzle.getDb();
     const existing = await this.getByBarcode(barcode, userId);
     if (existing) {
       this.logger.info('Food already exists', {barcode, userId, existing});
       return existing;
     }
-    const result = await this.fatsecretService.searchFoodByBarcode(barcode);
+    const result = await this.fatsecretService.getFoodByBarcode(barcode);
     if (!result) {
       return null;
     }
+    const existingRows = await this.getByExternalIds([result.id.toString()], [FoodSource.Fatsecret]);
+    const existing2 = existingRows.get(result.id.toString());
+    if (existing2) {
+      await db.update(this.getTable()).set({
+        barcode: barcode,
+      }).where(eq(this.getTable().id, existing2.id));
+      return {
+        ...existing2,
+        barcode: barcode,
+      };
+    }
+    const foodUpsertDto = this.mapFatsecretFoodToUpsertDto(result, barcode);
+    const food = await db.transaction(async (tx) => {
+      return await this.upsertInTransaction(null, foodUpsertDto, tx, FoodSource.Fatsecret, result.id.toString());
+    });
+    return food;
+  }
 
+  protected mapFatsecretFoodToUpsertDto(result: FatsecretFoodResponse, barcode: number | null): FoodUpsertDto {
     const calories = result.calories ?? null;
     const protein = result.protein ?? 0;
     const carbs = result.carbs ?? 0;
@@ -89,13 +168,13 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     const foodUpsertDto: FoodUpsertDto = {
       id: randomUUID(),
       name: result.name,
-      description: result.brand ?? '',
+      description: null,
       image: null,
       calories: calories ? (Math.round(calories * 10) / 10) : null,
       protein: Math.round(protein * 10) / 10,
       carbs: Math.round(carbs * 10) / 10,
       fat: Math.round(fat * 10) / 10,
-      servingSize: null,
+      servingSize: result.servingSize,
       servingSizeUnit: ServingSizeUnit.Gram,
       components: [],
       visibility: EntryVisibility.Public,
@@ -105,12 +184,9 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       deletedAt: null,
       barcode: barcode,
       copiedFromId: null,
+      brand: result.brand ?? null,
     };
-    const db = await this.drizzle.getDb();
-    const food = await db.transaction(async (tx) => {
-      return await this.upsertInTransaction(null, foodUpsertDto, tx, FoodSource.Fatsecret, result.id.toString());
-    });
-    return food;
+    return foodUpsertDto;
   }
 
   async getByBarcode(barcode: number, userId: number): Promise<Food | null> {
@@ -199,6 +275,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       isMeal: food.isMeal,
       source: source,
       externalId: externalId,
+      brand: food.brand,
     };
     if (existing) {
       await db.update(schema.food).set(entity).where(eq(schema.food.id, existing.id));
@@ -269,6 +346,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         barcode: this.getTable().barcode,
         visibility: this.getTable().visibility,
         copiedFromId: this.getTable().copiedFromId,
+        brand: this.getTable().brand,
       }
     )
       .from(this.getTable())
@@ -332,6 +410,7 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         isMeal: row.isMeal,
         barcode: row.barcode,
         copiedFromId: row.copiedFromId,
+        brand: row.brand,
       };
       return food;
     });

@@ -100,6 +100,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
         return dto;
       });
       const food: FoodUpsertDto = {
+        brand: props.food.brand,
         visibility: 'Public',
         barcode: null,
         copiedFromId: null,

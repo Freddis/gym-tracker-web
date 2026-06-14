@@ -19,6 +19,7 @@ export interface Food {
   visibility: EntryVisibility;
   barcode: number | null;
   copiedFromId: string | null;
+  brand: string | null;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;

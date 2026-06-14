@@ -8,6 +8,7 @@ import {entryVisibilityValidator} from '../../entries/validators/entryVisibility
 const baseFoodUpsertDtoValidator = object({
   id: string().openapi({description: 'Id of the food'}),
   name: string().openapi({description: 'Name of the food'}),
+  brand: string().nullable().openapi({description: 'Brand of the food'}),
   description: string().nullable().openapi({description: 'Description of the food'}),
   image: imageUpsertDtoValidator.optional().nullable().openapi({description: 'Image of the food'}),
   protein: number().openapi({description: 'Protein of the food'}),

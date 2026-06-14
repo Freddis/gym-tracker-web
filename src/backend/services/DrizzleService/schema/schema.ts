@@ -467,6 +467,7 @@ export const food = gymTracker.table('food', {
   name: varchar().notNull(),
   barcode: bigint({mode: 'number'}),
   description: text(),
+  brand: varchar(),
   imageId: uuid().references(() => images.id, {onDelete: 'set null'}),
   calories: real(),
   protein: real().notNull(),
@@ -501,4 +502,46 @@ export const calorieGoals = gymTracker.table('calorie_goals', {
   fat: real(),
   start: timestamp({withTimezone: true, mode: 'date'}).notNull(),
   end: timestamp({withTimezone: true, mode: 'date'}),
+});
+
+export const fatsecretFoodRequests = gymTracker.table('fatsecret_food_requests', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  searchExpression: varchar().notNull(),
+  pageNumber: integer().notNull(),
+  pageSize: integer().notNull(),
+  totalResults: integer().notNull(),
+  currentPage: integer().notNull(),
+  resultsPerPage: integer().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+});
+
+export const fatsecretFoodResponses = gymTracker.table('fatsecret_food_responses', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  requestId: integer().notNull().references(() => fatsecretFoodRequests.id, {onDelete: 'cascade'}),
+  externalId: bigint({mode: 'number'}).notNull(),
+  title: varchar().notNull(),
+  status: varchar().notNull(),
+  source: varchar().notNull(),
+  shortDescription: text(),
+  energyPerPortion: real().notNull(),
+  carbohydratePerPortion: real().notNull(),
+  proteinPerPortion: real().notNull(),
+  fatPerPortion: real().notNull(),
+  gramsPerPortion: real().notNull(),
+  userName: varchar().notNull(),
+  pathName: varchar().notNull(),
+  defaultPortionId: integer().notNull(),
+  defaultPortionAmount: integer().notNull(),
+  defaultPortionDescription: varchar().notNull(),
+  defaultEnergyPerPortion: real().notNull(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
+});
+
+export const fatsecretBarcodeScanResponses = gymTracker.table('fatsecret_barcode_scan_responses', {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  barcode: varchar().notNull(),
+  foodId: bigint({mode: 'number'}),
+  barcodeId: bigint({mode: 'number'}),
+  deviceCanPrompt: boolean(),
+  createdAt: timestamp({withTimezone: true, mode: 'date'}).notNull(),
 });

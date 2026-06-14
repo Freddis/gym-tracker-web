@@ -1,9 +1,8 @@
 import {globalServiceFactory} from '../../src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
 
 const service = await globalServiceFactory.fatsecret();
-const product = await service.searchFood({
-  PageNumber: 0,
-  PageSize: 20,
-  SearchExpression: 'хлопья unicorn',
+const product = await service.getFoodByQuery({
+  query: 'хлопья unicorn',
+  page: 1,
 });
 console.dir(product, {depth: null});

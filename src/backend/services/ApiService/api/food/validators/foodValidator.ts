@@ -23,6 +23,7 @@ const baseFoodValidator = object({
   updatedAt: date().nullable().openapi({description: 'Date of last update'}),
   deletedAt: date().nullable().openapi({description: 'Date of deletion'}),
   isMeal: boolean().openapi({description: 'Is the food a meal'}),
+  brand: string().nullable().openapi({description: 'Brand of the food'}),
 });
 
 const foodComponentValidator = object({

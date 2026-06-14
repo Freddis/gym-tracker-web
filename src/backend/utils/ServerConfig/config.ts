@@ -44,9 +44,11 @@ export const serverConfig: ServerConfig = {
       environment: EnvHelper.getEnumValue('NODE_ENV', Environment, Environment.development),
     },
     fatsecret: {
-      deviceIdentifier: EnvHelper.getString('FATSECRET_DEVICE_IDENTIFIER'),
-      userName: EnvHelper.getString('FATSECRET_USERNAME'),
-      password: EnvHelper.getString('FATSECRET_PASSWORD'),
+      apiClient: {
+        deviceIdentifier: EnvHelper.getString('FATSECRET_DEVICE_IDENTIFIER'),
+        userName: EnvHelper.getString('FATSECRET_USERNAME'),
+        password: EnvHelper.getString('FATSECRET_PASSWORD'),
+      },
     },
     c0r: {
       apiKey: EnvHelper.getString('C0R_API_KEY'),

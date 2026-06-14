@@ -34,6 +34,8 @@ import {OpenFoodFactsService} from '../../services/OpenFoodFactsService/OpenFood
 import {C0rService} from '../../services/C0rService/C0rService';
 import {EntryRepositoryService} from '../../services/EntryRepositoryService/EntryRepositoryService';
 import {FeedEntryService} from '../../services/FeedEntryService/FeedEntryService';
+import {FatsecretApiClient} from '../../services/FatsecretService/services/FatsecretApiClient/FatsecretApiClient';
+import {CachingFatsecretApiClient} from '../../services/FatsecretService/services/CachingFatsecretApiClient/CachingFatsecretApiClient';
 export class GlobalServiceFactory {
   protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
@@ -226,9 +228,19 @@ export class GlobalServiceFactory {
 
   async fatsecret(): Promise<FatsecretService> {
     if (!this.fatsecretCached) {
-      this.fatsecretCached = new FatsecretService(this.config.services.fatsecret, await this.redis());
+      const cachingApiClient = await this.cachingFatsecretApiClient();
+      this.fatsecretCached = new FatsecretService(cachingApiClient);
     }
     return this.fatsecretCached;
+  }
+
+  protected async cachingFatsecretApiClient(): Promise<CachingFatsecretApiClient> {
+    const apiClient = await this.fatsecretApiClient();
+    return new CachingFatsecretApiClient(apiClient, await this.drizzle());
+  }
+
+  protected async fatsecretApiClient(): Promise<FatsecretApiClient> {
+    return new FatsecretApiClient(this.config.services.fatsecret.apiClient, await this.redis());
   }
 
   async openFoodFacts(): Promise<OpenFoodFactsService> {

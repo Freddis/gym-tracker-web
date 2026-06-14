@@ -32,7 +32,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: Co
   }, []);
   const [user, setUser] = useState<AuthUser | null>(storedUser);
   const getClientConfig = (user: AuthUser | null) => {
-    const authHeader = user ? 'Bearer ' + user.jwt : 'nothing';
+    const authHeader = user ? 'Bearer ' + user.jwt : undefined;
     return {
       ...client.getConfig(),
       responseType: 'json' as const,

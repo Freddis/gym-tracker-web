@@ -1,5 +1,4 @@
+import {FatsecretApiClientConfig} from '../services/FatsecretApiClient/types/FatsecretApiClientConfig';
 export interface FatsecretServiceConfig {
-  deviceIdentifier: string;
-  userName: string;
-  password: string;
+  apiClient: FatsecretApiClientConfig;
 }

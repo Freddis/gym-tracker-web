@@ -20,7 +20,7 @@ export const FoodBlock: FC<{food: Food, own: boolean}> = (props) => {
   const totalCarbs = foodUtility.getFoodMacro(props.food, FoodMacros.Carbs);
   const totalFat = foodUtility.getFoodMacro(props.food, FoodMacros.Fat);
   const totalCalories = foodUtility.getFoodCalories(props.food);
-  const to = router.buildLocation({to: route(RouteId.FoodUpdate), params: {id: props.food.id}}).href;
+  const to = props.own ? router.buildLocation({to: route(RouteId.FoodUpdate), params: {id: props.food.id}}).href : undefined;
   return (
    <AppBlock
       image={props.food.image?.url ?? placeholder}
@@ -37,6 +37,7 @@ export const FoodBlock: FC<{food: Food, own: boolean}> = (props) => {
           )}
         </h3>
         <p>{props.food.description}</p>
+        <p>{props.food.brand}</p>
         <div className="flex flex-row gap-5">
         <AppLabel>{t(i18n.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
           <AppLabel>{t(i18n.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>

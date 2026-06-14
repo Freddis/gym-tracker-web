@@ -1769,6 +1769,10 @@ export type MealFoodComponent = {
      */
     isMeal: boolean;
     /**
+     * Brand of the food
+     */
+    brand: string | null;
+    /**
      * Components of the food
      */
     components: Array<FoodComponent>;
@@ -1852,6 +1856,10 @@ export type Food = {
    * Is the food a meal
    */
   isMeal: boolean;
+  /**
+   * Brand of the food
+   */
+  brand: string | null;
   /**
    * Components of the food
    */
@@ -3180,6 +3188,10 @@ export type FoodUpsertDto = {
    * Name of the food
    */
   name: string;
+  /**
+   * Brand of the food
+   */
+  brand: string | null;
   /**
    * Description of the food
    */

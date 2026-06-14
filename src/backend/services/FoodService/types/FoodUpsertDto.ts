@@ -5,6 +5,7 @@ import {ServingSizeUnit} from './ServingSizeUnit';
 export interface FoodUpsertDto {
   id: string;
   name: string;
+  brand: string | null;
   description: string | null;
   image?: ImageUpsertDto | null;
   calories: number | null;

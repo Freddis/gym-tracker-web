@@ -37,6 +37,7 @@ export const FoodCreatePagePresenter: FC<FoodCreatePagePresenterProps> = (props)
     visibility: 'Public',
     barcode: null,
     copiedFromId: null,
+    brand: null,
   };
 
   const onSaveClick = async () => {
