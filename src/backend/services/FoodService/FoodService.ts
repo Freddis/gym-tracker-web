@@ -20,7 +20,7 @@ import {FoodSource} from './types/FoodSource';
 import {FatsecretFoodResponse} from '../FatsecretService/types/FatsecretFoodResponse';
 import {FatsecretService} from '../FatsecretService/FatsecretService';
 import {CursorResult} from '../ApiService/types/CursorResult';
-import {coerce, number, object, string} from 'zod';
+import {boolean, coerce, number, object, string, TypeOf} from 'zod';
 export class FoodService extends UserModelService<string, AppDbSchema['food']['$inferSelect'], Food, FoodFilter> {
   protected imageService: ImageService;
   protected fatsecretService: FatsecretService;
@@ -32,9 +32,14 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   }
 
   async findFood(params: {query?: string, cursor?: string}): Promise<CursorResult<Food>> {
-    if (!params.query) {
-      return this.getPublicFood(params);
+    const query = params.query;
+    if (!query) {
+      return this.getPublicFoodLibrary(params);
     }
+    return this.findFatsecretFood({...params, query});
+  }
+
+  protected async findFatsecretFood(params: {query: string, cursor?: string}): Promise<CursorResult<Food>> {
     const cursorValidator = object({
       page: number(),
     });
@@ -102,10 +107,11 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
   }
 
 
-  protected async getPublicFood(params: {cursor?: string}): Promise<CursorResult<Food>> {
+  protected async getPublicFoodLibrary(params: {cursor?: string}): Promise<CursorResult<Food>> {
     const db = await this.drizzle.getDb();
     const limit = 30;
     const cursorValidator = object({
+      user: boolean(),
       id: string(),
       createdAt: coerce.date(),
     });
@@ -117,41 +123,52 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
     }
     const cursor = cursorObj?.data;
     const food2 = alias(this.getTable(), 'f2');
-    const dateSql = sql<Date>`GREATEST(
-      ${this.getTable().createdAt},
-      COALESCE(${food2.createdAt}, ${this.getTable().createdAt})
-    )`;
+    const dateSql = sql<Date>`COALESCE(${food2.createdAt}, ${this.getTable().createdAt})`;
+    const userSql = sql<boolean>`COALESCE(${food2.userId}, ${this.getTable().userId}) IS NOT NULL`;
+    const idSql = sql<string>`COALESCE(${food2.id}, ${this.getTable().id})`;
     const where = and(
       eq(this.getTable().visibility, EntryVisibility.Public),
       isNull(this.getTable().copiedFromId),
       isNull(this.getTable().deletedAt),
       cursor ? or(
-        lt(dateSql, cursor.createdAt),
-      and(
-        eq(dateSql, cursor.createdAt),
-        lt(this.getTable().id, cursor.id),
-      ),
+        lt(userSql, cursor.user),
+        and(
+          eq(userSql, cursor.user),
+          lt(dateSql, cursor.createdAt),
+        ),
+        and(
+          eq(userSql, cursor.user),
+          eq(dateSql, cursor.createdAt),
+          lt(idSql, cursor.id),
+        ),
       ) : undefined,
-      cursor ? lt(dateSql, cursor.createdAt) : undefined,
     );
 
     const rows = await db.select({
       food: this.getTable(),
       copy: food2,
+      cursor: {
+        id: idSql,
+        createdAt: dateSql,
+        user: userSql,
+      },
     })
     .from(db._.fullSchema.food)
     .where(where)
     .leftJoin(food2, eq(this.getTable().id, food2.copiedFromId))
     .orderBy(
+      // sort decending by the date food has been added, user food first since it's prettier, then ids for stability across pages
+      desc(userSql),
       desc(dateSql),
-      desc(this.getTable().id),
+      desc(idSql),
     )
     .limit(limit);
     const ids = rows.map((x) => x.copy?.id ?? x.food.id);
     const last = rows[rows.length - 1];
-    const nextCursorObj = last ? {
-      id: last.food.id,
-      createdAt: last.copy?.createdAt ?? last.food.createdAt,
+    const nextCursorObj: TypeOf<typeof cursorValidator> | undefined = last ? {
+      id: last.cursor.id,
+      createdAt: last.cursor.createdAt,
+      user: last.cursor.user,
     } : undefined;
     const nextCursor = nextCursorObj ? Buffer.from(JSON.stringify(nextCursorObj), 'utf-8').toString('base64') : undefined;
     const result: CursorResult<Food> = {
