@@ -1,4 +1,4 @@
-FROM node:22.16-alpine3.21 as base
+FROM public.ecr.aws/docker/library/node:22.16-alpine3.21 as base
 
 RUN node -v
 RUN npm -v
@@ -13,7 +13,7 @@ RUN npm run build
 
 ENTRYPOINT ["npm","run","start"]
 
-FROM node:22.16-alpine3.21 as prod
+FROM public.ecr.aws/docker/library/node:22.16-alpine3.21 as prod
 # saving about 500mb on modules.
 WORKDIR /app
 COPY --from=base /app/package.json /app
