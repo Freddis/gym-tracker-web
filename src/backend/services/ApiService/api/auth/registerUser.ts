@@ -7,7 +7,6 @@ import {ActionError} from '../../errors/ActionError';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {QuickTranslatedValidationError} from '../../errors/QuickTranslatedValidationError';
 import {ValidationErrorCode} from '../../types/ValidationErrorCode';
-import {changePasswordRequestValidator} from './validators/changePasswordRequestValidator';
 
 export const registerUser = RouteFactory.createRoute({
   method: OpenApiMethod.POST,
@@ -29,9 +28,9 @@ export const registerUser = RouteFactory.createRoute({
         const code = error.getActionErrorCode();
         if (code === ActionErrorCode.InvalidPassword) {
           throw new QuickTranslatedValidationError(
-            changePasswordRequestValidator,
-            'oldPassword',
-            ValidationErrorCode.IncorrectEmailOrPassword
+            registrationRequestValidator,
+            'passwordConfirmation',
+            ValidationErrorCode.PasswordConfirmationMismatch
           );
         }
       }
