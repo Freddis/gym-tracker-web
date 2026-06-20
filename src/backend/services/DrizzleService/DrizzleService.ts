@@ -54,7 +54,12 @@ export class DrizzleService {
   async getDb(): Promise<AppDb> {
     if (!this.db) {
       this.pgClient = new pg.Client({
-        ...this.config,
+        host: this.config.host,
+        port: this.config.port,
+        user: this.config.user,
+        password: this.config.password,
+        database: this.config.database,
+        ssl: this.config.ssl,
         connectionTimeoutMillis: 2000,
       });
       await this.pgClient.connect();

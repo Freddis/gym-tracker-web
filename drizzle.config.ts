@@ -9,11 +9,11 @@ export default defineConfig({
   strict: true,
   migrations: {
     table: 'drizzle_migrations',
-    schema: serverConfig.services.drizzle.schema,
+    schema: 'gym_tracker',
   },
-  schemaFilter: serverConfig.services.drizzle.schema,
+  schemaFilter: 'gym_tracker',
   dbCredentials: {
-    //should be esxactly like that, otherwise schema in serverConfig will mess things up
+    //should be exactly like that, otherwise schema in serverConfig will mess things up
     //even though it's not even listed in dbCredentials type
     database: serverConfig.services.drizzle.database,
     user: serverConfig.services.drizzle.user,

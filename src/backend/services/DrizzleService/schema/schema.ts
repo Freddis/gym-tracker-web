@@ -34,6 +34,7 @@ import {Country} from '../../../types/Country';
 import {MealType} from '../../MealService/types/MealType';
 import {FoodSource} from '../../FoodService/types/FoodSource';
 
+// this is ok, to have schema name as constant, becuase drizzle hardcodes it into migrations
 export const gymTracker = pgSchema('gym_tracker');
 
 const muscleValues = array(nativeEnum(Muscle)).nonempty().parse(Object.values(Muscle));

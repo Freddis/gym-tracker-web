@@ -14,7 +14,6 @@ export const serverConfig: ServerConfig = {
       password: EnvHelper.getString('DB_PASSWORD'),
       database: EnvHelper.getString('DB_DATABASE'),
       ssl: EnvHelper.getBoolean('DB_SSL'),
-      schema: EnvHelper.getString('DB_SCHEMA'),
     },
     auth: {
       hashSalt: EnvHelper.getNumber('SERVICES_AUTH_HASH_SALT'),
