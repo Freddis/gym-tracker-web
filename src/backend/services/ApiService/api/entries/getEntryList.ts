@@ -26,7 +26,7 @@ export const getEntryList = RouteFactory.createRoute({
     }
     const result = await ctx.services.models.feedEntry.paginateForUser({
       ...ctx.params.query,
-      userId: userId ? [userId] : [],
+      userId: userId ? [userId] : undefined,
       language: ctx.language,
       perPage: 10,
     });
