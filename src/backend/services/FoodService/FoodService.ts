@@ -362,7 +362,6 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
         gt(this.getTable().createdAt, params.updatedAfter),
         gt(this.getTable().deletedAt, params.updatedAfter),
       ) : undefined,
-      params.includeDeleted ? isNull(this.getTable().deletedAt) : undefined,
     );
     return where;
   }
@@ -422,6 +421,9 @@ export class FoodService extends UserModelService<string, AppDbSchema['food']['$
       )
       .orderBy(
         sql`GREATEST(MAX(${db._.fullSchema.entries.createdAt}), ${this.getTable().createdAt}) desc nulls last`,
+        // because of entries in the queries, many foods can have the same date here taken from entry.
+        // We need second stable ordering condition.
+        desc(this.getTable().id),
       )
       .limit(limit)
       .offset(offset);
