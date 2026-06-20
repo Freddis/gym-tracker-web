@@ -11,7 +11,7 @@ export default defineConfig({
     table: 'drizzle_migrations',
     schema: 'gym_tracker',
   },
-  schemaFilter: 'gym_tracker',
+  schemaFilter: ['gym_tracker'],
   dbCredentials: {
     //should be exactly like that, otherwise schema in serverConfig will mess things up
     //even though it's not even listed in dbCredentials type
