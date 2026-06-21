@@ -8,6 +8,7 @@ export interface EntryFilter<T extends EntryType> extends Filter<string> {
   weightIds?: number[]
   userId?: number[],
   type?: T[],
+  includePublic?: boolean,
   includeDeleted?: boolean,
   updatedAfter?: Date,
   language?:Language

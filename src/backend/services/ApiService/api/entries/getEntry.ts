@@ -18,8 +18,12 @@ export const getEntry = RouteFactory.createRoute({
     response: entryValidator,
   },
   handler: async (ctx) => {
-    const ids = ctx.viewer ? [ctx.viewer.id] : undefined;
-    const result = await ctx.services.models.entry.get({ids: [ctx.params.path.id], userId: ids});
+    const ids = ctx.viewer ? [ctx.viewer.id] : [];
+    const result = await ctx.services.models.entry.get({
+      ids: [ctx.params.path.id],
+      userId: ids,
+      includePublic: true,
+    });
     if (!result) {
       throw new ApiError(ApiErrorCode.NotFound);
     }

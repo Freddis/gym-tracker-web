@@ -1,4 +1,4 @@
-import {SQL, and, between, desc, gt, gte, inArray, isNull, lte, or} from 'drizzle-orm';
+import {SQL, and, between, desc, eq, gt, gte, inArray, isNull, lte, or} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {EntryRow} from '../DrizzleService/types/EntryRow';
@@ -7,6 +7,7 @@ import {EntryType} from '../EntryService/types/EntryType';
 import {ImageService} from '../ImageService/ImageService';
 import {DrizzleService} from '../DrizzleService/DrizzleService';
 import {UserService} from '../UserService/UserService';
+import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 
 export class EntryRepositoryService extends ModelService<string, EntryRow, EntryRow, EntryFilter<EntryType>> {
   protected imageService: ImageService;
@@ -29,7 +30,10 @@ export class EntryRepositoryService extends ModelService<string, EntryRow, Entry
       params?.weightIds ? inArray(this.getTable().weightId, params.weightIds) : undefined,
       params?.workoutIds ? inArray(this.getTable().workoutId, params.workoutIds) : undefined,
       params?.type ? inArray(this.getTable().type, params.type) : undefined,
-      params?.userId ? inArray(this.getTable().userId, params.userId) : undefined,
+      params?.userId ? or(
+        inArray(this.getTable().userId, params.userId),
+        params?.includePublic ? eq(this.getTable().visibility, EntryVisibility.Public) : undefined,
+      ) : undefined,
       params?.includeDeleted ? undefined : isNull(this.getTable().deletedAt),
       params?.after ? gte(this.getTable().time, params.after) : undefined,
       params?.before ? lte(this.getTable().time, params.before) : undefined,
