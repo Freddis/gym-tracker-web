@@ -2,6 +2,7 @@ import {number} from 'zod';
 import {WeightRow, weightRowValidator} from '../../../../DrizzleService/types/WeightRow';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 import {RouteFactory} from '../../../utils/RouteFactory';
+import {weightHistoryRowValidator} from './weightHistoryRowValidator';
 
 const descriptions: OpenApiDescriptions<WeightRow> = {
   weight: 'Weight value in orbitrary units',
@@ -12,10 +13,10 @@ const descriptions: OpenApiDescriptions<WeightRow> = {
   createdAt: 'The date record was created',
   updatedAt: 'The date record was updated',
   deletedAt: 'The date record was deleted',
-
 };
+
 const validator = weightRowValidator.extend({
-  history: RouteFactory.validators.describeShape(weightRowValidator, descriptions).array(),
+  history: weightHistoryRowValidator.array(),
   historySize: number(),
 });
 

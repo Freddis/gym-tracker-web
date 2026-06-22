@@ -49,7 +49,7 @@ implements IEntryService<EntryType.Weight> {
     const history = await db.select().from(
       this.getTable()
     )
-    .leftJoin(
+    .innerJoin(
       db._.fullSchema.entries,
       eq(this.getTable().id, db._.fullSchema.entries.weightId),
     )
@@ -63,7 +63,12 @@ implements IEntryService<EntryType.Weight> {
 
     const final = rows.map((x) => ({
       ...x,
-      history: history.filter((h) => h.entries?.userId === x.userId && h.entries?.time < x.createdAt).map((h) => h.weight),
+      history: history.filter((h) => h.entries.userId === x.userId && h.entries.time < x.createdAt).map((h) => ({
+        id: h.entries.id,
+        time: h.entries.time,
+        weight: h.weight.weight,
+        units: h.weight.units,
+      })),
       historySize: historySize,
     }));
     return final;

@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {FeedEntry, Weight} from '../../../../../common/utils/openapi-client';
+import {FeedEntry, Weight, WeightHistoryRow} from '../../../../../common/utils/openapi-client';
 import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {EntryBlockBottom} from './EntryBlockBottom';
@@ -14,7 +14,7 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: FeedEntry, own?: boole
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.activities.list.objects.weight);
 
   const buildWeightChartData = (
-    history: StrictPick<Weight, 'createdAt' | 'weight'>[],
+    history: StrictPick<WeightHistoryRow, 'time' | 'weight'>[],
     historySize: number,
     endDate: Date = new Date()
   ): ChartData<'line', Array<number | undefined>, string> => {
@@ -25,18 +25,17 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: FeedEntry, own?: boole
 
   // Sort ascending
     const weights = [...history].sort(
-    (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+    (a, b) => a.time.getTime() - b.time.getTime()
   );
     const labels: string[] = [];
     const values: Array<number | undefined> = [];
     let weightIndex = 0;
-    let currentWeight: StrictPick<Weight, 'createdAt' | 'weight'> | undefined;
+    let currentWeight: StrictPick<WeightHistoryRow, 'time' | 'weight'> | undefined;
     for (let time = to; time <= from; time += HOUR) {
       const currentDate = new Date(time);
-
      // Advance weights while entries are before current hour
       let weight = weights[weightIndex];
-      while (weight && weight.createdAt.getTime() <= time) {
+      while (weight && weight.time.getTime() <= time) {
         currentWeight = weight;
         weightIndex++;
         weight = weights[weightIndex];
@@ -64,7 +63,8 @@ export const WeightEntryBlock: FC<{weight: Weight, entry: FeedEntry, own?: boole
       ],
     };
   };
-  const data = buildWeightChartData([...weight.history, weight], weight.historySize, entry.time);
+  const wholeData = [...weight.history, {time: entry.time, weight: weight.weight, units: weight.units}];
+  const data = buildWeightChartData(wholeData, weight.historySize, entry.time);
   const chartOptions: ChartOptions<'line'> = {
     maintainAspectRatio: false,
     plugins: {legend: {display: false}},

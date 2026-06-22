@@ -1341,44 +1341,33 @@ export type Weight = {
   /**
    * History of weight records for this user
    */
-  history: Array<{
-    /**
-     * Id of the weight record
-     */
-    id: number;
-    /**
-     * Id of the record in external source if it was imported.
-     */
-    externalId: string | null;
-    /**
-     * Id of the user
-     */
-    userId: number;
-    /**
-     * Weight value in orbitrary units
-     */
-    weight: number;
-    /**
-     * Units in which this weight record is calculdated
-     */
-    units: string;
-    /**
-     * The date record was created
-     */
-    createdAt: Date;
-    /**
-     * The date record was updated
-     */
-    updatedAt: Date | null;
-    /**
-     * The date record was deleted
-     */
-    deletedAt: Date | null;
-  }>;
+  history: Array<WeightHistoryRow>;
   /**
    * Size of the history in days
    */
   historySize: number;
+};
+
+/**
+ * History of weight records preceding the current weight entry
+ */
+export type WeightHistoryRow = {
+  /**
+   * Id of the weight entry
+   */
+  id: string;
+  /**
+   * Time of the weight entry
+   */
+  time: Date;
+  /**
+   * Weight value
+   */
+  weight: number;
+  /**
+   * Units in which this weight is calculdated
+   */
+  units: string;
 };
 
 /**

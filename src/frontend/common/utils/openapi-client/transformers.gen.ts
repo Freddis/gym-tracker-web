@@ -276,6 +276,11 @@ export const patchWorkoutTypesByIdResponseTransformer = async (
   return data;
 };
 
+const weightHistoryRowSchemaResponseTransformer = (data: any) => {
+  data.time = new Date(data.time);
+  return data;
+};
+
 const weightSchemaResponseTransformer = (data: any) => {
   data.createdAt = new Date(data.createdAt);
   if (data.updatedAt) {
@@ -285,14 +290,7 @@ const weightSchemaResponseTransformer = (data: any) => {
     data.deletedAt = new Date(data.deletedAt);
   }
   data.history = data.history.map((item: any) => {
-    item.createdAt = new Date(item.createdAt);
-    if (item.updatedAt) {
-      item.updatedAt = new Date(item.updatedAt);
-    }
-    if (item.deletedAt) {
-      item.deletedAt = new Date(item.deletedAt);
-    }
-    return item;
+    return weightHistoryRowSchemaResponseTransformer(item);
   });
   return data;
 };
