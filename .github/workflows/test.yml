@@ -43,6 +43,8 @@ jobs:
         version: '2.31.0'
     - name: Starting containers
       run: docker-compose up -d --no-color --wait db && docker-compose up -d --no-color --wait app
+    - name: Update NPM
+      run: npm install -g npm@11.6.1
     - name: Install dependencies
       run: npm ci
     - name: 'Migrate'

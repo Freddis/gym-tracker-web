@@ -283,6 +283,7 @@ Lints the project according to the eslint rules. Linting is a process of putting
 3. Connect email server
 4. Figure out translations for data stored in DB
 5. Add CORS
+6. Need to update to Vite 8, but vite-plugin-iso-import doesn't support it yet
 
 
 ### Project
