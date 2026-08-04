@@ -1,6 +1,5 @@
 import {AuthService} from 'src/backend/services/AuthService/AuthService';
 import {DrizzleService} from 'src/backend/services/DrizzleService/DrizzleService';
-import {serverConfig} from '../ServerConfig/config';
 import {ApiService} from '../../services/ApiService/ApiService';
 import {ImageService} from '../../services/ImageService/ImageService';
 import {existsSync, mkdirSync} from 'fs';
@@ -37,7 +36,6 @@ import {FeedEntryService} from '../../services/FeedEntryService/FeedEntryService
 import {FatsecretApiClient} from '../../services/FatsecretService/services/FatsecretApiClient/FatsecretApiClient';
 import {CachingFatsecretApiClient} from '../../services/FatsecretService/services/CachingFatsecretApiClient/CachingFatsecretApiClient';
 export class GlobalServiceFactory {
-  protected allocatedDestroyables = {drizzle: false};
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
   protected fatsecretCached?: FatsecretService;
@@ -67,7 +65,7 @@ export class GlobalServiceFactory {
 
   async drizzle(): Promise<DrizzleService> {
     if (!this.drizzleCached) {
-      this.drizzleCached = new DrizzleService(serverConfig.services.drizzle);
+      this.drizzleCached = new DrizzleService(this.config.services.drizzle);
     }
     return this.drizzleCached;
   }
@@ -77,7 +75,7 @@ export class GlobalServiceFactory {
     const userService = await this.coreUser();
     const email = await this.email();
     return new AuthService(
-      serverConfig.services.auth,
+      this.config.services.auth,
       userService,
       managerService,
       email
@@ -221,7 +219,7 @@ export class GlobalServiceFactory {
 
   async redis(): Promise<RedisService> {
     if (!this.redisCached) {
-      this.redisCached = new RedisService(serverConfig.services.redis);
+      this.redisCached = new RedisService(this.config.services.redis);
     }
     return this.redisCached;
   }

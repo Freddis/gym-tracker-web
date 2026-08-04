@@ -4,9 +4,15 @@ import {argv} from 'process';
 import {defineConfig} from 'vite';
 import {isoImport} from 'vite-plugin-iso-import';
 import tsConfigPaths from 'vite-tsconfig-paths';
+import react from '@vitejs/plugin-react';
 
 let generationSkip = false;
 export default defineConfig({
+  // this is crazy, tanstack foresfully loads .env and env.development and doesn't respect envDir: false
+  // what is the worst is that env.development takes priority over .env
+  // in my setup the ENV handling done by EnvHelper
+  envDir: false,
+  mode: 'fake-development', // trick to not load at least .env development first
   build: {
     target: 'es2022',
     outDir: '.output',
@@ -25,8 +31,8 @@ export default defineConfig({
       projects: ['./tsconfig.json'],
     }),
     tanstackStart({
-      customViteReactPlugin: true,
     }),
+    react(),
     {
       name: 'postbuild-commands',
       watchChange: async () => {

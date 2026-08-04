@@ -1,10 +1,17 @@
+import path from 'path';
 import {defineConfig} from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      // otherwise vitest can't find resolve absolute paths starting from src
+      // todo: remove all paths starting from src in the project and this line as well
+      src: path.resolve(__dirname, 'src'),
+    },
+  },
   test: {
     // no parralelism, since tests use clean slate
     maxWorkers: 1,
-    minWorkers: 1,
     sequence: {
       concurrent: false,
     },

@@ -12,7 +12,7 @@ test.describe('FeedPage', async () => {
     const response = await pageUtils.open();
 
     // check
-    expect(page.url(), 'Page should be on feed route').toContain('/feed/');
+    expect(page.url(), 'Page should be on feed route').toContain('/feed');
     expect(response?.status(), 'Page should have sucessful HTTP status').toBe(200);
 
     const heading = await pageUtils.getPageHeading();

@@ -1,6 +1,5 @@
 import type {Preview} from '@storybook/react';
 import '../src/frontend/common/utils/css/app.css';
-import {themes} from '@storybook/theming';
 
 
 const preview: Preview = {
@@ -22,8 +21,8 @@ const preview: Preview = {
         return a.id === b.id ? 0 : a.id.localeCompare(b.id, undefined, {numeric: true});
       },
     },
-    docs: {
-      theme: themes.dark,
+    background: {
+      default: 'dark',
     },
     controls: {
       matchers: {

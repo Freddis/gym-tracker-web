@@ -8,9 +8,11 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SwaggerRouteImport } from './routes/swagger'
+import { Route as StoplightRouteImport } from './routes/stoplight'
+import { Route as ApiSchemaRouteImport } from './routes/api-schema'
+import { Route as ApiRouteImport } from './routes/api'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile/index'
@@ -38,6 +40,7 @@ import { Route as AuthPasswordResetRouteImport } from './routes/auth/password-re
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as ArticlesTermsOfServiceRouteImport } from './routes/articles/terms-of-service'
 import { Route as ArticlesPrivacyPolicyRouteImport } from './routes/articles/privacy-policy'
+import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as WorkoutsTypesIndexRouteImport } from './routes/workouts/types/index'
 import { Route as WorkoutsPlansIndexRouteImport } from './routes/workouts/plans/index'
 import { Route as CrmUsersIndexRouteImport } from './routes/crm/users/index'
@@ -59,13 +62,27 @@ import { Route as WorkoutsTypesUpdateIdRouteImport } from './routes/workouts/typ
 import { Route as WorkoutsPlansUpdateIdRouteImport } from './routes/workouts/plans/update/$id'
 import { Route as CrmTranslationsUpdateIdRouteImport } from './routes/crm/translations/update/$id'
 import { Route as CrmExercisesUpdateIdRouteImport } from './routes/crm/exercises/update/$id'
-import { ServerRoute as SwaggerServerRouteImport } from './routes/swagger'
-import { ServerRoute as StoplightServerRouteImport } from './routes/stoplight'
-import { ServerRoute as ApiSchemaServerRouteImport } from './routes/api-schema'
-import { ServerRoute as ApiServerRouteImport } from './routes/api'
 
-const rootServerRouteImport = createServerRootRoute()
-
+const SwaggerRoute = SwaggerRouteImport.update({
+  id: '/swagger',
+  path: '/swagger',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoplightRoute = StoplightRouteImport.update({
+  id: '/stoplight',
+  path: '/stoplight',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSchemaRoute = ApiSchemaRouteImport.update({
+  id: '/api-schema',
+  path: '/api-schema',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRoute = ApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -201,6 +218,11 @@ const ArticlesPrivacyPolicyRoute = ArticlesPrivacyPolicyRouteImport.update({
   path: '/articles/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSplatRoute = ApiSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => ApiRoute,
+} as any)
 const WorkoutsTypesIndexRoute = WorkoutsTypesIndexRouteImport.update({
   id: '/workouts/types/',
   path: '/workouts/types/',
@@ -308,29 +330,14 @@ const CrmExercisesUpdateIdRoute = CrmExercisesUpdateIdRouteImport.update({
   path: '/crm/exercises/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SwaggerServerRoute = SwaggerServerRouteImport.update({
-  id: '/swagger',
-  path: '/swagger',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const StoplightServerRoute = StoplightServerRouteImport.update({
-  id: '/stoplight',
-  path: '/stoplight',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiSchemaServerRoute = ApiSchemaServerRouteImport.update({
-  id: '/api-schema',
-  path: '/api-schema',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiServerRoute = ApiServerRouteImport.update({
-  id: '/api',
-  path: '/api',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api': typeof ApiRouteWithChildren
+  '/api-schema': typeof ApiSchemaRoute
+  '/stoplight': typeof StoplightRoute
+  '/swagger': typeof SwaggerRoute
+  '/api/$': typeof ApiSplatRoute
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
@@ -350,13 +357,13 @@ export interface FileRoutesByFullPath {
   '/settings/edit': typeof SettingsEditRoute
   '/weight/create': typeof WeightCreateRoute
   '/workouts/create': typeof WorkoutsCreateRoute
-  '/crm': typeof CrmIndexRoute
-  '/entries': typeof EntriesIndexRoute
-  '/exercises': typeof ExercisesIndexRoute
-  '/feed': typeof FeedIndexRoute
-  '/food': typeof FoodIndexRoute
-  '/profile': typeof ProfileIndexRoute
-  '/settings': typeof SettingsIndexRoute
+  '/crm/': typeof CrmIndexRoute
+  '/entries/': typeof EntriesIndexRoute
+  '/exercises/': typeof ExercisesIndexRoute
+  '/feed/': typeof FeedIndexRoute
+  '/food/': typeof FoodIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/auth/password-reset-complete/$token': typeof AuthPasswordResetCompleteTokenRoute
   '/exercises/update/$exerciseId': typeof ExercisesUpdateExerciseIdRoute
   '/food/update/$id': typeof FoodUpdateIdRoute
@@ -367,13 +374,13 @@ export interface FileRoutesByFullPath {
   '/workouts/plans/create': typeof WorkoutsPlansCreateRoute
   '/workouts/types/create': typeof WorkoutsTypesCreateRoute
   '/workouts/update/$id': typeof WorkoutsUpdateIdRoute
-  '/crm/exercises': typeof CrmExercisesIndexRoute
-  '/crm/images': typeof CrmImagesIndexRoute
-  '/crm/managers': typeof CrmManagersIndexRoute
-  '/crm/translations': typeof CrmTranslationsIndexRoute
-  '/crm/users': typeof CrmUsersIndexRoute
-  '/workouts/plans': typeof WorkoutsPlansIndexRoute
-  '/workouts/types': typeof WorkoutsTypesIndexRoute
+  '/crm/exercises/': typeof CrmExercisesIndexRoute
+  '/crm/images/': typeof CrmImagesIndexRoute
+  '/crm/managers/': typeof CrmManagersIndexRoute
+  '/crm/translations/': typeof CrmTranslationsIndexRoute
+  '/crm/users/': typeof CrmUsersIndexRoute
+  '/workouts/plans/': typeof WorkoutsPlansIndexRoute
+  '/workouts/types/': typeof WorkoutsTypesIndexRoute
   '/crm/exercises/update/$id': typeof CrmExercisesUpdateIdRoute
   '/crm/translations/update/$id': typeof CrmTranslationsUpdateIdRoute
   '/workouts/plans/update/$id': typeof WorkoutsPlansUpdateIdRoute
@@ -381,6 +388,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api': typeof ApiRouteWithChildren
+  '/api-schema': typeof ApiSchemaRoute
+  '/stoplight': typeof StoplightRoute
+  '/swagger': typeof SwaggerRoute
+  '/api/$': typeof ApiSplatRoute
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
@@ -432,6 +444,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api': typeof ApiRouteWithChildren
+  '/api-schema': typeof ApiSchemaRoute
+  '/stoplight': typeof StoplightRoute
+  '/swagger': typeof SwaggerRoute
+  '/api/$': typeof ApiSplatRoute
   '/articles/privacy-policy': typeof ArticlesPrivacyPolicyRoute
   '/articles/terms-of-service': typeof ArticlesTermsOfServiceRoute
   '/auth/login': typeof AuthLoginRoute
@@ -484,6 +501,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api'
+    | '/api-schema'
+    | '/stoplight'
+    | '/swagger'
+    | '/api/$'
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
@@ -503,13 +525,13 @@ export interface FileRouteTypes {
     | '/settings/edit'
     | '/weight/create'
     | '/workouts/create'
-    | '/crm'
-    | '/entries'
-    | '/exercises'
-    | '/feed'
-    | '/food'
-    | '/profile'
-    | '/settings'
+    | '/crm/'
+    | '/entries/'
+    | '/exercises/'
+    | '/feed/'
+    | '/food/'
+    | '/profile/'
+    | '/settings/'
     | '/auth/password-reset-complete/$token'
     | '/exercises/update/$exerciseId'
     | '/food/update/$id'
@@ -520,13 +542,13 @@ export interface FileRouteTypes {
     | '/workouts/plans/create'
     | '/workouts/types/create'
     | '/workouts/update/$id'
-    | '/crm/exercises'
-    | '/crm/images'
-    | '/crm/managers'
-    | '/crm/translations'
-    | '/crm/users'
-    | '/workouts/plans'
-    | '/workouts/types'
+    | '/crm/exercises/'
+    | '/crm/images/'
+    | '/crm/managers/'
+    | '/crm/translations/'
+    | '/crm/users/'
+    | '/workouts/plans/'
+    | '/workouts/types/'
     | '/crm/exercises/update/$id'
     | '/crm/translations/update/$id'
     | '/workouts/plans/update/$id'
@@ -534,6 +556,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api'
+    | '/api-schema'
+    | '/stoplight'
+    | '/swagger'
+    | '/api/$'
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
@@ -584,6 +611,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/api'
+    | '/api-schema'
+    | '/stoplight'
+    | '/swagger'
+    | '/api/$'
     | '/articles/privacy-policy'
     | '/articles/terms-of-service'
     | '/auth/login'
@@ -635,6 +667,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiRoute: typeof ApiRouteWithChildren
+  ApiSchemaRoute: typeof ApiSchemaRoute
+  StoplightRoute: typeof StoplightRoute
+  SwaggerRoute: typeof SwaggerRoute
   ArticlesPrivacyPolicyRoute: typeof ArticlesPrivacyPolicyRoute
   ArticlesTermsOfServiceRoute: typeof ArticlesTermsOfServiceRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -683,42 +719,37 @@ export interface RootRouteChildren {
   WorkoutsPlansUpdateIdRoute: typeof WorkoutsPlansUpdateIdRoute
   WorkoutsTypesUpdateIdRoute: typeof WorkoutsTypesUpdateIdRoute
 }
-export interface FileServerRoutesByFullPath {
-  '/api': typeof ApiServerRoute
-  '/api-schema': typeof ApiSchemaServerRoute
-  '/stoplight': typeof StoplightServerRoute
-  '/swagger': typeof SwaggerServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api': typeof ApiServerRoute
-  '/api-schema': typeof ApiSchemaServerRoute
-  '/stoplight': typeof StoplightServerRoute
-  '/swagger': typeof SwaggerServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api': typeof ApiServerRoute
-  '/api-schema': typeof ApiSchemaServerRoute
-  '/stoplight': typeof StoplightServerRoute
-  '/swagger': typeof SwaggerServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api' | '/api-schema' | '/stoplight' | '/swagger'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api' | '/api-schema' | '/stoplight' | '/swagger'
-  id: '__root__' | '/api' | '/api-schema' | '/stoplight' | '/swagger'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiServerRoute: typeof ApiServerRoute
-  ApiSchemaServerRoute: typeof ApiSchemaServerRoute
-  StoplightServerRoute: typeof StoplightServerRoute
-  SwaggerServerRoute: typeof SwaggerServerRoute
-}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/swagger': {
+      id: '/swagger'
+      path: '/swagger'
+      fullPath: '/swagger'
+      preLoaderRoute: typeof SwaggerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stoplight': {
+      id: '/stoplight'
+      path: '/stoplight'
+      fullPath: '/stoplight'
+      preLoaderRoute: typeof StoplightRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-schema': {
+      id: '/api-schema'
+      path: '/api-schema'
+      fullPath: '/api-schema'
+      preLoaderRoute: typeof ApiSchemaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api': {
+      id: '/api'
+      path: '/api'
+      fullPath: '/api'
+      preLoaderRoute: typeof ApiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -729,49 +760,49 @@ declare module '@tanstack/react-router' {
     '/settings/': {
       id: '/settings/'
       path: '/settings'
-      fullPath: '/settings'
+      fullPath: '/settings/'
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile/': {
       id: '/profile/'
       path: '/profile'
-      fullPath: '/profile'
+      fullPath: '/profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/food/': {
       id: '/food/'
       path: '/food'
-      fullPath: '/food'
+      fullPath: '/food/'
       preLoaderRoute: typeof FoodIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/feed/': {
       id: '/feed/'
       path: '/feed'
-      fullPath: '/feed'
+      fullPath: '/feed/'
       preLoaderRoute: typeof FeedIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/': {
       id: '/exercises/'
       path: '/exercises'
-      fullPath: '/exercises'
+      fullPath: '/exercises/'
       preLoaderRoute: typeof ExercisesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/entries/': {
       id: '/entries/'
       path: '/entries'
-      fullPath: '/entries'
+      fullPath: '/entries/'
       preLoaderRoute: typeof EntriesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/': {
       id: '/crm/'
       path: '/crm'
-      fullPath: '/crm'
+      fullPath: '/crm/'
       preLoaderRoute: typeof CrmIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -908,52 +939,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesPrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/$': {
+      id: '/api/$'
+      path: '/$'
+      fullPath: '/api/$'
+      preLoaderRoute: typeof ApiSplatRouteImport
+      parentRoute: typeof ApiRoute
+    }
     '/workouts/types/': {
       id: '/workouts/types/'
       path: '/workouts/types'
-      fullPath: '/workouts/types'
+      fullPath: '/workouts/types/'
       preLoaderRoute: typeof WorkoutsTypesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workouts/plans/': {
       id: '/workouts/plans/'
       path: '/workouts/plans'
-      fullPath: '/workouts/plans'
+      fullPath: '/workouts/plans/'
       preLoaderRoute: typeof WorkoutsPlansIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/users/': {
       id: '/crm/users/'
       path: '/crm/users'
-      fullPath: '/crm/users'
+      fullPath: '/crm/users/'
       preLoaderRoute: typeof CrmUsersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/translations/': {
       id: '/crm/translations/'
       path: '/crm/translations'
-      fullPath: '/crm/translations'
+      fullPath: '/crm/translations/'
       preLoaderRoute: typeof CrmTranslationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/managers/': {
       id: '/crm/managers/'
       path: '/crm/managers'
-      fullPath: '/crm/managers'
+      fullPath: '/crm/managers/'
       preLoaderRoute: typeof CrmManagersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/images/': {
       id: '/crm/images/'
       path: '/crm/images'
-      fullPath: '/crm/images'
+      fullPath: '/crm/images/'
       preLoaderRoute: typeof CrmImagesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crm/exercises/': {
       id: '/crm/exercises/'
       path: '/crm/exercises'
-      fullPath: '/crm/exercises'
+      fullPath: '/crm/exercises/'
       preLoaderRoute: typeof CrmExercisesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -1057,41 +1095,23 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
-    '/swagger': {
-      id: '/swagger'
-      path: '/swagger'
-      fullPath: '/swagger'
-      preLoaderRoute: typeof SwaggerServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/stoplight': {
-      id: '/stoplight'
-      path: '/stoplight'
-      fullPath: '/stoplight'
-      preLoaderRoute: typeof StoplightServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api-schema': {
-      id: '/api-schema'
-      path: '/api-schema'
-      fullPath: '/api-schema'
-      preLoaderRoute: typeof ApiSchemaServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api': {
-      id: '/api'
-      path: '/api'
-      fullPath: '/api'
-      preLoaderRoute: typeof ApiServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-  }
+
+interface ApiRouteChildren {
+  ApiSplatRoute: typeof ApiSplatRoute
 }
+
+const ApiRouteChildren: ApiRouteChildren = {
+  ApiSplatRoute: ApiSplatRoute,
+}
+
+const ApiRouteWithChildren = ApiRoute._addFileChildren(ApiRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiRoute: ApiRouteWithChildren,
+  ApiSchemaRoute: ApiSchemaRoute,
+  StoplightRoute: StoplightRoute,
+  SwaggerRoute: SwaggerRoute,
   ArticlesPrivacyPolicyRoute: ArticlesPrivacyPolicyRoute,
   ArticlesTermsOfServiceRoute: ArticlesTermsOfServiceRoute,
   AuthLoginRoute: AuthLoginRoute,
@@ -1143,12 +1163,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiServerRoute: ApiServerRoute,
-  ApiSchemaServerRoute: ApiSchemaServerRoute,
-  StoplightServerRoute: StoplightServerRoute,
-  SwaggerServerRoute: SwaggerServerRoute,
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()

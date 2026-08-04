@@ -10,7 +10,8 @@ import type { Auth } from "../core/auth";
 import type { Client as CoreClient, Config as CoreConfig } from "../core/types";
 
 export interface Config<T extends ClientOptions = ClientOptions>
-  extends Omit<CreateAxiosDefaults, "auth" | "baseURL" | "headers" | "method">,
+  extends
+    Omit<CreateAxiosDefaults, "auth" | "baseURL" | "headers" | "method">,
     CoreConfig {
   /**
    * Axios implementation. You can use this option to provide a custom
@@ -53,8 +54,8 @@ export interface RequestOptions<
   ThrowOnError extends boolean = boolean,
   Url extends string = string,
 > extends Config<{
-    throwOnError: ThrowOnError;
-  }> {
+  throwOnError: ThrowOnError;
+}> {
   /**
    * Any body that you want to add to your request.
    *
