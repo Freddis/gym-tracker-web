@@ -13,7 +13,7 @@ services:
       dockerfile: ./Dockerfile
       args:
         - NO=value
-      target: base
+      target: prod
     ports:
       - 3000:3000 
     environment:
