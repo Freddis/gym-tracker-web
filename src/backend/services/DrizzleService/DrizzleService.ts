@@ -87,7 +87,9 @@ export class DrizzleService {
   };
 
   async end() {
-    this.pgClient?.end();
+    await this.pgClient?.end();
+    this.pgClient = undefined;
+    this.db = undefined;
   }
 
   getClient() {
