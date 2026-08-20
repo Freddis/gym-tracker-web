@@ -8,7 +8,6 @@ import {
   MealType,
 } from '../../../../../common/utils/openapi-client';
 import {useRequiredAuth} from '../../../../../common/components/layout/AuthProvider/utils/useRequiredAuth';
-import {v4} from 'uuid';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
 import {route, RouteId} from '../../../../../common/utils/route';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
@@ -28,7 +27,7 @@ export const MealCreatePage: FC = () => {
     food: [],
   };
   const entry: Entry = {
-    id: v4(),
+    id: crypto.randomUUID(),
     type: EntryType.MEAL,
     meal,
     user: user,
