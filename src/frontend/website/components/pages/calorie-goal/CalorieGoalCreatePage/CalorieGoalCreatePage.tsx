@@ -13,7 +13,6 @@ import {useNavigate} from '@tanstack/react-router';
 import {useToasts} from '../../../../../common/components/atoms/AppToast/hooks/useToasts';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
 import {useRequiredAuth} from '../../../../../common/components/layout/AuthProvider/utils/useRequiredAuth';
-import {v4} from 'uuid';
 import {CalorieGoalCreatePagePresenter} from './components/CalorieGoalCreatePagePresenter';
 
 
@@ -32,7 +31,7 @@ export const CalorieGoalCreatePage: FC = () => {
     end: null,
   };
   const entry: Entry = {
-    id: v4(),
+    id: crypto.randomUUID(),
     type: EntryType.CALORIE_GOAL,
     calorieGoal: goal,
     user: user,

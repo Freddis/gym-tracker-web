@@ -10,7 +10,6 @@ import {useAppPartialTranslation} from '../../../../../utils/i18n/useAppPartialT
 import {FoodUpdateForm} from '../../FoodUpdateForm/FoodUpdateForm';
 import {FoodCreatePagePresenterProps} from './types/FoodCreatePagePresenterProps';
 import {FormSubmitRef} from '../../../../../../common/types/FormSubmitRef';
-import {v4} from 'uuid';
 import {BasicPage} from '../../../../../../common/components/layout/BasicPage/BasicPage';
 import {BreadCrumbsBlock} from '../../../../blocks/BreadCrumbsBlock/BreadCrumbsBlock';
 import {BreadCrumbs} from '../../../../blocks/BreadCrumbsBlock/types/BreadCrumbs';
@@ -19,7 +18,7 @@ export const FoodCreatePagePresenter: FC<FoodCreatePagePresenterProps> = (props)
   const {t, i18n, translations} = useAppPartialTranslation((x) => x.pages.food);
   const formRef = useRef<FormSubmitRef>(null);
   const food: Food = {
-    id: v4(),
+    id: crypto.randomUUID(),
     name: '',
     description: null,
     image: null,
