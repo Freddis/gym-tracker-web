@@ -1,12 +1,12 @@
-import {globalServiceFactory} from 'src/backend/utils/GlobalServiceFactory/globalServiceFactoryInstance';
 import {TestUtils} from 'src/backend/utils/TestUtils/TestUtils';
 import {Equipment} from 'src/backend/types/Equipment';
 import {Muscle} from 'src/backend/types/Muscle';
 import {EntryVisibility} from '../../src/backend/services/EntryService/types/EntryVisibility';
 import {WorkoutCreateDto} from '../../src/backend/services/WorkoutService/types/WorkoutCreateDto';
 
-const entryService = await globalServiceFactory.entry();
-const authService = await globalServiceFactory.auth();
+const factory = TestUtils.business.getFactory();
+const entryService = await factory.entry();
+const authService = await factory.auth();
 
 await TestUtils.seed.wipeDb();
 const benchPress = await TestUtils.seed.createExercise({
@@ -102,4 +102,4 @@ await entryService.createWorkoutEntry(tommy.id, {
   visibility: EntryVisibility.Public,
   time: workout.start,
 });
-await globalServiceFactory.cleanup();
+await factory.cleanup();

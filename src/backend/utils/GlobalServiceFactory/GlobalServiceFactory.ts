@@ -35,24 +35,29 @@ import {EntryRepositoryService} from '../../services/EntryRepositoryService/Entr
 import {FeedEntryService} from '../../services/FeedEntryService/FeedEntryService';
 import {FatsecretApiClient} from '../../services/FatsecretService/services/FatsecretApiClient/FatsecretApiClient';
 import {CachingFatsecretApiClient} from '../../services/FatsecretService/services/CachingFatsecretApiClient/CachingFatsecretApiClient';
+import {Logger} from '../Logger/Logger';
 export class GlobalServiceFactory {
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
   protected fatsecretCached?: FatsecretService;
   protected redisCached?: RedisService;
   protected config: ServerConfig;
-
+  protected logger: Logger = new Logger(GlobalServiceFactory.name);
   constructor(config: ServerConfig) {
     this.config = config;
   }
 
   async cleanup() {
+    this.logger.info('Cleaning up services');
     if (this.drizzleCached) {
       await this.drizzleCached.end();
+      this.drizzleCached = undefined;
     }
     if (this.prodDrizzleCached) {
       await this.prodDrizzleCached.end();
+      this.prodDrizzleCached = undefined;
     }
+    this.logger.info('Cleanup completed');
   }
 
   async image() {
