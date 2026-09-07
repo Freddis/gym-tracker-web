@@ -45,6 +45,7 @@ import { Route as WorkoutsTypesIndexRouteImport } from './routes/workouts/types/
 import { Route as WorkoutsPlansIndexRouteImport } from './routes/workouts/plans/index'
 import { Route as CrmUsersIndexRouteImport } from './routes/crm/users/index'
 import { Route as CrmTranslationsIndexRouteImport } from './routes/crm/translations/index'
+import { Route as CrmScriptsIndexRouteImport } from './routes/crm/scripts/index'
 import { Route as CrmManagersIndexRouteImport } from './routes/crm/managers/index'
 import { Route as CrmImagesIndexRouteImport } from './routes/crm/images/index'
 import { Route as CrmExercisesIndexRouteImport } from './routes/crm/exercises/index'
@@ -243,6 +244,11 @@ const CrmTranslationsIndexRoute = CrmTranslationsIndexRouteImport.update({
   path: '/crm/translations/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CrmScriptsIndexRoute = CrmScriptsIndexRouteImport.update({
+  id: '/crm/scripts/',
+  path: '/crm/scripts/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CrmManagersIndexRoute = CrmManagersIndexRouteImport.update({
   id: '/crm/managers/',
   path: '/crm/managers/',
@@ -377,6 +383,7 @@ export interface FileRoutesByFullPath {
   '/crm/exercises/': typeof CrmExercisesIndexRoute
   '/crm/images/': typeof CrmImagesIndexRoute
   '/crm/managers/': typeof CrmManagersIndexRoute
+  '/crm/scripts/': typeof CrmScriptsIndexRoute
   '/crm/translations/': typeof CrmTranslationsIndexRoute
   '/crm/users/': typeof CrmUsersIndexRoute
   '/workouts/plans/': typeof WorkoutsPlansIndexRoute
@@ -432,6 +439,7 @@ export interface FileRoutesByTo {
   '/crm/exercises': typeof CrmExercisesIndexRoute
   '/crm/images': typeof CrmImagesIndexRoute
   '/crm/managers': typeof CrmManagersIndexRoute
+  '/crm/scripts': typeof CrmScriptsIndexRoute
   '/crm/translations': typeof CrmTranslationsIndexRoute
   '/crm/users': typeof CrmUsersIndexRoute
   '/workouts/plans': typeof WorkoutsPlansIndexRoute
@@ -488,6 +496,7 @@ export interface FileRoutesById {
   '/crm/exercises/': typeof CrmExercisesIndexRoute
   '/crm/images/': typeof CrmImagesIndexRoute
   '/crm/managers/': typeof CrmManagersIndexRoute
+  '/crm/scripts/': typeof CrmScriptsIndexRoute
   '/crm/translations/': typeof CrmTranslationsIndexRoute
   '/crm/users/': typeof CrmUsersIndexRoute
   '/workouts/plans/': typeof WorkoutsPlansIndexRoute
@@ -545,6 +554,7 @@ export interface FileRouteTypes {
     | '/crm/exercises/'
     | '/crm/images/'
     | '/crm/managers/'
+    | '/crm/scripts/'
     | '/crm/translations/'
     | '/crm/users/'
     | '/workouts/plans/'
@@ -600,6 +610,7 @@ export interface FileRouteTypes {
     | '/crm/exercises'
     | '/crm/images'
     | '/crm/managers'
+    | '/crm/scripts'
     | '/crm/translations'
     | '/crm/users'
     | '/workouts/plans'
@@ -655,6 +666,7 @@ export interface FileRouteTypes {
     | '/crm/exercises/'
     | '/crm/images/'
     | '/crm/managers/'
+    | '/crm/scripts/'
     | '/crm/translations/'
     | '/crm/users/'
     | '/workouts/plans/'
@@ -710,6 +722,7 @@ export interface RootRouteChildren {
   CrmExercisesIndexRoute: typeof CrmExercisesIndexRoute
   CrmImagesIndexRoute: typeof CrmImagesIndexRoute
   CrmManagersIndexRoute: typeof CrmManagersIndexRoute
+  CrmScriptsIndexRoute: typeof CrmScriptsIndexRoute
   CrmTranslationsIndexRoute: typeof CrmTranslationsIndexRoute
   CrmUsersIndexRoute: typeof CrmUsersIndexRoute
   WorkoutsPlansIndexRoute: typeof WorkoutsPlansIndexRoute
@@ -974,6 +987,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmTranslationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crm/scripts/': {
+      id: '/crm/scripts/'
+      path: '/crm/scripts'
+      fullPath: '/crm/scripts/'
+      preLoaderRoute: typeof CrmScriptsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/crm/managers/': {
       id: '/crm/managers/'
       path: '/crm/managers'
@@ -1151,6 +1171,7 @@ const rootRouteChildren: RootRouteChildren = {
   CrmExercisesIndexRoute: CrmExercisesIndexRoute,
   CrmImagesIndexRoute: CrmImagesIndexRoute,
   CrmManagersIndexRoute: CrmManagersIndexRoute,
+  CrmScriptsIndexRoute: CrmScriptsIndexRoute,
   CrmTranslationsIndexRoute: CrmTranslationsIndexRoute,
   CrmUsersIndexRoute: CrmUsersIndexRoute,
   WorkoutsPlansIndexRoute: WorkoutsPlansIndexRoute,

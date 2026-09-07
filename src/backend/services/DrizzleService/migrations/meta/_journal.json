@@ -414,6 +414,13 @@
       "when": 1781428235114,
       "tag": "0058_fatsecret_barcode_scan_db_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1788785001343,
+      "tag": "0059_exercise_images",
+      "breakpoints": true
     }
   ]
 }

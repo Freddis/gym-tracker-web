@@ -3629,6 +3629,29 @@ export const ImageType = {
   FOOD: "Food",
 } as const;
 
+/**
+ * Available backoffice script
+ */
+export type ScriptInfo = {
+  type: ScriptType;
+  /**
+   * Description of what the script does
+   */
+  description: string;
+};
+
+/**
+ * Type of backoffice script
+ */
+export type ScriptType = "TransferExerciseImages";
+
+/**
+ * Type of backoffice script
+ */
+export const ScriptType = {
+  TRANSFER_EXERCISE_IMAGES: "TransferExerciseImages",
+} as const;
+
 export type RegisterData = {
   body?: {
     /**
@@ -12363,6 +12386,251 @@ export type DeleteCrmImagesByIdResponses = {
 
 export type DeleteCrmImagesByIdResponse =
   DeleteCrmImagesByIdResponses[keyof DeleteCrmImagesByIdResponses];
+
+export type GetCrmScriptsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/crm/scripts";
+};
+
+export type GetCrmScriptsErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type GetCrmScriptsError = GetCrmScriptsErrors[keyof GetCrmScriptsErrors];
+
+export type GetCrmScriptsResponses = {
+  /**
+   * List of scripts
+   */
+  200: {
+    /**
+     * Available scripts
+     */
+    items: Array<ScriptInfo>;
+  };
+};
+
+export type GetCrmScriptsResponse =
+  GetCrmScriptsResponses[keyof GetCrmScriptsResponses];
+
+export type PostCrmScriptsRunData = {
+  body?: {
+    type: ScriptType;
+  };
+  path?: never;
+  query?: never;
+  url: "/crm/scripts/run";
+};
+
+export type PostCrmScriptsRunErrors = {
+  /**
+   * Validation Failed or Action Error
+   */
+  400:
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ValidationFailed";
+          fieldErrors: Array<{
+            /**
+             * Name of the field
+             */
+            field: string;
+            /**
+             * Error message
+             */
+            message: string;
+            fieldErrors?: Array<{
+              /**
+               * Name of the field
+               */
+              field: string;
+              /**
+               * Error message
+               */
+              message: string;
+            }>;
+          }>;
+          location: "Query" | "Path" | "Body" | "Response";
+        };
+      }
+    | {
+        error: {
+          /**
+           * Code to handle on the frontend.
+           */
+          code: "ActionError";
+          /**
+           * Subcategory of error.
+           */
+          actionErrorCode:
+            | "InvalidPassword"
+            | "EmailAlreadyExists"
+            | "PasswordConfirmationMismatch"
+            | "WorkoutNotFound"
+            | "ExerciseNotFound"
+            | "NoOwnerShip"
+            | "PasswordResetTokenExpired"
+            | "PasswordResetTokenMailformed"
+            | "EmptyMeal"
+            | "UserNotFound";
+          /**
+           * Description of the error. Can be safely displayed.
+           */
+          humanReadable: string;
+        };
+      };
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "Unauthorized";
+    };
+  };
+  /**
+   * Entity not found
+   */
+  404: {
+    /**
+     * Error response
+     */
+    error: {
+      /**
+       * Code to handle on the frontend
+       */
+      code: "NotFound";
+    };
+  };
+  /**
+   * Unknown Error
+   */
+  500: UnknownErrorResponse;
+};
+
+export type PostCrmScriptsRunError =
+  PostCrmScriptsRunErrors[keyof PostCrmScriptsRunErrors];
+
+export type PostCrmScriptsRunResponses = {
+  /**
+   * Indicator of successfult operation
+   */
+  200: {
+    /**
+     * Stub for response. Always true since otherwise error is thrown.
+     */
+    success: boolean;
+  };
+};
+
+export type PostCrmScriptsRunResponse =
+  PostCrmScriptsRunResponses[keyof PostCrmScriptsRunResponses];
 
 export type ClientOptions = {
   baseURL: `${string}://${string}/api` | (string & {});

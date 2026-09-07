@@ -188,6 +188,12 @@ import type {
   DeleteCrmImagesByIdData,
   DeleteCrmImagesByIdResponses,
   DeleteCrmImagesByIdErrors,
+  GetCrmScriptsData,
+  GetCrmScriptsResponses,
+  GetCrmScriptsErrors,
+  PostCrmScriptsRunData,
+  PostCrmScriptsRunResponses,
+  PostCrmScriptsRunErrors,
 } from "./types.gen";
 import { client as _heyApiClient } from "./client.gen";
 import {
@@ -1761,5 +1767,55 @@ export const deleteCrmImagesById = <ThrowOnError extends boolean = false>(
     ],
     url: "/crm/images/{id}",
     ...options,
+  });
+};
+
+/**
+ * Returns available backoffice scripts
+ */
+export const getCrmScripts = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCrmScriptsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCrmScriptsResponses,
+    GetCrmScriptsErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/crm/scripts",
+    ...options,
+  });
+};
+
+/**
+ * Runs a backoffice script
+ */
+export const postCrmScriptsRun = <ThrowOnError extends boolean = false>(
+  options?: Options<PostCrmScriptsRunData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostCrmScriptsRunResponses,
+    PostCrmScriptsRunErrors,
+    ThrowOnError
+  >({
+    responseType: "json",
+    security: [
+      {
+        name: "authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/crm/scripts/run",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 };

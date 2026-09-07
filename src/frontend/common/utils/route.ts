@@ -48,6 +48,7 @@ export enum RouteId {
   CrmExerciseList,
   CrmExerciseUpdate,
   CrmImageList,
+  CrmScripts,
   PasswordResetStart,
   PasswordResetComplete,
   // Backend Routes
@@ -129,6 +130,7 @@ const baseRouteMap = createRouteMap({
   '/crm/exercises': RouteId.CrmExerciseList,
   '/crm/exercises/update/$id': RouteId.CrmExerciseUpdate,
   '/crm/images': RouteId.CrmImageList,
+  '/crm/scripts': RouteId.CrmScripts,
   '/api': RouteId.Api,
   '/api/$': RouteId.ApiAll,
   '/swagger': RouteId.Swagger,

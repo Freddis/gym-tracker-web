@@ -1,4 +1,4 @@
-import {FC, useContext, useState} from 'react';
+import {FC, useContext, useEffect, useState} from 'react';
 import {AppBlock} from '../../../../common/components/atoms/AppBlock/AppBlock';
 import {AppButton} from '../../../../common/components/atoms/AppButton/AppButton';
 import {AppInputError} from '../../../../common/components/atoms/AppInputError/AppInputError';
@@ -13,6 +13,7 @@ import {api} from '../../../../common/utils/api';
 import {useNavigate} from '@tanstack/react-router';
 import {AuthContext} from '../../../../common/components/layout/AuthProvider/AuthContext';
 import {PageContainer} from '../../../../common/components/layout/PageContainer/PageContainer';
+import {route, RouteId} from '../../../../common/utils/route';
 
 export const LoginPage: FC = () => {
   const {t, i18n} = useAppPartialTranslation((x) => x.pages.auth.login);
@@ -23,11 +24,15 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const {getError, showToastsAndSetErrors} = useResponseErrors();
   const toasts = useToasts();
-  if (auth.user) {
+  useEffect(() => {
+    if (!auth.user) {
+      return;
+    }
     navigate({
-      to: '/crm/users',
+      to: route(RouteId.CrmUsers),
+      replace: true,
     });
-  }
+  }, [auth.user]);
   const loginButtonPress = async () => {
     setLoggingIn(true);
     setTimeout(login, 0);
@@ -46,7 +51,7 @@ export const LoginPage: FC = () => {
     }
     auth.login(result.data);
     toasts.addSuccess(t(i18n.toasts.loginSuccess));
-    navigate({to: '/crm/users'});
+    navigate({to: route(RouteId.CrmUsers)});
     return;
   };
 

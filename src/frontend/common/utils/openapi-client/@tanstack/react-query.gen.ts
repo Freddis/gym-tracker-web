@@ -64,6 +64,8 @@ import {
   getCrmExercises,
   getCrmImages,
   deleteCrmImagesById,
+  getCrmScripts,
+  postCrmScriptsRun,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -232,6 +234,10 @@ import type {
   DeleteCrmImagesByIdData,
   DeleteCrmImagesByIdError,
   DeleteCrmImagesByIdResponse,
+  GetCrmScriptsData,
+  PostCrmScriptsRunData,
+  PostCrmScriptsRunError,
+  PostCrmScriptsRunResponse,
 } from "../types.gen";
 import type { AxiosError } from "axios";
 import { client as _heyApiClient } from "../client.gen";
@@ -3011,6 +3017,78 @@ export const deleteCrmImagesByIdMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await deleteCrmImagesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getCrmScriptsQueryKey = (options?: Options<GetCrmScriptsData>) =>
+  createQueryKey("getCrmScripts", options);
+
+/**
+ * Returns available backoffice scripts
+ */
+export const getCrmScriptsOptions = (options?: Options<GetCrmScriptsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCrmScripts({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCrmScriptsQueryKey(options),
+  });
+};
+
+export const postCrmScriptsRunQueryKey = (
+  options?: Options<PostCrmScriptsRunData>,
+) => createQueryKey("postCrmScriptsRun", options);
+
+/**
+ * Runs a backoffice script
+ */
+export const postCrmScriptsRunOptions = (
+  options?: Options<PostCrmScriptsRunData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postCrmScriptsRun({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postCrmScriptsRunQueryKey(options),
+  });
+};
+
+/**
+ * Runs a backoffice script
+ */
+export const postCrmScriptsRunMutation = (
+  options?: Partial<Options<PostCrmScriptsRunData>>,
+): UseMutationOptions<
+  PostCrmScriptsRunResponse,
+  AxiosError<PostCrmScriptsRunError>,
+  Options<PostCrmScriptsRunData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostCrmScriptsRunResponse,
+    AxiosError<PostCrmScriptsRunError>,
+    Options<PostCrmScriptsRunData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postCrmScriptsRun({
         ...options,
         ...localOptions,
         throwOnError: true,

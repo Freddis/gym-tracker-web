@@ -26,6 +26,7 @@ export const CrmSideMenu: FC = () => {
         <CrmSideMenuLink to={route(RouteId.CrmTranslationList)}>Translations</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.CrmImageList)}>Images</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.CrmManagers)}>Managers</CrmSideMenuLink>
+        <CrmSideMenuLink to={route(RouteId.CrmScripts)}>Scripts</CrmSideMenuLink>
         <CrmSideMenuLink to={route(RouteId.Crm)} onClick={logout}>Logout</CrmSideMenuLink>
       </div>
     </div>

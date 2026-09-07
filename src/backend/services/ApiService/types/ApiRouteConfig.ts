@@ -129,6 +129,7 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
         workoutType: await this.factory.workoutType(),
         translation: await this.factory.translation(),
         food: await this.factory.food(),
+        script: await this.factory.script(),
       },
     };
     return services;

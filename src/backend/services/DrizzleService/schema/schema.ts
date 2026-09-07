@@ -13,6 +13,7 @@ import {
   AnyPgColumn,
   doublePrecision,
   bigint,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 import {array, nativeEnum} from 'zod';
 import {Muscle} from '../../../types/Muscle';
@@ -294,6 +295,15 @@ export const images = gymTracker.table('images', {
   updatedAt: timestamp({withTimezone: true, mode: 'date'}),
   deletedAt: timestamp({withTimezone: true, mode: 'date'}),
 });
+
+export const exerciseImages = gymTracker.table('exercise_images', {
+  imageId: uuid().notNull().references(() => images.id, {onDelete: 'cascade'}),
+  exerciseId: uuid().notNull().references(() => exercises.id, {onDelete: 'cascade'}),
+},
+(table) => [
+  primaryKey({columns: [table.imageId, table.exerciseId]}),
+  index().on(table.exerciseId),
+]);
 
 export const managers = gymTracker.table('managers', {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),

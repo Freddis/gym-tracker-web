@@ -5,4 +5,5 @@ export enum RouteTag {
   Profile = 'Profile',
   CrmImages = 'Crm Images',
   CrmAuth = 'Crm Auth',
+  CrmScripts = 'Crm Scripts',
 }

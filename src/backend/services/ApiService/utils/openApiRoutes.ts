@@ -62,6 +62,8 @@ import {getOwnProfile} from '../api/profile/getOwnProfile';
 import {upsertFoods} from '../api/food/upsertFoods';
 import {scanBarcode} from '../api/food/scanBarcode';
 import {findFood} from '../api/food/findFood';
+import {getScripts} from '../api/scripts/getScripts';
+import {runScript} from '../api/scripts/runScript';
 
 export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/auth': [
@@ -161,5 +163,9 @@ export const openApiRoutes: OpenApiRouteMap<ApiRouteType> = {
   '/crm/images': [
     getManagedImages,
     deleteManagedImage,
+  ],
+  '/crm/scripts': [
+    getScripts,
+    runScript,
   ],
 };

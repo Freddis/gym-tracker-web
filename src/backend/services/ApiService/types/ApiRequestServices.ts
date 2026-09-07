@@ -11,6 +11,7 @@ import {WorkoutTypeService} from '../../WorkoutTypeService/WorkoutTypeService';
 import {TranslationService} from '../../TranslationService/TranslationService';
 import {FoodService} from '../../FoodService/FoodService';
 import {FeedEntryService} from '../../FeedEntryService/FeedEntryService';
+import {ScriptService} from '../../ScriptService/ScriptService';
 export interface ApiRequestServices {
   auth: AuthService
   models: {
@@ -26,5 +27,6 @@ export interface ApiRequestServices {
     user: UserService
     manager: ManagerService
     translation: TranslationService
+    script: ScriptService
   }
 }

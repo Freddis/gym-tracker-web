@@ -36,6 +36,10 @@ import {FeedEntryService} from '../../services/FeedEntryService/FeedEntryService
 import {FatsecretApiClient} from '../../services/FatsecretService/services/FatsecretApiClient/FatsecretApiClient';
 import {CachingFatsecretApiClient} from '../../services/FatsecretService/services/CachingFatsecretApiClient/CachingFatsecretApiClient';
 import {Logger} from '../Logger/Logger';
+import {ScriptService} from '../../services/ScriptService/ScriptService';
+import {TransferExerciseImages} from '../../services/ScriptService/scripts/TransferExerciseImages/TransferExerciseImages';
+import {ScriptType} from '../../services/ScriptService/types/ScriptType';
+
 export class GlobalServiceFactory {
   protected drizzleCached?: DrizzleService;
   protected prodDrizzleCached?: DrizzleService;
@@ -251,5 +255,12 @@ export class GlobalServiceFactory {
   }
   async c0r(): Promise<C0rService> {
     return new C0rService(this.config.services.c0r);
+  }
+
+  async script(): Promise<ScriptService> {
+    const drizzle = await this.drizzle();
+    return new ScriptService({
+      [ScriptType.TransferExerciseImages]: new TransferExerciseImages(drizzle),
+    });
   }
 }
