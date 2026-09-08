@@ -3584,6 +3584,21 @@ export type Translation = {
 };
 
 /**
+ * Type of object this image attaches to
+ */
+export type ImageType = "Exercise" | "UserProfile" | "Entry" | "Food";
+
+/**
+ * Type of object this image attaches to
+ */
+export const ImageType = {
+  EXERCISE: "Exercise",
+  USER_PROFILE: "UserProfile",
+  ENTRY: "Entry",
+  FOOD: "Food",
+} as const;
+
+/**
  * Image record
  */
 export type ManagedImage = {
@@ -3613,21 +3628,6 @@ export type ManagedImage = {
    */
   deletedAt: Date | null;
 };
-
-/**
- * Type of object this image attaches to
- */
-export type ImageType = "Exercise" | "UserProfile" | "Entry" | "Food";
-
-/**
- * Type of object this image attaches to
- */
-export const ImageType = {
-  EXERCISE: "Exercise",
-  USER_PROFILE: "UserProfile",
-  ENTRY: "Entry",
-  FOOD: "Food",
-} as const;
 
 /**
  * Available backoffice script
@@ -12125,6 +12125,10 @@ export type GetCrmImagesData = {
      * Filters exercises by name
      */
     search?: string;
+    /**
+     * Filters images by the type of object they attach to
+     */
+    imageType?: ImageType;
   };
   url: "/crm/images";
 };

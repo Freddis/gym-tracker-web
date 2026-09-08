@@ -1,6 +1,10 @@
+import {randomUUID} from 'crypto';
+import {ImageRow} from '../../../services/DrizzleService/types/ImageRow';
+import {ManagerRow} from '../../../services/DrizzleService/types/ManagerRow';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
 import {Country} from '../../../types/Country';
 import {Gender} from '../../../types/Gender';
+import {ImageType} from '../../../types/ImageType';
 import {Logger} from '../../Logger/Logger';
 import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 import {Exercise} from 'src/backend/services/ExerciseService/types/Exercise';
@@ -32,6 +36,43 @@ export class SeedUtils {
       throw new Error("User wasn't found");
     }
     return user;
+  }
+
+  static async createManager(data?: Partial<{name: string, email:string, password: string}>): Promise<ManagerRow> {
+    const factory = BusinessUtils.getFactory();
+    const auth = await factory.auth();
+    const managerService = await factory.manager();
+    const tag = this.counter++;
+    const result = await auth.registerManager({
+      name: `Manager Manager ${tag}`,
+      email: `manager${tag}@test.com`,
+      password: this.getDefaultPassword(),
+      ...data,
+    });
+    const manager = await managerService.getById(result.id);
+    if (!manager) {
+      throw new Error("Manager wasn't found");
+    }
+    return manager;
+  }
+
+  static async createImage(image: Partial<ImageRow> = {}): Promise<ImageRow> {
+    const factory = BusinessUtils.getFactory();
+    const drizzle = await factory.drizzle();
+    const db = await drizzle.getDb();
+    const tag = this.counter++;
+    const rows = await db.insert(db._.fullSchema.images).values({
+      id: randomUUID(),
+      url: `https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/image-${tag}.jpg`,
+      imageType: ImageType.Exercise,
+      createdAt: new Date(),
+      ...image,
+    }).returning();
+    const row = rows[0];
+    if (!row) {
+      throw new Error("Image wasn't saved");
+    }
+    return row;
   }
 
   static async createExercise(exercise: Partial<Exercise> = {}): Promise<Exercise> {
@@ -70,6 +111,7 @@ export class SeedUtils {
       db._.fullSchema.workouts,
       db._.fullSchema.muscles,
       db._.fullSchema.exercises,
+      db._.fullSchema.images,
       db._.fullSchema.users,
       db._.fullSchema.managers,
     ];

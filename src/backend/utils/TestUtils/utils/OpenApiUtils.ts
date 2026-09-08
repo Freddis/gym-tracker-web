@@ -1,5 +1,6 @@
 
 import {OpenApiMethod} from 'snap-on-openapi';
+import {ManagerRow} from '../../../services/DrizzleService/types/ManagerRow';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
 import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 
@@ -33,6 +34,11 @@ export class OpenApiUtils {
     return response;
   }
 
+  static async getWithManager(route: string, manager: ManagerRow): Promise<OpenApiResponse> {
+    const response = await this.sendRequest(route, OpenApiMethod.GET, manager);
+    return response;
+  }
+
   static async put(route: string, user: UserRow, data?: object): Promise<OpenApiResponse> {
     const response = await this.sendRequest(route, OpenApiMethod.PUT, user, data);
     return response;
@@ -59,7 +65,7 @@ export class OpenApiUtils {
   protected static async sendRequest(
     route: string,
     method: OpenApiMethod,
-    user?: UserRow,
+    user?: UserRow | ManagerRow,
     data?: object,
     headers?: Record<string, string>,
   ): Promise<OpenApiResponse> {

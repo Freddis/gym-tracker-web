@@ -14,7 +14,7 @@ export const managedImageValidatorDescriptions: OpenApiDescriptions<ManagedImage
   deletedAt: 'Date of deletion. Deleted exercises are not accessible to users.',
   imageType: 'Type of object this image attaches to',
 };
-const imageTypeValidator = nativeEnum(ImageType).openapi({ref: 'Image Type', description: 'Type of object this image attaches to'});
+export const imageTypeValidator = nativeEnum(ImageType).openapi({ref: 'Image Type', description: 'Type of object this image attaches to'});
 const validator = imageRowValidator.extend({
   imageType: imageTypeValidator,
 });

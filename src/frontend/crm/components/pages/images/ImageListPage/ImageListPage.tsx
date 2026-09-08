@@ -3,7 +3,7 @@ import {AppBlock} from '../../../../../common/components/atoms/AppBlock/AppBlock
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {keepPreviousData, useQuery, useQueryClient} from '@tanstack/react-query';
 import {getRouteApi} from '@tanstack/react-router';
-import {deleteCrmImagesById, getCrmImages, Image} from '../../../../../common/utils/openapi-client';
+import {deleteCrmImagesById, getCrmImages, Image, ImageType} from '../../../../../common/utils/openapi-client';
 import {AppSpinner} from '../../../../../common/components/atoms/AppSpinner/AppSpinner';
 import {Pagination} from '../../../../../common/components/atoms/Pagination/Pagination';
 import {routeId, RouteId} from '../../../../../common/utils/route';
@@ -11,6 +11,8 @@ import {CrmTable} from '../../../elements/CrmTable/CrmTable';
 import {CrmTd} from '../../../elements/CrmTable/CrmTd';
 import {AppImage} from '../../../../../common/components/atoms/AppImage/AppImage';
 import {AppSearchInput} from '../../../../../common/components/atoms/AppSearchInput/AppSearchInput';
+import {AppSelect} from '../../../../../common/components/atoms/AppSelect/AppSelect';
+import {SelectValue} from '../../../../../common/components/atoms/AppSelect/types/SelectValue';
 import {AppLink} from '../../../../../common/components/atoms/AppLink/AppLink';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {FaXmark} from 'react-icons/fa6';
@@ -30,11 +32,16 @@ export const ImageListPage:FC = () => {
       query: {
         page: searchParams.page,
         search: searchParams.search,
+        imageType: searchParams.imageType,
       },
     }),
     queryKey: ['images', searchParams],
     placeholderData: keepPreviousData,
   });
+  const imageTypes: SelectValue<ImageType | ''>[] = [
+    {value: '', label: 'All Types'},
+    ...Object.values(ImageType).map((type) => ({value: type, label: type})),
+  ];
 
   const onPageChanged = (page: number) => {
     navigate({
@@ -47,7 +54,17 @@ export const ImageListPage:FC = () => {
   const onSearch = (value: string| null) => {
     navigate({
       search: {
+        ...searchParams,
         search: value?.trim() ?? undefined,
+        page: 1,
+      },
+    });
+  };
+  const onImageTypeChange = (value?: ImageType | '') => {
+    navigate({
+      search: {
+        ...searchParams,
+        imageType: value === '' ? undefined : value,
         page: 1,
       },
     });
@@ -65,11 +82,6 @@ export const ImageListPage:FC = () => {
     await client.invalidateQueries({queryKey: ['images']});
     toasts.addSuccess('Exercise successfully updated');
   };
-  const fixImageUrl = (url: string):string => {
-    const parts = url.split('/');
-    parts[parts.length - 1] = encodeURIComponent(parts[parts.length - 1] ?? '');
-    return parts.join('/');
-  };
   return (
   <>
     <AppBlockHeader className="text-left">Image List</AppBlockHeader>
@@ -79,8 +91,13 @@ export const ImageListPage:FC = () => {
     )}
     {response.data && !response.data.error && (
       <AppBlock className="w-full table-fixed">
-        <div className="max-w-100 mb-5" >
-          <AppSearchInput debounce={500} placeholder="Search" onSearch={onSearch} value={searchParams.search} />
+        <div className="flex items-center mb-5 gap-5">
+          <div className="max-w-100" >
+            <AppSearchInput debounce={500} placeholder="Search" onSearch={onSearch} value={searchParams.search} />
+          </div>
+          <div className="w-40" >
+            <AppSelect options={imageTypes} value={searchParams.imageType ?? ''} onChange={onImageTypeChange} />
+          </div>
         </div>
         <CrmTable className="w-full table">
           <thead >
@@ -101,12 +118,12 @@ export const ImageListPage:FC = () => {
                     {row.id}
                 </CrmTd>
                 <CrmTd className="min-w-30">
-                  <AppImage src={fixImageUrl(row.url)}/>
+                  <AppImage src={row.url}/>
                 </CrmTd>
                 <CrmTd>{row.userId ?? 'None'}</CrmTd>
                 <CrmTd className="max-w-100 break-all">
                   <AppLink href={row.url} className="text-on-main">
-                    {fixImageUrl(row.url)}
+                    {row.url}
                   </AppLink>
                 </CrmTd>
                 <CrmTd>{row.createdAt.toISOString()}</CrmTd>
