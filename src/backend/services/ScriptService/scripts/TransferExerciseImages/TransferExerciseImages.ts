@@ -1,16 +1,19 @@
 import {DrizzleService} from '../../../DrizzleService/DrizzleService';
 import {Logger} from '../../../../utils/Logger/Logger';
 import {ImageType} from '../../../../types/ImageType';
+import {ImageService} from '../../../ImageService/ImageService';
 import {IScript} from '../../types/IScript';
 import {ScriptType} from '../../types/ScriptType';
 
 export class TransferExerciseImages implements IScript<ScriptType.TransferExerciseImages> {
   protected drizzle: DrizzleService;
+  protected images: ImageService;
   protected logger: Logger;
   protected batchSize: number;
 
-  constructor(drizzle: DrizzleService, batchSize = 100) {
+  constructor(drizzle: DrizzleService, images: ImageService, batchSize = 100) {
     this.drizzle = drizzle;
+    this.images = images;
     this.batchSize = batchSize;
     this.logger = new Logger(TransferExerciseImages.name);
   }
@@ -54,31 +57,27 @@ export class TransferExerciseImages implements IScript<ScriptType.TransferExerci
         continue;
       }
 
-      const matchingImages = await db.query.images.findMany({
-        where: (t, op) => op.and(
-          op.eq(t.imageType, ImageType.Exercise),
-          op.inArray(t.url, urls),
-        ),
-      });
-      const imageIdByUrl = new Map(matchingImages.map((image) => [image.url, image.id]));
-
       const seen = new Set<string>();
       const rows: typeof schema.exerciseImages.$inferInsert[] = [];
       for (const exercise of exercises) {
         for (const url of exercise.images) {
-          const imageId = imageIdByUrl.get(url);
-          if (!imageId) {
+          if (url.length === 0) {
             skipped += 1;
             continue;
           }
-          const key = `${exercise.id}:${imageId}`;
+          const image = await this.images.getImageByUrl(url, ImageType.Exercise);
+          if (!image) {
+            skipped += 1;
+            continue;
+          }
+          const key = `${exercise.id}:${image.id}`;
           if (seen.has(key)) {
             continue;
           }
           seen.add(key);
           rows.push({
             exerciseId: exercise.id,
-            imageId,
+            imageId: image.id,
           });
         }
       }

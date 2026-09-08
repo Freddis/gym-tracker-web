@@ -18,6 +18,11 @@ export class ImageService implements IImageService<Image, string, ImageFilter> {
     return image ? this.remapOne(image) : null;
   }
 
+  async getImageByUrl(url: string, imageType?: ImageType): Promise<Image | null> {
+    const image = await this.managedImageService.getImageByUrl(url, imageType);
+    return image ? this.remapOne(image) : null;
+  }
+
   generateUrl(name: string): string {
     return this.managedImageService.generateUrl(name);
   }

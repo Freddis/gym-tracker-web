@@ -260,7 +260,7 @@ export class GlobalServiceFactory {
   async script(): Promise<ScriptService> {
     const drizzle = await this.drizzle();
     return new ScriptService({
-      [ScriptType.TransferExerciseImages]: new TransferExerciseImages(drizzle),
+      [ScriptType.TransferExerciseImages]: new TransferExerciseImages(drizzle, await this.image()),
     });
   }
 }

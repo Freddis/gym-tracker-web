@@ -8,7 +8,8 @@ import {TransferExerciseImages} from './TransferExerciseImages';
 describe(TransferExerciseImages.name, () => {
   test('Exposes type and description', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
-    const script = new TransferExerciseImages(drizzle);
+    const images = await TestUtils.business.getFactory().image();
+    const script = new TransferExerciseImages(drizzle, images);
 
     expect(script.getType()).toBe(ScriptType.TransferExerciseImages);
     expect(script.getDescription()).toContain('exercise_images');
@@ -16,6 +17,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Links exercises to matching Exercise images by URL', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const url = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -31,7 +33,7 @@ describe(TransferExerciseImages.name, () => {
       images: [url],
     });
 
-    const result = await new TransferExerciseImages(drizzle).run();
+    const result = await new TransferExerciseImages(drizzle, images).run();
     const links = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, exercise.id),
     });
@@ -43,8 +45,36 @@ describe(TransferExerciseImages.name, () => {
     expect(links[0]?.exerciseId).toBe(exercise.id);
   });
 
+  test('Links encoded exercise URLs to raw image URLs', async () => {
+    const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
+    const db = await drizzle.getDb();
+    const schema = drizzle.getSchema();
+    const fileName = `Stretch+-+Gastrocnemius+(Standing_Toe+Flex)+${randomUUID()}-b.jpg`;
+    const insertedImages = await db.insert(schema.images).values({
+      id: randomUUID(),
+      url: `https://test.example/exercise-images/${fileName}`,
+      imageType: ImageType.Exercise,
+      createdAt: new Date(),
+    }).returning();
+    const image = insertedImages[0];
+    const exercise = await TestUtils.seed.createExercise({
+      name: 'Transfer images encoded url',
+      images: [`https://test.example/exercise-images/${encodeURIComponent(fileName)}`],
+    });
+
+    await new TransferExerciseImages(drizzle, images).run();
+    const links = await db.query.exerciseImages.findMany({
+      where: (t, op) => op.eq(t.exerciseId, exercise.id),
+    });
+
+    expect(links).toHaveLength(1);
+    expect(links[0]?.imageId).toBe(image?.id);
+  });
+
   test('Does not link URLs that have no matching Exercise image', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const matchedUrl = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -61,7 +91,7 @@ describe(TransferExerciseImages.name, () => {
       images: [matchedUrl, unmatchedUrl],
     });
 
-    await new TransferExerciseImages(drizzle).run();
+    await new TransferExerciseImages(drizzle, images).run();
     const links = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, exercise.id),
     });
@@ -72,6 +102,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Ignores images that are not ImageType.Exercise', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const url = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -86,7 +117,7 @@ describe(TransferExerciseImages.name, () => {
       images: [url],
     });
 
-    await new TransferExerciseImages(drizzle).run();
+    await new TransferExerciseImages(drizzle, images).run();
     const links = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, exercise.id),
     });
@@ -96,13 +127,14 @@ describe(TransferExerciseImages.name, () => {
 
   test('Skips empty image URLs', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const exercise = await TestUtils.seed.createExercise({
       name: 'Transfer images empty urls',
       images: ['', ''],
     });
 
-    const result = await new TransferExerciseImages(drizzle).run();
+    const result = await new TransferExerciseImages(drizzle, images).run();
     const links = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, exercise.id),
     });
@@ -113,6 +145,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Deduplicates the same image on one exercise', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const url = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -128,7 +161,7 @@ describe(TransferExerciseImages.name, () => {
       images: [url, url],
     });
 
-    await new TransferExerciseImages(drizzle).run();
+    await new TransferExerciseImages(drizzle, images).run();
     const links = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, exercise.id),
     });
@@ -139,6 +172,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Shares one image across exercises with the same URL', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const url = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -158,7 +192,7 @@ describe(TransferExerciseImages.name, () => {
       images: [url],
     });
 
-    await new TransferExerciseImages(drizzle).run();
+    await new TransferExerciseImages(drizzle, images).run();
     const firstLinks = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, first.id),
     });
@@ -174,6 +208,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Does not duplicate links when run twice', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const url = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -188,7 +223,7 @@ describe(TransferExerciseImages.name, () => {
       name: 'Transfer images idempotent',
       images: [url],
     });
-    const script = new TransferExerciseImages(drizzle);
+    const script = new TransferExerciseImages(drizzle, images);
 
     await script.run();
     await script.run();
@@ -202,6 +237,7 @@ describe(TransferExerciseImages.name, () => {
 
   test('Processes exercises across multiple batches', async () => {
     const drizzle = await TestUtils.business.getFactory().drizzle();
+    const images = await TestUtils.business.getFactory().image();
     const db = await drizzle.getDb();
     const schema = drizzle.getSchema();
     const firstUrl = `https://test.example/exercise-images/${randomUUID()}.jpg`;
@@ -229,7 +265,7 @@ describe(TransferExerciseImages.name, () => {
       images: [secondUrl],
     });
 
-    await new TransferExerciseImages(drizzle, 1).run();
+    await new TransferExerciseImages(drizzle, images, 1).run();
     const firstLinks = await db.query.exerciseImages.findMany({
       where: (t, op) => op.eq(t.exerciseId, first.id),
     });
