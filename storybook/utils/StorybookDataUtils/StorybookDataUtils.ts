@@ -20,18 +20,17 @@ import {
   CalorieGoal,
   GoalType,
 } from '../../../src/frontend/common/utils/openapi-client';
-import {adduction} from './data/adduction';
-import {barbellShrug} from './data/barbellShrug';
-import {barbellSquat} from './data/barbellSquat';
-import {benchPress} from './data/benchPress';
-import {calfRaise} from './data/calfRaise';
-import {deadLift} from './data/deadLift';
-import {legExtension} from './data/legExtension';
-import {pullUp} from './data/pullUp';
 import {StorybookFoodUtils} from './StorybookFoodUtils';
 
 export class StorybookDataUtils {
   static food = StorybookFoodUtils;
+
+  static toExerciseImages(...urls: string[]): Image[] {
+    return urls.map((url, index) => ({
+      id: `${index}`,
+      url,
+    }));
+  }
 
   static getImage(): Image {
     const image: Image = {
@@ -639,3 +638,13 @@ export class StorybookDataUtils {
     return workout;
   }
 }
+
+const {adduction} = await import('./data/adduction');
+const {barbellShrug} = await import('./data/barbellShrug');
+const {barbellSquat} = await import('./data/barbellSquat');
+const {benchPress} = await import('./data/benchPress');
+const {calfRaise} = await import('./data/calfRaise');
+const {deadLift} = await import('./data/deadLift');
+const {legExtension} = await import('./data/legExtension');
+const {pullUp} = await import('./data/pullUp');
+

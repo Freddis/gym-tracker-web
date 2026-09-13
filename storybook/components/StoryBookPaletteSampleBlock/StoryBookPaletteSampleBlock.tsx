@@ -60,7 +60,7 @@ export const StoryBookPaletteSampleBlock: FC = () => {
             {exercises.map((row) => (
               <div>
                 <div className="pb-5 flex flex-row">
-                  <img className="w-25 h-25 rounded-md object-cover " key={row.exercise.images[0]} src={row.exercise.images[0]}/>
+                  <img className="w-25 h-25 rounded-md object-cover " key={row.exercise.images[0]?.id} src={row.exercise.images[0]?.url}/>
                   <div className="pl-5 grow">
                     <div className="flex flex-row">
                       <b>{row.exercise.name}</b>

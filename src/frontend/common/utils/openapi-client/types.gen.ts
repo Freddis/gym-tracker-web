@@ -629,7 +629,7 @@ export type Exercise = {
   /**
    * List of images for this exercise
    */
-  images: Array<string>;
+  images: Array<Image>;
   /**
    * Types of the parameters, such as: weight, reps, duration
    */
@@ -702,7 +702,7 @@ export type Exercise = {
     /**
      * List of images for this exercise
      */
-    images: Array<string>;
+    images: Array<Image>;
     /**
      * Types of the parameters, such as: weight, reps, duration
      */
@@ -921,7 +921,7 @@ export type ExerciseUpsertDto = {
   /**
    * List of images for this exercise
    */
-  images: Array<string>;
+  images: Array<ImageUpsertDto>;
   /**
    * Types of the parameters, such as: weight, reps, duration
    */
@@ -959,6 +959,24 @@ export type ExerciseUpsertDto = {
      */
     secondary: Array<Muscle>;
   };
+};
+
+/**
+ * Image to upsert
+ */
+export type ImageUpsertDto = {
+  /**
+   * Id of the image
+   */
+  id: string;
+  /**
+   * Whether the image is deleted
+   */
+  isDeleted?: boolean;
+  /**
+   * Base64 encoded image data
+   */
+  data?: string;
 };
 
 export type WorkoutUpdateDto = {
@@ -2277,13 +2295,6 @@ export type WorkoutEntryUpsertDto = {
    * Image
    */
   image?: ImageUpsertDto | null;
-};
-
-/**
- * Image to upsert
- */
-export type ImageUpsertDto = {
-  data: string;
 };
 
 export type WeightEntryUpsertDto = {

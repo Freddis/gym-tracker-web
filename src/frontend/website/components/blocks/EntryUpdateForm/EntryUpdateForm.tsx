@@ -58,7 +58,11 @@ export const EntryUpdateForm = forwardRef<FormSubmitRef, EntryUpdateFormProps>((
           <InputRow>
             <AppLabel>{t.p((x) => x.fields.image)}</AppLabel>
             <div className="max-w-full">
-              <AppImageInput url={props.entry.image?.url} onUpdate={(i) => setImage({data: i})} onRemove={() => setImage(null)} />
+              <AppImageInput
+                url={props.entry.image?.url}
+                onUpdate={(i) => setImage({id: crypto.randomUUID(), data: i})}
+                onRemove={() => setImage(null)}
+              />
             </div>
           </InputRow>
           <InputRow>

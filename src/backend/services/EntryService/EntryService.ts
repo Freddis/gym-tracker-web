@@ -373,8 +373,8 @@ export class EntryService {
         data[key] = upsertResult.id;
       }
 
-      if (item.image) {
-        image = await this.imageService.createFromBase64(item.image.data, randomUUID(), ImageType.Entry);
+      if (item.image?.data) {
+        image = await this.imageService.createFromBase64(item.image.data, item.image.id, ImageType.Entry);
         data.imageId = image.id;
       }
       if (item.image === null) {

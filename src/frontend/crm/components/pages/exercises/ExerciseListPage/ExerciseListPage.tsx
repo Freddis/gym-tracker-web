@@ -145,7 +145,7 @@ export const ExerciseListPage:FC = () => {
                 </CrmTd>
                 <CrmTd className="min-w-30 shrink-0">
                   <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: row.id.toString()}} className="text-on-main">
-                    <AppImage src={row.images[0]}/>
+                    <AppImage src={row.images[0]?.url}/>
                   </RouteLink>
                 </CrmTd>
                 <CrmTd className="min-w-10">

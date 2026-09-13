@@ -9,7 +9,9 @@ import {BaseEntry} from './Entry';
 import {EntryType} from './EntryType';
 
 export interface ImageUpsertDto {
-  data: string
+  id: string
+  data?: string
+  isDeleted?: boolean
 }
 interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, | 'user'| 'image'> {
   image?: ImageUpsertDto | null

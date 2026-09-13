@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const calfRaise: Exercise = {
   id: '8dd226dd-d224-4ad6-9194-972f0f3a5c46',
@@ -8,10 +9,10 @@ export const calfRaise: Exercise = {
     <2>Tiptoe so that your toes point away from you. Hold for one second. Return to starting position.`,
   difficulty: 0,
   equipment: 'plate loaded',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Plate%2BLoaded%2BCalf%2BRaise%2B(Seated)-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Plate%2BLoaded%2BCalf%2BRaise%2B(Seated)-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,

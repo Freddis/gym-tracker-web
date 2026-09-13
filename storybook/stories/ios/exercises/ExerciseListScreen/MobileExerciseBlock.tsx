@@ -22,7 +22,7 @@ export const MobileExerciseBlock: FC<{item: Exercise}> = (props) => {
           <b>{item.name}</b>
         </AppLink>
         <div className="px-3 mt-2 flex flex-col sm:flex-row gap-2 items-start">
-          <AppImage src={item.images[0]} className="md:mt-1 w-15 h-15 object-cover" />
+          <AppImage src={item.images[0]?.url} className="md:mt-1 w-15 h-15 object-cover" />
 
           <div className="grow">
             <div className="flex flex-col sm:flex-row sm:items-end">
@@ -66,7 +66,7 @@ export const MobileExerciseBlock: FC<{item: Exercise}> = (props) => {
               <div>
                 <div className="border-b-1 border-on-surface/20 pb-2 mb-2 mx-3" />
                 <div className="px-3 flex flex-col sm:flex-row gap-2 items-start">
-                  <AppImage src={row.images[0]} className="md:mt-1 w-15 h-15 object-cover" />
+                  <AppImage src={row.images[0]?.url} className="md:mt-1 w-15 h-15 object-cover" />
                   <div className="grow">
                     <div className="flex flex-col sm:flex-row sm:items-end">
                       <div className="text-base grow">

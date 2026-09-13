@@ -1,5 +1,3 @@
-import {randomUUID} from 'crypto';
-import {ImageRow} from '../../../services/DrizzleService/types/ImageRow';
 import {ManagerRow} from '../../../services/DrizzleService/types/ManagerRow';
 import {UserRow} from '../../../services/DrizzleService/types/UserRow';
 import {Country} from '../../../types/Country';
@@ -8,6 +6,8 @@ import {ImageType} from '../../../types/ImageType';
 import {Logger} from '../../Logger/Logger';
 import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 import {Exercise} from 'src/backend/services/ExerciseService/types/Exercise';
+import {Image} from 'src/backend/services/ImageService/types/Image';
+import {randomUUID} from 'node:crypto';
 export class SeedUtils {
   protected static counter = new Date().getTime();
   protected static defaultPassword = '1q2w3e4r';
@@ -56,23 +56,25 @@ export class SeedUtils {
     return manager;
   }
 
-  static async createImage(image: Partial<ImageRow> = {}): Promise<ImageRow> {
+
+  static async createImage(image: Partial<Image> & {imageType?: ImageType} = {}): Promise<Image> {
     const factory = BusinessUtils.getFactory();
     const drizzle = await factory.drizzle();
     const db = await drizzle.getDb();
-    const tag = this.counter++;
-    const rows = await db.insert(db._.fullSchema.images).values({
-      id: randomUUID(),
-      url: `https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/image-${tag}.jpg`,
-      imageType: ImageType.Exercise,
+    const result = await db.insert(db._.fullSchema.images).values({
+      id: image.id ?? randomUUID(),
+      url: image.url ?? `https://example.com/${randomUUID()}.jpg`,
+      imageType: image.imageType ?? ImageType.Exercise,
       createdAt: new Date(),
-      ...image,
     }).returning();
-    const row = rows[0];
+    const row = result[0];
     if (!row) {
-      throw new Error("Image wasn't saved");
+      throw new Error("Image wasn't found");
     }
-    return row;
+    return {
+      id: row.id,
+      url: row.url,
+    };
   }
 
   static async createExercise(exercise: Partial<Exercise> = {}): Promise<Exercise> {
@@ -111,6 +113,7 @@ export class SeedUtils {
       db._.fullSchema.workoutExercises,
       db._.fullSchema.workouts,
       db._.fullSchema.muscles,
+      db._.fullSchema.exerciseImages,
       db._.fullSchema.exercises,
       db._.fullSchema.images,
       db._.fullSchema.users,

@@ -13,6 +13,7 @@ import {EntityService} from '../../types/ModelService/types/EntityService';
 import {ActionError} from '../ApiService/errors/ActionError';
 import {ActionErrorCode} from '../ApiService/types/ActionErrorCode';
 import {ImageService} from '../ImageService/ImageService';
+import {Image} from '../ImageService/types/Image';
 import {ExerciseMuscleRow} from '../DrizzleService/types/ExerciseMuscleRow';
 import {NewModel} from '../../types/NewModel';
 import {ManagedExerciseUpdateDto} from './types/MangagedExerciseUpdateDto';
@@ -60,8 +61,10 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
   async create(data: Omit<Exercise, 'id' | 'variations' | 'createdAt' | 'updatedAt'>) {
     const db = await this.drizzle.getDb();
     const dbSchema = this.drizzle.getSchema();
+    const {images, muscles, ...row} = data;
     const entity: typeof dbSchema.exercises.$inferInsert = {
-      ...data,
+      ...row,
+      images: [],
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: null,
@@ -73,35 +76,39 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
       if (!firstRow) {
         throw new Error('Unable to get inserted exercise');
       }
-      if (data.muscles.primary.length > 0 || data.muscles.secondary.length > 0) {
-        const muscles: typeof dbSchema.muscles.$inferInsert[] = [];
-        muscles.push(
-          ...data.muscles.primary.map((x) => ({
+      if (muscles.primary.length > 0 || muscles.secondary.length > 0) {
+        const muscleRows: typeof dbSchema.muscles.$inferInsert[] = [];
+        muscleRows.push(
+          ...muscles.primary.map((x) => ({
             muscle: x,
             createdAt: new Date(),
             isPrimary: true,
             exerciseId: firstRow.id,
           })),
-          ...data.muscles.secondary.map((x) => ({
+          ...muscles.secondary.map((x) => ({
             muscle: x,
             createdAt: new Date(),
             isPrimary: false,
             exerciseId: firstRow.id,
           }))
         );
-        await db.insert(dbSchema.muscles).values(muscles);
+        await db.insert(dbSchema.muscles).values(muscleRows);
+      }
+      if (images.length > 0) {
+        await db.insert(dbSchema.exerciseImages).values(
+          images.map((image) => ({
+            exerciseId: firstRow.id,
+            imageId: image.id,
+          }))
+        );
       }
       return firstRow;
     });
 
-    const exercise: Exercise = {
-      ...firstRow,
-      variations: [],
-      muscles: {
-        primary: [],
-        secondary: [],
-      },
-    };
+    const exercise = await this.getById(firstRow.id);
+    if (!exercise) {
+      throw new Error('Unable to get inserted exercise');
+    }
     return exercise;
   }
 
@@ -126,15 +133,21 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     const db = await this.drizzle.getDb();
     await db.transaction(async (db) => {
 
+      const dbSchema = this.drizzle.getSchema();
       if (data.image) {
         const now = new Date().getTime().toString();
         const mils = now.substring(now.length - 5);
         const imageName = data.name?.trim() ?? existing.name.trim();
         const name = `${imageName}${mils}.jpg`;
         const image = await this.images.createFromBase64(data.image, name, ImageType.Exercise);
-        update.images = [image.url];
+        await db.delete(dbSchema.exerciseImages).where(
+          eq(dbSchema.exerciseImages.exerciseId, id)
+        );
+        await db.insert(dbSchema.exerciseImages).values({
+          exerciseId: id,
+          imageId: image.id,
+        });
       }
-      const dbSchema = this.drizzle.getSchema();
       await db.update(dbSchema.exercises)
         .set(update)
         .where(
@@ -196,16 +209,52 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
       );
 
       const attachedToUser: ExerciseRow[] = data.map((x) => ({
-        ...x,
         id: x.id,
+        name: x.name,
+        description: x.description,
+        difficulty: x.difficulty,
+        equipment: x.equipment,
+        images: [],
+        params: x.params,
         userId: userId,
+        copiedFromId: x.copiedFromId,
         parentExerciseId: null,
         isArchived: false,
+        createdAt: x.createdAt,
+        updatedAt: x.updatedAt,
+        deletedAt: x.deletedAt,
       }));
       const inserted = await db.insert(schema.exercises).values(attachedToUser).onConflictDoUpdate({
         target: schema.exercises.id,
         set: this.drizzle.generateConflictUpdateSetAllColumns(schema.exercises),
       }).returning();
+
+      await db.delete(schema.exerciseImages).where(
+          inArray(schema.exerciseImages.exerciseId, ids)
+        );
+      const imageLinks: typeof schema.exerciseImages.$inferInsert[] = [];
+      for (const row of data) {
+        for (const image of row.images) {
+          if (image.isDeleted) {
+            continue;
+          }
+          // ids are generated on devices, where they name the uploaded file, so images sent again are reused
+          let stored = await this.images.getImageByName(image.id);
+          if (!stored && image.data) {
+            stored = await this.images.createFromBase64(image.data, image.id, ImageType.Exercise);
+          }
+          if (!stored) {
+            continue;
+          }
+          imageLinks.push({
+            exerciseId: row.id,
+            imageId: stored.id,
+          });
+        }
+      }
+      if (imageLinks.length > 0) {
+        await db.insert(schema.exerciseImages).values(imageLinks);
+      }
       const muscles: NewModel<ExerciseMuscleRow>[] = [];
       data.forEach((row, i) => {
         if (!inserted[i]) {
@@ -299,7 +348,7 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     return result;
   }
 
-  protected async translate(items: ExerciseRow[], language?: Language): Promise<void> {
+  protected async translate(items: Pick<ExerciseRow, 'id' | 'name' | 'description'>[], language?: Language): Promise<void> {
     if (!language || language === this.translations.getDefaultLanguage()) {
       return;
     }
@@ -449,10 +498,32 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
       muscleMap.set(muscle.exersizeId, arr);
     }
 
-    const exerciseMap = new Map<string, ExerciseRow>();
-    const variationMap = new Map<string, ExerciseRow[]>();
+    const imageMap = new Map<string, Image[]>();
+    if (exerciseIds.length > 0) {
+      const imageRows = await db.select({
+        exerciseId: db._.fullSchema.exerciseImages.exerciseId,
+        id: db._.fullSchema.images.id,
+        url: db._.fullSchema.images.url,
+      }).from(db._.fullSchema.exerciseImages)
+        .innerJoin(
+          db._.fullSchema.images,
+          eq(db._.fullSchema.exerciseImages.imageId, db._.fullSchema.images.id)
+        )
+        .where(
+          inArray(db._.fullSchema.exerciseImages.exerciseId, exerciseIds),
+        );
+      for (const image of imageRows) {
+        const arr = imageMap.get(image.exerciseId) ?? [];
+        arr.push({
+          id: image.id,
+          url: image.url,
+        });
+        imageMap.set(image.exerciseId, arr);
+      }
+    }
+
+    const variationMap = new Map<string, Exercise[]>();
     for (const exercise of variations) {
-      exerciseMap.set(exercise.id, exercise);
       if (!exercise.parentExerciseId) {
         continue;
       }
@@ -465,8 +536,10 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     for (const item of exercises) {
       const nested: Exercise = {
         ...item,
+        images: imageMap.get(item.id) ?? [],
         variations: variationMap.get(item.id)?.map((variation) => ({
           ...variation,
+          images: imageMap.get(variation.id) ?? [],
           muscles: {
             primary: (muscleMap.get(variation.id) ?? []).filter((x) => x.isPrimary).map((x) => x.muscle),
             secondary: (muscleMap.get(variation.id) ?? []).filter((x) => !x.isPrimary).map((x) => x.muscle),

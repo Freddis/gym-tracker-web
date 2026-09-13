@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const pullUp: Exercise = {
   id: 'eb45c7ae-bf44-4cd2-97f1-0bbe27456a89',
@@ -8,10 +9,10 @@ export const pullUp: Exercise = {
     + 'then return to starting position.',
   difficulty: 0,
   equipment: null,
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,
@@ -28,10 +29,10 @@ export const pullUp: Exercise = {
         + 'above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -49,10 +50,10 @@ export const pullUp: Exercise = {
         + 'above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: null,
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip)-b.jpg',
+  ),
       params: [0],
       userId: 1,
       copiedFromId: null,
@@ -71,10 +72,10 @@ export const pullUp: Exercise = {
         + 'moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Neutral%2BGrip_Assisted)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -93,10 +94,10 @@ export const pullUp: Exercise = {
         + 'return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -115,10 +116,10 @@ export const pullUp: Exercise = {
         + 'your head is above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip_Assisted)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip_Assisted)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip_Assisted)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Regular%2BGrip_Assisted)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -136,10 +137,10 @@ export const pullUp: Exercise = {
         + 'head is above the bar. Hold for a brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -158,10 +159,10 @@ export const pullUp: Exercise = {
         + 'brief moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip_Assisted)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip_Assisted)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip_Assisted)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Rock%2BClimbing%2BGrip_Assisted)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -180,10 +181,10 @@ export const pullUp: Exercise = {
         + 'moment and then return to starting position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -203,10 +204,10 @@ export const pullUp: Exercise = {
         + 'position.',
       difficulty: 0,
       equipment: 'pullup bar',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip_Assisted)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip_Assisted)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip_Assisted)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Backpack%2BPullup%2B(Wide%2BGrip_Assisted)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,

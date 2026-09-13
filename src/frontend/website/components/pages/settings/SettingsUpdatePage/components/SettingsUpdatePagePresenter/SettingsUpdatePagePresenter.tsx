@@ -111,7 +111,7 @@ export const SettingsUpdatePagePresenter: FC<SettingsUpdatePagePresenterProps> =
       height: validated.data,
       birthDate,
       gender,
-      profilePicture: profilePicture ? {data: profilePicture} : undefined,
+      profilePicture: profilePicture ? {id: crypto.randomUUID(), data: profilePicture} : undefined,
       units: {
         weight: weightUnit,
         distance: distanceUnit,

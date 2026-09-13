@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const adduction: Exercise = {
   id: '2cb70b0f-b665-41bd-acfd-03713ca325fd',
@@ -7,10 +8,10 @@ export const adduction: Exercise = {
     .<2>Pull your legs towards the center of your body. Hold for one second. Return to starting position.`,
   difficulty: 0,
   equipment: 'selectorized',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Selectorized%2BAdduction-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Selectorized%2BAdduction-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,

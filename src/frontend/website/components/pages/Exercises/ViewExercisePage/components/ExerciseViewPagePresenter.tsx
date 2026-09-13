@@ -32,8 +32,8 @@ export const ExerciseViewPagePresenter:FC<{exercise:Exercise}> = ({exercise}) =>
           <div className="flex flex-col gap-2 items-start">
             <AppBlockHeader>{exercise.name}</AppBlockHeader>
             <div className="flex justify-center w-full gap-5">
-              {exercise.images.map((image, i) => (
-                <AppImage key={i.toString()} src={image} className="mt-1 w-auto h-100 " />
+              {exercise.images.map((image) => (
+                <AppImage key={image.id} src={image.url} className="mt-1 w-auto h-100 " />
               ))}
             </div>
             <div >

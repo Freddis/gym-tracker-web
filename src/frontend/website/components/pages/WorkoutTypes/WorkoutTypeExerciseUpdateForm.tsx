@@ -51,7 +51,7 @@ export const WorkoutTypeExerciseUpdateForm: FC<WorkoutTypeExerciseUpdateFormProp
   return (
     <div>
       <div className="pb-5 flex flex-row">
-        <AppImage className="w-25 h-25 mt-1" key={exercise.images[0]} src={exercise.images[0]} />
+        <AppImage className="w-25 h-25 mt-1" key={exercise.images[0]?.id} src={exercise.images[0]?.url} />
         <div className="pl-5 grow">
           <div className="flex flex-row">
             <b>{exercise.name}</b>
