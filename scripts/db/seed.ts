@@ -16,12 +16,12 @@ const benchPress = await TestUtils.seed.createExercise({
     primary: [Muscle.Pecs],
     secondary: [Muscle.Triceps, Muscle.FrontDeltoids],
   },
-  images: ['/images/exercises/Bench_Press.jpg'],
+  images: [TestUtils.seed.getPublicAssetUrl('/images/exercises/Bench_Press.jpg')],
 });
 
 const bicepsCurl = await TestUtils.seed.createExercise({
   name: 'Biceps curl',
-  images: ['/images/exercises/Dumbbell_Biceps_Curl.jpg'],
+  images: [TestUtils.seed.getPublicAssetUrl('/images/exercises/Dumbbell_Biceps_Curl.jpg')],
   equipment: Equipment.Dumbbell,
   muscles: {
     primary: [Muscle.Biceps],
@@ -41,7 +41,8 @@ await authService.registerManager({
   password: 'password1235',
 });
 
-const start = new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3);
+const day = 1000 * 60 * 60 * 24;
+const start = new Date(new Date().getTime() - day * 3);
 const workout: WorkoutCreateDto = {
   typeId: null,
   calories: 100,
@@ -97,9 +98,78 @@ const workout: WorkoutCreateDto = {
   ],
 };
 
+const secondStart = new Date(new Date().getTime() - day);
+const secondWorkout: WorkoutCreateDto = {
+  typeId: null,
+  calories: 180,
+  start: secondStart,
+  end: new Date(secondStart.getTime() + 1000 * 60 * 61),
+  exercises: [
+    {
+      exerciseId: benchPress.id,
+      sets: [
+        {
+          start: null,
+          end: null,
+          weight: 100,
+          reps: 10,
+        },
+        {
+          start: null,
+          end: null,
+          weight: 100,
+          reps: 8,
+        },
+        {
+          start: null,
+          end: null,
+          weight: 97.5,
+          reps: 8,
+        },
+      ],
+    },
+    {
+      exerciseId: bicepsCurl.id,
+      sets: [
+        {
+          start: null,
+          end: null,
+          weight: 36,
+          reps: 12,
+        },
+        {
+          start: null,
+          end: null,
+          weight: 36,
+          reps: 10,
+        },
+      ],
+    },
+  ],
+};
+
 await entryService.createWorkoutEntry(tommy.id, {
   workout: workout,
   visibility: EntryVisibility.Public,
   time: workout.start,
 });
+
+await entryService.createWorkoutEntry(tommy.id, {
+  workout: secondWorkout,
+  visibility: EntryVisibility.Public,
+  time: secondWorkout.start,
+});
+
+await entryService.createWeightEntry(tommy.id, {
+  weight: 82.4,
+  visibility: EntryVisibility.Public,
+  time: new Date(new Date().getTime() - day * 7),
+});
+
+await entryService.createWeightEntry(tommy.id, {
+  weight: 81.6,
+  visibility: EntryVisibility.Public,
+  time: new Date(new Date().getTime() - day),
+});
+
 await factory.cleanup();

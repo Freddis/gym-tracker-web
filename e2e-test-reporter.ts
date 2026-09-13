@@ -39,7 +39,7 @@ class E2eTestReporter implements Reporter {
             continue;
           }
           const localPath = entry.url
-          .replace('http://localhost:3000/src/', 'src/') // map served URL → local file
+          .replace('http://localhost:3333/src/', 'src/') // map served URL → local file
           .split('?')[0]!; // strip cache-busting query params
           // todo: still some files with '?' pop-up, not critical but would be nice to remove them completely
           const converter = v8toIstanbul(resolve(localPath), 0, {source: entry.source!});

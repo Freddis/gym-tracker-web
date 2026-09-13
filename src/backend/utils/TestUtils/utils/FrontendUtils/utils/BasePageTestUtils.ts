@@ -2,7 +2,7 @@ import {Locator, Page} from 'playwright/test';
 
 export abstract class BasePageTestUtils {
   protected abstract path: `/${string}`;
-  protected baseUrl = 'http://localhost:3000';
+  protected baseUrl = 'http://localhost:3333';
   protected page: Page;
   protected timeout = 5000;
 

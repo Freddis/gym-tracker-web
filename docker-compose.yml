@@ -15,7 +15,7 @@ services:
         - NO=value
       target: prod
     ports:
-      - 3000:3000 
+      - 3333:3000
     environment:
       - DB_HOST=db
       - DB_PORT=5432

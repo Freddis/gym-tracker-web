@@ -79,6 +79,7 @@ export class OpenApiUtils {
       headers: {
         'content-type': 'application/json',
         'Authorization': `Bearer ${jwt}`,
+        'apiVersion': openApi.getConfig().apiVersion,
         ...headers,
       },
       body: data ? JSON.stringify(data) : undefined,

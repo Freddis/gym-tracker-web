@@ -106,6 +106,7 @@ export class SeedUtils {
     const db = await drizzle.getDb();
     const tables = [
       db._.fullSchema.entries,
+      db._.fullSchema.weight,
       db._.fullSchema.workoutExerciseSets,
       db._.fullSchema.workoutExercises,
       db._.fullSchema.workouts,
@@ -122,5 +123,10 @@ export class SeedUtils {
 
   static getDefaultPassword(): string {
     return this.defaultPassword;
+  }
+
+  static getPublicAssetUrl(path: `/${string}`): string {
+    const config = BusinessUtils.getFactory().getConfig();
+    return `${config.baseUrl}${path}`;
   }
 }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "start": "npx srvx  -s ../client .output/server/server.js",
+    "start": "npx srvx -p 3000 -s ../client .output/server/server.js",
     "dev": "npm run openapi:generate && vite dev --host",
     "dev:all": "concurrently --raw --kill-others 'npm run dev -- --host' 'npm run storybook'",
     "check": "npm run typecheck && npm run lint ",

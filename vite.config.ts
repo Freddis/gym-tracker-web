@@ -23,7 +23,7 @@ export default defineConfig({
     exclude: ['@mapbox'],
   },
   server: {
-    port: 3000,
+    port: 3333,
   },
   plugins: [
     isoImport(),
