@@ -40,6 +40,7 @@ export const AuthProvider: FC<{children: ReactNode | ReactNode[], cookieName: Co
       headers: {
         Authorization: authHeader,
         Locale: props.sendLanguage ? language : undefined,
+        apiVersion: '1.0.1',
       },
     };
   };

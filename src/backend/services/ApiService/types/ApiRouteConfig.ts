@@ -11,14 +11,17 @@ import {Language} from '../../../../frontend/common/components/layout/LanguagePr
 import {nativeEnum} from 'zod';
 import {ApiRouteContextMap} from './ApiRouteContextMap';
 import {ApiRouteParamsMap} from './ApiRouteParamsMap';
+import {ApiVersionError} from '../errors/ApiVersionErrror';
 
 export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiErrorCode, ApiRouteParamsMap, ApiRouteContextMap> {
   protected factory: GlobalServiceFactory;
   protected baseUrl: string;
+  protected apiVersion: string;
 
-  constructor(factory: GlobalServiceFactory, baseUrl: string) {
+  constructor(factory: GlobalServiceFactory, baseUrl: string, apiVersion: string) {
     this.factory = factory;
     this.baseUrl = baseUrl;
+    this.apiVersion = apiVersion;
   }
 
   Manager: OpenApiRouteConfig<ApiRouteType.Manager, ApiErrorCode, undefined, ManagerRouteContext> = {
@@ -30,8 +33,10 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.Unauthorized]: true,
       [ApiErrorCode.NotFound]: true,
+      [ApiErrorCode.ApiVersionMismatch]: true,
     },
     contextFactory: async (ctx) => {
+      this.validateRequestApiVersion(ctx.request);
       const services = await this.createRequestServices();
       const viewer = await services.auth.getManagerFromRequest(ctx.request);
       if (!viewer) {
@@ -57,8 +62,10 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       [ApiErrorCode.ValidationFailed]: true,
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.NotFound]: true,
+      [ApiErrorCode.ApiVersionMismatch]: true,
     },
     contextFactory: async (ctx) => {
+      this.validateRequestApiVersion(ctx.request);
       const services = await this.createRequestServices();
       const viewer = await services.auth.getUserFromRequest(ctx.request);
       return {
@@ -78,8 +85,10 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
       [ApiErrorCode.ActionError]: true,
       [ApiErrorCode.Unauthorized]: true,
       [ApiErrorCode.NotFound]: true,
+      [ApiErrorCode.ApiVersionMismatch]: true,
     },
     contextFactory: async (ctx) => {
+      this.validateRequestApiVersion(ctx.request);
       const services = await this.createRequestServices();
       const viewer = await services.auth.getUserFromRequest(ctx.request);
       if (!viewer) {
@@ -112,8 +121,20 @@ export class ApiRouteConfig implements OpenApiRouteConfigMap<ApiRouteType, ApiEr
     }
     return validated.data;
   }
-  protected async createRequestServices(): Promise<ApiRequestServices> {
 
+  protected validateRequestApiVersion(request: Request): void {
+    const version = this.getRequestApiVersion(request);
+    if (version !== this.apiVersion) {
+      throw new ApiVersionError();
+    }
+  }
+
+  protected getRequestApiVersion(request: Request): string | null {
+    const header = request.headers.get('apiVersion');
+    return header ?? null;
+  }
+
+  protected async createRequestServices(): Promise<ApiRequestServices> {
     const services: ApiRequestServices = {
       auth: await this.factory.auth(),
       models: {

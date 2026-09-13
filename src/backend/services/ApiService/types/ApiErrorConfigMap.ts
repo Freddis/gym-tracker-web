@@ -7,6 +7,7 @@ import {validationErrorResponseValidator} from '../validators/ValidationErrorRes
 import {responseValidationErrorResponseValidator} from '../validators/ReponseValidationErrorResponse';
 import {unauthorizedErrorResponseValidator} from '../validators/UnauthorizedErrorResponse';
 import {notFoundErrorResponseValidator} from '../validators/NotFoundErrorResponse';
+import {apiVersionErrorResponseValidator} from '../validators/ApiVersionErrorResponse';
 export class ApiErrorConfigMap implements OpenApiErrorConfigMap<ApiErrorCode> {
   [ApiErrorCode.NotFound] = {
     status: '404',
@@ -43,4 +44,9 @@ export class ApiErrorConfigMap implements OpenApiErrorConfigMap<ApiErrorCode> {
     description: 'Validation Error on Response. Always server-side problem. Introduced for debugging purposes, disabled in prod.',
     responseValidator: responseValidationErrorResponseValidator,
   };
+  [ApiErrorCode.ApiVersionMismatch] = {
+    status: '400' as const,
+    description: 'API Version Mismatch',
+    responseValidator: apiVersionErrorResponseValidator,
+  } as const;
 }

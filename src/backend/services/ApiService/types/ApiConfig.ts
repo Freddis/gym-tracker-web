@@ -32,6 +32,8 @@ import {ActionErrorCode} from './ActionErrorCode';
 import {ApiRouteParamsMap} from './ApiRouteParamsMap';
 import {ApiRouteContextMap} from './ApiRouteContextMap';
 import {Logger} from '../../../utils/Logger/Logger';
+import {ApiVersionError} from '../errors/ApiVersionErrror';
+import {ApiVersionErrorResponse} from '../validators/ApiVersionErrorResponse';
 
 export class ApiConfig implements OpenApiConfig<
  ApiRouteType,
@@ -44,7 +46,7 @@ export class ApiConfig implements OpenApiConfig<
   logger: Logger;
   basePath = '/api' as const;
   apiName = 'Discipline API';
-  apiVersion = '1.0.0';
+  apiVersion = '1.0.1';
   routes: ApiRouteConfig;
   errors = new ApiErrorConfigMap();
   defaultError = {
@@ -57,7 +59,7 @@ export class ApiConfig implements OpenApiConfig<
   } as const;
 
   constructor(factory: GlobalServiceFactory, baseUrl: string, logger: Logger) {
-    this.routes = new ApiRouteConfig(factory, baseUrl);
+    this.routes = new ApiRouteConfig(factory, baseUrl, this.apiVersion);
     this.logger = logger;
   }
 
@@ -82,6 +84,15 @@ export class ApiConfig implements OpenApiConfig<
       body: e.body,
     });
     const error = e.error;
+    if (error instanceof ApiVersionError) {
+      const body: ApiVersionErrorResponse = {
+        error: {
+          code: ApiErrorCode.ApiVersionMismatch,
+          currentVersion: this.apiVersion,
+        },
+      };
+      return {code: ApiErrorCode.ApiVersionMismatch, body};
+    }
     if (error instanceof PermissionError) {
       const permissionError: PermissionErrorResponse = {
         error: {

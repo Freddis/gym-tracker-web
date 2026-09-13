@@ -6,4 +6,5 @@ export enum ApiErrorCode {
   MissingPermission = 'MissingPermission',
   ActionError = 'ActionError',
   NotFound = 'NotFound',
+  ApiVersionMismatch = 'ApiVersionMismatch',
 }

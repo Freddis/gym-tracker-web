@@ -3688,7 +3688,7 @@ export type RegisterData = {
 
 export type RegisterErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -3747,6 +3747,21 @@ export type RegisterErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -3798,7 +3813,7 @@ export type LoginData = {
 
 export type LoginErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -3857,6 +3872,21 @@ export type LoginErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -3904,7 +3934,7 @@ export type StartPasswordResetData = {
 
 export type StartPasswordResetErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -3963,6 +3993,21 @@ export type StartPasswordResetErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4025,7 +4070,7 @@ export type FinishPasswordResetData = {
 
 export type FinishPasswordResetErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4084,6 +4129,21 @@ export type FinishPasswordResetErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4128,7 +4188,7 @@ export type ChangePasswordData = {
 
 export type ChangePasswordErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4187,6 +4247,21 @@ export type ChangePasswordErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4366,7 +4441,7 @@ export type GetExercisesData = {
 
 export type GetExercisesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4425,6 +4500,21 @@ export type GetExercisesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4509,7 +4599,7 @@ export type PostExercisesData = {
 
 export type PostExercisesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4568,6 +4658,21 @@ export type PostExercisesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4630,7 +4735,7 @@ export type PutExercisesData = {
 
 export type PutExercisesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4689,6 +4794,21 @@ export type PutExercisesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4868,7 +4988,7 @@ export type GetExercisesBuiltInData = {
 
 export type GetExercisesBuiltInErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -4927,6 +5047,21 @@ export type GetExercisesBuiltInErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -4998,7 +5133,7 @@ export type DeleteExercisesByIdData = {
 
 export type DeleteExercisesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5057,6 +5192,21 @@ export type DeleteExercisesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5125,7 +5275,7 @@ export type GetExercisesByIdData = {
 
 export type GetExercisesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5184,6 +5334,21 @@ export type GetExercisesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5242,7 +5407,7 @@ export type PatchExercisesByIdData = {
 
 export type PatchExercisesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5301,6 +5466,21 @@ export type PatchExercisesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5373,7 +5553,7 @@ export type GetWorkoutsData = {
 
 export type GetWorkoutsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5432,6 +5612,21 @@ export type GetWorkoutsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5511,7 +5706,7 @@ export type PostWorkoutsData = {
 
 export type PostWorkoutsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5570,6 +5765,21 @@ export type PostWorkoutsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5632,7 +5842,7 @@ export type PutWorkoutsData = {
 
 export type PutWorkoutsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5691,6 +5901,21 @@ export type PutWorkoutsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5758,7 +5983,7 @@ export type DeleteWorkoutsByIdData = {
 
 export type DeleteWorkoutsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5817,6 +6042,21 @@ export type DeleteWorkoutsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -5885,7 +6125,7 @@ export type GetWorkoutsByIdData = {
 
 export type GetWorkoutsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -5944,6 +6184,21 @@ export type GetWorkoutsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6009,7 +6264,7 @@ export type PatchWorkoutsByIdData = {
 
 export type PatchWorkoutsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6068,6 +6323,21 @@ export type PatchWorkoutsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6135,7 +6405,7 @@ export type GetWorkoutPlansData = {
 
 export type GetWorkoutPlansErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6194,6 +6464,21 @@ export type GetWorkoutPlansErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6286,7 +6571,7 @@ export type PostWorkoutPlansData = {
 
 export type PostWorkoutPlansErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6345,6 +6630,21 @@ export type PostWorkoutPlansErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6408,7 +6708,7 @@ export type DeleteWorkoutPlansByIdData = {
 
 export type DeleteWorkoutPlansByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6467,6 +6767,21 @@ export type DeleteWorkoutPlansByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6532,7 +6847,7 @@ export type GetWorkoutPlansByIdData = {
 
 export type GetWorkoutPlansByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6591,6 +6906,21 @@ export type GetWorkoutPlansByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6666,7 +6996,7 @@ export type PatchWorkoutPlansByIdData = {
 
 export type PatchWorkoutPlansByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6725,6 +7055,21 @@ export type PatchWorkoutPlansByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6792,7 +7137,7 @@ export type GetWorkoutTypesData = {
 
 export type GetWorkoutTypesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -6851,6 +7196,21 @@ export type GetWorkoutTypesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -6955,7 +7315,7 @@ export type PostWorkoutTypesData = {
 
 export type PostWorkoutTypesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7014,6 +7374,21 @@ export type PostWorkoutTypesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7077,7 +7452,7 @@ export type DeleteWorkoutTypesByIdData = {
 
 export type DeleteWorkoutTypesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7136,6 +7511,21 @@ export type DeleteWorkoutTypesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7201,7 +7591,7 @@ export type GetWorkoutTypesByIdData = {
 
 export type GetWorkoutTypesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7260,6 +7650,21 @@ export type GetWorkoutTypesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7347,7 +7752,7 @@ export type PatchWorkoutTypesByIdData = {
 
 export type PatchWorkoutTypesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7406,6 +7811,21 @@ export type PatchWorkoutTypesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7469,7 +7889,7 @@ export type PostWeightData = {
 
 export type PostWeightErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7528,6 +7948,21 @@ export type PostWeightErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7589,7 +8024,7 @@ export type GetWeightByIdData = {
 
 export type GetWeightByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7648,6 +8083,21 @@ export type GetWeightByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7715,7 +8165,7 @@ export type PatchWeightByIdData = {
 
 export type PatchWeightByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7774,6 +8224,21 @@ export type PatchWeightByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -7855,7 +8320,7 @@ export type GetArgusCheckinData = {
 
 export type GetArgusCheckinErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -7914,6 +8379,21 @@ export type GetArgusCheckinErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -8338,7 +8818,7 @@ export type GetArgusCheckinTypesData = {
 
 export type GetArgusCheckinTypesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -8397,6 +8877,21 @@ export type GetArgusCheckinTypesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -8487,7 +8982,7 @@ export type GetEntriesOwnData = {
 
 export type GetEntriesOwnErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -8546,6 +9041,21 @@ export type GetEntriesOwnErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -8630,7 +9140,7 @@ export type DeleteEntriesByIdData = {
 
 export type DeleteEntriesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -8689,6 +9199,21 @@ export type DeleteEntriesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -8754,7 +9279,7 @@ export type GetEntriesByIdData = {
 
 export type GetEntriesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -8813,6 +9338,21 @@ export type GetEntriesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -8898,7 +9438,7 @@ export type GetEntriesData = {
 
 export type GetEntriesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -8957,6 +9497,21 @@ export type GetEntriesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9026,7 +9581,7 @@ export type PutEntriesData = {
 
 export type PutEntriesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9085,6 +9640,21 @@ export type PutEntriesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9171,7 +9741,7 @@ export type GetEntriesOwnDatesData = {
 
 export type GetEntriesOwnDatesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9230,6 +9800,21 @@ export type GetEntriesOwnDatesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9301,7 +9886,7 @@ export type PostPostsData = {
 
 export type PostPostsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9360,6 +9945,21 @@ export type PostPostsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9421,7 +10021,7 @@ export type GetPostsByIdData = {
 
 export type GetPostsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9480,6 +10080,21 @@ export type GetPostsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9555,7 +10170,7 @@ export type PatchPostsByIdData = {
 
 export type PatchPostsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9614,6 +10229,21 @@ export type PatchPostsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9693,7 +10323,7 @@ export type GetFoodListData = {
 
 export type GetFoodListErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9752,6 +10382,21 @@ export type GetFoodListErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9831,7 +10476,7 @@ export type UpsertFoodData = {
 
 export type UpsertFoodErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -9890,6 +10535,21 @@ export type UpsertFoodErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -9949,7 +10609,7 @@ export type UpsertFoodsData = {
 
 export type UpsertFoodsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10008,6 +10668,21 @@ export type UpsertFoodsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10074,7 +10749,7 @@ export type FindFoodData = {
 
 export type FindFoodErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10133,6 +10808,21 @@ export type FindFoodErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10203,7 +10893,7 @@ export type GetFoodData = {
 
 export type GetFoodErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10262,6 +10952,21 @@ export type GetFoodErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10323,7 +11028,7 @@ export type ScanBarcodeData = {
 
 export type ScanBarcodeErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10382,6 +11087,21 @@ export type ScanBarcodeErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10439,7 +11159,7 @@ export type GetOwnProfileData = {
 
 export type GetOwnProfileErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10498,6 +11218,21 @@ export type GetOwnProfileErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10555,7 +11290,7 @@ export type GetSettingsData = {
 
 export type GetSettingsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10614,6 +11349,21 @@ export type GetSettingsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10671,7 +11421,7 @@ export type UpdateSettingsData = {
 
 export type UpdateSettingsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10730,6 +11480,21 @@ export type UpdateSettingsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10793,7 +11558,7 @@ export type GetCrmUsersData = {
 
 export type GetCrmUsersErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10852,6 +11617,21 @@ export type GetCrmUsersErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -10936,7 +11716,7 @@ export type GetCrmManagersData = {
 
 export type GetCrmManagersErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -10995,6 +11775,21 @@ export type GetCrmManagersErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11084,7 +11879,7 @@ export type ManagerLoginData = {
 
 export type ManagerLoginErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11143,6 +11938,21 @@ export type ManagerLoginErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11191,7 +12001,7 @@ export type GetCrmTranslationsByIdData = {
 
 export type GetCrmTranslationsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11250,6 +12060,21 @@ export type GetCrmTranslationsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11318,7 +12143,7 @@ export type PatchCrmTranslationsByIdData = {
 
 export type PatchCrmTranslationsByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11377,6 +12202,21 @@ export type PatchCrmTranslationsByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11440,7 +12280,7 @@ export type GetCrmTranslationsData = {
 
 export type GetCrmTranslationsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11499,6 +12339,21 @@ export type GetCrmTranslationsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11584,7 +12439,7 @@ export type GetCrmExercisesByIdData = {
 
 export type GetCrmExercisesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11643,6 +12498,21 @@ export type GetCrmExercisesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11736,7 +12606,7 @@ export type PatchCrmExercisesByIdData = {
 
 export type PatchCrmExercisesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -11795,6 +12665,21 @@ export type PatchCrmExercisesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -11983,7 +12868,7 @@ export type GetCrmExercisesData = {
 
 export type GetCrmExercisesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -12042,6 +12927,21 @@ export type GetCrmExercisesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -12135,7 +13035,7 @@ export type GetCrmImagesData = {
 
 export type GetCrmImagesErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -12194,6 +13094,21 @@ export type GetCrmImagesErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -12278,7 +13193,7 @@ export type DeleteCrmImagesByIdData = {
 
 export type DeleteCrmImagesByIdErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -12337,6 +13252,21 @@ export type DeleteCrmImagesByIdErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -12400,7 +13330,7 @@ export type GetCrmScriptsData = {
 
 export type GetCrmScriptsErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -12459,6 +13389,21 @@ export type GetCrmScriptsErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
@@ -12523,7 +13468,7 @@ export type PostCrmScriptsRunData = {
 
 export type PostCrmScriptsRunErrors = {
   /**
-   * Validation Failed or Action Error
+   * Validation Failed or Action Error or API Version Mismatch
    */
   400:
     | {
@@ -12582,6 +13527,21 @@ export type PostCrmScriptsRunErrors = {
            * Description of the error. Can be safely displayed.
            */
           humanReadable: string;
+        };
+      }
+    | {
+        /**
+         * Error response
+         */
+        error: {
+          /**
+           * Code to handle on the frontend
+           */
+          code: "ApiVersionMismatch";
+          /**
+           * Current server version of API
+           */
+          currentVersion: string;
         };
       };
   /**
