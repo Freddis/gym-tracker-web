@@ -16,7 +16,7 @@ export const MobileWorkoutTypeBlock: FC<{item: WorkoutType}> = ({item}) => {
              {item.exercises.map((exercise, i) => (
               <>
               <div key={i} className="flex flex-row gap-3">
-                <AppImage src={exercise.exercise.images[0]} className="mt-1 w-10 h-10 object-cover" />
+                <AppImage src={exercise.exercise.images[0]?.url} className="mt-1 w-10 h-10 object-cover" />
                 <div className="flex flex-col">
                   <b>{exercise.exercise.name}</b>
                   <div className="flex gap-2">

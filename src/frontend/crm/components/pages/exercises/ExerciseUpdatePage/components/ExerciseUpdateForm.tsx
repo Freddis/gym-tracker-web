@@ -84,7 +84,7 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
         <div />
         <AppLabel>Image</AppLabel>
         <div className="relative">
-          <AppImageInput url={item.images[0]} onUpdate={setImage} className="w-80 h-80" />
+          <AppImageInput url={item.images[0]?.url} onUpdate={setImage} className="w-80 h-80" />
             <AppInputError
             className="w-[327px] max-w-full "
             error={getSmartError((x) => x.image)}
@@ -128,7 +128,7 @@ export const ExerciseUpdateForm: FC<ExerciseUpdateFormProps> = (props) => {
             {item.variations.map((variation) => (
               <div key={variation.id} className="flex flex-row items-center gap-5">
                 <RouteLink to={route(RouteId.CrmExerciseUpdate)} params={{id: variation.id.toString()}} >
-                  <AppImage src={variation.images[0]} />
+                  <AppImage src={variation.images[0]?.url} />
                 </RouteLink>
                 <RouteLink
                   to={route(RouteId.CrmExerciseUpdate)}

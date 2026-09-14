@@ -16,7 +16,7 @@ export const ExerciseRow: FC<{item: Exercise, onSelect?: (item: Exercise)=> void
       onClick={click}
       data-testid={`exercise-row-${item.id}`}
     >
-      <img className="w-15 h-15 object-cover rounded-md" src={item.images[0]} />
+      <img className="w-15 h-15 object-cover rounded-md" src={item.images[0]?.url} />
       <label className="ml-5">{item.name}</label>
     </div>
   );

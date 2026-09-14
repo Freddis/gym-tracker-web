@@ -29,7 +29,7 @@ export const WorkoutEntryBlock: FC<{workout: Workout, entry: FeedEntry, own?: bo
       <div className="mt-5">
         {workout.exercises.filter((e) => e.sets.length > 0).map((exercise, i) => (
           <div key={i} className="flex flex-row">
-          <AppImage src={exercise.exercise.images[0]} className="mt-1 min-w-20" />
+          <AppImage src={exercise.exercise.images[0]?.url} className="mt-1 min-w-20" />
           <div className="pl-5">
             <b>{exercise.exercise.name}</b>
             <div className="pb-3">

@@ -9,6 +9,9 @@ const entryService = await factory.entry();
 const authService = await factory.auth();
 
 await TestUtils.seed.wipeDb();
+const benchPressImage = await TestUtils.seed.createImage({
+  url: TestUtils.seed.getPublicAssetUrl('/images/exercises/Bench_Press.jpg'),
+});
 const benchPress = await TestUtils.seed.createExercise({
   name: 'Bench press',
   equipment: Equipment.Bench,
@@ -16,12 +19,15 @@ const benchPress = await TestUtils.seed.createExercise({
     primary: [Muscle.Pecs],
     secondary: [Muscle.Triceps, Muscle.FrontDeltoids],
   },
-  images: [TestUtils.seed.getPublicAssetUrl('/images/exercises/Bench_Press.jpg')],
+  images: [benchPressImage],
 });
 
+const bicepsCurlImage = await TestUtils.seed.createImage({
+  url: TestUtils.seed.getPublicAssetUrl('/images/exercises/Dumbbell_Biceps_Curl.jpg'),
+});
 const bicepsCurl = await TestUtils.seed.createExercise({
   name: 'Biceps curl',
-  images: [TestUtils.seed.getPublicAssetUrl('/images/exercises/Dumbbell_Biceps_Curl.jpg')],
+  images: [bicepsCurlImage],
   equipment: Equipment.Dumbbell,
   muscles: {
     primary: [Muscle.Biceps],

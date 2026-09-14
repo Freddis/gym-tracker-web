@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const barbellSquat: Exercise = {
   id: 'c7d8521d-826a-45f9-9ba1-bba1e0ba6c2b',
@@ -10,10 +11,10 @@ export const barbellSquat: Exercise = {
      When you return the starting position, generate energy from your lower back.`,
   difficulty: 0,
   equipment: 'barbell',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BSquat-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BSquat-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,

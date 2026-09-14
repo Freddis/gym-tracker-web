@@ -285,6 +285,7 @@ export class ArgusCheckinService {
 
   async convertImageToUpsertDto(data: ArgusPhoto): Promise<ImageUpsertDto> {
     return {
+      id: randomUUID(),
       data: await this.imageService.getImageData(data.href),
     };
   }

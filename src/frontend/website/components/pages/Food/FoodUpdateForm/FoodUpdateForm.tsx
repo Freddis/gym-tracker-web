@@ -85,6 +85,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
         return;
       }
       const imageData: ImageUpsertDto | undefined = validated.data.image ? {
+        id: crypto.randomUUID(),
         data: validated.data.image,
       } : undefined;
 
@@ -250,7 +251,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
                 <AppInputError error={getSmartError((x) => x.servingSize)} />
               </div>
             </div>
-            <div className="w-full border-b-1 border-neutral-on-surface"/>
+            <div className="w-full border-b border-neutral-on-surface"/>
             <div className="flex flex-row gap-5 items-start">
               <AppLabel>{t.f((x) => x.pages.food.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
               <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>
@@ -276,7 +277,7 @@ export const FoodUpdateForm = forwardRef<FormSubmitRef, FoodUpdateFormProps>((pr
             <FoodComponentBlock key={ingredient.key} item={ingredient} onUpdate={onUpdateIngredient} onRemove={onRemoveIngredient} />
           ))}
         </div>
-        <div className="mt-5 border-b-1 border-neutral-on-surface"/>
+        <div className="mt-5 border-b border-neutral-on-surface"/>
         <div className="flex flex-row gap-5 items-start">
           <AppLabel>{t.f((x) => x.pages.food.list.labels.calories)}: {totalCalories.toFixed(0)}</AppLabel>
           <AppLabel>{t.f((x) => x.pages.food.list.labels.protein)}: {totalProtein.toFixed(1)}</AppLabel>

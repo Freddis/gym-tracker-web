@@ -17,7 +17,7 @@ export const ExerciseScreen: FC<{exercise:Exercise}> = ({exercise}) => {
         <div className="flex-1 overflow-y-auto space-y-4">
           {firstImage && (
             <div className="flex justify-center w-full  bg-white">
-              <AppImage src={firstImage} className="w-auto h-64 object-contain" />
+              <AppImage src={firstImage.url} className="w-auto h-64 object-contain" />
             </div>
           )}
           <div className="grow ">

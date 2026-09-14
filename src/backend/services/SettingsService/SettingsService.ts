@@ -1,4 +1,3 @@
-import {randomUUID} from 'node:crypto';
 import {CoreUserService} from '../CoreUserService/CoreUserService';
 import {EntryService} from '../EntryService/EntryService';
 import {EntryType} from '../EntryService/types/EntryType';
@@ -29,8 +28,12 @@ export class SettingsService {
       throw new Error('User not found');
     }
     let profilePicture: Image | null | undefined;
-    if (settings.profilePicture) {
-      profilePicture = await this.imageService.createFromBase64(settings.profilePicture.data, randomUUID(), ImageType.UserProfile);
+    if (settings.profilePicture?.data) {
+      profilePicture = await this.imageService.createFromBase64(
+        settings.profilePicture.data,
+        settings.profilePicture.id,
+        ImageType.UserProfile
+      );
     }
     await this.userService.update(user.id, {
       password: coreUser.password,

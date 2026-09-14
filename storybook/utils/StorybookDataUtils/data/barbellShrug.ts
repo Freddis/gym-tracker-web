@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const barbellShrug: Exercise = {
   id: '9c20c862-26d3-4bee-83e1-545ca2c23e52',
@@ -8,10 +9,10 @@ export const barbellShrug: Exercise = {
      Position barbell in front of your thighs.<2>Shrug your shoulders. Hold for one second. Return to starting position.`,
   difficulty: 0,
   equipment: 'barbell',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BShrug-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BShrug-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,

@@ -5,6 +5,7 @@ import {Exercise} from '../../../../ExerciseService/types/Exercise';
 import {OpenApiDescriptions} from '../../../types/OpenApiDescriptions';
 import {muscleValidator} from './muscleValidator';
 import {equipmentValidator} from './equipmentValidator';
+import {imageValidator} from '../../images/validators/imageValidator';
 
 export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
   params: 'Types of the parameters, such as: weight, reps, duration',
@@ -27,6 +28,7 @@ export const excerciseValidatorDescriptions: OpenApiDescriptions<Exercise> = {
 
 const rawBaseExerciseValidator = exerciseRowValidator.extend({
   equipment: equipmentValidator.nullable(),
+  images: imageValidator.array(),
   muscles: object({
     primary: muscleValidator.array().openapi({description: 'List of primary muscles this exercise targets'}),
     secondary: muscleValidator.array().openapi({description: 'List of secondary muscles this exercise targets'}),

@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const deadLift: Exercise = {
   id: '3aeb81e8-42f9-483f-84a7-fefc42f94943',
@@ -9,10 +10,10 @@ export const deadLift: Exercise = {
     'straight with your chest out. Hold for one second. Return to starting position.',
   difficulty: 0,
   equipment: 'barbell',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,
@@ -38,10 +39,10 @@ export const deadLift: Exercise = {
         'straight with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -68,10 +69,10 @@ export const deadLift: Exercise = {
         'starting position.',
       difficulty: 0,
       equipment: 'platform',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Platform)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Platform)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Platform)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Platform)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -97,10 +98,10 @@ export const deadLift: Exercise = {
         'straight with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Romanian)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Romanian)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Romanian)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Romanian)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -126,10 +127,10 @@ export const deadLift: Exercise = {
         'with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Single%2BLeg)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Single%2BLeg)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Single%2BLeg)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Single%2BLeg)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -154,10 +155,10 @@ export const deadLift: Exercise = {
         'position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg%2Band%2BBack)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg%2Band%2BBack)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg%2Band%2BBack)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg%2Band%2BBack)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -183,10 +184,10 @@ export const deadLift: Exercise = {
         'standing straight with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Stiff%2BLeg)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -212,10 +213,10 @@ export const deadLift: Exercise = {
         'out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Straddle)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Straddle)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Straddle)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Straddle)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -241,10 +242,10 @@ export const deadLift: Exercise = {
         'straight with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Suitcase)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Suitcase)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Suitcase)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Suitcase)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,
@@ -270,10 +271,10 @@ export const deadLift: Exercise = {
         'standing straight with your chest out. Hold for one second. Return to starting position.',
       difficulty: 0,
       equipment: 'barbell',
-      images: [
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Sumo)-a.jpg',
-        'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Sumo)-b.jpg',
-      ],
+      images: StorybookDataUtils.toExerciseImages(
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Sumo)-a.jpg',
+    'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Barbell%2BDeadlift%2B(Sumo)-b.jpg',
+  ),
       params: [0],
       userId: null,
       copiedFromId: null,

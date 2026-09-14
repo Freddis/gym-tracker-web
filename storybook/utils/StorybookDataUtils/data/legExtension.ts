@@ -1,4 +1,5 @@
 import {Exercise} from '../../../../src/frontend/common/utils/openapi-client';
+import {StorybookDataUtils} from '../StorybookDataUtils';
 
 export const legExtension: Exercise = {
   id: '92f0de91-b72f-4bcc-a1fd-db3291497479',
@@ -7,10 +8,10 @@ export const legExtension: Exercise = {
     <2>Fully extend your legs in front of you. Hold for one second. Return to starting position.`,
   difficulty: 0,
   equipment: 'selectorized',
-  images: [
+  images: StorybookDataUtils.toExerciseImages(
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Selectorized%2BLeg%2BExtension-a.jpg',
     'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/Selectorized%2BLeg%2BExtension-b.jpg',
-  ],
+  ),
   params: [0],
   userId: null,
   copiedFromId: null,

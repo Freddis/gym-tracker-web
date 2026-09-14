@@ -49,7 +49,7 @@ export const MobileWorkoutEntryBlock: FC<{workout: Workout, entry: Entry, own?: 
           <div key={i} className="flex flex-col">
             <b>{exercise.exercise.name}</b>
             <div className="flex flex-row mt-1">
-              <AppImage src={exercise.exercise.images[0]} className="mt-1 w-20 h-20" />
+              <AppImage src={exercise.exercise.images[0]?.url} className="mt-1 w-20 h-20" />
               <div className="pl-5 grow flex flex-row-reverse">
                 <div className="">
                   {exercise.sets.map((set, i) => (

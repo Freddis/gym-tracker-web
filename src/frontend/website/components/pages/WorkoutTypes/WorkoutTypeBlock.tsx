@@ -17,7 +17,7 @@ export const WorkoutTypeBlock: FC<{item: WorkoutType}> = ({item}) => {
              {item.exercises.map((exercise, i) => (
               <Fragment key={i}>
                 <div className="flex flex-row gap-3">
-                  <AppImage src={exercise.exercise.images[0]} className="mt-1 w-15 h-15 object-cover" />
+                  <AppImage src={exercise.exercise.images[0]?.url} className="mt-1 w-15 h-15 object-cover" />
                   <div className="flex flex-col">
                     <b>{exercise.exercise.name}</b>
                     <div className="pb-3 flex gap-2">

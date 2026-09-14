@@ -32,7 +32,7 @@ export const WorkoutEntryAddScreen: FC<{type?: Workout, errors?: FieldError[]}> 
                     </div>
                     <div key={`${i}sep`} className="border-b-1 border-on-surface/15 my-2 mb-4" />
                     <div className="flex flex-row mt-1">
-                      <AppImage src={exercise.exercise.images[0]} className="mt-1 w-20 h-20" />
+                      <AppImage src={exercise.exercise.images[0]?.url} className="mt-1 w-20 h-20" />
                       <div className="pl-2 grow flex flex-row">
                         <div className="flex flex-col gap-2 grow">
                           {exercise.sets.map((set, i) => (
