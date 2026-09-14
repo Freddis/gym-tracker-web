@@ -33,6 +33,8 @@ type Exact<Shape, Input> =
     : never;
 
 export class ExerciseService implements EntityService<Exercise, string, ExerciseFilter> {
+  // image ids are stored in a uuid column, so anything else has to stay out of the lookup
+  protected static uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   protected drizzle: DrizzleService;
   protected translations: TranslationService;
   protected images: ImageService;
@@ -238,11 +240,7 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
           if (image.isDeleted) {
             continue;
           }
-          // ids are generated on devices, where they name the uploaded file, so images sent again are reused
-          let stored = await this.images.getImageByName(image.id);
-          if (!stored && image.data) {
-            stored = await this.images.createFromBase64(image.data, image.id, ImageType.Exercise);
-          }
+          const stored = await this.resolveUpsertedImage(image);
           if (!stored) {
             continue;
           }
@@ -346,6 +344,22 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
       },
     };
     return result;
+  }
+
+  protected async resolveUpsertedImage(image: ExerciseUpsertDto['images'][number]): Promise<Image | null> {
+    // ids are generated on devices, where they name the uploaded file, so images sent again are reused
+    const uploaded = await this.images.getImageByName(image.id);
+    if (uploaded) {
+      return uploaded;
+    }
+    if (image.data) {
+      return await this.images.createFromBase64(image.data, image.id, ImageType.Exercise);
+    }
+    // images pulled from the server come back named by their stored id, without the data
+    if (!ExerciseService.uuidPattern.test(image.id)) {
+      return null;
+    }
+    return await this.images.getById(image.id);
   }
 
   protected async translate(items: Pick<ExerciseRow, 'id' | 'name' | 'description'>[], language?: Language): Promise<void> {

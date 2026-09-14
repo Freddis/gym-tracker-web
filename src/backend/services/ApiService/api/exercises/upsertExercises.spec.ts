@@ -327,6 +327,54 @@ describe('upsertExercises', async () => {
     expect(inserted?.images).to.deep.eq(response.body.items[0].images);
   });
 
+  test('Keeps an already attached image when it is sent by id', async () => {
+    // prepare
+    const user = await TestUtils.seed.createUser();
+    const exercise: ExerciseUpsertDto = {
+      id: randomUUID(),
+      name: 'Exercise with an existing image',
+      description: null,
+      difficulty: null,
+      params: [],
+      equipment: null,
+      images: [
+        {
+          id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+          data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        },
+      ],
+      copiedFromId: null,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      isArchived: false,
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
+    };
+    const created = await TestUtils.openApi.put('/exercises', user, {
+      items: [exercise],
+    });
+    expect(created.status).to.eq(200);
+    expect(created.body.items[0].images).to.have.length(1);
+    const attachedImageId = created.body.items[0].images[0].id;
+    // test
+    exercise.images = [{id: attachedImageId}];
+    const response = await TestUtils.openApi.put('/exercises', user, {
+      items: [exercise],
+    });
+    // check
+    expect(response.status).to.eq(200);
+    expect(response.body.items[0].images).to.have.length(1);
+    expect(response.body.items[0].images[0].id).to.eq(attachedImageId);
+    expect(response.body.items[0].images[0].url).to.eq(
+      'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/ffffffff-ffff-ffff-ffff-ffffffffffff'
+    );
+    const inserted = await service.getById(exercise.id);
+    expect(inserted?.images).to.deep.eq(response.body.items[0].images);
+  });
+
   test('Detaches an image that is marked as deleted', async () => {
     // prepare
     const user = await TestUtils.seed.createUser();
