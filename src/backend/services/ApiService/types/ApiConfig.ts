@@ -46,7 +46,7 @@ export class ApiConfig implements OpenApiConfig<
   logger: Logger;
   basePath = '/api' as const;
   apiName = 'Discipline API';
-  apiVersion = '1.0.1';
+  apiVersion = '1.0.2';
   routes: ApiRouteConfig;
   errors = new ApiErrorConfigMap();
   defaultError = {
