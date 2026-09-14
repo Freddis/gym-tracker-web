@@ -502,23 +502,24 @@ export class ExerciseService implements EntityService<Exercise, string, Exercise
     if (exerciseIds.length > 0) {
       const imageRows = await db.select({
         exerciseId: db._.fullSchema.exerciseImages.exerciseId,
-        id: db._.fullSchema.images.id,
-        url: db._.fullSchema.images.url,
+        imageId: db._.fullSchema.exerciseImages.imageId,
       }).from(db._.fullSchema.exerciseImages)
-        .innerJoin(
-          db._.fullSchema.images,
-          eq(db._.fullSchema.exerciseImages.imageId, db._.fullSchema.images.id)
-        )
         .where(
           inArray(db._.fullSchema.exerciseImages.exerciseId, exerciseIds),
         );
-      for (const image of imageRows) {
-        const arr = imageMap.get(image.exerciseId) ?? [];
-        arr.push({
-          id: image.id,
-          url: image.url,
-        });
-        imageMap.set(image.exerciseId, arr);
+      // Urls are stored as raw bucket keys, so images have to be loaded through the service to get them encoded
+      const images = imageRows.length > 0
+        ? await this.images.getMany({ids: imageRows.map((x) => x.imageId)})
+        : [];
+      const imagesById = images.reduce((acc, cur) => acc.set(cur.id, cur), new Map<string, Image>());
+      for (const row of imageRows) {
+        const image = imagesById.get(row.imageId);
+        if (!image) {
+          continue;
+        }
+        const arr = imageMap.get(row.exerciseId) ?? [];
+        arr.push(image);
+        imageMap.set(row.exerciseId, arr);
       }
     }
 
