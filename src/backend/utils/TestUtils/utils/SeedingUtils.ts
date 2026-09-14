@@ -8,6 +8,11 @@ import {BusinessUtils} from './BusinessUtils/BusinessUtils';
 import {Exercise} from 'src/backend/services/ExerciseService/types/Exercise';
 import {Image} from 'src/backend/services/ImageService/types/Image';
 import {randomUUID} from 'node:crypto';
+import {Food} from 'src/backend/services/FoodService/types/Food';
+import {FoodComponent} from 'src/backend/services/FoodService/types/FoodComponent';
+import {ServingSizeUnit} from 'src/backend/services/FoodService/types/ServingSizeUnit';
+import {EntryVisibility} from 'src/backend/services/EntryService/types/EntryVisibility';
+
 export class SeedUtils {
   protected static counter = new Date().getTime();
   protected static defaultPassword = '1q2w3e4r';
@@ -101,6 +106,56 @@ export class SeedUtils {
     return result;
   }
 
+  static async createFood(
+    food: Partial<Omit<Food, 'image' | 'id' | 'components'>> & {
+      images?: string[];
+      components?: FoodComponent[],
+      user?: UserRow
+    } = {}
+  ): Promise<Food> {
+    const factory = BusinessUtils.getFactory();
+    const foodService = await factory.food();
+    const drizzle = await factory.drizzle();
+    const db = await drizzle.getDb();
+    const imageUrl = food.images?.[0];
+    const image = imageUrl ? await this.createImage({
+      url: imageUrl,
+      imageType: ImageType.Food,
+    }) : null;
+    const id = randomUUID();
+    await db.insert(db._.fullSchema.food).values({
+      id,
+      userId: food.user?.id ?? null,
+      name: food.name ?? '',
+      description: food.description ?? null,
+      imageId: image?.id ?? null,
+      protein: food.protein ?? 0,
+      carbs: food.carbs ?? 0,
+      fat: food.fat ?? 0,
+      calories: food.calories ?? null,
+      barcode: food.barcode ?? null,
+      copiedFromId: food.copiedFromId ?? null,
+      visibility: food.visibility ?? EntryVisibility.Public,
+      servingSize: food.servingSize ?? null,
+      servingSizeUnit: food.servingSizeUnit ?? ServingSizeUnit.Gram,
+      createdAt: food.createdAt ?? new Date(),
+      updatedAt: food.updatedAt ?? null,
+      deletedAt: food.deletedAt ?? null,
+      isMeal: food.isMeal ?? false,
+      brand: food.brand ?? null,
+    });
+    const components = food.components ?? [];
+    if (components.length > 0) {
+      await db.insert(db._.fullSchema.foodComponents).values(components.map((component) => ({
+        mealId: id,
+        componentId: component.food.id,
+        amount: component.amount,
+        unit: component.unit,
+      })));
+    }
+    return foodService.decorate(id);
+  }
+
   static async wipeDb() {
     this.logger.info('Cleaning up tables');
     const factory = BusinessUtils.getFactory();
@@ -115,6 +170,10 @@ export class SeedUtils {
       db._.fullSchema.muscles,
       db._.fullSchema.exerciseImages,
       db._.fullSchema.exercises,
+      db._.fullSchema.mealFoodComponents,
+      db._.fullSchema.meals,
+      db._.fullSchema.foodComponents,
+      db._.fullSchema.food,
       db._.fullSchema.images,
       db._.fullSchema.users,
       db._.fullSchema.managers,
