@@ -14,6 +14,10 @@ export const serverConfig: ServerConfig = {
       password: EnvHelper.getString('DB_PASSWORD'),
       database: EnvHelper.getString('DB_DATABASE'),
       ssl: EnvHelper.getBoolean('DB_SSL'),
+      logs: {
+        enabled: true,
+        useColors: EnvHelper.getEnumValue('NODE_ENV', Environment, Environment.development) !== Environment.production,
+      },
     },
     auth: {
       hashSalt: EnvHelper.getNumber('SERVICES_AUTH_HASH_SALT'),
@@ -36,6 +40,10 @@ export const serverConfig: ServerConfig = {
       database: EnvHelper.getOptionalString('PROD_DB_DATABASE'),
       ssl: EnvHelper.getOptinalBoolean('PROD_DB_SSL'),
       schema: EnvHelper.getOptionalString('PROD_DB_SCHEMA'),
+      logs: {
+        enabled: true,
+        useColors: true,
+      },
     }),
     email: {
       from: EnvHelper.getString('EMAIL_FROM'),

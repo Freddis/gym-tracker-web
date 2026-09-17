@@ -5,4 +5,8 @@ export interface DrizzleServiceConfig {
   password: string;
   database: string;
   ssl: boolean
+  logs: {
+    enabled: boolean;
+    useColors: boolean;
+  };
 }

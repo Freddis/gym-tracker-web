@@ -31,7 +31,7 @@ export class DrizzleService {
       this.logger.info('Monkey patching PG to track query performance');
       pg.Query.prototype.patched = true;
       const originalSubmit = pg.Query.prototype.submit;
-      const logger = new QueryLogger(false, true, 'postgres');
+      const logger = new QueryLogger(this.config.logs.enabled, this.config.logs.useColors, 'postgres');
       pg.Query.prototype.submit = function(...args) {
         const startTime = performance.now();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
