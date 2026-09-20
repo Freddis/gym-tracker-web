@@ -7,6 +7,7 @@ import {BaseEntry, Entry, PostEntry, WeightEntry, WorkoutEntry} from './types/En
 import {EntryType} from './types/EntryType';
 import {PostEntryCreateDto, WeightEntryCreateDto, WorkoutEntryCreateDto} from './types/EntryCreateDto';
 import {and, inArray, isNull, eq, sql, between} from 'drizzle-orm';
+import {addYears, subYears} from 'date-fns';
 import {WeightService} from '../WeightService/WeightService';
 import {EntryVisibility} from './types/EntryVisibility';
 import {EntryUpsertDto} from './types/EntryUpsertDto';
@@ -415,22 +416,25 @@ export class EntryService {
     );
   }
 
-  async getDates(id: number, params: {date: Date, type?: EntryType[]}): Promise<Date[]> {
+  async getDates(id: number, params: {date: Date, type?: EntryType[], timezoneOffset: number}): Promise<Date[]> {
     const db = await this.drizzle.getDb();
-    const year = params.date.getFullYear();
-    const surrounded = 10;
-    const rows = await db.select({time: db._.fullSchema.entries.time})
+    const surroundingYears = 10;
+    // getTimezoneOffset counts from the viewer towards utc, an interval has to count the other way
+    const viewerZone = sql`make_interval(mins => ${-params.timezoneOffset})`;
+    const viewerMidnight = sql`date_trunc('day', ${db._.fullSchema.entries.time} AT TIME ZONE ${viewerZone}) AT TIME ZONE ${viewerZone}`
+      .mapWith(db._.fullSchema.entries.time);
+    // distinct instead of a group by, postgres treats the repeated expression in both clauses as two different ones
+    const rows = await db.selectDistinct({day: viewerMidnight})
       .from(db._.fullSchema.entries)
       .where(
         and(
-          between(db._.fullSchema.entries.time, new Date(year - surrounded, 0, 1), new Date(year + surrounded, 0, 1)),
+          between(db._.fullSchema.entries.time, subYears(params.date, surroundingYears), addYears(params.date, surroundingYears)),
           eq(db._.fullSchema.entries.userId, id),
           params.type ? inArray(db._.fullSchema.entries.type, params.type) : undefined,
           isNull(db._.fullSchema.entries.deletedAt),
         )
-      )
-      .groupBy(sql`date(time), time`);
-    return rows.map((x) => new Date(x.time.getFullYear(), x.time.getMonth(), x.time.getDate()));
+      );
+    return rows.map((x) => x.day);
   }
 
   protected getService<T extends EntryType>(type: T): IEntryService<T> {

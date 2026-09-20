@@ -1,4 +1,5 @@
-import {SQL, and, between, desc, eq, gt, gte, inArray, isNull, lte, or} from 'drizzle-orm';
+import {SQL, and, desc, eq, gt, gte, inArray, isNull, lt, lte, or} from 'drizzle-orm';
+import {addHours} from 'date-fns';
 import {PgColumn} from 'drizzle-orm/pg-core';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {EntryRow} from '../DrizzleService/types/EntryRow';
@@ -42,11 +43,11 @@ export class EntryRepositoryService extends ModelService<string, EntryRow, Entry
         gt(this.getTable().createdAt, params.updatedAfter),
         gt(this.getTable().deletedAt, params.updatedAfter),
       ) : undefined,
-      params?.date ? between(
-        this.getTable().time,
-         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate()),
-         new Date(params.date.getFullYear(), params.date.getMonth(), params.date.getDate() + 1)
-        ) : undefined,
+      // the client sends midnight in its own timezone, so the day is measured from that instant
+      params?.date ? and(
+        gte(this.getTable().time, params.date),
+        lt(this.getTable().time, addHours(params.date, 24)),
+      ) : undefined,
     );
     return where;
   }

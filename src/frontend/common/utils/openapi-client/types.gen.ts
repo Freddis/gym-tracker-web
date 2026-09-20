@@ -9727,6 +9727,10 @@ export type GetEntriesOwnDatesData = {
      */
     date: Date;
     /**
+     * Viewer offset in minutes, same value and sign as Date.prototype.getTimezoneOffset returns. Decides which day an entry belongs to.
+     */
+    timezoneOffset: number;
+    /**
      * Filters excercises by type.
      */
     type?:

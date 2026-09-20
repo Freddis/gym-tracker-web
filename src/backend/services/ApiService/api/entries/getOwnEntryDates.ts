@@ -12,6 +12,9 @@ export const getOwnEntryDates = RouteFactory.createRoute({
   validators: {
     query: object({
       date: RouteFactory.validators.strings.datetime.openapi({description: 'Date'}),
+      timezoneOffset: RouteFactory.validators.strings.number.openapi({
+        description: 'Viewer offset in minutes (use Date.getTimezoneOffset()). Decides which day an entry belongs to.',
+      }),
       type: union([
         nativeEnum(EntryType).transform((x) => [x]),
         nativeEnum(EntryType).array(),
@@ -21,7 +24,7 @@ export const getOwnEntryDates = RouteFactory.createRoute({
       object({
         value: RouteFactory.validators.strings.datetime.openapi({description: 'Date'}),
       }).openapi({description: 'Date List Item'}),
-    ).openapi({description: 'List of dates. Workout about bug in array transformation in @hey-api/openapi-ts', ref: 'DateList'}),
+    ).openapi({description: 'List of dates. Bug in array transformation in @hey-api/openapi-ts, can use array of dates', ref: 'DateList'}),
   },
   handler: async (ctx) => {
     const result = await ctx.services.models.entry.getDates(ctx.viewer.id, ctx.params.query);

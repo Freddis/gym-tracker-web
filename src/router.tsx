@@ -1,6 +1,10 @@
 import {createRouter as createTanStackRouter} from '@tanstack/react-router';
 import {routeTree} from './routeTree.gen';
 import {parse, stringify} from 'qs';
+import {format, isEqual, startOfDay} from 'date-fns';
+
+// midnight in the user's timezone means the time was never picked, only the day
+const isDateOnly = (value: Date) => isEqual(value, startOfDay(value));
 
 export function getRouter() {
   const tempRouter = createTanStackRouter({routeTree});
@@ -23,8 +27,14 @@ export function getRouter() {
       if (Object.keys(searchObj).length === 0) {
         return '';
       }
+      // qs serializes dates as full ISO strings, day-only dates deserve a readable form
+      const withBeatifulDates: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(searchObj)) {
+        const shouldBeautify = value instanceof Date && isDateOnly(value);
+        withBeatifulDates[key] = shouldBeautify ? format(value, 'yyyy-MM-dd') : value;
+      }
       // correcting urlencoded arrays in query params
-      const res = '?' + stringify(searchObj, {arrayFormat: 'brackets', encodeValuesOnly: true});
+      const res = '?' + stringify(withBeatifulDates, {arrayFormat: 'brackets', encodeValuesOnly: true});
       if (res === '?') {
         return '';
       }
@@ -36,8 +46,3 @@ export function getRouter() {
 
   return router;
 }
-// declare module '@tanstack/react-router' {
-//   interface Register {
-//     router: ReturnType<typeof createRouter>
-//   }
-// }

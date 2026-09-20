@@ -22,10 +22,12 @@ export const EntryListPage: FC = () => {
     queryKey: ['workouts', searchParams],
     placeholderData: keepPreviousData,
   });
+  // throw new Error(JSON.stringify(searchParams));
   const datesResponse = useQuery({
     queryFn: () => api.getEntriesOwnDates({
       query: {
         date: searchParams.date ?? new Date(),
+        timezoneOffset: new Date().getTimezoneOffset(),
         type: searchParams.type,
       },
     }),

@@ -17,6 +17,8 @@ services:
     ports:
       - 3333:3000
     environment:
+      # srvx --prod would default this to production, leaving EnvHelper without an env file to read
+      - NODE_ENV=development
       - DB_HOST=db
       - DB_PORT=5432
     # entrypoint: "sleep 1000000" # debug
