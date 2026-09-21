@@ -26,7 +26,6 @@ import {SettingsService} from '../../services/SettingsService/SettingsService';
 import {PostService} from '../../services/PostService/PostService';
 import {MealService} from '../../services/MealService/MealService';
 import {CalorieGoalService} from '../../services/CalorieGoalService/CalorieGoalService';
-import {ProfileService} from '../../services/ApiService/ProfileService/ProfileService';
 import {FatsecretService} from '../../services/FatsecretService/FatsecretService';
 import {RedisService} from '../../services/RedisService/RedisService';
 import {OpenFoodFactsService} from '../../services/OpenFoodFactsService/OpenFoodFactsService';
@@ -39,6 +38,7 @@ import {Logger} from '../Logger/Logger';
 import {ScriptService} from '../../services/ScriptService/ScriptService';
 import {TransferExerciseImages} from '../../services/ScriptService/scripts/TransferExerciseImages/TransferExerciseImages';
 import {ScriptType} from '../../services/ScriptService/types/ScriptType';
+import {ProfileService} from '../../services/ProfileService/ProfileService';
 
 export class GlobalServiceFactory {
   protected drizzleCached?: DrizzleService;

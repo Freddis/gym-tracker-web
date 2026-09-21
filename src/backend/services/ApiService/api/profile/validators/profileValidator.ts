@@ -3,7 +3,7 @@ import {calorieGoalValidator} from '../../entries/validators/calorieGoalValidato
 import {genderValidator} from '../../settings/validators/genderValidator';
 import {userValidator} from '../../users/validators/userValidator';
 import {unitsValidator} from '../../settings/validators/unitsValidator';
-import {GoalType} from '../../../ProfileService/types/GoalType';
+import {GoalType} from '../../../../ProfileService/types/GoalType';
 
 const goalTypeValidator = nativeEnum(GoalType).openapi({ref: 'GoalType', description: 'Type of the goal'});
 const weightGoalValidator = object({

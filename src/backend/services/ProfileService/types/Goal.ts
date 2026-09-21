@@ -1,4 +1,4 @@
-import {CalorieGoal} from '../../../CalorieGoalService/types/CalorieGoal';
+import {CalorieGoal} from '../../CalorieGoalService/types/CalorieGoal';
 import {GoalType} from './GoalType';
 
 interface WeightGoalRecord {

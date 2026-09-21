@@ -1,7 +1,7 @@
 import {ImageService} from '../../ImageService/ImageService';
 import {SettingsService} from '../../SettingsService/SettingsService';
 import {User} from '../../UserService/types/User';
-import {ProfileService} from '../ProfileService/ProfileService';
+import {ProfileService} from '../../ProfileService/ProfileService';
 import {ApiRequestServices} from './ApiRequestServices';
 import {PublicRouteContext} from './PublicRouteContext';
 
