@@ -1,6 +1,7 @@
 import {ImageType} from '../../../types/ImageType';
 import {EntityService} from '../../../types/ModelService/types/EntityService';
 import {Filter} from '../../../types/ModelService/types/Filter';
+import {ImageUpsertDto} from './ImageUpsertDto';
 
 export interface IImageService<
 TModel, TId extends string | number = number, TFilter extends Filter<TId> = Filter<TId>> extends EntityService<TModel, TId, TFilter> {
@@ -11,4 +12,5 @@ TModel, TId extends string | number = number, TFilter extends Filter<TId> = Filt
   createFromUrl(href: string, name: string, imageType: ImageType): Promise<TModel>
   getImageData(href: string): Promise<string>
   createFromBase64(data: string, name: string, imageType: ImageType): Promise<TModel>
+  resolveUpsertedImage(image: ImageUpsertDto, imageType: ImageType): Promise<TModel | null>
 }

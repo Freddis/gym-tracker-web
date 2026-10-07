@@ -1,4 +1,4 @@
-import {ImageUpsertDto} from '../../EntryService/types/EntryUpsertDto';
+import {ImageUpsertDto} from '../../ImageService/types/ImageUpsertDto';
 import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 import {FoodComponentUpsertDto} from './FoodComponentUpsertDto';
 import {ServingSizeUnit} from './ServingSizeUnit';

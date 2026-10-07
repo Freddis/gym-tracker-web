@@ -6,7 +6,7 @@ Subcomponents can be imported by their top-level components or siblings. Importi
 
 Enums, types, and interfaces are considered "types" and should be placed in the same folder. They contribute to abstraction, therefore there is not much difference between them. Validators should be placed in types as well if they're carrying a type and in the "validators" folder if not.
 
-Typical folders: types, validators, services, utils. Utils are small and independant, while services might require a factory and other services to be instantiated.
+Typical folders: types, validators, services, utils. Utils are small and independent, while services might require a factory and other services to be instantiated.
 
 If done correctly, in any given folder it would be easy to estimate what types those components are using and how big they are.
 
@@ -37,7 +37,7 @@ Never use conditionals in tests. Don't use IF statements in tests.
 Never add function in the tests.
 Each test should be self contained. Ideal test should be easily scannable by eye and shouldn't require user to scroll up to check initialization or checking different files.
 
-It's ok to add utilitiy functions into TestUtils, but they supposed to be universal and what they do should be understandeable from the name.
+It's ok to add utility functions into TestUtils, but they should be universal and what they do should be understandable from the name.
 
 When we check values with expects, especially data we should check primarily against inline constant values. It's ok to check again variables in case if the value isn't known at the start of the test, like user id.
 

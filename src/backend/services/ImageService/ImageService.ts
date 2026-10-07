@@ -4,6 +4,7 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ManagedImageService} from './ManagedImageService';
 import {ManagedImage} from './types/ManagedImage';
 import {IImageService} from './types/IImageService';
+import {ImageUpsertDto} from './types/ImageUpsertDto';
 import {ImageType} from '../../types/ImageType';
 
 export class ImageService implements IImageService<Image, string, ImageFilter> {
@@ -45,6 +46,15 @@ export class ImageService implements IImageService<Image, string, ImageFilter> {
   async createFromBase64(data: string, name: string, imageType: ImageType): Promise<Image> {
     const image = await this.managedImageService.createFromBase64(data, name, imageType);
     return this.remapOne(image);
+  }
+
+  /**
+   * Resolves an image a sync client sent. The device naming rule lives in the image service, so every sync
+   * path (exercises, entries, settings) reuses an already stored file instead of colliding on its url.
+   */
+  async resolveUpsertedImage(image: ImageUpsertDto, imageType: ImageType): Promise<Image | null> {
+    const stored = await this.managedImageService.resolveUpsertedImage(image, imageType);
+    return stored ? this.remapOne(stored) : null;
   }
 
   async paginate(params: Partial<ImageFilter>): Promise<PaginatedResult<Image>> {

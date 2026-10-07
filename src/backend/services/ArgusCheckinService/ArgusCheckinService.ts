@@ -8,7 +8,8 @@ import {ArgusCheckinSubtype} from '../DrizzleService/types/ArgusCheckinRow/types
 import {EntryType} from '../EntryService/types/EntryType';
 import {EntryVisibility} from '../EntryService/types/EntryVisibility';
 import {ExternalSource} from '../EntryService/types/ExternalSource';
-import {ImageUpsertDto, OutdoorRunEntryUpsertDto, OutdoorWalkEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
+import {OutdoorRunEntryUpsertDto, OutdoorWalkEntryUpsertDto} from '../EntryService/types/EntryUpsertDto';
+import {ImageUpsertDto} from '../ImageService/types/ImageUpsertDto';
 import {ImageService} from '../ImageService/ImageService';
 import {ArgusPhoto} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusPhoto';
 import {ArgusRunCheckin} from '../DrizzleService/types/ArgusCheckinRow/validators/ArgusRunCheckin';

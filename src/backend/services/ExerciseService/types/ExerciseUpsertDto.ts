@@ -1,5 +1,5 @@
 import {StrictOmit} from '../../../types/StrictOmit';
-import {ImageUpsertDto} from '../../EntryService/types/EntryUpsertDto';
+import {ImageUpsertDto} from '../../ImageService/types/ImageUpsertDto';
 import {Exercise} from './Exercise';
 
 export interface ExerciseUpsertDto extends StrictOmit<Exercise, 'userId' | 'parentExerciseId' | 'variations' | 'images'> {

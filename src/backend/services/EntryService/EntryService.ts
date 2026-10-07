@@ -374,12 +374,14 @@ export class EntryService {
         data[key] = upsertResult.id;
       }
 
-      if (item.image?.data) {
-        image = await this.imageService.createFromBase64(item.image.data, item.image.id, ImageType.Entry);
-        data.imageId = image.id;
-      }
       if (item.image === null) {
         data.imageId = null;
+      }
+      if (item.image) {
+        // the image service owns the rule that devices name files with their own ids, so a re-sent file is reused
+        const resolved = await this.imageService.resolveUpsertedImage(item.image, ImageType.Entry);
+        data.imageId = resolved?.id ?? null;
+        image = resolved ?? undefined;
       }
 
       const rows = await db.insert(db._.fullSchema.entries).values(data).onConflictDoUpdate({

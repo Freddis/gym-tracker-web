@@ -28,12 +28,9 @@ export class SettingsService {
       throw new Error('User not found');
     }
     let profilePicture: Image | null | undefined;
-    if (settings.profilePicture?.data) {
-      profilePicture = await this.imageService.createFromBase64(
-        settings.profilePicture.data,
-        settings.profilePicture.id,
-        ImageType.UserProfile
-      );
+    if (settings.profilePicture) {
+      // the image service owns the rule that devices name files with their own ids, so a re-sent picture is reused
+      profilePicture = await this.imageService.resolveUpsertedImage(settings.profilePicture, ImageType.UserProfile);
     }
     await this.userService.update(user.id, {
       password: coreUser.password,

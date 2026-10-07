@@ -7,12 +7,8 @@ import {WeightUpsertDto} from '../../WeightService/types/WeightUpsertDto';
 import {WorkoutUpsertDto} from '../../WorkoutService/types/WorkoutUpsertDto';
 import {BaseEntry} from './Entry';
 import {EntryType} from './EntryType';
+import {ImageUpsertDto} from '../../ImageService/types/ImageUpsertDto';
 
-export interface ImageUpsertDto {
-  id: string
-  data?: string
-  isDeleted?: boolean
-}
 interface BaseEntryUpsertDto extends StrictOmit<BaseEntry, | 'user'| 'image'> {
   image?: ImageUpsertDto | null
 }

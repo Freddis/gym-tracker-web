@@ -4,7 +4,7 @@ import {Gender} from '../../../types/Gender';
 import {HeightUnit} from '../../../types/HeightUnit';
 import {TemperatureUnit} from '../../../types/TemperatureUnit';
 import {WeightUnit} from '../../../types/WeightUnit';
-import {ImageUpsertDto} from '../../EntryService/types/EntryUpsertDto';
+import {ImageUpsertDto} from '../../ImageService/types/ImageUpsertDto';
 import {EntryVisibility} from '../../EntryService/types/EntryVisibility';
 
 export interface SettingsUpdateDto {

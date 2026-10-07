@@ -7,6 +7,7 @@ import {Muscle} from '../../../../types/Muscle';
 import {ApiErrorCode} from '../../types/ApiErrorCode';
 import {ActionErrorCode} from '../../types/ActionErrorCode';
 import {randomUUID} from 'node:crypto';
+import {eq} from 'drizzle-orm';
 
 describe('upsertExercises', async () => {
   const service = await TestUtils.business.getFactory().exercise();
@@ -447,6 +448,49 @@ describe('upsertExercises', async () => {
     expect(response.body.items[0].images).to.deep.eq([]);
     const inserted = await service.getById(exercise.id);
     expect(inserted?.images).to.deep.eq([]);
+  });
+
+  test('Two concurrent syncs referencing one device image id store the image once', async () => {
+    // prepare
+    const user = await TestUtils.seed.createUser();
+    const base: ExerciseUpsertDto = {
+      id: randomUUID(),
+      name: 'Exercise referencing a shared image',
+      description: null,
+      difficulty: null,
+      params: [],
+      equipment: null,
+      images: [
+        {
+          id: '99999999-9999-9999-9999-999999999999',
+          data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        },
+      ],
+      copiedFromId: null,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+      isArchived: false,
+      muscles: {
+        primary: [],
+        secondary: [],
+      },
+    };
+    const second: ExerciseUpsertDto = {...base, id: randomUUID(), name: 'Other exercise, same image'};
+    // test
+    const responses = await Promise.all([
+      TestUtils.openApi.put('/exercises', user, {items: [base]}),
+      TestUtils.openApi.put('/exercises', user, {items: [second]}),
+    ]);
+    // check
+    expect(responses[0]?.status).to.eq(200);
+    expect(responses[1]?.status).to.eq(200);
+    expect(responses[0]?.body.items[0].images[0].id).to.eq(responses[1]?.body.items[0].images[0].id);
+    const db = await TestUtils.business.getFactory().drizzle().then((drizzle) => drizzle.getDb());
+    const imageRows = await db.select().from(db._.fullSchema.images).where(
+      eq(db._.fullSchema.images.url, 'https://gymtracker-images-23.s3.eu-central-1.amazonaws.com/99999999-9999-9999-9999-999999999999'),
+    );
+    expect(imageRows).to.have.length(1);
   });
 
   test('Cant update built-in exercises', async () => {

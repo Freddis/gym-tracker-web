@@ -5,9 +5,15 @@ import {AppLabel} from '../../../../../common/components/atoms/AppLabel/AppLabel
 import {AppTextArea} from '../../../../../common/components/atoms/AppTextArea/AppTextArea';
 import {AppTextInput} from '../../../../../common/components/atoms/AppTextInput/AppTextInput';
 import {useAppPartialTranslation} from '../../../../utils/i18n/useAppPartialTranslation';
-import {Food, FoodComponent, FoodComponentUpsertDto, FoodUpsertDto, ServingSizeUnit} from '../../../../../common/utils/openapi-client';
+import {
+  Food,
+  FoodComponent,
+  FoodComponentUpsertDto,
+  FoodUpsertDto,
+  ImageUpsertDto,
+  ServingSizeUnit,
+} from '../../../../../common/utils/openapi-client';
 import {useResponseErrors} from '../../../../../common/utils/useResponseErrors';
-import {ImageUpsertDto} from '../../../../../../backend/services/EntryService/types/EntryUpsertDto';
 import {AppBlockHeader} from '../../../../../common/components/atoms/AppBlock/components/AppBlockHeader';
 import {AppButton} from '../../../../../common/components/atoms/AppButton/AppButton';
 import {usePopup} from '../../../../../common/components/atoms/Popup/utils/usePopup';

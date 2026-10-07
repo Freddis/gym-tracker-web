@@ -7,7 +7,7 @@ import {
   S3Client,
   S3ServiceException,
 } from '@aws-sdk/client-s3';
-import {DrizzleService} from '../DrizzleService/DrizzleService';
+import {AppDb, DrizzleService} from '../DrizzleService/DrizzleService';
 import {ModelService} from '../../types/ModelService/ModelService';
 import {SQL, and, desc, eq, inArray} from 'drizzle-orm';
 import {PgColumn} from 'drizzle-orm/pg-core';
@@ -18,11 +18,14 @@ import {PaginatedResult} from '../ApiService/types/PaginatedResult';
 import {ManagedImage} from './types/ManagedImage';
 import {IImageService} from './types/IImageService';
 import {ImageRow} from '../DrizzleService/types/ImageRow';
+import {ImageUpsertDto} from './types/ImageUpsertDto';
 import {randomUUID} from 'crypto';
 
 export class ManagedImageService
 extends ModelService<string, ImageRow, ManagedImage, ImageFilter>
 implements IImageService<ManagedImage, string, ImageFilter> {
+  // image ids are stored in a uuid column, so anything else has to stay out of the lookup
+  protected static uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   protected bucket = 'gymtracker-images-23';
   protected s3: S3Client;
   protected logger = new Logger(ManagedImageService.name);
@@ -124,12 +127,13 @@ implements IImageService<ManagedImage, string, ImageFilter> {
     this.logger.info('S3 Response: ', {name, response});
   }
 
+  /**
+   * Bucket keys are always the encoded form of the name that was handed to create, so a lookup that only tries the
+   * raw name can never find a row this service stored itself. Both forms are searched.
+   */
   async getImageByName(name: string): Promise<ManagedImage| null> {
     const db = await this.drizzle.getDb();
-    const url = this.generateUrl(name);
-    const image = await db.query.images.findFirst({
-      where: (t, op) => op.eq(t.url, url),
-    });
+    const image = await this.getRowByName(db, name);
     if (!image) {
       return null;
     }
@@ -158,13 +162,78 @@ implements IImageService<ManagedImage, string, ImageFilter> {
     return `https://${this.bucket}.s3.eu-central-1.amazonaws.com/${name}`;
   }
 
+  /**
+   * Names are stored as bucket keys, which are always the encoded form of the name a caller passed to create.
+   */
+  protected encodeName(name: string): string {
+    return encodeURIComponent(name.replaceAll(' ', '-'));
+  }
+
   async createFromFile(file: Buffer, name: string, imageType: ImageType): Promise<ManagedImage> {
-    name = encodeURIComponent(name.replaceAll(' ', '-'));
-    const image = this.saveImageToDb(name, imageType);
+    name = this.encodeName(name);
+    // the insert is awaited before the upload is started, so a rejected query can't become an unhandled rejection
+    const image = await this.saveImageToDb(name, imageType);
     // we don't automatically create buckets anymore
     // await this.createBucket(this.bucket);
     await this.uploadFile(file, this.bucket, name);
     return image;
+  }
+
+  /**
+   * Resolves an image a sync client sent, which is the only place the device naming rule lives:
+   * clients name uploaded files with ids they generated themselves, so the same file arrives on every sync.
+   */
+  async resolveUpsertedImage(image: ImageUpsertDto, imageType: ImageType): Promise<ManagedImage | null> {
+    if (image.isDeleted) {
+      return null;
+    }
+    // ids are generated on devices, where they name the uploaded file, so images sent again are reused
+    const uploaded = await this.getImageByName(image.id);
+    if (uploaded) {
+      return uploaded;
+    }
+    if (image.data) {
+      return await this.getOrCreateFromBase64(image.data, image.id, imageType);
+    }
+    // images pulled from the server come back named by their stored id, without the data
+    if (!ManagedImageService.uuidPattern.test(image.id)) {
+      return null;
+    }
+    return await this.getById(image.id);
+  }
+
+  /**
+   * Stores the file under a name that may already be taken by the same file, which is what a re-sent image is.
+   * The row already stored is reused instead of raising a unique url violation, and the file is uploaded only
+   * when the row is new, since a stored row means the object is already in the bucket.
+   */
+  protected async getOrCreateFromFile(file: Buffer, name: string, imageType: ImageType): Promise<ManagedImage> {
+    name = this.encodeName(name);
+    const db = await this.drizzle.getDb();
+    const inserted = await db.insert(db._.fullSchema.images).values({
+      id: randomUUID(),
+      url: this.generateUrl(name),
+      imageType: imageType,
+      createdAt: new Date(),
+    }).onConflictDoNothing({target: db._.fullSchema.images.url}).returning();
+    const row = inserted[0] ?? await this.getRowByName(db, name);
+    if (!row) {
+      throw new Error("Images wasn't saved in DB");
+    }
+    if (inserted[0]) {
+      await this.uploadFile(file, this.bucket, name);
+    }
+    const [stored] = await this.decorateRows([row]);
+    if (!stored) {
+      throw new Error("Images wasn't saved in DB"); // never
+    }
+    return stored;
+  }
+
+  protected async getOrCreateFromBase64(data: string, name: string, imageType: ImageType): Promise<ManagedImage> {
+    const base64Data = data.replace(/^data:image\/\w+;base64,/, ''); // strip header
+    const buffer = Buffer.from(base64Data, 'base64');
+    return this.getOrCreateFromFile(buffer, name, imageType);
   }
 
   async createFromUrl(href: string, name: string, imageType: ImageType): Promise<ManagedImage> {
@@ -184,6 +253,10 @@ implements IImageService<ManagedImage, string, ImageFilter> {
     return this.createFromFile(buffer, name, imageType);
   }
 
+  /**
+   * Creates a row for a name that must not be stored yet. A url that is already taken is a caller error,
+   * which getOrCreateFromFile exists to handle.
+   */
   protected async saveImageToDb(name: string, imageType: ImageType): Promise<ManagedImage> {
     const db = await this.drizzle.getDb();
     const inserted = await db.insert(db._.fullSchema.images).values({
@@ -197,6 +270,14 @@ implements IImageService<ManagedImage, string, ImageFilter> {
       throw new Error("Images wasn't saved in DB");
     }
     return result;
+  }
+
+  protected async getRowByName(db: AppDb, name: string): Promise<ImageRow | undefined> {
+    const urls = [...new Set([this.generateUrl(name), this.generateUrl(this.encodeName(name))])];
+    const rows = await db.select().from(db._.fullSchema.images)
+      .where(inArray(db._.fullSchema.images.url, urls))
+      .limit(1);
+    return rows[0];
   }
 
   protected async uploadFile(file: Buffer<ArrayBufferLike>, bucket: string, name: string) {
